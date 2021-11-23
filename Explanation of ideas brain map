@@ -1,0 +1,67 @@
+\documentclass{article}
+\title{Ideas for ABM (further clarification)}
+\author{CDAL}
+
+\begin{document}
+\maketitle
+\section{Language}
+\textbf{R}. Could use this project for further development.
+
+\noindent{\textbf{Python}. More options 'out there'.}
+
+\noindent{\textbf{Netlogo}. Already set.}
+
+\noindent{\textbf{R and Python}. We have coders in R and Python. Could do the model in both and that way (1) it will be easier to share it and (2) we can test performance (not that this is anything new...)}
+
+\section{World options}
+\noindent{\textbf{Real World}. Easier, but some researchers could feel inclined to use their background knowledge}
+
+\noindent{\textbf{Fantasy}. Freak, true, but still cool?}
+
+\noindent{\textbf{\emph{Ad Hoc}}. Generate a world dealing with our specific problem. From DTMs to patches.}
+
+\section{Process type}
+
+\noindent{\textbf{Demographic substitution}}. Complete population replacement.
+
+\noindent{\textbf{Demographic admixture}}. Partial population replacement.
+
+\noindent{\textbf{Cultural transfers}}. No population replacement.
+
+\noindent{\textbf{More than one group}. Mixed processes}
+
+\section{Generated proxy}
+
+\noindent{\textbf{Material Culture}}. If we want to focus on cultural transmission.
+
+\noindent{\textbf{Radiocarbon}}. If we want to focus on demography.
+
+\noindent{\textbf{Human remains}}. Also demography.
+
+\noindent{\textbf{Combined}}
+
+\noindent{\textbf{Other}}
+
+\section{Chronological framework}
+
+\noindent{\textbf{Prehistorical transitions}}. Meso-Neo?
+
+\noindent{\textbf{Historical transitions}}. There are many, but I'm not sure if we have real data (or knowledge) for this.
+
+\noindent{\textbf{Indifferent}}. Perhaps not even setting a pre-defined chronological framework.
+
+\section{Working options}
+
+\noindent{\textbf{Server}}. In case we don't want to use github and we want to do other options, like working against a server.
+
+\noindent{\textbf{R package/main file}}. We could work all committing to a single main file, work with branches or perhaps divide the model by functions with the scope of creating a package once it is done.
+
+\noindent{\textbf{Split commitments?}}. Do we want to work 'everyone on everything' or do we prefer to separate and take charge of different tasks?
+
+\section{Further comments}
+
+1. Take into account environmental conditions?
+
+\noindent{2. Perhaps thinking of not complicating it too much}
+
+\end{document}
