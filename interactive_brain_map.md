@@ -1,13 +1,42 @@
-import { Transformer } from 'markmap-lib';
+# CollaborABM
 
-const transformer = new Transformer();
+## Programming language
 
-// 1. transform markdown
-const { root, features } = transformer.transform(markdown);
+- R
+- Python
+- R & Python
+- Netlogo
 
-// 2. get assets
-// either get assets required by used features
-const { styles, scripts } = transformer.getUsedAssets(features);
-// or get all possible assets that could be used later
-const { styles, scripts } = transformer.getAssets();
+## World options
+
+- Real world
+- Fantasy
+- *Ad Hoc*
+
+## Process type
+
+- Demographic substitution
+- Demographic admixture
+- Cultural transfers
+- More than one group
+
+## Generated proxy
+
+- Material culture
+- Radiocarbon
+- Human remains
+- Combined
+- Other
+
+## Chronological framework
+
+- Prehistorical transitions
+- Historical transitions
+- Indifferent
+
+## Working options
+
+- Server
+- R package/main file
+- Split commitments?
 
