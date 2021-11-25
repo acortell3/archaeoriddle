@@ -47,5 +47,5 @@ output: html_document
 **Split commitments?**. De we want to work 'everyone on everything' or do we prefer to separate and take charge of different tasks?
 
 ## Further comments
-1. Take into account environmental conditions?\
+1. Take into account environmental conditions?
 2. Perhaps thinking of not complicating it too much
