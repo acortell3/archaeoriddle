@@ -1,12 +1,12 @@
 ---
 title: "Explanation_of_ideas_brain_map"
-author: "Alfredo_Cortell"
+author: "CDAL"
 date: "11/25/2021"
 output: html_document
 ---
 ## Brain map collaborABM
 
-![](doc/brain_map_colabm.png)
+![](doc/brain_map_colabm.png){ width: 200px; }
 
 # Comments
 
