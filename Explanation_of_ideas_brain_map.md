@@ -6,7 +6,7 @@ output: html_document
 ---
 ## Brain map collaborABM
 
-![](doc/brain_map_colabm.png){ width: 100px; }
+<img src="doc/brain_map_colabm.png" alt="drawing" width="600"/>
 
 # Comments
 
