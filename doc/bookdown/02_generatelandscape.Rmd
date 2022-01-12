@@ -1,0 +1,155 @@
+# Landscape and climate
+
+Second class, read data, map and explore then
+
+```{r}
+
+#' From tuneR package (implemented in the file Waveforms.R in tuneR source)
+#'
+#' Based on Timmer and Koening 1995: https://ui.adsabs.harvard.edu/abs/1995A\%26A...300..707T/abstract
+#'
+#' @param alpha: the slope of the power distribution (called omega in whitehead)
+#' @param N: the length of the timeserie to generate
+#' @export
+TK95 <- function(N, alpha = 1){ 
+    f <- seq(from=0, to=pi, length.out=(N/2+1))[-c(1,(N/2+1))] # Fourier frequencies
+    f_ <- 1 / f^alpha # Power law
+    RW <- sqrt(0.5*f_) * rnorm(N/2-1) # for the real part
+    IW <- sqrt(0.5*f_) * rnorm(N/2-1) # for the imaginary part
+    fR <- complex(real = c(rnorm(1), RW, rnorm(1), RW[(N/2-1):1]), 
+                  imaginary = c(0, IW, 0, -IW[(N/2-1):1]), length.out=N)
+     # Those complex numbers that are to be back transformed for Fourier Frequencies 0, 2pi/N, 2*2pi/N, ..., pi, ..., 2pi-1/N 
+     # Choose in a way that frequencies are complex-conjugated and symmetric around pi 
+     # 0 and pi do not need an imaginary part
+    reihe <- fft(fR, inverse=TRUE) # go back into time domain
+    return(Re(reihe)) # imaginary part is 0
+}
+
+#return spectrum of a timeserie
+#' @export
+getSpectrum <- function(x){
+	N <- length(x)
+    pw=8
+	M <- 2^pw # zero-pad total length
+    while(M<N){
+        pw=pw+1
+        M <- 2^pw
+    }
+	freq <- seq(0, 0.5, by = 1/M)
+	x.zp <- c(x, rep(0, M-N))
+	S.pgram <- (1/N)*abs(fft(x.zp)[1:(M/2+1)])^2
+    S.pgram
+}
+
+#' Environment generator
+#'
+#' return a list of opitmum as a "1/f-noise" of N steps with sd = delta and the slope of it's spectrum decompoistion = -omega + possibility to increase the mean of the environment at a rate vt (in wich case the slop may not be -omega)
+#'
+#' @param omega the slope of the power distribution (called omega in whitehead)
+#' @param delta the standard deviation of the global environmental fluctuation 
+#' @param N the length of the timeserie to generate
+#' @param vt if not NULL, the  mean of the optimum increase at a rate vt  
+#' @return a list of N optima theta
+#' @export
+environment <- function(N,omega,delta,vt=NULL){
+    ts=TK95(N,omega)
+    ts=delta*ts/sd(ts)
+    if(!is.null(vt))ts = ts + vt*1:N
+    return(ts)
+}
+
+# white noise
+#' @export
+gauss <- function(N,mean,delta,v){
+    sapply(1:N,function(t)rnorm(1,mean*v,delta))
+}
+
+
+```
+
+
+To generate a climate with various properties:
+
+
+```{r}
+tstep=1000
+faketemp=environment(tstep,omega=3,delta=2)
+plot(faketemp,type="l",ylab="temperature change",xlab="time")   
+```
+
+Generate a 2D landscape using perlin noise cf [this post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
+
+```{r}
+perlin_noise <- function( 
+  n = 5,   m = 7,    # Size of the grid for the vector field
+  N = 100, M = 100   # Dimension of the image
+) {
+  # For each point on this n*m grid, choose a unit 1 vector
+  vector_field <- apply(
+    array( rnorm( 2 * n * m ), dim = c(2,n,m) ),
+    2:3,
+    function(u) u / sqrt(sum(u^2))
+  )
+  f <- function(x,y) {
+    # Find the grid cell in which the point (x,y) is
+    i <- floor(x)
+    j <- floor(y)
+    stopifnot( i >= 1 || j >= 1 || i < n || j < m )
+    # The 4 vectors, from the vector field, at the vertices of the square
+    v1 <- vector_field[,i,j]
+    v2 <- vector_field[,i+1,j]
+    v3 <- vector_field[,i,j+1]
+    v4 <- vector_field[,i+1,j+1]
+    # Vectors from the point to the vertices
+    u1 <- c(x,y) - c(i,j)
+    u2 <- c(x,y) - c(i+1,j)
+    u3 <- c(x,y) - c(i,j+1)
+    u4 <- c(x,y) - c(i+1,j+1)
+    # Scalar products
+    a1 <- sum( v1 * u1 )
+    a2 <- sum( v2 * u2 )
+    a3 <- sum( v3 * u3 )
+    a4 <- sum( v4 * u4 )
+    # Weighted average of the scalar products
+    s <- function(p) 3 * p^2 - 2 * p^3
+    p <- s( x - i )
+    q <- s( y - j )
+    b1 <- (1-p)*a1 + p*a2
+    b2 <- (1-p)*a3 + p*a4
+    (1-q) * b1 + q * b2
+  }
+  xs <- seq(from = 1, to = n, length = N+1)[-(N+1)]
+  ys <- seq(from = 1, to = m, length = M+1)[-(M+1)]
+  outer( xs, ys, Vectorize(f) )
+}
+
+
+a <- .6
+k <- 8
+m <- perlin_noise(2,2,2^k,2^k)
+for( i in 2:k )
+  m <- m + a^i * perlin_noise(2^i,2^i,2^k,2^k)
+image(m)
+```
+
+Add a couple of sites with exponentially distributed size
+
+
+
+```{r}
+n=10
+lat=runif(n)
+lon=runif(n)
+size=rexp(n)
+
+image(m)
+points(lon,lat,bg="green",pch=21,cex=size+1)
+```
+
+let's say the climate genrated before is directly correlated to the size of the site, lets animate that:
+
+```{r}
+
+image(m)
+points(lon,lat,bg="green",pch=21,cex=size+1)
+```

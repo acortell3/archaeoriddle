@@ -1,0 +1,17 @@
+# Introduction{#intro}
+
+Join us, archaeologists of the world!! Here is the proposal: In this site, you will find lots of information for a re-created archaeological process. The world and the archaeological process have been created from scratch, with no references to real archaeological data. You can find the contextual information needed here. With this, the idea is to answer the research question proposed here, using the information provided by the site, and any method you find more fit.
+Any methodology or theoretical approach you can think of is allowed. Think of this as a real archaeological problem. You have standard archaeological data, and you can use some or all of it, what would you do to answer the research question??
+The cool thing is that, since the actual process is known (but it will not be public until the final meeting where all the works will be presented), all of the archaeologists willing to involve in this will be able to analyse different proposals, what performed better, and what didn't perform so well and, hopefully, we'll have a thorough assessment of archaeological theory and method... Imagine... perhaps we can even agree on something!!
+
+
+## create a world
+
+Set up your directory
+
+```{r}
+print("hello world!")
+```
+
+
+
