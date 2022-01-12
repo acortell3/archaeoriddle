@@ -10,7 +10,7 @@ small tests
 
 ```{r}
 x=1:100
-plot(x,exp(x)
+plot(x,exp(x),ylab="time")
 ```
 
 
