@@ -25,7 +25,7 @@ favicon: "favicon.ico"
 ```{r setup, include=FALSE}
 library(magrittr)
 
-knitr::opts_chunk$set(echo = TRUE,cache=TRUE,collapse=TRUE)
+knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE)
 ```
 
 ```{r write-bib, include=FALSE}
