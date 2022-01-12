@@ -10,8 +10,7 @@ small tests
 
 ```{r}
 x=1:100
-plot(x,exp(x),ylab="time")
+plot(x,exp(x),ylab="time",log="x")
 ```
 
-
-Not sure pre/post hook problem
+Not sure pre/post hook problem. weird
