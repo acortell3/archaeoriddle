@@ -134,8 +134,6 @@ image(m)
 
 Add a couple of sites with exponentially distributed size
 
-
-
 ```{r}
 n=10
 lat=runif(n)
