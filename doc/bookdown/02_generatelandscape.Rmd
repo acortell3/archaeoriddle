@@ -67,8 +67,7 @@ gauss <- function(N,mean,delta,v){
 
 ```
 
-
-To generate a climate with various properties:
+To generate a fake climate with various properties:
 
 
 ```{r}
