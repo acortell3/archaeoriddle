@@ -147,13 +147,14 @@ let's say the climate modulate site size in a naive way:
 
 
 ```{r,animation.hook="gifski",interval=0.2}
-par(mar=c(1,2,1,1))
 for(i in seq(1,tstep,length.out=100)){
 	layout(matrix(1:2,nrow=2,ncol=1),heights=c(.8,.2))
+	par(mar=c(1,2,2,1))
 	image(m,ann=F,axes=F,main=i)
+	mtext(i,3,1)
 	nsize=size*faketemp[i]+size+1
 	points(lon,lat,bg="green",pch=21,cex=nsize)
-par(mar=c(2,2,0,1))
+	par(mar=c(2,2,0,1))
 	plot(1:tstep,faketemp,type="l",ylab="temp",xlab="time",ylim=range(faketemp),ann=F,frame.plot=F)
 	points(i,faketemp[i],col="red",pch=20)
 }
