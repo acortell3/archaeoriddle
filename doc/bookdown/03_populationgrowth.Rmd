@@ -28,7 +28,7 @@ for(i in 2:tstep)
 ```
 
 ```{r visupopgrowth,fig.cap="logistic growth and correlated data",out.width="100%",fig.height=4,fig.width=9,fig.show="hold"}
-layout(matrix(1:4,nrow=3,ncol=1),heights=c(.15,.15,.15,.55))
+layout(matrix(1:4,nrow=4,ncol=1),heights=c(.2,.2,.2,.4))
     par(mar=c(0,4,1,1))
     plot(1:tstep,faketemp,xlab="time",ylab="Environment",main="",type="l",xaxt="n")
     plot(1:tstep,K,xlab="time",ylab="Carrying Capacity",main="",type="l",xaxt="n")
