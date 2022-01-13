@@ -14,20 +14,20 @@ small tests
 
 $$ y_i = \frac{K}{1 + \left(\frac{K - y_{i-1}}{y_{i-1}}\right)*e^{-r}} $$
 
+A more realistic growth: the environment modulate a carrying capacity K
+
 ```{r popgrowth}
 
-K=1000
-T=100
-N=2
-x=1:T
-y=rep(0,T)
-y[1]=N
-r=.2
-for(i in x[2:T])
-    y[i]=K/(1 + (( K - y[i-1])/y[i-1])*exp(-r))
+K=1000+faketemp*200
+N=5
+pop=rep(0,tstep)
+pop[1]=N
+r=rnorm(tstep,.2,.2)
+for(i in 2:tstep)
+    pop[i]=K[i]/(1 + (( K[i] - pop[i-1])/pop[i-1])*exp(-r[i]))
 ```
 
-```{r visupopgrowth,fig.cap="Exponential growth",out.width="50%"}
+```{r visupopgrowth,fig.cap="logistic growth",out.width="50%"}
 plot(x,y,xlab="time",ylab="popsize",main="")
 ```
 
