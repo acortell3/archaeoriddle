@@ -28,10 +28,11 @@ for(i in 2:tstep)
 ```
 
 ```{r visupopgrowth,fig.cap="logistic growth and correlated data",out.width="100%",fig.height=4,fig.width=9,fig.show="hold"}
+layout(matrix(1:4,nrow=3,ncol=1),heights=c(.2,.2,.2,.4))
     par(mar=c(0,4,1,1))
     plot(1:tstep,faketemp,xlab="time",ylab="Environment",main="",type="l")
-    plot(1:tstep,r,xlab="time",ylab="rate of growth",main="",type="l")
     plot(1:tstep,K,xlab="time",ylab="Carrying Capacity",main="",type="l")
+    plot(1:tstep,r,xlab="time",ylab="rate of growth",main="",type="l")
     par(mar=c(4,4,1,1))
     plot(1:tstep,pop,xlab="time",ylab="popsize",main="",type="l",lwd=1.5)
 ```
