@@ -27,8 +27,7 @@ for(i in x[2:T])
     y[i]=K/(1 + (( K - y[i-1])/y[i-1])*exp(-r))
 ```
 
-```{r visupopgrowth,fig.cap="Exponential growth"}
-plot(x,y,ylab="time",ylab="popsize",main="add a main")
+```{r visupopgrowth,fig.cap="Exponential growth",out.width="50%"}
+plot(x,y,xlab="time",ylab="popsize",main="")
 ```
 
-Not sure pre/post hook problem. weird
