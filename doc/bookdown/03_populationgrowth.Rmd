@@ -2,7 +2,10 @@
 
 Because people have childs who have childs...
 
-```{r}
+$$ 1+1=2 $$
+
+Check with Latex
+```{r universaltruth}
 1+1==2
 ```
 
