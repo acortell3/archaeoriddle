@@ -16,7 +16,7 @@ $$ y_i = \frac{K}{1 + \left(\frac{K - y_{i-1}}{y_{i-1}}\right)*e^{-r}} $$
 
 A more realistic growth: the environment modulate a carrying capacity K
 
-```{r popgrowth}
+```{r popgrowth,cache=F}
 
 K=1000+faketemp*sample(100:200,size=tstep,replace=T)
 N=50
