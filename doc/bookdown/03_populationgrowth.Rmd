@@ -11,8 +11,19 @@ Check with Latex
 
 small tests
 
+
+$$ y_i = \frac{K}{1 + \left(\frac{K - y_{i-1}}{y_{i-1}}\right)*e^{-r}} $$
+
 ```{r popgrowth,fig.cap="Exponential growth"}
-x=1:100
+
+T=100
+N=2
+x=1:T
+y=rep(0,T)
+y[1]=N
+r=.2
+for(i in x[2:(T)])
+    y[i]=K/(1 + (( K - y[i-1])/y[i-1])*exp(-r)
 plot(x,exp(x),ylab="time",log="x",main="add a main")
 ```
 
