@@ -14,7 +14,7 @@ small tests
 
 $$ y_i = \frac{K}{1 + \left(\frac{K - y_{i-1}}{y_{i-1}}\right)*e^{-r}} $$
 
-```{r popgrowth,fig.cap="Exponential growth"}
+```{r popgrowth}
 
 K=1000
 T=100
@@ -25,7 +25,10 @@ y[1]=N
 r=.2
 for(i in x[2:T])
     y[i]=K/(1 + (( K - y[i-1])/y[i-1])*exp(-r))
-plot(x,exp(x),ylab="time",log="x",main="add a main")
+```
+
+```{r visupopgrowth,fig.cap="Exponential growth"}
+plot(x,y,ylab="time",ylab="popsize",main="add a main")
 ```
 
 Not sure pre/post hook problem. weird
