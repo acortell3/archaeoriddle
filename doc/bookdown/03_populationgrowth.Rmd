@@ -22,7 +22,7 @@ K=1000+faketemp*200
 N=5
 pop=rep(0,tstep)
 pop[1]=N
-r=rnorm(tstep,.2,.2)
+r=environment(tstep,omega=4,delta=.1)+.1
 for(i in 2:tstep)
     pop[i]=K[i]/(1 + (( K[i] - pop[i-1])/pop[i-1])*exp(-r[i]))
 ```
