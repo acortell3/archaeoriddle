@@ -16,6 +16,7 @@ $$ y_i = \frac{K}{1 + \left(\frac{K - y_{i-1}}{y_{i-1}}\right)*e^{-r}} $$
 
 ```{r popgrowth,fig.cap="Exponential growth"}
 
+K=1000
 T=100
 N=2
 x=1:T
