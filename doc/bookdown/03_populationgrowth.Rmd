@@ -18,8 +18,8 @@ A more realistic growth: the environment modulate a carrying capacity K
 
 ```{r popgrowth}
 
-K=2000+faketemp*sample(100:200,size=tstep,replace=T)
-N=100
+K=1000+faketemp*sample(100:200,size=tstep,replace=T)
+N=50
 pop=rep(0,tstep)
 pop[1]=N
 r=environment(tstep,omega=4,delta=.1)+.2
