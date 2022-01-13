@@ -28,6 +28,6 @@ for(i in 2:tstep)
 ```
 
 ```{r visupopgrowth,fig.cap="logistic growth",out.width="50%"}
-plot(x,y,xlab="time",ylab="popsize",main="")
+    plot(1:tstep,pop,xlab="time",ylab="popsize",main="")
 ```
 
