@@ -1,6 +1,6 @@
 # Landscape and climate
 
-Second class, read data, map and explore then
+Let's Create a fake environment
 
 ```{r}
 
