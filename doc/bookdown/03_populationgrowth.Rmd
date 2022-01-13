@@ -8,9 +8,9 @@ Because people have childs who have childs...
 
 small tests
 
-```{r}
+```{r popgrowth,fig.cap="Exponential growth"}
 x=1:100
-plot(x,exp(x),ylab="time",log="x")
+plot(x,exp(x),ylab="time",log="x",main="add a main")
 ```
 
 Not sure pre/post hook problem. weird
