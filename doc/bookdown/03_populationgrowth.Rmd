@@ -27,9 +27,12 @@ for(i in 2:tstep)
     pop[i]=K[i]/(1 + (( K[i] - pop[i-1])/pop[i-1])*exp(-r[i]))
 ```
 
-```{r visupopgrowth,fig.cap="logistic growth",out.width="100%",fig.eight=4,wight.width=9}
-    plot(1:tstep,r,xlab="time",ylab="rate of growth",main="")
-    plot(1:tstep,K,xlab="time",ylab="Carrying Capacity",main="")
-    plot(1:tstep,pop,xlab="time",ylab="popsize",main="")
+```{r visupopgrowth,fig.cap="logistic growth",out.width="100%",fig.height=4,fig.width=9,fig.show="hold"}
+    par(mar=c(0,4,1,1))
+    plot(1:tstep,faketemp,xlab="time",ylab="Environment",main="",type="l")
+    plot(1:tstep,r,xlab="time",ylab="rate of growth",main="",type="l")
+    plot(1:tstep,K,xlab="time",ylab="Carrying Capacity",main="",type="l")
+    par(mar=c(4,4,1,1))
+    plot(1:tstep,pop,xlab="time",ylab="popsize",main="",type="l")
 ```
 
