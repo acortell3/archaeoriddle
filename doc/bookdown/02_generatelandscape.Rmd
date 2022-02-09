@@ -72,7 +72,7 @@ To generate a fake climate with various properties:
 
 ```{r}
 tstep=1000
-faketemp=environment(tstep,omega=3,delta=1)+1
+faketemp=environment(tstep,omega=3,delta=1.5)+1.5
 plot(faketemp,type="l",ylab="temperature change",xlab="time")   
 ```
 
