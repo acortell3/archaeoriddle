@@ -1,0 +1,87 @@
+# Record formation process
+
+If we try a bottom-up process. I should write an intro here justifying all this, but essentially this would be the scheme for the generation or archaeological waste in a site. 
+I believe this chapter should go before though. If we chose bottom-up, perhaps, these should have to be some of the first chapters? Before going into the Spatial and more complex issues?
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph record_formation {
+
+graph [layout = dot, ## Set title and layout
+       label = 'Record formation process',
+       labelloc = 't'
+       fontname = Helvetica,
+       fontsize = 30]
+
+# node definitions with substituted label text
+node [fontname = Helvetica, ## General node definition
+      style = filled,
+      color = MistyRose]
+      
+## Per node definition
+a [label = '@@1',
+   fillcolor = Orangered,
+   fixedsize = shape,
+   width = 3,
+   height = 0.8,
+   fontsize = 20]
+b [label = '@@2',
+   fillcolor = Orangered,
+   fixedsize = shape,
+   width = 3,
+   height = 0.8,
+   fontsize = 20]
+c [label = '@@3',
+   fillcolor = orange,
+   fixedsize = shape,
+   width = 3.5,
+   height = 1,
+   fontsize = 30]
+d [label = '@@4']
+e [label = '@@5']
+f [label = '@@6']
+g [label = '@@7',
+   fillcolor = Orangered,
+   fixedsize = shape,
+   width = 3,
+   height = 0.8,
+   fontsize = 20]
+h [label = '@@8']
+i [label = '@@9']
+
+## General edge definition
+edge [color = grey,
+       arrowhead = vee,
+       arrowtail = vee]
+
+## Specific edges
+a -> {c} 
+a -> {b} [dir = both, xlabel = 'limits']
+c -> {b} [dir = both, label = 'per sqm']
+d -> {a b}
+e -> {a b}
+e -> {d} [dir = both]
+f -> {a b}
+f -> {d} [dir = both]
+g -> {a e f}
+g -> {h} 
+h -> c
+i -> c
+}
+
+## Label definition
+[1]: 'Pop (group size)'
+[2]: 'Area (sqm)'
+[3]: 'Waste produced'
+[4]: 'Cave/Rockshelter/open-air'
+[5]: 'Site functionality'
+[6]: 'Mobility pattern'
+[7]: 'Economy type (hg/f)'
+[8]: 'Anthropogenic deposition rates'
+[9]: 'Other deposition rates'
+")
+
+
+```
