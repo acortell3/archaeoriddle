@@ -1,7 +1,7 @@
 
 # Record formation
 
-## 1. Introduction
+## Introduction
 This represents the formation of the archaeological record of one site. It considers many interrelated, which can be summarised in the following graph
 
 ```{r, echo = FALSE}
@@ -87,7 +87,7 @@ i -> c
 
 ```
 
-## 2. Set functions, initial conditions and caveats
+## Set functions, initial conditions and caveats
 
 These are the basic functions that we will be using
 ```{r}
@@ -159,7 +159,7 @@ If camp type = open-air, size increases as population size increases with a dens
 
 For waste production, this is computed as total waste production / sqrm
 
-## 3. Birth-death process for a single site
+## Birth-death process for a single site
 ```{r}
 Pop <- Gs_init ## Population (Age and Sex)
 p_y <- rep(NA,ts) ## Number of people per year
