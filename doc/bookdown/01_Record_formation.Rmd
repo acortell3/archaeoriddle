@@ -1,0 +1,209 @@
+
+# Record formation
+
+## 1. Introduction
+This represents the formation of the archaeological record of one site. It considers many interrelated, which can be summarised in the following graph
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph record_formation {
+
+graph [layout = dot, ## Set title and layout
+       label = 'Record formation process',
+       labelloc = 't'
+       fontname = Helvetica,
+       fontsize = 30]
+
+# node definitions with substituted label text
+node [fontname = Helvetica, ## General node definition
+      style = filled,
+      color = MistyRose]
+      
+## Per node definition
+a [label = '@@1',
+   fillcolor = Orangered,
+   fixedsize = shape,
+   width = 3,
+   height = 0.8,
+   fontsize = 20]
+b [label = '@@2',
+   fillcolor = Orangered,
+   fixedsize = shape,
+   width = 3,
+   height = 0.8,
+   fontsize = 20]
+c [label = '@@3',
+   fillcolor = orange,
+   fixedsize = shape,
+   width = 3.5,
+   height = 1,
+   fontsize = 30]
+d [label = '@@4']
+e [label = '@@5']
+f [label = '@@6']
+g [label = '@@7',
+   fillcolor = Orangered,
+   fixedsize = shape,
+   width = 3,
+   height = 0.8,
+   fontsize = 20]
+h [label = '@@8']
+i [label = '@@9']
+
+## General edge definition
+edge [color = grey,
+       arrowhead = vee,
+       arrowtail = vee]
+
+## Specific edges
+a -> {c} 
+a -> {b} [dir = both, xlabel = 'limits']
+c -> {b} [dir = both, label = 'per sqm']
+d -> {a b}
+e -> {a b}
+e -> {d} [dir = both]
+f -> {a b}
+f -> {d} [dir = both]
+g -> {a e f}
+g -> {h} 
+h -> c
+i -> c
+}
+
+## Label definition
+[1]: 'Pop (group size)'
+[2]: 'Area (sqm)'
+[3]: 'Waste produced'
+[4]: 'Cave/Rockshelter/open-air'
+[5]: 'Site functionality'
+[6]: 'Mobility pattern'
+[7]: 'Economy type (hg/f)'
+[8]: 'Anthropogenic deposition rates'
+[9]: 'Other deposition rates'
+")
+
+
+```
+
+## 2. Set functions, initial conditions and caveats
+
+These are the basic functions that we will be using
+```{r}
+## Function 1. Simulation of death process
+#' @param pd: The probability matrix for mortality by age
+death <- function(x,pd){
+  age <- as.numeric(x[1])
+  return(rbinom(1,1,prob = pd[pd$Age==age,2]))
+}
+
+## Function 2. Simluation of carrying capacity limitation
+## If the population exceeds the carrying capacity, it eliminates oversize
+## with 0.8 probability per person exceeding.
+#' @param x: Data frame or matrix. Population (number of people)
+#' @param k: Integer. Carrying capacity
+
+K_lim <- function(x,k){
+  p <- nrow(x)
+  if (p>k){
+    o <- rbinom(p-k,1,0.8)
+    o <- sum(o[o==1])
+    o[o==0] <- 1 ## Avoids problem eliminating all the df if remove == 0
+    x <- x[-sample(1:nrow(x),o,replace = FALSE),]
+  }
+  return(x)
+}
+```
+
+We must set some initial values and carrying capacities. Site economy will be implemented later
+
+```{r}
+ts <- 1000 # Time span
+Gs_init <- 20 # Initial population
+Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
+                      "Sex" = sample(c("M","F"), Gs_init, prob = c(0.5,0.5), replace = TRUE))
+
+## K is determined by the site type and economy
+
+## K <- 4-6 For rock-shelters
+## K <- 15 small cave
+## K <- 40 medium cave
+K <- 70 ## large cave
+## K <- 100 open-air (meso) depending on resources
+## K <- 200 open-air (neo)
+
+## Economy type. It can be HG or F
+#ec <- "HG"
+
+## Probability matrix for mortality
+prob_d <- data.frame("Age" = c(0:99),
+                     "P_d" = c(rep(0.13,2),
+                               rep(0.08,8),
+                               rep(0.01,25),
+                               rep(0.1,15),
+                               rep(0.15,10),
+                               rep(0.25,5),
+                               rep(0.99,35)))
+
+```
+
+Camp size depends on camp type (which can be rockshelter, cave or open-air)
+If camp type = rockshelter or cave, a maximum size must be specified
+
+We can preset values if the size of the camp is unknown
+  - For rockshelters: small (4 sqrm), medium (15 sqrm), large (30 sqrm)
+  - For caves: small (100 sqrm), medium (750 sqrm), large (1500 sqrm). More than this (or even within this). For more than this, subdivisions of the space are required.
+  
+If camp type = open-air, size increases as population size increases with a density 20 sqrm/person. Size constrains can be set also here.
+
+For waste production, this is computed as total waste production / sqrm
+
+## 3. Birth-death process for a single site
+```{r}
+Pop <- Gs_init ## Population (Age and Sex)
+p_y <- rep(NA,ts) ## Number of people per year
+camp_size <- rep(NA,ts) ## Size of camp. Depends on people and type of camp
+
+for (i in 1:ts){
+  #Are born
+  ## Female fertile population
+  W <- Pop[Pop$Sex=="F",]
+  W_fert <- W[W$Age>10 & W$Age<30,]
+  
+  ## Male fertile population
+  M <- Pop[Pop$Sex=="M",]
+  M_fert <- M[M$Age>15 & M$Age<40,]
+
+  ## Probability of having descendance per woman
+  # Penalisation in case there are too few men
+  pen <- round(nrow(M_fert)*2/nrow(W_fert),2) ## Assumes one man can have two women
+  pen[pen>1] <- 1
+  
+  ## 0.3 is drawn from ethnographic literature (each !Kung woman waits 3 years to have another son)
+  P_o <- 0.3*pen
+
+  Offspring <- sum(rbinom(nrow(W_fert),1,P_o))
+  New_pop <- data.frame("Age" = rep(0,Offspring),
+                        "Sex" = sample(c("M","F"),Offspring,prob=c(0.5,0.5),replace = TRUE))
+  Pop <- rbind(Pop,New_pop)
+  
+  ## Die
+  vec_d <- apply(Pop,1,death,prob_d)
+  Pop <- Pop[vec_d==0,]
+  
+  ## Apply carrying capacty restrictions
+  Pop <- K_lim(Pop, K)
+  
+  ## One year passes
+  Pop$Age <- Pop$Age+1
+  p_y[i] <- nrow(Pop)
+}
+
+plot(p_y, type = "l", col = "red",
+     xlab = "Year", ylab = "Population",
+     main = "Pop")
+```
+
+There are still many things to include, basically related to deposition rates, economy-related, waste generation... and I need to do a better text for this chapter. I'm on it.
+
