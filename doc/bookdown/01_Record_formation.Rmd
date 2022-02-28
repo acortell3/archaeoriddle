@@ -6,6 +6,9 @@ We have produced an Agent-Based Model, replicating the process of formation of t
 
 At this point, we are considering as our outcome variable (produced waste by $m^2$) only 14C dating samples; this is elements that can be dated with 14C techniques. Therefore, we are considering mostly consumed food, which is directly derived from number of people present in the site, but also related to other factors, as specified in the DAG. However, even in this case, not all variables affect both the outcome and their assigned mediators. This is the case, for example, for the variable *Mobility pattern*. At this point, and although we are aware that mobility can have an impact and how food is consumed within a camp (Colette Berbesque et al., 2016) we have decided, for the sake of simplicity, not to consider the effect of this variable on the final 14C outcome, although its effects are indeed considered regarding the population size of the site.
 
+In the same way, some variables are dependent on others, but this is not accounted for by the model, as it is expected that they are provided as expert information. Such is the case for most categorical variables. For example, *Economy type* affects *Site functionality*, in the sense that it is highly unlikely that a site with hunter-gatherer economy would function as a pen (since domestic animals did were not in use by Prehistoric hunter-gatherers), as much as it is unlikely that a site with a sedentary *Mobility pattern* would have a function of logistic camp. We consider that including these restrictions unnecessarily complicates the code and compromises its readability and performance and, therefore the user is prompted to define these variables, based on her/his own knowledge and expertise. In any case, once these variables have been defined, they do have an effect on the outcome, both as mediators and exposures, as it is expressed in the DAG, and, therefore, they must be carefully considered before initialising the model.
+
+
 ```{r, echo = FALSE}
 library(DiagrammeR)
 
@@ -84,6 +87,8 @@ i -> {c}
 
 ```
 
+Finally, the variable *Area* deserves its own mention. When a site is in use, this variable (the amount of land occupied by the settlers) is conditioned by many factors, such as the ones portrayed in the DAG. However, this (the total area of the site) can be recovered by the archaeologists in the field. This has been coded as the variable *Maximum area*, and it is the value that divides the total waste by the occupied $m^2$. In addition, this variable can effectively act as a modulator for carrying capacity ($K$) within constrained sites (essentially caves and rockshelters). Therefore, the model considers the variable *Area* for internal purposes (but can be retrieved if necessary). This is, to condition $K$ on the size of the site. For open-air sites, this has no effect, as the group fission points are usually not related to the total occupied area, but to other factors, such as social structure, available resources, etc. Variation in the intensity of internal spatial occupation has not been considered due to its high uncertainty.
+
 We have considered the following random variables:
 
 * **Waste produced per $m^2$ (outcome variable)**: The actual archaeological record present in each $m^2$. At this stage we are considering only 14C dates and, because it may be in the interest of the research question to know if these dates have been retrieved on domestic vs wild samples, this has been constructed as 2-column data frame, where the first column is the variable that we are interested in, that is the total number of samples produced (a discrete variable with range $[0,\propto K]$. $K$ being the population's carrying capacity), and the second column is the number of how many of those are domestic. The number of domestics is spefified on the probability being domestic, either established by the researcher or based on the economy tye. *See specifications of function* `Wp_sq`
@@ -93,7 +98,8 @@ We have considered the following random variables:
 * **Anthropogenic deposition rates**: The anthropogenic deposition rates are crucial for the formation of the archaeological record. This is a continuous variable with a range $[0,\infty]$. *The upper range must be reassessed based on literature*.
 * **Mobility pattern**: In this case, we have considered different mobility strategies, which can affect, directly or indirectly, the formation of the record. We have considered three possible strategies: "residential", "logistic" and "sedentary". Thus, a categorical variable with three possible outcomes.
 * **Site functionality**: Five different possible site uses have been considered: "habitat", "logistic", "pen", "butcher" and "funeral", giving a categorical variable with five possible outcomes.
-* **Area**: The total site of the area is entangled with many other variables, and can have an effect in the final archaeological product. For simplicity, it has been considered as a discrete variable with range $[0,5000]$, measured in $m^2$, where the upper bound can be adapted to the site, if necessary.
+* **Maximum Area**: A single integer, the maximum possible size of the site in $m^2$. This is provided as expert knowledge.
+* **Area**: The occupied area is entangled with many other variables, particularly depending on population size. It can modulate $K$ for constrained sites. For simplicity, it has been considered as a discrete variable with range $[0,MaxArea]$, measured in $m^2$. In any case, $Area \leq MaxArea$.
 * **Other deposition rates**: The same in nature as anthropogenic deposition rates, but different in its causality and effect. It is also considered as a continuous variable with range $[0,\infty]$. *The upper range must be reassessed based on literature*.
 
 ## Set functions, initial conditions and caveats
@@ -138,7 +144,7 @@ K_lim <- function(x,k){
 #' @param Adr: Vector. Adr (Anthropogenic deposition rates)
 #' @param M_p: Factor. M_p (Mobility pattern)
 #' @param S_f: Factor. S_f (site functionality)
-#' @param Ar: Vector. Ar (Area)
+#' @param Ar: Integer. Ar (Area of occupation)
 #' @param Odr: Vector. Odr (Other deposition rates)
 
 Wp_sq <- function(x,E_t,dm_r = NA,P_y,Ar){
@@ -152,12 +158,17 @@ Wp_sq <- function(x,E_t,dm_r = NA,P_y,Ar){
     } else {
       dm_r <- 1
     }
+  } else {
+    dm_r <- dm_r
   }
+  
+  try(if(dm_r > 1 | dm_r < 0) stop("Probabilities must be between 0 and 1"))
   
   ## So far, we consider only radiocarbon dates
   ## Assumed one goat per person/year. Needs reassessment
-  x <- ((P_y*4000)/5)/Ar 
-  
+  w <- ((P_y*4000)/5)
+  x <- w/Ar
+
   ## How many of these dates are domestic
   dom <- rbinom(1,size = x, prob = dm_r)
   x <- data.frame("Number of samples" = round(x), "Number of domestics" = dom)
@@ -173,17 +184,30 @@ Gs_init <- 20 # Initial population
 Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
                       "Sex" = sample(c("M","F"), Gs_init, prob = c(0.5,0.5), replace = TRUE))
 
+## Structure of random variables
+# W_p <- data.frame("Number of samples" = rep(0,ts),
+#                  "Number of domestics" = rep(0,ts)) # Waste produced
+# E_t <- factor(NA, c('hg','m','f')) # Economy type
+# P_y <- rep(NA,ts) ## Number of people per year (Population)
+# S_t <- factor(NA, c('c','rs','oa')) ## Site type
+# Adr <- rep(NA,ts) ## Anthropogenic deposition rates
+# M_p <- factor(NA, c('r','l','s')) ## Mobility pattern
+# S_f <- factor(NA, c('h','l','p','b','f')) ## Site functionality
+# Max_Ar <- c(NA) ## Maximum size of the site
+# Ar <- c(NA) ## Occupied area of the site
+# Odr <- rep(NA,ts) ## Other deposition rates
+
 ## Definition of random variables
 W_p <- data.frame("Number of samples" = rep(0,ts),
                   "Number of domestics" = rep(0,ts)) # Waste produced
-E_t <- factor(NA, c('hg','m','f')) # Economy type
+E_t <- factor('hg', c('hg','m','f')) # Hunter-gatherers
 P_y <- rep(NA,ts) ## Number of people per year (Population)
-S_t <- factor(NA, c('c','rs','oa')) ## Site type
+S_t <- factor('c', c('c','rs','oa')) ## Cave
 Adr <- rep(NA,ts) ## Anthropogenic deposition rates
-M_p <- factor(NA, c('r','l','s')) ## Mobility pattern
-S_f <- factor(NA, c('h','l','p','b','f')) ## Site functionality
-#Ar <- c(NA) ## Area of the site
-Ar <- 100
+M_p <- factor('l', c('r','l','s')) ## Logistic mobility
+S_f <- factor('h', c('h','l','p','b','f')) ## Habitat
+Max_Ar <- 100
+Ar <- rep(NA,ts)
 Odr <- rep(NA,ts) ## Other deposition rates
 
 ## K is determined by the site type and economy
@@ -194,9 +218,6 @@ Odr <- rep(NA,ts) ## Other deposition rates
 K <- 70 ## large cave
 ## K <- 100 open-air (meso) depending on resources
 ## K <- 200 open-air (neo)
-
-## Economy type. 
-E_t <- factor('hg', c('hg','m','f'))
 
 ## Probability matrix for mortality
 prob_d <- data.frame("Age" = c(0:99),
@@ -261,7 +282,7 @@ for (i in 1:ts){
   P_y[i] <- nrow(Pop)
   
   ## Waste production
-  W_p[i,] <- Wp_sq(W_p[i,1], E_t = E_t, P_y = P_y[i], Ar = Ar)
+  W_p[i,] <- Wp_sq(W_p[i,1], E_t = E_t, P_y = P_y[i], Ar = Max_Ar)
 }
 
 plot(P_y, type = "l", col = "red",
