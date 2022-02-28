@@ -4,6 +4,8 @@
 ## Introduction
 We have produced an Agent-Based Model, replicating the process of formation of the archaeological record in a specific site, considering different variables. In order to consider the possible relation between those variables, we have decided to express them as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretic directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by $m^2$).
 
+At this point, we are considering as our outcome variable (produced waste by $m^2$) only 14C dating samples; this is elements that can be dated with 14C techniques. Therefore, we are considering mostly consumed food, which is directly derived from number of people present in the site, but also related to other factors, as specified in the DAG. However, even in this case, not all variables affect both the outcome and their assigned mediators. This is the case, for example, for the variable *Mobility pattern*. At this point, and although we are aware that mobility can have an impact and how food is consumed within a camp (Colette Berbesque et al., 2016) we have decided, for the sake of simplicity, not to consider the effect of this variable on the final 14C outcome, although its effects are indeed considered regarding the population size of the site.
+
 ```{r, echo = FALSE}
 library(DiagrammeR)
 
@@ -59,7 +61,7 @@ a -> {b c h}
 b -> {c}
 d -> {a b i} 
 e -> {a b c h} 
-f -> {a b c e h} 
+f -> {a b e h} 
 g -> {a b c e f h} 
 h -> {c} 
 i -> {c} 
@@ -84,7 +86,7 @@ i -> {c}
 
 We have considered the following random variables:
 
-* **Waste produced per $m^2$ (outcome variable)**: The actual archaeological record present in each $m^2$. A discrete variable with range $[0,\propto K]$. $K$ being the population's carrying capacity.
+* **Waste produced per $m^2$ (outcome variable)**: The actual archaeological record present in each $m^2$. At this stage we are considering only 14C dates and, because it may be in the interest of the research question to know if these dates have been retrieved on domestic vs wild samples, this has been constructed as 2-column data frame, where the first column is the variable that we are interested in, that is the total number of samples produced (a discrete variable with range $[0,\propto K]$. $K$ being the population's carrying capacity), and the second column is the number of how many of those are domestic. The number of domestics is spefified on the probability being domestic, either established by the researcher or based on the economy tye. *See specifications of function* `Wp_sq`
 * **Economy type**: This variable defines whether the group inhabiting the site is hunter-gatherer or a farmer group. Thus, it is a dichotomic variable.
 * **Population**: The size of the group at each time step. Discrete variable with range $[0,\sim K]$.
 * **Site type**: This represents whether the site is a cave, a rockshelter or an open-air site. Therefore, this is a categoric variable with three possible values.
@@ -94,23 +96,12 @@ We have considered the following random variables:
 * **Area**: The total site of the area is entangled with many other variables, and can have an effect in the final archaeological product. For simplicity, it has been considered as a discrete variable with range $[0,5000]$, measured in $m^2$, where the upper bound can be adapted to the site, if necessary.
 * **Other deposition rates**: The same in nature as anthropogenic deposition rates, but different in its causality and effect. It is also considered as a continuous variable with range $[0,\infty]$. *The upper range must be reassessed based on literature*.
 
-```{r}
-# W <- [0,propK]
-# Et <- factor('hg','f')
-# Pop <- [0,K]
-# St <- factor('c','rs','oa')
-# Adr <- c()
-# Mb <- factor('r','l','s')
-# Sf <- factor('h','l','p','b','f')
-# A <- c() [0,5000]
-# Odr <- c()
-
-```
-
 ## Set functions, initial conditions and caveats
 
 These are the basic functions that we will be using
 ```{r}
+set.seed(12345)
+
 ## Function 1. Simulation of death process
 #' @param pd: The probability matrix for mortality by age
 death <- function(x,pd){
@@ -134,6 +125,44 @@ K_lim <- function(x,k){
   }
   return(x)
 }
+
+## Function 3. Waste production per square meter
+#' @param x: Vector. W_p (Waste produced)
+#' @param E_t: Factor. E_t (Economy type)
+#' @param dm_r: Probability value. If E_t = 'hg', dm_r = 0. 
+#' If E_t = 'm', dm_r = 0.5. If E_t = 'f', dm_r = 1. Default is NA.
+#' Because values for E_t = c('m','f') are unrealisitc, it is strongly advised
+#' that the researcher establishes her/his own values based on the expert knowledge 
+#' @param P_y: Vector. P_y (Number of people per year)
+#' @param S_t: Factor. S_t (Site type)
+#' @param Adr: Vector. Adr (Anthropogenic deposition rates)
+#' @param M_p: Factor. M_p (Mobility pattern)
+#' @param S_f: Factor. S_f (site functionality)
+#' @param Ar: Vector. Ar (Area)
+#' @param Odr: Vector. Odr (Other deposition rates)
+
+Wp_sq <- function(x,E_t,dm_r = NA,P_y,Ar){
+  
+  ## Sets the probability of the dates being domestic
+  if (is.na(dm_r)==TRUE){
+    if (E_t == 'hg'){
+      dm_r <- 0
+    } else if (E_t == 'm') {
+      dm_r <- 0.5
+    } else {
+      dm_r <- 1
+    }
+  }
+  
+  ## So far, we consider only radiocarbon dates
+  ## Assumed one goat per person/year. Needs reassessment
+  x <- ((P_y*4000)/5)/Ar 
+  
+  ## How many of these dates are domestic
+  dom <- rbinom(1,size = x, prob = dm_r)
+  x <- data.frame("Number of samples" = round(x), "Number of domestics" = dom)
+  return(x)
+}
 ```
 
 We must set some initial values and carrying capacities. Site economy will be implemented later
@@ -144,6 +173,19 @@ Gs_init <- 20 # Initial population
 Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
                       "Sex" = sample(c("M","F"), Gs_init, prob = c(0.5,0.5), replace = TRUE))
 
+## Definition of random variables
+W_p <- data.frame("Number of samples" = rep(0,ts),
+                  "Number of domestics" = rep(0,ts)) # Waste produced
+E_t <- factor(NA, c('hg','m','f')) # Economy type
+P_y <- rep(NA,ts) ## Number of people per year (Population)
+S_t <- factor(NA, c('c','rs','oa')) ## Site type
+Adr <- rep(NA,ts) ## Anthropogenic deposition rates
+M_p <- factor(NA, c('r','l','s')) ## Mobility pattern
+S_f <- factor(NA, c('h','l','p','b','f')) ## Site functionality
+#Ar <- c(NA) ## Area of the site
+Ar <- 100
+Odr <- rep(NA,ts) ## Other deposition rates
+
 ## K is determined by the site type and economy
 
 ## K <- 4-6 For rock-shelters
@@ -153,8 +195,8 @@ K <- 70 ## large cave
 ## K <- 100 open-air (meso) depending on resources
 ## K <- 200 open-air (neo)
 
-## Economy type. It can be HG or F
-#ec <- "HG"
+## Economy type. 
+E_t <- factor('hg', c('hg','m','f'))
 
 ## Probability matrix for mortality
 prob_d <- data.frame("Age" = c(0:99),
@@ -182,7 +224,6 @@ For waste production, this is computed as total waste production / sqrm
 ## Birth-death process for a single site
 ```{r}
 Pop <- Gs_init ## Population (Age and Sex)
-p_y <- rep(NA,ts) ## Number of people per year
 camp_size <- rep(NA,ts) ## Size of camp. Depends on people and type of camp
 
 for (i in 1:ts){
@@ -217,10 +258,13 @@ for (i in 1:ts){
   
   ## One year passes
   Pop$Age <- Pop$Age+1
-  p_y[i] <- nrow(Pop)
+  P_y[i] <- nrow(Pop)
+  
+  ## Waste production
+  W_p[i,] <- Wp_sq(W_p[i,1], E_t = E_t, P_y = P_y[i], Ar = Ar)
 }
 
-plot(p_y, type = "l", col = "red",
+plot(P_y, type = "l", col = "red",
      xlab = "Year", ylab = "Population",
      main = "Pop")
 ```
