@@ -2,7 +2,7 @@
 # Record formation
 
 ## Introduction
-We have produced an Agent-Based Model, replicating the process of formation of the archaeological record in a specific site, considering different variables. In order to consider the possible relation between the different variables, we have decided to express the as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretic directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by $m^2$).
+We have produced an Agent-Based Model, replicating the process of formation of the archaeological record in a specific site, considering different variables. In order to consider the possible relation between those variables, we have decided to express them as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretic directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by $m^2$).
 
 ```{r, echo = FALSE}
 library(DiagrammeR)
@@ -86,11 +86,11 @@ We have considered the following random variables:
 
 * **Waste produced per $m^2$ (outcome variable)**: The actual archaeological record present in each $m^2$. A discrete variable with range $[0,\propto K]$. $K$ being the population's carrying capacity.
 * **Economy type**: This variable defines whether the group inhabiting the site is hunter-gatherer or a farmer group. Thus, it is a dichotomic variable.
-* **Population**: The size of the group at each time step. Discrete variable with range $[0,K]$.
-* **Site type**: This represent whether the site is a cave, a rockshelter or an open-air site. Therefore, this is a categoric variable with three possible values.
+* **Population**: The size of the group at each time step. Discrete variable with range $[0,\sim K]$.
+* **Site type**: This represents whether the site is a cave, a rockshelter or an open-air site. Therefore, this is a categoric variable with three possible values.
 * **Anthropogenic deposition rates**: The anthropogenic deposition rates are crucial for the formation of the archaeological record. This is a continuous variable with a range $[0,\infty]$. *The upper range must be reassessed based on literature*.
 * **Mobility pattern**: In this case, we have considered different mobility strategies, which can affect, directly or indirectly, the formation of the record. We have considered five three possible strategies: "residential", "logistic" and "sedentary". Thus, a categorical variable with three possible outcomes.
-* **Site functionality**: Five different possible sites uses have been considered: "habitat", "logistic", "pen", "butcher" and "funeral", giving a categorical variable with five possible outcomes.
+* **Site functionality**: Five different possible site uses have been considered: "habitat", "logistic", "pen", "butcher" and "funeral", giving a categorical variable with five possible outcomes.
 * **Area**: The total site of the area is entangled with many other variables, and can have an effect in the final archaeological product. For simplicity, it has been considered as a discrete variable with range $[0,5000]$, measured in $m^2$, where the upper bound can be adapted to the site, if necessary.
 * **Other deposition rates**: The same in nature as anthropogenic deposition rates, but different in its causality and effect. It is also considered as a continuous variable with range $[0,\infty]$. *The upper range must be reassessed based on literature*.
 
