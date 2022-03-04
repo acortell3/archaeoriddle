@@ -200,14 +200,14 @@ However, this function also relies on two other functions: `death()` and `K_lim(
 #' @param  P_o: Probability of a woman having a son per year. Default is 0.3.
 #' @export
 
-Gpd <- function(x, W_fert_age = c(10,30), M_fer_age = c(15,40),
+Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
                 P_o = 0.3){
   
   ### Process of having offspring
   
   # Female fertile population
   W <- x[x[,2]=="F",]
-  W_fert <- W[W$Age>W_fert_age[1] & W$Age<W_fert_age[2],]
+  W_fert <- W[W$Age>W_fer_age[1] & W$Age<W_fer_age[2],]
   
   # Male fertile population
   M <- x[x[,2]=="M",]
@@ -435,7 +435,7 @@ Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
 
 ```
 
-Once this is done, we can implement the protocol one, where we compute the population during the desired time span.
+Once this is done, we can implement the protocol one, where we compute the population during the desired time span. For this first simulation, we have decided to leave all values as the default values, this meaning a medium $Ndr$, for an open-air and habitat site.
 
 ```{r}
 ## Start the loop
@@ -455,6 +455,8 @@ for (i in 1:ts){
 }
 ```
 
+Obviously, the number of potential c14 samples is correlated to the population.
+
 ```{r}
 ## Plots
 par(mfrow = c(1,2))
@@ -464,5 +466,34 @@ plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
      xlab = "Years", main = "Waste produced")
 ```
 
+In this case, we evaluate different values for the simulation, with different fertile ages for men and women, a slower fertility rate, and considering a cave with slow deposition rates, being a logistic camp with two months of total occupation per year.
 
+```{r}
+# Start the loop
 
+res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
+Pop <- Gs_init
+
+set.seed(12345)
+
+for (i in 1:ts){
+  Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,30))
+  a_w <- A_dep_r(Pop, S_f = "l", occ = 2)
+  ndp <- N_dep_r(S_t = "c", speed = "s")
+  
+  res$Pop[i] <- nrow(Pop)
+  res$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
+  Pop$Age <- Pop$Age+1
+}
+```
+
+Interestingly, comparing this second simulation to the first one, we observe that the correlation between population and waste produced is not as strong as it was before, but also that less waste is produced in general for this type of occupation, being the case that archaeological waste is actually non-existen even for periods where the site was being occupied.
+
+```{r}
+## Plots
+par(mfrow = c(1,2))
+plot(res$Pop, type = "l", col = "darkblue", ylab = "Population",
+     xlab = "Years", main = "Site population")
+plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
+     xlab = "Years", main = "Waste produced")
+```
