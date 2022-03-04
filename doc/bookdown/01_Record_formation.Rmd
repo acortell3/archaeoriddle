@@ -183,7 +183,9 @@ However, this function also relies on two other functions: `death()` and `K_lim(
 ### Population protocol
 
 ## Function 1. Generation of population dynamics
-#' @title: Gpd
+#' Returns a data.frame with two columns, where the number of rows is the number of
+#' people. The first column contains the ages and the second column contains the sex.
+#' @title Gpd
 #' @param x: Input data. A data frame or matrix with two columns and nrow = Initial
 #' population. One row per individual. The first column is the age of the individual.
 #' The second column is the sex of the individual, and must be c("F","M").
@@ -236,6 +238,11 @@ Gpd <- function(x, W_fert_age = c(10,30), M_fer_age = c(15,40),
 }
 
 ## Function 2. Simulation of death process
+#' @title death
+#' Returns a value (0,1) where 0 = person lives and 1 = person dies, based
+#' on pd (the probability matrix)
+#' Thought to use with apply
+#' @param x: An integer with the age of the person
 #' @param pd: The probability matrix for mortality by age. A matrix is provided as 
 #' default, but the user should provide another adapted to her/his population.
 #' @export
@@ -255,6 +262,7 @@ death <- function(x,pd=data.frame("Age" = c(0:99),
 ## Function 3. Simulation of carrying capacity limitation
 ## If the population exceeds the carrying capacity, it eliminates oversize
 ## with 0.8 probability per person exceeding.
+#' @title K_lim
 #' @param x: Data frame or matrix. Population (number of people)
 #' @param k: Integer. Carrying capacity. Provided by the user
 #' @export
@@ -275,12 +283,13 @@ K_lim <- function(x,k,prob = 0.8){
 
 ### Anthropogenic deposition rates ($Adr$) Adr-protocol
 
-This generates the amount of human waste produced per year. It can be used either directly from the previous Pop-protocol, only taking into account the site function (which unavoidably normalises the results) or, the most advisable, as a combination of the previous processes. It contains one function `A_dep_r()`, which includes one parameter `S_f`, defining the function of the site. If `S_f = NULL`, then the site function has no effect. Alternatively, the parameter `Pop` can be introduced manually, or retrieved from the previuos protocol. If the parameter `Pop = NULL`, population has no effect on deposition rates. If both `Pop` and `S_f` are active, they both configure the final `Adr` outcome. However, if both are `NULL`, then the function will throw an error, and the user will have to introduce manually the anthropogenic deposition rates for the computation of $W$ in subsequent processes.
+This generates the amount of human waste produced per year. It can be used either directly from the previous Pop-protocol, only taking into account the site function (which unavoidably yields a fixed rate for all the period considered) or, the most advisable, as a combination of the previous processes. It contains one function `A_dep_r()`, which includes one parameter `S_f`, defining the function of the site. If `S_f = NULL`, then the site function has no effect. Alternatively, the parameter `Pop` can be introduced manually, or retrieved from the previuous protocol. If the parameter `Pop = NULL`, population has no effect on deposition rates. If both `Pop` and `S_f` are active, they both configure the final `Adr` outcome. However, if both are `NULL`, then the function will throw an error. In that case, the user will have to introduce manually the anthropogenic deposition rates for the computation of $W$ in subsequent processes.
 
 ```{r}
 
 ## Function 4. Simulation of anthropogenic deposition rates
-
+#' Returns the total amount of waste produced in the site. An integer.
+#' @title A_dep_r
 #' @param x: Integer (user provided) or data.frame. It is the number of people
 #' inhabiting the site. If data.frame, the number of people is the number of rows. 
 #' @param S_f: String. It is the site functionality, and it modulates the effect
@@ -332,8 +341,79 @@ A_dep_r <- function(x,S_f = "p", occ = NULL){
 ```
 
 ### Natural deposition rates ($Ndr$) protocol
+Natural deposition rates usually have an effect on the archaeological waste product, where the density of $W$ is usually inversely proportional to the speed of the natural deposition rates. This protocol consists of one function `N_dep_r()` where the argument `S_t` (site type) can be enabled or disabled. If disabled, natural deposition rates are only considered through the parameter `speed`. When enabled it conditions the deposition rates on the type of site (open-air, cave or rockshelter). We are aware that there are many causes determining natural deposition rates. However, for the sake of simplicity, we have decided to include only one extra layer, the parameter `speed`, accounting for the speed of such rates, disregarding the causes which might provoke that speed.
+
+```{r}
+## Function 5. Simulation of deposition deposition rates
+#' Returns the rate at which sediment is deposited. Double.
+#' @title N_dep_r
+#' @param S_t: Three possible site types have been considered: 'open-air' ('oa'),
+#' 'cave' ('c') and rockshelter ('rs'). When enabled, this parameter modules the 
+#' effect of the speed. Default is NULL.
+#' @param speed: This is the speed at which the natural sediment deposits on the 
+#' 'site. It has three levels: 'slow' ('s'), 'medium' ('m') and 'fast' ('f'). 
+#' Default is 'm'.
+#' @export
+
+N_dep_r <- function(S_t = NULL, speed = 'm'){
+  
+  ## Set the general speed of the deposition rates
+  if (speed == 's'){
+    s <- 0.1
+  } else if (speed == 'm'){
+    s <- 0.2
+  } else if (speed == 'f'){
+    s <- 0.3
+  }
+  
+  ## Set the value for site type
+  if (S_t == 'oa'){
+    s <- s*3
+  } else if (S_t == 'rs'){
+    s <- s*2
+  }
+  return(s)
+}
+```
 
 ### Waste production protocol
-The user can establish deposition rates with a fixed number or high or low.
+This is the final step of the model. As explained above, the user can take a modular approach to the formation of the archaeological waste by enabling/disabling some or all of the previous components. In the same way, the user can decide to provide the previous components not as a simulation, but as a value, provided this can be correctly inferred. Ultimately, $W$ will be the input (theoretically, a complete archaeological record) for the simulation of the **record loss process**. Thus, if the user is confident enough that the total amount of the archaeological record can be correctly inferred, this value can be passed on to the record loss process directly, without the need of this simulation. 
+
+If `Adr == NULL`, the waste produced $w$ is inferred on the basis of the total population only and, if `Ndr == NULL`, it is equal to `A_dep_r(Pop, S_f = 'p', occ = NULL)`. `Adr` can be provided either as a value or modelled, as shown above. For simplicity, we assimilate $Pop$ to $Adr$ (regardless of whether $Adr$ has been taken into account or not). In this case, if `Ndr != NULL`, then $w$ is computed as $\frac{Adr}{10 \times Ndr}$, and the case the `Adr != NULL` and `Ndr == NULL`, then $w = Adr$. Finally, the result $W$ is computed as $\frac{w}{area}$.
+
+```{r}
+## Function 6. Waste production
+#' Returns the final product of the waste produced in a site. An integer.
+#' @title W_prod
+#' @param x: Integer (user provided) or data.frame. It is the number of people
+#' inhabiting the site. If data.frame, the number of people is the number of rows.
+#' @param Adr: An integer. Can be inserted directly or modelled.
+#' @param Ndr: A double. Can be inserted directly or modelled.
+#' @param area: An integer. This is the total area of the site.
+#' @export
+
+W_prod <- function(x,Adr = NULL,Ndr = NULL, area){
+  
+  ## Set the number of individuals
+  if (is.vector(x)==TRUE){
+    Pop <- length(x)
+  } else {
+    Pop <- nrow(x)
+  }
+  
+  if (is.null(Adr) == TRUE & is.null(Ndr) == TRUE){
+    w <- Pop*5*20
+  } else if (is.null(Adr) == TRUE & is.null(Ndr) == FALSE){
+    w <- (Pop*5*20)/(10*Ndr)
+  } else if (is.null(Adr) == FALSE & is.null(Ndr) == FALSE){
+    w <- Adr/(10*Ndr)
+  } else if (is.null(Adr) == FALSE & is.null(Ndr) == TRUE){
+    w <- Adr
+  }
+
+  w <- round(w/area)
+  return(w)
+} 
+```
 
 ## Simulation
