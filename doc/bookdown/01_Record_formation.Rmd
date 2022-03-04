@@ -497,9 +497,9 @@ Results still correlate to the population of the site (they always will as food 
 ```{r}
 ## Plots
 par(mfrow = c(1,2))
-plot(res$Pop, type = "l", col = "darkblue", ylab = "Population",
+plot(res2$Pop, type = "l", col = "darkblue", ylab = "Population",
      xlab = "Years", main = "Site population")
-plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
+plot(res2$W, type = "l", col = "darkred", ylab = "N samples per m^2",
      xlab = "Years", main = "Waste produced")
 ```
 
