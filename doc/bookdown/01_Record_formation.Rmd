@@ -228,7 +228,7 @@ Gpd <- function(x, W_fert_age = c(10,30), M_fer_age = c(15,40),
   
   ### Process of dying
   
-  vec_d <- apply(x,1,death,prob_d)
+  vec_d <- apply(x,1,death)
   x <- x[vec_d==0,]
   
   ## Apply carrying capacty restrictions
@@ -367,10 +367,12 @@ N_dep_r <- function(S_t = NULL, speed = 'm'){
   }
   
   ## Set the value for site type
-  if (S_t == 'oa'){
-    s <- s*3
-  } else if (S_t == 'rs'){
-    s <- s*2
+  if(is.null(S_t) == FALSE){
+      if (S_t == 'oa'){
+      s <- s*3
+    } else if (S_t == 'rs'){
+      s <- s*2
+    }
   }
   return(s)
 }
@@ -417,3 +419,50 @@ W_prod <- function(x,Adr = NULL,Ndr = NULL, area){
 ```
 
 ## Simulation
+Each of the functions in section 1.2 are thought to be introduced in a stochastic process. The desired result is a time series where each year has its own amount of archaeological waste, depending on the previous year, and based on the rules of the previous section.
+
+In order to start the process, we need te set the starting values.
+```{r}
+
+## Set initial values
+ts <- 1000 # Time span
+K <- 150
+area <- 1000
+Gs_init <- 100 # Initial population
+Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
+                      "Sex" = sample(c("M","F"), Gs_init, prob = c(0.5,0.5), replace = TRUE))
+
+
+```
+
+Once this is done, we can implement the protocol one, where we compute the population during the desired time span.
+
+```{r}
+## Start the loop
+res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
+Pop <- Gs_init
+
+set.seed(12345)
+
+for (i in 1:ts){
+  Pop <- Gpd(Pop)
+  a_w <- A_dep_r(Pop)
+  ndp <- N_dep_r()
+  
+  res$Pop[i] <- nrow(Pop)
+  res$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
+  Pop$Age <- Pop$Age+1
+}
+```
+
+```{r}
+## Plots
+par(mfrow = c(1,2))
+plot(res$Pop, type = "l", col = "darkblue", ylab = "Population",
+     xlab = "Years", main = "Site population")
+plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
+     xlab = "Years", main = "Waste produced")
+```
+
+
+
