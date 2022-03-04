@@ -160,10 +160,10 @@ Finally, if these are not known to the archaeologist, but she/he wants to model 
 
 This is how each variable works specifically:
 
-* **Waste produced** ($W/m^2$ or just $W$) **(outcome variable)**: Archaeological record present per $m^2$. Since we are considering C14 dates, then this is a proportion of the organic material that could be found in a site. We have considered these a discrete variable (number of potential samples) with range $[0,\propto K]$. *Defined in code as* `Wp`.
-* **Population (group size)** ($Pop$): Discrete variable with range $[0,\sim K]$. Population group size is key to determine the anthropogenic deposition rates (which in turn determine $W$) but it can also be used as a proxy to determine $W$ in case those are not accounted for since, in that case, $W \propto Pop$. Although this variable can, like the rest, be set as a constant by the user, this is unadvised, as demographic processes are rarely constant. In any case, the user does have to provide a value for the carrying capacity ($K$) as this will limit population growth. The user must infer carrying capacity (maximum possible number of people within a site) based on prior expert knowledge. *Defined in code as* `Pop`.
-* **Anthropogenic deposition rates** ($Adr$): This is a continuous variable, with range $[0,\infty]$, measured in *mm/year*. Ultimately, this should define the amount of waste produced in a site, and we have considered its possible conditioning on two other variables: (1) $Pop$ and (2) $Site function$ or $Sf$. The user can decide to condition $Adr$ on $Pop$, on $Sf$, on both or on none, by providing directly the value. *Defined in code as* `Adr`.  <font size ="0.5"> *The upper range must be reassessed based on literature* </font>.
-* **ONatural deposition rates** ($Ndr$): This is a continuous variable, with range $[0,\infty]$, measured in *mm/year*. Deposition rates from natural causes can heavily condition the formation process of the archaeological record. In turn, the type of site (whether it is an open-air site, a cave or a rockshelter) can severely affect them. As in all the other cases, the user can chose to set them, if known, to model them or to disable them. *Defined in code as* `Ndr`. <font size ="0.5"> *The upper range must be reassessed based on literature* </font>.
+* **Waste produced** ($W/m^2$ or just $W$) **(outcome variable)**: Archaeological record present per $m^2$. Since we are considering C14 dates, then this is a proportion of the organic material that could be found in a site. We have considered these a discrete variable (number of potential samples) with range $[0,\propto K]$. *Defined in code as* `W`.
+* **Population (group size)** ($Pop$): Discrete variable with range $[0,\sim K]$. Population group size is key to determine anthropogenic deposition rates (which in turn determine $W$) but it can also be used as a proxy to determine $W$ in case those are not accounted for since, in that case, $W \propto Pop$. Although this variable can, like the rest, be set as a constant by the user, this is unadvised, as demographic processes are rarely constant. In any case, the user does have to provide a value for the carrying capacity ($K$) as this will limit population growth. The user must infer carrying capacity (maximum possible number of people within a site) based on prior expert knowledge. *Defined in code as* `Pop`.
+* **Anthropogenic deposition rates** ($Adr$): This is a continuous variable, with range $[0,\infty]$, measured in *cm/year*. Ultimately, this should define the amount of waste produced in a site, and we have considered its possible conditioning on two other variables: (1) $Pop$ and (2) $Site function$ or $Sf$. The user can decide to condition $Adr$ on $Pop$, on $Sf$, on both or on none, by providing directly the value. *Defined in code as* `Adr`.  <font size ="0.5"> *The upper range must be reassessed based on literature* </font>.
+* **Natural deposition rates** ($Ndr$): This is a continuous variable, with range $[0,\infty]$, measured in *cm/year*. Deposition rates from natural causes can heavily condition the formation process of the archaeological record. In turn, the type of site (whether it is an open-air site, a cave or a rockshelter) can severely affect them. As in all the other cases, the user can chose to set them, if known, to model them or to disable them. *Defined in code as* `Ndr`. <font size ="0.5"> *The upper range must be reassessed based on literature* </font>.
 * **Site function** ($Sf$): This is a categoric variable with four categories: *residential*, *logistic*, *permanent* and *funeral*. Although the production of archaeological waste usually is strongly related to $Pop$, the function of site ($Sf$), or what was its purpose, and the activities developed in that site, can also condition $Adr$. For example, in the most obvious case, a group with the same number of people would not be producing the same amount of waste per year for a residential camp, occupied during long periods or even permanently, than for a logistic camp, occupied only during a few weeks per year. *Defined in code as* `S_f`.
 * **Site type** ($St$): Categoric variable with three categories, representing the three main types of site in Prehistory: *open-air site*, *cave* and *rockshelter*. The site belonging to one category or the other can have a strong effect on natural deposition rates ($Ndr$). Although this variable can also be disabled, in practice this forces the user to introduce a value for $Ndr$ in case it is considered for modelling. *Defined in code as* `S_t`.
 
@@ -176,7 +176,7 @@ In order to fully understand the process, first we will show the protocoles and 
 This protocol generates a stochastic demographic process with maximum population $\sim K$. It is based on three functions. The first function `Gpd()` is the core of the protocol. It receives a `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another data frame with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
 
 However, this function also relies on two other functions: `death()` and `K_lim()`.
-`death()` is the process of people dying each year. It is based on an age-structured probability matrix, where infants and old people have more probabilities of deceasing. The matrix is provided, but the user can set its own. `K_lim()` limits the population when it reaches $K$. Although $K$ is specified by default, the user should specify the appropriate value for $K$ according to the size of the site, its type, the group economy, etc. Also, the user can change the probability that exceeding people dies with parameter `prob`. Default is 0.8.
+`death()` is the process of people dying each year. It is based on an age-structured probability matrix, where infants and old people have more probabilities of deceasing. The matrix is provided, but the user can set its own. `K_lim()` limits the population when it reaches $K$. The user should specify the appropriate value for $K$ according to the size of the site, its type, the group economy, etc. Also, the user can change the probability that exceeding people dies with parameter `prob`. Default is 0.8.
 
 ```{r}
 
@@ -334,13 +334,13 @@ A_dep_r <- function(x,S_f = "p", occ = NULL){
     adr <- round((adr/12*occ)/4) ## Divides by 4 because it is considered that 
                                  ## heavy food is not brought in place
   } else if (S_f == 'f'){
-    adr <- Pop
+    adr <- Pop*17 # 17 kg of bone as an average per person
   }
   return(adr)
 }
 ```
 
-### Natural deposition rates ($Ndr$) protocol
+### Natural deposition rates ($Ndr$) Ndr-protocol
 Natural deposition rates usually have an effect on the archaeological waste product, where the density of $W$ is usually inversely proportional to the speed of the natural deposition rates. This protocol consists of one function `N_dep_r()` where the argument `S_t` (site type) can be enabled or disabled. If disabled, natural deposition rates are only considered through the parameter `speed`. When enabled it conditions the deposition rates on the type of site (open-air, cave or rockshelter). We are aware that there are many causes determining natural deposition rates. However, for the sake of simplicity, we have decided to include only one extra layer, the parameter `speed`, accounting for the speed of such rates, disregarding the causes which might provoke that speed.
 
 ```{r}
@@ -368,7 +368,7 @@ N_dep_r <- function(S_t = NULL, speed = 'm'){
   
   ## Set the value for site type
   if(is.null(S_t) == FALSE){
-      if (S_t == 'oa'){
+    if (S_t == 'oa'){
       s <- s*3
     } else if (S_t == 'rs'){
       s <- s*2
@@ -378,7 +378,7 @@ N_dep_r <- function(S_t = NULL, speed = 'm'){
 }
 ```
 
-### Waste production protocol
+### Waste production ($W$) W-protocol
 This is the final step of the model. As explained above, the user can take a modular approach to the formation of the archaeological waste by enabling/disabling some or all of the previous components. In the same way, the user can decide to provide the previous components not as a simulation, but as a value, provided this can be correctly inferred. Ultimately, $W$ will be the input (theoretically, a complete archaeological record) for the simulation of the **record loss process**. Thus, if the user is confident enough that the total amount of the archaeological record can be correctly inferred, this value can be passed on to the record loss process directly, without the need of this simulation. 
 
 If `Adr == NULL`, the waste produced $w$ is inferred on the basis of the total population only and, if `Ndr == NULL`, it is equal to `A_dep_r(Pop, S_f = 'p', occ = NULL)`. `Adr` can be provided either as a value or modelled, as shown above. For simplicity, we assimilate $Pop$ to $Adr$ (regardless of whether $Adr$ has been taken into account or not). In this case, if `Ndr != NULL`, then $w$ is computed as $\frac{Adr}{10 \times Ndr}$, and the case the `Adr != NULL` and `Ndr == NULL`, then $w = Adr$. Finally, the result $W$ is computed as $\frac{w}{area}$.
@@ -392,9 +392,11 @@ If `Adr == NULL`, the waste produced $w$ is inferred on the basis of the total p
 #' @param Adr: An integer. Can be inserted directly or modelled.
 #' @param Ndr: A double. Can be inserted directly or modelled.
 #' @param area: An integer. This is the total area of the site.
+#' @param ss: An integer. This is the sample size required for 14C dating.
+#' Default is 4, considering 4 gm of non-charred bone needed for one dating.
 #' @export
 
-W_prod <- function(x,Adr = NULL,Ndr = NULL, area){
+W_prod <- function(x,Adr = NULL,Ndr = NULL, area, ss = 4){
   
   ## Set the number of individuals
   if (is.vector(x)==TRUE){
@@ -412,6 +414,8 @@ W_prod <- function(x,Adr = NULL,Ndr = NULL, area){
   } else if (is.null(Adr) == FALSE & is.null(Ndr) == TRUE){
     w <- Adr
   }
+  
+  w <- w*(1000/ss)
 
   w <- round(w/area)
   return(w)
@@ -435,7 +439,7 @@ Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
 
 ```
 
-Once this is done, we can implement the protocol one, where we compute the population during the desired time span. For this first simulation, we have decided to leave all values as the default values, this meaning a medium $Ndr$, for an open-air and habitat site.
+Once this is done, we can implement the protocol one, where we compute the population during the desired time span. For this first simulation, we have decided to leave all values as the default values, this meaning a site with permanent occupation, without specifying the type of site and with medium natural deposition rates.
 
 ```{r}
 ## Start the loop
@@ -466,28 +470,29 @@ plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
      xlab = "Years", main = "Waste produced")
 ```
 
-In this case, we evaluate different values for the simulation, with different fertile ages for men and women, a slower fertility rate, and considering a cave with slow deposition rates, being a logistic camp with two months of total occupation per year.
+In this case, we consider the same population strcture and behaviour. However, we change the depositional processes. In this case, we consider a logistic camp with an average occupation of one month a year. This is an open-air site with fast $Ndr$.
 
 ```{r}
+## Different conditions
 # Start the loop
 
-res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
+res2 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
 Pop <- Gs_init
 
 set.seed(12345)
 
 for (i in 1:ts){
-  Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,30))
-  a_w <- A_dep_r(Pop, S_f = "l", occ = 2)
-  ndp <- N_dep_r(S_t = "c", speed = "s")
+  Pop <- Gpd(Pop)
+  a_w <- A_dep_r(Pop, S_f = "l", occ = 1)
+  ndp <- N_dep_r(S_t = "oa", speed = "f")
   
-  res$Pop[i] <- nrow(Pop)
-  res$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
+  res2$Pop[i] <- nrow(Pop)
+  res2$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
   Pop$Age <- Pop$Age+1
 }
 ```
 
-Interestingly, comparing this second simulation to the first one, we observe that the correlation between population and waste produced is not as strong as it was before, but also that less waste is produced in general for this type of occupation, being the case that archaeological waste is actually non-existen even for periods where the site was being occupied.
+Results still correlate to the population of the site (they always will as food consumed directly correlates to existent people) but we can see how, in this case, the number of potential samples is much smaller than before.
 
 ```{r}
 ## Plots
@@ -497,3 +502,80 @@ plot(res$Pop, type = "l", col = "darkblue", ylab = "Population",
 plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
      xlab = "Years", main = "Waste produced")
 ```
+
+Trying a different population structure, the correlation persists.
+
+```{r}
+## Different conditions
+# Start the loop
+
+res3 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
+Pop <- Gs_init
+
+set.seed(12345)
+
+for (i in 1:ts){
+  Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
+  a_w <- A_dep_r(Pop, S_f = "h", occ = 8)
+  ndp <- N_dep_r(S_t = "c", speed = "s")
+  
+  res3$Pop[i] <- nrow(Pop)
+  res3$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
+  Pop$Age <- Pop$Age+1
+}
+
+## Plots
+par(mfrow = c(1,2))
+plot(res3$Pop, type = "l", col = "darkblue", ylab = "Population",
+     xlab = "Years", main = "Site population")
+plot(res3$W, type = "l", col = "darkred", ylab = "N samples per m^2",
+     xlab = "Years", main = "Waste produced")
+
+```
+
+As does the effect on the site of fast $Ndr$ combined with slower $Adr$.
+
+```{r}
+## Different conditions
+# Start the loop
+
+res4 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
+Pop <- Gs_init
+
+set.seed(12345)
+
+for (i in 1:ts){
+  Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
+  a_w <- A_dep_r(Pop, S_f = "l", occ = 1)
+  ndp <- N_dep_r(S_t = "oa", speed = "f")
+  
+  res4$Pop[i] <- nrow(Pop)
+  res4$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
+  Pop$Age <- Pop$Age+1
+}
+
+## Plots
+par(mfrow = c(1,2))
+plot(res4$Pop, type = "l", col = "darkblue", ylab = "Population",
+     xlab = "Years", main = "Site population")
+plot(res4$W, type = "l", col = "darkred", ylab = "N samples per m^2",
+     xlab = "Years", main = "Waste produced")
+
+```
+
+We can observe the four simulations with the archaeological waste together.
+
+```{r}
+## Plots
+par(mfrow = c(2,2))
+plot(res$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
+     xlab = "Years", main = "High Adr low Ndr")
+plot(res2$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
+     xlab = "Years", main = "Low Adr high Ndr")
+plot(res3$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
+     xlab = "Years")
+plot(res4$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
+     xlab = "Years")
+```
+
+
