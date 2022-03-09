@@ -1,0 +1,84 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+  always_allow_html: true
+---
+
+# Record loss
+
+## Theoretical model
+Our main interest is to show and test the effect that different post-depositional process have on the archaeological record. The most obvious of these relates to the direct loss of the record, while other effect can imply other types of loss of records, but also vertical and horizontal movements which can distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) given that we are focusing on the production of 14C dates, we are more interested in vertical movements, which can obscure the construction of consistent stratigraphies. 
+
+However, we understand that this is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W$ is retrieved from the previous *record formation* model. However, this needs to be taken into account both if the user want to introduce the values for $W$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative of the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W$ which is *waste produced per* $m^2$.
+
+## Model layers
+We have considered the following two main ways in which the archaeological record can be affected by post-depositional processes. The first one affects how record is lost as a continuum, both by time-dependent taphonomic loss and by anthropic action. The second one, however, although it can also be applied on a *per year* basis, rather points to the way how archaeologists perceive their site, stratigraphy and layers, and how those affect each other.
+
+### Time dependent record loss
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss* ($tdtl$) and the second one is *anthropic action* ($aa$). The first one is the only component that cannot be eliminated from this model. These two variables can be applied together (advised), separately or none at all. 
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph record_formation {
+
+graph [layout = dot, ## Set title and layout
+       label = 'Record loss process',
+       labelloc = 't'
+       fontname = Helvetica,
+       fontsize = 30]
+
+# node definitions with substituted label text
+node [fontname = Helvetica, ## General node definition
+      style = filled,
+      color = MistyRose]
+      
+## Per node definition
+a [label = '@@1',
+   fillcolor = Orangered]
+b [label = '@@2',
+   fillcolor = Orangered]
+c [label = '@@3',
+   fillcolor = orange,
+   fixedsize = shape,
+   width = 6.5,
+   height = 1,
+   fontsize = 30]
+
+## General edge definition
+edge [color = grey,
+       arrowhead = vee,
+       arrowtail = vee]
+
+## Specific edges
+a -> {c}
+b -> {c}
+}
+
+## Label definition
+[1]: 'Time-dependent taphonomic loss'
+[2]: 'Anthropic action'
+[3]: 'Remaining archaeological waste'
+
+")
+```
+
+These variables are modelled as follows:
+
+* **Time-dependent taphonomic loss** ($tdtf$): This is a continuous variable. It represents the amount of loss record for each time $t$. It follows Surovell's (2007, 2009) works assessing the loss of archaeological record through time. Because this measure is intended as comprehensive, there is now need to condition the time-dependent record loss in different sub-processes which would add unnecessary complexity and uncertainty. Thus, this can be conceived as an overall record loss, and it is modelled through an adaptation of Surovell's proposal 
+
+ $$n_t=\frac{a(b+t)^c}{a(b+t_1)^c} \times W_t$$
+ 
+Where $a$, $b$ and $c$ are the constants proposed by Surovell, based on taphonomic regression, $t$ is the time step and $W$ is the original waste.
+
+* **Anthropic action** ($aa$): However, Surovell's proposal is thought to measure the loss of record from the moment of abandonment of the site, and it does not take into account the possible effect of human continued daily activities (such as trampling, cleaning, etc.) for the case of sites with frequent reoccupation or long occupational time spans. In this regard, we apply the above method for each year during the occupational time span, to which we add the possible effect of $aa$, which is modelled as 
+
+$$W_t = W_t - (W_t \times h_t \times s_t)$$
+Where $h$ is the strength of anthropic effect, which can be high ($0.005$), medium ($0.003$) or low ($0.001$) and $s$ accounts for sedimentation rates, considering those the time that it takes for the record to be buried, point from which this variable has no effect. $s$ can be fast, medium or slow, being $10$, $30$ and $80$ years respectively.
+
+### Post-depositional mixture
+
+
+
