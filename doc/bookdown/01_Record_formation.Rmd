@@ -175,7 +175,7 @@ This is how each variable works specifically:
 
 ## Implementation
 
-In order to fully understand the process, first we will show the protocoles and functions that we use to generate each variable.
+In order to fully understand the process, first we will show the protocols and functions that we use to generate each variable.
 
 ### Population ($Pop$) Pop-protocol
 
@@ -435,6 +435,7 @@ In order to start the process, we need te set the starting values.
 ```{r}
 
 ## Set initial values
+set.seed(1234)
 ts <- 1000 # Time span
 K <- 150
 area <- 1000
@@ -451,8 +452,6 @@ Once this is done, we can implement the protocol one, where we compute the popul
 ## Start the loop
 res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
 Pop <- Gs_init
-
-set.seed(12345)
 
 for (i in 1:ts){
   Pop <- Gpd(Pop)
@@ -485,8 +484,6 @@ In this case, we consider the same population strcture and behaviour. However, w
 res2 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
 Pop <- Gs_init
 
-set.seed(12345)
-
 for (i in 1:ts){
   Pop <- Gpd(Pop)
   a_w <- A_dep_r(Pop, S_f = "l", occ = 1)
@@ -518,8 +515,6 @@ Trying a different population structure, the correlation persists.
 res3 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
 Pop <- Gs_init
 
-set.seed(12345)
-
 for (i in 1:ts){
   Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
   a_w <- A_dep_r(Pop, S_f = "h", occ = 8)
@@ -546,9 +541,6 @@ As does the effect on the site of fast $Ndr$ combined with slower $Adr$.
 # Start the loop
 
 res4 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
-Pop <- Gs_init
-
-set.seed(12345)
 
 for (i in 1:ts){
   Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
