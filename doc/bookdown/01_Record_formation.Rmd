@@ -365,12 +365,13 @@ N_dep_r <- function(S_t = NULL, speed = 'm'){
   
   ## Set the general speed of the deposition rates
   if (speed == 's'){
-    s <- 0.1
+    s <- 0.05
   } else if (speed == 'm'){
-    s <- 0.2
+    s <- 0.1
   } else if (speed == 'f'){
-    s <- 0.3
+    s <- 0.15
   }
+  
   
   ## Set the value for site type
   if(is.null(S_t) == FALSE){
@@ -432,7 +433,7 @@ W_prod <- function(x,Adr = NULL,Ndr = NULL, area, ss = 4){
 Each of the functions in section 1.2 are thought to be introduced in a stochastic process. The desired result is a time series where each year has its own amount of archaeological waste, depending on the previous year, and based on the rules of the previous section.
 
 In order to start the process, we need te set the starting values.
-```{r}
+```{r, cache = FALSE}
 
 ## Set initial values
 set.seed(1234)
@@ -541,6 +542,7 @@ As does the effect on the site of fast $Ndr$ combined with slower $Adr$.
 # Start the loop
 
 res4 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
+Pop <- Gs_init
 
 for (i in 1:ts){
   Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
