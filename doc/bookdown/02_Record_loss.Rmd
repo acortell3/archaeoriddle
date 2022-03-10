@@ -80,6 +80,108 @@ $$W_t = W_t - (W_t \times h_t \times s_t)$$
 Where $h$ is the strength of anthropic effect, which can be high ($0.005$), medium ($0.003$) or low ($0.001$) and $s$ accounts for sedimentation rates, considering those the time that it takes for the record to be buried, point from which this variable has no effect. $s$ can be fast, medium or slow, being $10$, $30$ and $80$ years respectively.
 
 #### Post-depositional mixture
+This model layer accounts for vertical movement within the archaeological record. In the previous layer, the loss of record has already been accounted for according to Surovell's proposition and an adition of the possible effect of everyday activity in subsequent years of occupation of the site. However, for the remaining record, there is still a wide range of processes that can affect vertical deposition. In turn, vertical post-depositional movement can be one of the main causes confounding archaeological interpretation, as it can result in layers representing chronological palimpsests which, in extreme cases, can be almost impossible to disentangle. 
+
+Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$. However, for computational efficiency, it is probably advisable to subdivide and group that chronological span in smaller chunks, representing the layers of the site. We have considered the following effects:
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph record_formation {
+
+graph [layout = dot, ## Set title and layout
+       label = 'Record formation process',
+       labelloc = 't'
+       fontname = Helvetica,
+       fontsize = 30]
+
+# node definitions with substituted label text
+node [fontname = Helvetica, ## General node definition
+      style = filled,
+      color = MistyRose]
+      
+## Per node definition
+a [label = '@@1',
+   fillcolor = orange,
+   fixedsize = shape,
+   width = 4.5,
+   height = 1,
+   fontsize = 30]
+b [label = '@@2',
+   fillcolor = grey]
+c [label = '@@3',
+   fillcolor = Orangered]
+d [label = '@@4',
+   fillcolor = grey]
+e [label = '@@5',
+   fillcolor = grey]
+f [label = '@@6',
+   fillcolor = Orangered]
+g [label = '@@7']
+h [label = '@@8']
+i [label = '@@9',
+   fillcolor = Orangered]
+j [label = '@@10',
+   fillcolor = Orangered]
+l [label = '@@11',
+   fillcolor = grey]
+
+## General edge definition
+edge [color = grey,
+       arrowhead = vee,
+       arrowtail = vee]
+
+## Specific edges
+b -> {a}
+c -> {a}
+d -> {a}
+e -> {a}
+f -> {a}
+g -> {b, c}
+h -> {b, c, d, e, f, i, j}
+i -> {a}
+j -> {a}
+l -> {a}
+
+}
+
+## Label definition
+[1]: 'W'
+[2]: 'Aoelic erosion'
+[3]: 'Hydric activity'
+[4]: 'Pedogeny'
+[5]: 'Biogeny'
+[6]: 'Posterior Anthropic action'
+[7]: 'Site type'
+[8]: 'Soil type'
+[9]: 'Animal action'
+[10]: 'General pedoturbation'
+[11]: 'Intervention' #(as in time-series intervention). A disruptive phenomenon, like a rockfall
+
+
+")
+```
+
+Where light pink nodes are indirect effects on mediators, orange nodes are the effects considered and grey nodes are effects that have been acknowledge, but not incorporated for different reasons. The following effects, or variables, have been considered:
+
+* **Site type** (*St*): This is a discrete variable with three possible categories (*cave*, *rockshelter* and *open-air*), and it affects mainly hydric processes as, in terms of vertical movements, these can affect caves particularly.
+* **Soil type** (*Sot*): This is a discrete variable with four possible categories (*gravel*, *sand*, *silt* and *clay*). Each category is defined by the thickness of its grain (from the > 2mm of gravels to the almost invisible clay) and this thickness can condition the effect of vertical movements in general.
+* **Hydric activity** (*Ha*): Categorical variable with three values, indicating the intensity of the process.
+* **General pedoturbation** (*Gp*): In order to simplify the model, this variable includes general pedoturbation processes. It is a categorical variable with three values, indicating the intensity of the process.
+* **Posterior anthropic action** (*Paa*): Unlike the previously seen variable $Anthropic action$ or $aa$, this variable does not account for daily occupational activities, such as trampling or cleaning. This variable accounts for aggressive human action against the archaeological sequence, which can affect one or many layers of the site. Some examples for this variables could be Neolithic pits or extraction of manure common in modern and contemporary caves used as pens. Of course, this also includes any type of contemporary mechanical and/or agricultural action, such as the use of diggers or plough. This is a categorical variable with three values, indicating the intensity of the process.
+* **Animal action** (*Ana*): Animals frequently excavate dens both in cave and open-air settlements, and these burrows can have an effect on sedimentary vertical organisation. This is a categorical variable with three values, indicating the intensity of the process.
+
+The following variables have been acknowledged. However, in an attempt to keep the model manageable and meaningful, we have decided not to include them for the following specific reasons.
+* **Aeolic erosion**: Although aeolic erosion can have a certain effect mainly on horizontal post-depositional effects, its effect on vertical effects can usually be neglected, except for extreme cases.
+* **Pedogeny**: Pedogeny is the process of soil formation. There are many factors involved in the process, including chemical and organic components. However, the process itself does not necessarily affect the record vertically. For simplication, the possible effects of this process have been considered in the general variable $Gp$.
+* **Biogeny**: Biogeny contributes to pedogenic effect by specifically creating soils. Nevertheless, because of the same reasons above, it has not included as a specific variable, but it has been encapsulated within the general $Gp$.
+* **Intervention**: Intervention is understood as extreme events that can change the physiognomy of a site. These can include extreme floods, earthquakes provoking rock collapses and other phenomena of the sort. These phenomena have very different effects on the record each, which makes it virtually impossible to propose a one-way-fits-all general model, applicable across many sites. Therefore, it is advised that the user considers these phenomenon individually. For example, for a rock collapse, which frequently seals the archaeological record, developing two models, prior and posterior to that collapse.
+
+## Implementation
+
+
+
 
 
 
