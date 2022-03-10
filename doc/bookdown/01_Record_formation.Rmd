@@ -449,7 +449,7 @@ Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
 
 Once this is done, we can implement the protocol one, where we compute the population during the desired time span. For this first simulation, we have decided to leave all values as the default values, this meaning a site with permanent occupation, without specifying the type of site and with medium natural deposition rates.
 
-```{r}
+```{r, cache = FALSE}
 ## Start the loop
 res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
 Pop <- Gs_init
@@ -467,7 +467,7 @@ for (i in 1:ts){
 
 Obviously, the number of potential c14 samples is correlated to the population.
 
-```{r}
+```{r, cache = FALSE}
 ## Plots
 par(mfrow = c(1,2))
 plot(res$Pop, type = "l", col = "darkblue", ylab = "Population",
@@ -478,7 +478,7 @@ plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
 
 In this case, we consider the same population strcture and behaviour. However, we change the depositional processes. In this case, we consider a logistic camp with an average occupation of one month a year. This is an open-air site with fast $Ndr$.
 
-```{r}
+```{r, cache = FALSE}
 ## Different conditions
 # Start the loop
 
@@ -498,7 +498,7 @@ for (i in 1:ts){
 
 Results still correlate to the population of the site (they always will as food consumed directly correlates to existent people) but we can see how, in this case, the number of potential samples is much smaller than before.
 
-```{r}
+```{r, cache = FALSE}
 ## Plots
 par(mfrow = c(1,2))
 plot(res2$Pop, type = "l", col = "darkblue", ylab = "Population",
@@ -509,7 +509,7 @@ plot(res2$W, type = "l", col = "darkred", ylab = "N samples per m^2",
 
 Trying a different population structure, the correlation persists.
 
-```{r}
+```{r, cache = FALSE}
 ## Different conditions
 # Start the loop
 
@@ -537,7 +537,7 @@ plot(res3$W, type = "l", col = "darkred", ylab = "N samples per m^2",
 
 As does the effect on the site of fast $Ndr$ combined with slower $Adr$.
 
-```{r}
+```{r, cache = FALSE}
 ## Different conditions
 # Start the loop
 
@@ -565,7 +565,7 @@ plot(res4$W, type = "l", col = "darkred", ylab = "N samples per m^2",
 
 We can observe the four simulations with the archaeological waste together.
 
-```{r}
+```{r, cache = FALSE}
 ## Plots
 par(mfrow = c(2,2))
 plot(res$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
