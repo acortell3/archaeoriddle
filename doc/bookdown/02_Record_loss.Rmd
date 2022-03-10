@@ -85,8 +85,6 @@ This model layer accounts for vertical movement within the archaeological record
 Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$. However, for computational efficiency, it is probably advisable to subdivide and group that chronological span in smaller chunks, representing the layers of the site. We have considered the following effects:
 
 ```{r, echo = FALSE}
-library(DiagrammeR)
-
 grViz("
 digraph record_formation {
 
@@ -157,9 +155,7 @@ l -> {a}
 [8]: 'Soil type'
 [9]: 'Animal action'
 [10]: 'General pedoturbation'
-[11]: 'Intervention' #(as in time-series intervention). A disruptive phenomenon, like a rockfall
-
-
+[11]: 'Intervention' 
 ")
 ```
 
@@ -172,16 +168,11 @@ Where light pink nodes are indirect effects on mediators, orange nodes are the e
 * **Posterior anthropic action** (*Paa*): Unlike the previously seen variable $Anthropic action$ or $aa$, this variable does not account for daily occupational activities, such as trampling or cleaning. This variable accounts for aggressive human action against the archaeological sequence, which can affect one or many layers of the site. Some examples for this variables could be Neolithic pits or extraction of manure common in modern and contemporary caves used as pens. Of course, this also includes any type of contemporary mechanical and/or agricultural action, such as the use of diggers or plough. This is a categorical variable with three values, indicating the intensity of the process.
 * **Animal action** (*Ana*): Animals frequently excavate dens both in cave and open-air settlements, and these burrows can have an effect on sedimentary vertical organisation. This is a categorical variable with three values, indicating the intensity of the process.
 
-The following variables have been acknowledged. However, in an attempt to keep the model manageable and meaningful, we have decided not to include them for the following specific reasons.
+The following variables have been acknowledged. However, in an attempt to keep the model manageable and meaningful, we have decided not to include them for the following specific reasons:
+
 * **Aeolic erosion**: Although aeolic erosion can have a certain effect mainly on horizontal post-depositional effects, its effect on vertical effects can usually be neglected, except for extreme cases.
 * **Pedogeny**: Pedogeny is the process of soil formation. There are many factors involved in the process, including chemical and organic components. However, the process itself does not necessarily affect the record vertically. For simplication, the possible effects of this process have been considered in the general variable $Gp$.
 * **Biogeny**: Biogeny contributes to pedogenic effect by specifically creating soils. Nevertheless, because of the same reasons above, it has not included as a specific variable, but it has been encapsulated within the general $Gp$.
 * **Intervention**: Intervention is understood as extreme events that can change the physiognomy of a site. These can include extreme floods, earthquakes provoking rock collapses and other phenomena of the sort. These phenomena have very different effects on the record each, which makes it virtually impossible to propose a one-way-fits-all general model, applicable across many sites. Therefore, it is advised that the user considers these phenomenon individually. For example, for a rock collapse, which frequently seals the archaeological record, developing two models, prior and posterior to that collapse.
 
 ## Implementation
-
-
-
-
-
-
