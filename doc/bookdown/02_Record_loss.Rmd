@@ -176,3 +176,11 @@ The following variables have been acknowledged. However, in an attempt to keep t
 * **Intervention**: Intervention is understood as extreme events that can change the physiognomy of a site. These can include extreme floods, earthquakes provoking rock collapses and other phenomena of the sort. These phenomena have very different effects on the record each, which makes it virtually impossible to propose a one-way-fits-all general model, applicable across many sites. Therefore, it is advised that the user considers these phenomenon individually. For example, for a rock collapse, which frequently seals the archaeological record, developing two models, prior and posterior to that collapse.
 
 ## Implementation
+This model is constituted of two layers. A first layer implements the loss of the record, while the second layer accounts for the processes which may affect its vertical displacement, resulting chronological palimpsests. In order to understand the process, first we show the protocols and functions that we use to generate each variable.
+
+### Time-dependent record loss
+As explained above, this is constituted essentially by two functions, one accounting for Surovell's equation for taphonomic loss, applied to each year of occupation, and the other adding the effect of human daily activities over previous years of occupation. 
+
+### Post-depositional mixture
+
+## Simulation
