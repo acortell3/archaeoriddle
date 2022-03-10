@@ -19,7 +19,7 @@ We have considered the following two main ways in which the archaeological recor
 #### Time dependent record loss
 The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss* ($tdtl$) and the second one is *anthropic action* ($aa$). The first one is the only component that cannot be eliminated from this model. These two variables can be applied together (advised), separately or none at all. 
 
-```{r, echo = FALSE}
+```{r, echo = FALSE,cache=FALSE}
 library(DiagrammeR)
 
 grViz("
