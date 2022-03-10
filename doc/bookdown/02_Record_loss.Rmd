@@ -84,7 +84,7 @@ This model layer accounts for vertical movement within the archaeological record
 
 Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$. However, for computational efficiency, it is probably advisable to subdivide and group that chronological span in smaller chunks, representing the layers of the site. We have considered the following effects:
 
-```{r, echo = FALSE}
+```{r, echo = FALSE,cache=F}
 grViz("
 digraph record_formation {
 
