@@ -9,15 +9,15 @@ output:
 
 ## Theoretical model
 ### General purpose
-Our main interest is to show and test the effect that different post-depositional process have on the archaeological record. The most obvious of these relates to the direct loss of the record, while other effect can imply other types of loss of records, but also vertical and horizontal movements which can distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) given that we are focusing on the production of 14C dates, we are more interested in vertical movements, which can obscure the construction of consistent stratigraphies. 
+Our main interest is to show and test the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
 
-However, we understand that this is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W$ is retrieved from the previous *record formation* model. However, this needs to be taken into account both if the user wants to introduce the values for $W$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative of the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W$ which is *waste produced per* $m^2$.
+However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally (also vertically). This *record loss* model assumes and normalises this when $W$ is retrieved from the previous *record formation* model. However, this needs to be taken into account both if the user wants to introduce the values for $W$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W$ which is *waste produced per* $m^2$.
 
 ### Model layers
-We have considered the following two main ways in which the archaeological record can be affected by post-depositional processes. The first one affects how record is lost as a continuum, both by time-dependent taphonomic loss and by anthropic action. The second one, however, although it can also be applied on a *per year* basis, rather points to the way how archaeologists perceive their site, stratigraphy and layers, and how those affect each other.
+We have considered the following two main ways in which the archaeological record can be affected by post-depositional processes. The first one refers to the loss of that record and the second one takes into account the vertical displacements of the remaining record.
 
-#### Time dependent record loss
-The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss* ($tdtl$) and the second one is *anthropic action* ($aa$). The first one is the only component that cannot be eliminated from this model. These two variables can be applied together (advised), separately or none at all. 
+#### Loss of the record
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss* ($tdtl$) and the second one is *anthropic action* ($aa$). These two variables can be applied together (advised), separately or none at all. 
 
 ```{r, echo = FALSE,cache=FALSE}
 library(DiagrammeR)
@@ -68,7 +68,7 @@ b -> {c}
 
 These variables are modelled as follows:
 
-* **Time-dependent taphonomic loss** ($tdtf$): This is a continuous variable. It represents the amount of loss record for each time $t$. It follows Surovell's (2007, 2009) works assessing the loss of archaeological record through time. Because this measure is intended as comprehensive, there is now need to condition the time-dependent record loss in different sub-processes which would add unnecessary complexity and uncertainty. Thus, this can be conceived as an overall record loss, and it is modelled through an adaptation of Surovell's proposal 
+* **Time-dependent taphonomic loss** ($tdtf$): This is a continuous variable. It represents the amount of loss record for each time $t$. It follows Surovell's (2007, 2009) works assessing the loss of archaeological record through time. Because this measure is intended as comprehensive, there is no need to condition the time-dependent record loss in different sub-processes which would add unnecessary complexity and uncertainty. Thus, this can be conceived as an overall record loss, and it is modelled through an adaptation of Surovell's proposal 
 
  $$n_t=\frac{a(b+t)^c}{a(b+t_1)^c} \times W_t$$
  
@@ -76,22 +76,20 @@ Where $a$, $b$ and $c$ are the constants proposed by Surovell, based on taphonom
 
 * **Anthropic action** ($aa$): However, Surovell's proposal is thought to measure the loss of record from the moment of abandonment of the site, and it does not take into account the possible effect of human continued daily activities (such as trampling, cleaning, etc.) for the case of sites with frequent reoccupation or long occupational time spans. In this regard, we apply the above method for each year during the occupational time span, to which we add the possible effect of $aa$, which is modelled as 
 
-$$W_t = W_t - (W_t \times h_t \times s_t)$$
-Where $h$ is the strength of anthropic effect, which can be high ($0.005$), medium ($0.003$) or low ($0.001$) and $s$ accounts for sedimentation rates, considering those the time that it takes for the record to be buried, point from which this variable has no effect. $s$ can be fast, medium or slow, being $10$, $30$ and $80$ years respectively.
+$$W_{t+1} = W_t - (W_t \times h_t \times s_t)$$
+Where $h$ is the strength of the anthropic effect and $s$ accounts for sedimentation rates. In this regard, and conditioning on $s$ it is considered that once an object is completely buried a certain depth (depending on the soil), $aa$ has no further effect on it.
 
-#### Post-depositional mixture
-This model layer accounts for vertical movement within the archaeological record. In the previous layer, the loss of record has already been accounted for according to Surovell's proposition and an adition of the possible effect of everyday activity in subsequent years of occupation of the site. However, for the remaining record, there is still a wide range of processes that can affect vertical deposition. In turn, vertical post-depositional movement can be one of the main causes confounding archaeological interpretation, as it can result in layers representing chronological palimpsests which, in extreme cases, can be almost impossible to disentangle. 
+#### Vertical displacement
+This model layer accounts for vertical movement within the archaeological record. In the previous layer, the loss of record has already been accounted for according to Surovell's proposition and an adition of the possible effect of everyday activity in subsequent years of occupation of the site. For the remaining record, there is still a wide range of processes that can affect vertical deposition. In turn, vertical post-depositional movement can be one of the main causes confounding archaeological interpretation, and result in complicated chronological palimpsests. 
 
-Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$. However, for computational efficiency, it is probably advisable to subdivide and group that chronological span in smaller chunks, representing the layers of the site. We have considered the following effects:
+Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$. However, for computational efficiency, it is probably advisable to subdivide and group that chronological span in smaller chunks, representing the layers of the site. We have considered two broad categories, denominated as *low energy processes* and *high energy processes*, both of which are conditioned by the soil types of the site.
 
-```{r, echo = FALSE,cache=F}
-library(DiagrammeR)
-
+```{r, echo = FALSE,cache=FALSE}
 grViz("
 digraph record_formation {
 
 graph [layout = dot, ## Set title and layout
-       label = 'Record formation process',
+       label = 'Record loss process',
        labelloc = 't'
        fontname = Helvetica,
        fontsize = 30]
@@ -102,30 +100,14 @@ node [fontname = Helvetica, ## General node definition
       color = MistyRose]
       
 ## Per node definition
-a [label = '@@1',
-   fillcolor = orange,
-   fixedsize = shape,
-   width = 4.5,
-   height = 1,
-   fontsize = 30]
+a [label = '@@1']
 b [label = '@@2',
-   fillcolor = grey]
+   fillcolor = Orangered]
 c [label = '@@3',
    fillcolor = Orangered]
 d [label = '@@4',
-   fillcolor = grey]
-e [label = '@@5',
-   fillcolor = grey]
-f [label = '@@6',
-   fillcolor = Orangered]
-g [label = '@@7']
-h [label = '@@8']
-i [label = '@@9',
-   fillcolor = Orangered]
-j [label = '@@10',
-   fillcolor = Orangered]
-l [label = '@@11',
-   fillcolor = grey]
+   fillcolor = orange]
+
 
 ## General edge definition
 edge [color = grey,
@@ -133,56 +115,348 @@ edge [color = grey,
        arrowtail = vee]
 
 ## Specific edges
-b -> {a}
-c -> {a}
-d -> {a}
-e -> {a}
-f -> {a}
-g -> {b, c}
-h -> {b, c, d, e, f, i, j}
-i -> {a}
-j -> {a}
-l -> {a}
+a -> {b,c}
+b -> {d}
+c -> {d}
 
 }
 
 ## Label definition
-[1]: 'W'
-[2]: 'Aoelic erosion'
-[3]: 'Hydric activity'
-[4]: 'Pedogeny'
-[5]: 'Biogeny'
-[6]: 'Posterior Anthropic action'
-[7]: 'Site type'
-[8]: 'Soil type'
-[9]: 'Animal action'
-[10]: 'General pedoturbation'
-[11]: 'Intervention' 
+[1]: 'Soil type'
+[2]: 'Low energy process'
+[3]: 'High energy proceess'
+[4]: 'Waste'
 ")
 ```
 
-Where light pink nodes are indirect effects on mediators, orange nodes are the effects considered and grey nodes are effects that have been acknowledge, but not incorporated for different reasons. The following effects, or variables, have been considered:
+We are aware that there are multiple causes affecting vertical displacements in archaeological sites, such as water activity, crioturbation, animal action, geochemical processes, geological processes, etc. However, modelling each of this independently, and due to the cumulative uncertainty for the quantitification of each parameter, would probably result in a model which would be (1) overcomplicated and (2) risking being completely uninformative due to the randomness if intertwined stochastic processes.
 
-* **Site type** (*St*): This is a discrete variable with three possible categories (*cave*, *rockshelter* and *open-air*), and it affects mainly hydric processes as, in terms of vertical movements, these can affect caves particularly.
-* **Soil type** (*Sot*): This is a discrete variable with four possible categories (*gravel*, *sand*, *silt* and *clay*). Each category is defined by the thickness of its grain (from the > 2mm of gravels to the almost invisible clay) and this thickness can condition the effect of vertical movements in general.
-* **Hydric activity** (*Ha*): Categorical variable with three values, indicating the intensity of the process.
-* **General pedoturbation** (*Gp*): In order to simplify the model, this variable includes general pedoturbation processes. It is a categorical variable with three values, indicating the intensity of the process.
-* **Posterior anthropic action** (*Paa*): Unlike the previously seen variable $Anthropic action$ or $aa$, this variable does not account for daily occupational activities, such as trampling or cleaning. This variable accounts for aggressive human action against the archaeological sequence, which can affect one or many layers of the site. Some examples for this variables could be Neolithic pits or extraction of manure common in modern and contemporary caves used as pens. Of course, this also includes any type of contemporary mechanical and/or agricultural action, such as the use of diggers or plough. This is a categorical variable with three values, indicating the intensity of the process.
-* **Animal action** (*Ana*): Animals frequently excavate dens both in cave and open-air settlements, and these burrows can have an effect on sedimentary vertical organisation. This is a categorical variable with three values, indicating the intensity of the process.
+Therefore, we have decided to divide the processes in two broad categories:
 
-The following variables have been acknowledged. However, in an attempt to keep the model manageable and meaningful, we have decided not to include them for the following specific reasons:
-
-* **Aeolic erosion**: Although aeolic erosion can have a certain effect mainly on horizontal post-depositional effects, its effect on vertical effects can usually be neglected, except for extreme cases.
-* **Pedogeny**: Pedogeny is the process of soil formation. There are many factors involved in the process, including chemical and organic components. However, the process itself does not necessarily affect the record vertically. For simplication, the possible effects of this process have been considered in the general variable $Gp$.
-* **Biogeny**: Biogeny contributes to pedogenic effect by specifically creating soils. Nevertheless, because of the same reasons above, it has not included as a specific variable, but it has been encapsulated within the general $Gp$.
-* **Intervention**: Intervention is understood as extreme events that can change the physiognomy of a site. These can include extreme floods, earthquakes provoking rock collapses and other phenomena of the sort. These phenomena have very different effects on the record each, which makes it virtually impossible to propose a one-way-fits-all general model, applicable across many sites. Therefore, it is advised that the user considers these phenomenon individually. For example, for a rock collapse, which frequently seals the archaeological record, developing two models, prior and posterior to that collapse.
+* **Low energy processes** (*Lep*): Running water and blablabla. I need to define how to do this.
+* **High energy processes** (*Hep*): Strong action, such as direct agression (Neolithic pits or manuver removal). I need to define how to do this.
+* **Soil type** (*Sot*): This is a discrete variable with four possible categories (*gravel*, *sand*, *silt* and *clay*). Each category is defined by the thickness of its grain (from the > 2mm of gravels to the almost invisible clay) and this thickness can condition the effect of vertical movements in general. 
 
 ## Implementation
-This model is constituted of two layers. A first layer implements the loss of the record, while the second layer accounts for the processes which may affect its vertical displacement, resulting chronological palimpsests. In order to understand the process, first we show the protocols and functions that we use to generate each variable.
+```{r, echo = FALSE}
+## To have the object res
+
+Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
+                P_o = 0.3){
+  
+  ### Process of having offspring
+  
+  # Female fertile population
+  W <- x[x[,2]=="F",]
+  W_fert <- W[W$Age>W_fer_age[1] & W$Age<W_fer_age[2],]
+  
+  # Male fertile population
+  M <- x[x[,2]=="M",]
+  M_fert <- M[M$Age>M_fer_age[1] & M$Age<M_fer_age[2],]
+  
+  ## Probability of having descendance per woman
+  # Penalisation in case there are too few men
+  pen <- round(nrow(M_fert)*2/nrow(W_fert),2) ## Assumes one man can have two women
+  pen[pen>1] <- 1 ## The men penalisation can never multiply the birth rate per woman
+  
+  ## Probability of a woman having a son per year
+  P_o <- P_o*pen
+  
+  Offspring <- sum(rbinom(nrow(W_fert),1,P_o))
+  New_pop <- data.frame("Age" = rep(0,Offspring),                        
+                        "Sex" = sample(c("M","F"),Offspring,prob=c(0.5,0.5),replace = TRUE))
+  x <- rbind(x,New_pop)
+  
+  ### Process of dying
+  
+  vec_d <- apply(x,1,death)
+  x <- x[vec_d==0,]
+  
+  ## Apply carrying capacty restrictions
+  x <- K_lim(x, K)
+  
+  return(x)
+}
+
+death <- function(x,pd=data.frame("Age" = c(0:99),
+                                  "P_d" = c(rep(0.13,2),
+                                            rep(0.08,8),
+                                            rep(0.01,25),
+                                            rep(0.1,15),
+                                            rep(0.15,10),
+                                            rep(0.25,5),
+                                            rep(0.99,35)))){
+  age <- as.numeric(x[1])
+  return(rbinom(1,1,prob = pd[pd$Age==age,2]))
+}
+
+K_lim <- function(x,k,prob = 0.8){
+  p <- nrow(x)
+  if (p>k){
+    o <- rbinom(p-k,1,prob)
+    o <- sum(o[o==1])
+    o[o==0] <- 1 ## Avoids problem eliminating all the df if remove == 0
+    x <- x[-sample(1:nrow(x),o,replace = FALSE),]
+  }
+  return(x)
+}
+
+A_dep_r <- function(x,S_f = "p", occ = NULL){
+  try(if(is.null(x) == TRUE & is.null(S_f) == TRUE) 
+    stop("Population and Site function undefined"))
+  
+  ## Set the number of individuals
+  if (is.vector(x)==TRUE){
+    Pop <- length(x)
+  } else {
+    Pop <- nrow(x)
+  }
+  
+  ## Define time for logistic/residential camps if time = NULL
+  if (is.null(occ) == TRUE){
+    if (S_f == 'r'){
+      occ <- 3
+    } else if (S_f == 'l'){
+      occ <- 1
+    }
+  }
+  
+  ## Population times goats per person a year (5) times bone Kg per goat (20)
+  ## Dayenoff et al., 2019 for the weight of the carcass.
+  adr <- Pop*5*20
+  
+  if (S_f == 'r'){
+    adr <- round(adr/12*occ)
+  } else if (S_f == 'l'){
+    adr <- round((adr/12*occ)/4) ## Divides by 4 because it is considered that 
+                                 ## heavy food is not brought in place
+  } else if (S_f == 'f'){
+    adr <- Pop*17 # 17 kg of bone as an average per person
+  }
+  return(adr)
+}
+
+N_dep_r <- function(S_t = NULL, speed = 'm'){
+  
+  ## Set the general speed of the deposition rates
+  if (speed == 's'){
+    s <- 0.1
+  } else if (speed == 'm'){
+    s <- 0.2
+  } else if (speed == 'f'){
+    s <- 0.3
+  }
+  
+  ## Set the value for site type
+  if(is.null(S_t) == FALSE){
+    if (S_t == 'oa'){
+      s <- s*3
+    } else if (S_t == 'rs'){
+      s <- s*2
+    }
+  }
+  return(s)
+}
+
+W_prod <- function(x,Adr = NULL,Ndr = NULL, area, ss = 4){
+  
+  ## Set the number of individuals
+  if (is.vector(x)==TRUE){
+    Pop <- length(x)
+  } else {
+    Pop <- nrow(x)
+  }
+  
+  if (is.null(Adr) == TRUE & is.null(Ndr) == TRUE){
+    w <- Pop*5*20
+  } else if (is.null(Adr) == TRUE & is.null(Ndr) == FALSE){
+    w <- (Pop*5*20)/(10*Ndr)
+  } else if (is.null(Adr) == FALSE & is.null(Ndr) == FALSE){
+    w <- Adr/(10*Ndr)
+  } else if (is.null(Adr) == FALSE & is.null(Ndr) == TRUE){
+    w <- Adr
+  }
+  
+  w <- w*(1000/ss)
+
+  w <- round(w/area)
+  return(w)
+} 
+
+## Set initial values
+set.seed(1234)
+ts <- 1000 # Time span
+K <- 150
+area <- 1000
+Gs_init <- 100 # Initial population
+Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
+                      "Sex" = sample(c("M","F"), Gs_init, prob = c(0.5,0.5), replace = TRUE))
+
+
+## Start the loop
+res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
+Pop <- Gs_init
+
+for (i in 1:ts){
+  Pop <- Gpd(Pop)
+  a_w <- A_dep_r(Pop)
+  ndp <- N_dep_r()
+  
+  res$Pop[i] <- nrow(Pop)
+  res$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
+  Pop$Age <- Pop$Age+1
+}
+```
+
+This model is constituted of two layers. A first layer implements the loss of the record, while the second layer accounts for the processes which may affect its vertical displacement, resulting in chronological palimpsests. In order to understand the process, first we show the protocols and functions that we use to generate each variable.
 
 ### Time-dependent record loss
 As explained above, this is constituted essentially by two functions, one accounting for Surovell's equation for taphonomic loss, applied to each year of occupation, and the other adding the effect of human daily activities over previous years of occupation. 
 
-### Post-depositional mixture
+First, we consider time-dependent taphonomic loss, computed in the terms mentioned in the previous section, as the function `tdtl()`. For this funtion, an estimated time for the occupation of the site, as the parameter `t`, has to be provided.
+
+```{r}
+## Function 1. Application of time-dependent taphonomic loss (Surovell et al., 2009)
+#' It applies Surovell's equation to compute time dependent taphonomic loss. It 
+#' returns the amount of preserved samples, based on Surovell's equation, which is
+#' itself based on time passed since deposition
+#' @param x: Input data. Amount of waste for specific t. Integer.
+#' @param t: Time of abandonment. An integer.
+#' @export
+
+tdtf <- function(x,t){
+
+  ## Surovell's taphonomic model
+  ## Constants
+  a <- 5.726442e-06  
+  b <- 2176.4
+  c <- -1.3925309
+  
+  ## Application of the model
+  tm <- a*((c(0:t)+b)^c)
+  tm <- round((tm/max(tm))*x)
+  fw <- tm[length(tm)]
+  return(fw)
+
+}
+
+```
+
+Second, we consider the function `adc`, accounting for anthropic daily action. This function acts as well on the waste produced. In this case, there are three parameters: `sed.r`, `yleft` and `h.act`. `sed.r` is the sedimentary rates and, ideally, it should be the same as the sedimentary rates proposed for the natural deposition rates in the previous model. On its part `h.act` is the direct effect of the human action. Since the final result uses a multiplication of `h.act` by the years it took for the record to be buried (accounting for sedimentary rates), `yleft` is an additional parameter that makes sure that those multiplying years do not exceed the time of occupation of the site.
+
+```{r}
+## Function 2. Anthropic daily action.
+## This function accounts for the daily anthropic action of the groupd living in 
+## a site prior to the abandoment. It does not consider specifically aggresive 
+## actions such as Neolithic holes, current extraction of manouver, etc. 
+## Those will be considered later in the model per layers. It returns the same
+## stochastic process, but with this loss incorporated.
+#' @param x: Input data. Amount of waste for specific t. Integer.
+#' @param sed.r: Natural sedimentary rate. It can be introduced directly as a double
+#' if the rates are known, or it can be specified as slow ('s'), medium ('m') and
+#' fast ('f'), where sedimentary rates are respectively 0.05, 0.1 and 0.15 cm/year
+#' @param yleft: If specified, it marks the end of occupation of the site, so that
+#' years of anthropic action do not exceed years of occupation. Default is NA.
+#' @param h.act: The human activity in the cave. It can by high ('h'), medium ('m') 
+#' or slow ('s'), corresponding to the rates 0.9, 0.6, 0.3. The user can introduce
+#' the value.
+#' @export
+
+adc <- function(x, sed.r, yleft = NA, h.act){
+  
+  ## Set the general speed of the deposition rates
+  if (sed.r == 's'){
+    s <- 0.05
+  } else if (sed.r == 'm'){
+    s <- 0.1
+  } else if (sed.r == 'f'){
+    s <- 0.15
+  } else if (is.numeric(sed.r) == TRUE){
+    s <- sed.r
+  }
+  
+  ## Time until the record is buried (in years). 8 cm (16/2) based on Strauss, 1990: p. 266 but
+  ## this is wrong. I have some biblio to read further on this. It should also 
+  ## depend on the type of earth
+  y <- round(8/s)
+  if (is.na(yleft) == FALSE){
+    if (yleft < y){
+      y <- yleft
+    }
+  }
+  
+  ## Set the intensity of anthropic action
+  
+  if (h.act == 's'){
+    h <- 0.001
+  } else if (h.act == 'm'){
+    h <- 0.003
+  } else if (h.act == 'h'){
+    h <- 0.005
+  } else if (is.numeric(h.act) == TRUE){
+    h <- h.act
+  }
+  
+  x <- x-(x*h*y)
+  return(round(x))
+  
+}
+```
+
+We can see some short examples of the behaviour of the two functions.
+```{r}
+w <- res[,2]
+# Store in different vectors for the example, but could be the same.
+re <- rep(0,length(w))
+re_a <- rep(0,length(w))
+
+# To reproduce the time span
+for (i in 1:length(w)){
+  re[i] <- tdtf(w[i],7501-i)
+  re_a[i] <- adc(re[i],sed.r = 's', h.act = 'h', yleft = length(w)-i)
+}
+
+```
+
+First, we observe the effect in the loss of record of time-dependent taphonomic loss, both in absolute and normalised values. We can see the changes in the effect as the site age approaches the present.
+
+```{r}
+## Plot example time-dependent taphonomic loss
+
+par(mfrow=c(2,1))
+plot(x = c(7500:6501), y = res[,2], xlim = c(7500,6500), type = "l",
+     col = "darkred", main = "Time-dependent taphonomic loss", ylim = c(0,4000),
+     ylab = "N samples", xlab = "Year BP")
+lines(x = c(7500:6501), y = re, col = "orange")
+
+## And on normalised
+plot(x = c(7500:6501), y = res[,2]/max(res[,2]), xlim = c(7500,6500), type = "l",
+     col = "darkred", main = "Time-dependent taphonomic loss (Normalised)",
+     ylab = "N samples", xlab = "Year BP")
+lines(x = c(7500:6501), y = re/max(re), col = "orange")
+```
+
+Second, we can add the effect of anthropic action, also showing a greater effect towards the end of the occupation, as expected.
+
+```{r}
+### Example anthropic action
+par(mfrow=c(2,1))
+plot(x = c(7500:6501), y = re, xlim = c(7500,6500), type = "l",
+     col = "orange", main = "Adding anthropic action", ylim = c(0,500),
+     ylab = "N samples", xlab = "Year BP")
+#lines(x = c(7500:6501), y = re, col = "orange")
+lines(x = c(7500:6501), y = re_a, col = "darkblue")
+
+
+## And on normalised
+plot(x = c(7500:6501), y = res[,2]/max(res[,2]), xlim = c(7500,6500), type = "l",
+     col = "darkred", main = "Adding anthropic action (Normalised)",
+     ylab = "N samples", xlab = "Year BP")
+lines(x = c(7500:6501), y = re/max(re), col = "orange")
+lines(x = c(7500:6501), y = re_a/max(re_a), col = "darkblue")
+```
+
+
+### Vertical displacements
 
 ## Simulation
