@@ -347,7 +347,7 @@ A_dep_r <- function(x,S_f = "p", occ = NULL){
 ```
 
 ### Natural deposition rates ($Ndr$) Ndr-protocol
-Natural deposition rates usually have an effect on the archaeological waste product, where the density of $W$ is usually inversely proportional to the speed of the natural deposition rates. This protocol consists of one function `N_dep_r()` where the argument `S_t` (site type) can be enabled or disabled. If disabled, natural deposition rates are only considered through the parameter `speed`. When enabled it conditions the deposition rates on the type of site (open-air, cave or rockshelter). We are aware that there are many causes determining natural deposition rates. However, for the sake of simplicity, we have decided to include only one extra layer, the parameter `speed`, accounting for the speed of such rates, disregarding the causes which might provoke that speed.
+Natural deposition rates usually have an effect on the archaeological waste product, where the density of $W$ is usually inversely proportional to the speed of the natural deposition rates. This protocol consists of one function `N_dep_r()` where the argument `S_t` (site type) can be enabled or disabled. If disabled, natural deposition rates are only considered through the parameter `sed.r`. When enabled it conditions the deposition rates on the type of site (open-air, cave or rockshelter). We are aware that there are many causes determining natural deposition rates. However, for the sake of simplicity, we have decided to include only one extra layer, the parameter `sed.r`, accounting for the speed of such rates, disregarding the causes which might provoke that speed.
 
 ```{r}
 ## Function 5. Simulation of deposition deposition rates
@@ -356,19 +356,19 @@ Natural deposition rates usually have an effect on the archaeological waste prod
 #' @param S_t: Three possible site types have been considered: 'open-air' ('oa'),
 #' 'cave' ('c') and rockshelter ('rs'). When enabled, this parameter modules the 
 #' effect of the speed. Default is NULL.
-#' @param speed: This is the speed at which the natural sediment deposits on the 
+#' @param sed.r: This is the speed at which the natural sediment deposits on the 
 #' 'site. It has three levels: 'slow' ('s'), 'medium' ('m') and 'fast' ('f'). 
 #' Default is 'm'.
 #' @export
 
-N_dep_r <- function(S_t = NULL, speed = 'm'){
+N_dep_r <- function(S_t = NULL, sed.r = 'm'){
   
   ## Set the general speed of the deposition rates
-  if (speed == 's'){
+  if (sed.r == 's'){
     s <- 0.05
-  } else if (speed == 'm'){
+  } else if (sed.r == 'm'){
     s <- 0.1
-  } else if (speed == 'f'){
+  } else if (sed.r == 'f'){
     s <- 0.15
   }
   
@@ -488,7 +488,7 @@ Pop <- Gs_init
 for (i in 1:ts){
   Pop <- Gpd(Pop)
   a_w <- A_dep_r(Pop, S_f = "l", occ = 1)
-  ndp <- N_dep_r(S_t = "oa", speed = "f")
+  ndp <- N_dep_r(S_t = "oa", sed.r = "f")
   
   res2$Pop[i] <- nrow(Pop)
   res2$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
@@ -519,7 +519,7 @@ Pop <- Gs_init
 for (i in 1:ts){
   Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
   a_w <- A_dep_r(Pop, S_f = "h", occ = 8)
-  ndp <- N_dep_r(S_t = "c", speed = "s")
+  ndp <- N_dep_r(S_t = "c", sed.r = "s")
   
   res3$Pop[i] <- nrow(Pop)
   res3$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
@@ -547,7 +547,7 @@ Pop <- Gs_init
 for (i in 1:ts){
   Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
   a_w <- A_dep_r(Pop, S_f = "l", occ = 1)
-  ndp <- N_dep_r(S_t = "oa", speed = "f")
+  ndp <- N_dep_r(S_t = "oa", sed.r = "f")
   
   res4$Pop[i] <- nrow(Pop)
   res4$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
