@@ -348,10 +348,15 @@ A_dep_r <- function(x,S_f = "p", occ = NULL){
 
 ### Natural deposition rates ($Ndr$) Ndr-protocol
 Natural deposition rates usually have an effect on the archaeological waste product, where the density of $W$ is usually inversely proportional to the speed of the natural deposition rates. This protocol consists of one function `N_dep_r()` where the argument `S_t` (site type) can be enabled or disabled. If disabled, natural deposition rates are only considered through the parameter `sed.r`. When enabled it conditions the deposition rates on the type of site (open-air, cave or rockshelter). We are aware that there are many causes determining natural deposition rates. However, for the sake of simplicity, we have decided to include only one extra layer, the parameter `sed.r`, accounting for the speed of such rates, disregarding the causes which might provoke that speed.
+In any case, deposition rates can also be computed, if the user is confident enough,
+as layer thickness (in cm) between time of occupation (in years). For doing this, the user must set the parameter `site.based = TRUE` and specify the parameter `layers` with a data frame structured as in the example below.
 
 ```{r}
 ## Function 5. Simulation of deposition deposition rates
-#' Returns the rate at which sediment is deposited. Double.
+#' For the output. If site.based == FALSE, it returns a single value, as it 
+#' considers the same value for each year. If site.based == TRUE, it returns
+#' a vector with as many values as years considered, with the specific sedimentary
+#' rate for each year.
 #' @title N_dep_r
 #' @param S_t: Three possible site types have been considered: 'open-air' ('oa'),
 #' 'cave' ('c') and rockshelter ('rs'). When enabled, this parameter modules the 
@@ -359,30 +364,54 @@ Natural deposition rates usually have an effect on the archaeological waste prod
 #' @param sed.r: This is the speed at which the natural sediment deposits on the 
 #' 'site. It has three levels: 'slow' ('s'), 'medium' ('m') and 'fast' ('f'). 
 #' Default is 'm'.
+#' @param site.based: Boolean. It states whether the depositio rates are based 
+#' directly from the site. It TRUE, then the parameter 'layers' must be specified.
+#' Default is FALSE
+#' @param layers: A data frame, whith as many rows as layers. For the columns,
+#' the first column is the name of each layer, the second column is the thickness
+#' of the layer (in cms), the third column is the first year from where the layer
+#' is to be computed and the last column is the last of the layer. The deposition
+#' rate is computed as cm/nyears
 #' @export
 
-N_dep_r <- function(S_t = NULL, sed.r = 'm'){
+## Example for parameter 'layers'
+#nlay <- data.frame("Layers" = c(1,2,3), "Thickness" = c(16,14,13),
+#                   "Initial year" = c(7500,7100,6800), "Final year" = 
+
+N_dep_r <- function(S_t = NULL, sed.r = 'm', site.based = FALSE,
+                    layers){
   
-  ## Set the general speed of the deposition rates
-  if (sed.r == 's'){
-    s <- 0.05
-  } else if (sed.r == 'm'){
-    s <- 0.1
-  } else if (sed.r == 'f'){
-    s <- 0.15
-  }
-  
-  
-  ## Set the value for site type
-  if(is.null(S_t) == FALSE){
-    if (S_t == 'oa'){
-      s <- s*3
-    } else if (S_t == 'rs'){
-      s <- s*2
+  if (site.based == FALSE){
+    ## Set the general speed of the deposition rates
+    if (sed.r == 's'){
+      s <- 0.05
+    } else if (sed.r == 'm'){
+      s <- 0.1
+    } else if (sed.r == 'f'){
+      s <- 0.15
+    }
+    
+    ## Set the value for site type
+    if(is.null(S_t) == FALSE){
+      if (S_t == 'oa'){
+        s <- s*3
+      } else if (S_t == 'rs'){
+        s <- s*2
+      }
+    }
+  } else {
+    l_rates <- rep(0,nrow(layers))
+    for (i in 1:nrow(layers)){
+      l_rates[i] <- round(layers[i,2]/(layers[i,3]-layers[i,4]),2)
+    }
+    s <- c()
+    for (i in 1:nrow(layers)){
+      s <- append(s,rep(l_rates[i],layers[i,3]-layers[i,4]))
     }
   }
   return(s)
 }
+
 ```
 
 ### Waste production ($W$) W-protocol
