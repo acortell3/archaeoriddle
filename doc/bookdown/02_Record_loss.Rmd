@@ -4,7 +4,6 @@ output:
   pdf_document: default
   always_allow_html: true
 ---
-
 # Record loss
 
 ## Theoretical model
@@ -82,7 +81,9 @@ Where $h$ is the strength of the anthropic effect and $s$ accounts for sedimenta
 #### Vertical displacement
 This model layer accounts for vertical movement within the archaeological record. In the previous layer, the loss of record has already been accounted for according to Surovell's proposition and an adition of the possible effect of everyday activity in subsequent years of occupation of the site. For the remaining record, there is still a wide range of processes that can affect vertical deposition. In turn, vertical post-depositional movement can be one of the main causes confounding archaeological interpretation, and result in complicated chronological palimpsests. 
 
-Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$. However, for computational efficiency, it is probably advisable to subdivide and group that chronological span in smaller chunks, representing the layers of the site. We have considered two broad categories, denominated as *low energy processes* and *high energy processes*, both of which are conditioned by the soil types of the site.
+Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$, but the result will be provided according to the archaeological layers provided by the user where, in essence, if $W_{n} = layers_{n}$ the model acts on the complete sequence. Without deepening into the discussion of the exact factors provoking vertical displacement, we could consider tow considered two broad categories, and could denominate them as *low energy processes* and *high energy processes*, and understand them, respectively, as natural mechanical processes (e.g. hydric displacement, aeolic erosion) occurring at a constant but relatively slow rate through time and high impact processes, natural or human, occurring during shorter periods of time but with much greater impact (e.g. rockfall, flood, human extraction of manure, ploughing, etc.)
+
+In any case, the rationale to model this is the same, so we have only created a single function (explained below). If the researcher considers that both processes are occurring in a site, and that it is worth apply them both. Then the best option is to run the function twice (one for low energy process and another one for high energy processes) with the specific parameterisation (explained below) for each process. Finally, soil type is not modelled, since  it is assumed that its impact on vertical displacement is already considered by the user when parameterising the function.
 
 ```{r, echo = FALSE,cache=FALSE}
 grViz("
@@ -129,13 +130,7 @@ c -> {d}
 ")
 ```
 
-We are aware that there are multiple causes affecting vertical displacements in archaeological sites, such as water activity, crioturbation, animal action, geochemical processes, geological processes, etc. However, modelling each of this independently, and due to the cumulative uncertainty for the quantitification of each parameter, would probably result in a model which would be (1) overcomplicated and (2) risking being completely uninformative due to the randomness if intertwined stochastic processes.
-
-Therefore, we have decided to divide the processes in two broad categories:
-
-* **Low energy processes** (*Lep*): Running water and blablabla. I need to define how to do this.
-* **High energy processes** (*Hep*): Strong action, such as direct agression (Neolithic pits or manuver removal). I need to define how to do this.
-* **Soil type** (*Sot*): This is a discrete variable with four possible categories (*gravel*, *sand*, *silt* and *clay*). Each category is defined by the thickness of its grain (from the > 2mm of gravels to the almost invisible clay) and this thickness can condition the effect of vertical movements in general. 
+As explained above, we are aware that there are multiple causes affecting vertical displacements in archaeological sites, such as water activity, crioturbation, animal action, geochemical processes, geological processes, etc. However, modelling each of this independently, and due to the cumulative uncertainty for the quantitification of each parameter, would probably result in a model which would (1) be overcomplicated and (2) risk being completely uninformative due to the randomness of intertwined stochastic processes.
 
 ## Implementation
 ```{r, echo = FALSE}
@@ -236,23 +231,35 @@ A_dep_r <- function(x,S_f = "p", occ = NULL){
   return(adr)
 }
 
-N_dep_r <- function(S_t = NULL, speed = 'm'){
+N_dep_r <- function(S_t = NULL, sed.r = 'm', site.based = FALSE,
+                    layers){
   
-  ## Set the general speed of the deposition rates
-  if (speed == 's'){
-    s <- 0.1
-  } else if (speed == 'm'){
-    s <- 0.2
-  } else if (speed == 'f'){
-    s <- 0.3
-  }
-  
-  ## Set the value for site type
-  if(is.null(S_t) == FALSE){
-    if (S_t == 'oa'){
-      s <- s*3
-    } else if (S_t == 'rs'){
-      s <- s*2
+  if (site.based == FALSE){
+    ## Set the general speed of the deposition rates
+    if (sed.r == 's'){
+      s <- 0.05
+    } else if (sed.r == 'm'){
+      s <- 0.1
+    } else if (sed.r == 'f'){
+      s <- 0.15
+    }
+    
+    ## Set the value for site type
+    if(is.null(S_t) == FALSE){
+      if (S_t == 'oa'){
+        s <- s*3
+      } else if (S_t == 'rs'){
+        s <- s*2
+      }
+    }
+  } else {
+    l_rates <- rep(0,nrow(layers))
+    for (i in 1:nrow(layers)){
+      l_rates[i] <- round(layers[i,2]/(layers[i,3]-layers[i,4]),2)
+    }
+    s <- c()
+    for (i in 1:nrow(layers)){
+      s <- append(s,rep(l_rates[i],layers[i,3]-layers[i,4]))
     }
   }
   return(s)
@@ -411,9 +418,11 @@ re <- rep(0,length(w))
 re_a <- rep(0,length(w))
 
 # To reproduce the time span
+
 for (i in 1:length(w)){
   re[i] <- tdtf(w[i],7501-i)
-  re_a[i] <- adc(re[i],sed.r = 's', h.act = 'h', yleft = length(w)-i)
+  ## Uses the same deposition rates
+  re_a[i] <- adc(re[i],sed.r = N_dep_r(), h.act = 'h', yleft = length(w)-i)
 }
 
 ```
@@ -456,7 +465,442 @@ lines(x = c(7500:6501), y = re/max(re), col = "orange")
 lines(x = c(7500:6501), y = re_a/max(re_a), col = "darkblue")
 ```
 
-
 ### Vertical displacements
 
-## Simulation
+The function `mix_rec` controls for the vertical displacement processes. It works on a *per sample* basis. That is, for each sample in one (or any) year, it selects it and moves it accross the depth of the site according the pre-specified criteria. More in particular, in order to move each sample, it uses a double exponential, or Laplace distribution. This distribution consists of two parameters $(\mu, b)$, where the parameter $\mu$ is the mean and the parameter $b$ controls for its dispersion. Therefore, the parameter $b$, defined in the function as the parameter `effect`, is the key for the dispersion of the assemblage. If $\mu = 0$, we can consider the dispersion values as the vertical cms of displacement. Thus, if $\mu = depth_{i}$, then $b$ would account for how far the specific sample has been displaced from its origin.
+
+The function returns a list where each object is an archaeological layer (as defined by the archaeologist). If one sample displaces to another layer, the function is able to recover this, thus accounting for archaeological mixing. If one sample displaces further than the overall boundaries, that sample disappears from the record, as it is considered non-accessible by the archaeologist or, at maximum, in a layer not under study. Finally, if `nlayers = 1` no layer will be created, and the function will return the complete redistribution of samples along the vertical sequence.
+
+```{r}
+## Function 3. Create archaeological layers
+#' It returns a list with as many objects as defined layers. Each object of the list
+#' is a matrix where the first column is the year, the second column is its original
+#' depth and the third column is the depth after the application of vertical 
+#' displacement. If maxdiff = TRUE, it adds another object to the list, indicating
+#' the maximum displacement (in cms) for the year selected.
+#' @param x: Input data. Amount of waste for specific t. Vector.
+#' @param iy: Initial year. Integer
+#' @param ts: Time span. Integer
+#' @param sed.r: Natural sedimentary rate. It can be introduced directly as a double
+#' if the rates are known, or it can be specified as slow ('s'), medium ('m') and
+#' fast ('f'), where sedimentary rates are respectively 0.05, 0.1 and 0.15 cm/year.
+#' In the case that the record formation model model has not been produced, 
+#' deposition rates from each model must coincide. N_dep_r() function can be used
+#' for this as it is non-stochastic.
+#' @param effect: Double or integer. Parameter for the double exponential distribution.
+#' It control the vertical spread of the samples. Values are advised between 0.5 and 10
+#' @param nlayers: Integer. How many layers should the time span be subdivided into?
+#' @param tlayers: It indicates the upper and lower bound of each layer. A data frame
+#' with two columns, and nrow == nlayers. The first column indicates the upper bound
+#' for each layer (each row is a layer) and the second column indicates the lower
+#' bound of a layer. See example.
+#' @param maxdiff: As a control check, if TRUE, this function provide the maximum 
+#' displacement for the samples of one specific year, defined with the parameter
+#' yeardiff. Default is FALSE.
+#' @param yeardiff: Only in use when maxdiff = TRUE. It specifies the year for which
+#' the maximum displacement will be computed. Integer. 
+#' @export
+
+tlayers <- data.frame("High" = c(0,30,60), "Low" = c(30,60,100))
+mix_rec <- function(x,iy,ts,sed.r,effect,nlayers,tlayers,
+                    maxdiff = FALSE,yeardiff){
+  
+  ## Build depth
+  if(length(sed.r) == 1){
+    s <- rep(sed.r,ts)
+  } else {
+    s <- sed.r
+  }
+  
+  ## Creates depth. Takes into account sedimentary rates from the top to the bottom
+  td <- sort(cumsum(rev(s)), decreasing = TRUE)
+  t <- seq(iy,iy-(ts-1))
+
+  ## Create matrix with two columns for efficiency
+  pr <- matrix(nrow = 0, ncol = 2)
+  for (i in 1:length(t)){
+    y <- rep(t[i],x[i]) ## One row per sample/year
+    d <- rep(td[i],x[i]) ## One row per sample/depth
+    
+    l <- cbind(y,d)
+    pr <- rbind(pr,l)
+  }
+
+  ## Create column with moved samples
+  pr <- cbind(pr,pr[,2]-replicate(nrow(pr),sample(c(-1,1),1)*rexp(1,effect)))
+  colnames(pr) <- c("Year BP","Original Depth","Mixed Depth")
+
+  ## Distribute the dates per layer
+  result <- vector(mode = "list", nlayers)
+  
+  for (i in 1:nlayers){
+    result[[i]] <- pr[pr[,3]>=tlayers[i,1] & pr[,3]<tlayers[i,2],]
+  }
+  
+  ## Add the difference in cms for one year
+  if (maxdiff == TRUE){
+    diff <- pr[pr[,1]==yeardiff,]
+    diff <- max(diff[,3])-min(diff[,3])
+    result[[nlayers+1]] <- diff
+  }
+  
+  return(result)
+}
+```
+
+In order to appreciate the effect of different values for the parameter $b$, here we show the vertical displacement from 7000 BP, and only for 250 years. The black line is the original depth, whereas the red shape is the vertical displacement in centimiters. It can be appreciated that, whilst values where $b < 1$ offer large displacements, when $b = 10$ the displacement is minimal, and could be considered even without strong post-depositional effects. Maximum displacement (obtained with the parameter `maxdiff = TRUE`) is offered for the user to observe if the displacement reproduced is in relative accordance to the site under study where, broadly, a general amount of displacement in cms can be assessed. In turn, this allows to tune $b$ until it reproduces the actual vertical displacement of the site as accurately as possible. 
+
+```{r}
+mdist1 <- mix_rec(re_a,7000,250,N_dep_r(),effect = .5,nlayers = 1, tlayers = tlayers,
+                 maxdiff = TRUE,yeardiff = 7000)
+mdist2 <- mix_rec(re_a,7000,250,N_dep_r(),effect = 1,nlayers = 1, tlayers = tlayers,
+                 maxdiff = TRUE,yeardiff = 7000)
+mdist3 <- mix_rec(re_a,7000,250,N_dep_r(),effect = 5,nlayers = 1, tlayers = tlayers,
+                 maxdiff = TRUE,yeardiff = 7000)
+mdist4 <- mix_rec(re_a,7000,250,N_dep_r(),effect = 10,nlayers = 1, tlayers = tlayers,
+                 maxdiff = TRUE,yeardiff = 7000)
+
+par(mfrow = c(2,2))
+
+plot(mdist1[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
+     main = "Vertical displacement with 'b' = 0.5")
+lines(mdist1[[1]][,2], col = "black")
+legend("topright",
+       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist1[[2]],2)," cm")),
+       cex = 0.7)
+
+plot(mdist2[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
+     main = "Vertical displacement with 'b' = 1")
+lines(mdist2[[1]][,2], col = "black")
+legend("topright",
+       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist2[[2]],2)," cm")),
+       cex = 0.7)
+
+plot(mdist3[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
+     main = "Vertical displacement with 'b' = 5")
+lines(mdist3[[1]][,2], col = "black")
+legend("topright",
+       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist3[[2]],2)," cm")),
+       cex = 0.7)
+
+plot(mdist4[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
+     main = "Vertical displacement with 'b' = 10")
+lines(mdist4[[1]][,2], col = "black")
+legend("topright",
+       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist4[[2]],2)," cm")),
+       cex = 0.7)
+
+```
+
+Of course, one of the strengths of this function is that it can successfully reproduce the mixture processes frequently occurring in archaeological sites, so that we can reverse-engineering towards a better comprehension of the archaeological record. If we observe its result taking into account several archaeological layers (three for this example), we can observe how, when the samples are disturbed, the chronological uncertainty associated to the transition of each layer increases.
+
+```{r}
+## Effect on layers
+mdist <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 1,nlayers = 3, tlayers = tlayers)
+
+par(mfrow = c(1,2))
+plot(x = mdist[[3]][,1],y = mdist[[3]][,2],  type = "l", col = "darkblue", 
+     lwd = 2, ylim = c(0,100), xlim = c(7500,6500), ylab = "Depth in cm",
+     xlab = "Samples per year", 
+     main = "Samples per death and year without vertical movement")
+lines(x = mdist[[2]][,1],y = mdist[[2]][,2], col = "darkred", lwd = 2)
+lines(x = mdist[[1]][,1],y = mdist[[1]][,2], col = "darkgreen", lwd = 2)
+legend("topright", legend = c("Layer 1", "Layer 2", "Layer 3"), lty = c(1,1,1),
+       lwd = c(2,2,2), col= c("darkblue", "darkred","darkgreen"))
+
+plot(x = mdist[[3]][,1],y = mdist[[3]][,3],  type = "l", col = "darkblue", 
+     lwd = 2, ylim = c(0,100), xlim = c(7500,6500), ylab = "Depth in cm",
+     xlab = "Samples per year", 
+     main = "Samples per death and year with vertical movement")
+lines(x = mdist[[2]][,1],y = mdist[[2]][,3], col = "darkred", lwd = 2)
+lines(x = mdist[[1]][,1],y = mdist[[1]][,3], col = "darkgreen", lwd = 2)
+legend("topright", legend = c("Layer 1", "Layer 2", "Layer 3"), lty = c(1,1,1),
+       lwd = c(2,2,2), col= c("darkblue", "darkred","darkgreen"))
+
+```
+
+## Example
+
+### Effects of vertical displacement
+
+For the example, we consider that we have divided the whole sequence in 5 cm layers, which is a standard measure in field archaeology. For simplicity, we will focus in one only transition. For example, the transition between layers 2 and 3 (it could be any, as this dataset is artificial). In the following plot we can observe the partition between the layers, and how the sampes are effectively disturbed accross the depth of the site.
+
+```{r}
+set.seed(1234)
+w <- res[,2]
+# Store in different vectors for the example, but could be the same.
+re <- rep(0,length(w))
+re_a <- rep(0,length(w))
+
+# To reproduce the time span
+
+for (i in 1:length(w)){
+  re[i] <- tdtf(w[i],7501-i)
+  ## Uses the same deposition rates
+  re_a[i] <- adc(re[i],sed.r = N_dep_r(), h.act = 'h', yleft = length(w)-i)
+}
+
+tlay <- data.frame("High" = seq(0,95,5), "Low" = seq(5,100,5))
+
+lcol <- c("seashell2","yellow3","hotpink4","seashell2","seashell3","seashell4",
+          "seashell2","seashell3","seashell4","seashell2","seashell3","seashell4",
+          "seashell2","seashell3","seashell4","seashell2","seashell3","seashell4",
+          "seashell2","seashell3")
+
+vmov <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 1,nlayers = 20, tlayers = tlay)
+
+plot(x = vmov[[1]][,1],y = vmov[[1]][,3],  type = "l", col = lcol[1], 
+     lwd = 2, ylim = c(100,0), xlim = c(7500,6500), ylab = "Depth in cm",
+     xlab = "Samples per year", 
+     main = "20 layers with samples affected by vertical movement")
+for (i in 2:20){
+  lines(x = vmov[[i]][,1],y = vmov[[i]][,3], col = lcol[i], lwd = 2)
+}
+text(x=seq(7380,6380,-50),y=seq(100,0,-5),
+     labels = seq(20,1,-1), cex = 0.7)
+
+
+```
+
+We can also observe below how, without disturbance, the samples are grouped by their year and their value is similar to Markov processes seen before, whereas for the disturbed, the Markov process seems broken and the samples have been redistributed randomly (according to the specified distribution), although the initial distribution (without disturbance) can still be hinted.
+
+```{r}
+### Prepare for plots
+l23wod <- matrix(nrow = 0, ncol = 2)
+t <- c(7500:6501)
+td <- sort(cumsum(rev(rep(0.1,1000))), decreasing = TRUE)
+
+for (i in 1:length(t)){
+  y <- rep(t[i],re_a[i]) ## One row per sample/year
+  d <- rep(td[i],re_a[i]) ## One row per sample/depth
+  
+  l <- cbind(y,d)
+  l23wod <- rbind(l23wod,l)
+}
+
+## Create layers for plots
+l23wod1 <- l23wod[l23wod[,2] >= 5 & l23wod[,2] < 10,]
+l23wod2 <- l23wod[l23wod[,2] >= 10 & l23wod[,2] < 15,]
+l23wd1 <- vmov[[2]]
+l23wd2 <- vmov[[3]]
+
+## Plot of samples per year (per layer)
+par(mfrow = c(2,2))
+plot(table(l23wod1[,1]), col = "darkred", ylab = "N samples",
+     ylim = c(0,160),
+     main = "N samples layer 2 without disturbation")
+plot(table(l23wod2[,1]), col = "darkblue", ylab = "N samples",
+     ylim = c(0,190),
+     main = "N samples layer 3 without disturbation")
+plot(table(l23wd1[,1]), col = "darkred", ylab = "N samples",
+     ylim = c(0,120),
+     main = "N samples layer 2 with disturbation")
+plot(table(l23wd2[,1]), col = "darkblue", ylab = "N samples",
+     ylim = c(0,190),
+     main = "N samples layer 3 with disturbation")
+
+```
+
+As a result, if we build a Summed Probability Distribution (SPD) from the total of the samples (one for non-disturbed and one for the disturbed) we can see how the final effect of vertical displacement (if field-archaeologists retrieved every 14C date remaining in the site) after applying the calibration is negligible. 
+
+```{r, message = FALSE, results=FALSE}
+## Build SPDs
+library(rcarbon)
+
+## SPD layers 2,3 without disturbance
+cal_l23wod1 <- calibrate(l23wod1[,1],errors = rep(20,nrow(l23wod1)))
+cal_l23wod2 <- calibrate(l23wod2[,1],errors = rep(20,nrow(l23wod2)))
+
+spd_l23wod1 <- spd(cal_l23wod1, timeRange = c(7600,7400))
+spd_l23wod2 <- spd(cal_l23wod2, timeRange = c(7600,7400))
+
+## SPD layers 2,3 with disturbance
+
+cal_l23wd1 <- calibrate(l23wd1[,1],errors = rep(20,nrow(l23wd1)))
+cal_l23wd2 <- calibrate(l23wd2[,1],errors = rep(20,nrow(l23wd2)))
+
+spd_l23wd1 <- spd(cal_l23wd1, timeRange = c(7600,7400))
+spd_l23wd2 <- spd(cal_l23wd2, timeRange = c(7600,7400))
+
+## PLOTS
+par(mfrow=c(2,2))
+plot(spd_l23wod1, main = "Layer 2 without disturbation")
+plot(spd_l23wod2, main = "Layer 3 without disturbation")
+plot(spd_l23wd1, main = "Layer 2 with disturbation b = 1")
+plot(spd_l23wd2, main = "Layer 3 with disturbation b = 1")
+
+```
+
+To check for the possible effect, we can increase the effect of the parameter $b$ within the Laplace distribution to increase the vertical displacement. In this case, setting $b = 0.5$ show a greater vertical displacement.
+
+```{r, echo = FALSE}
+### NOW WE TRY WITH HIGHER DISTURBATION EFFECT
+vmov_high <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 0.5,nlayers = 20, tlayers = tlay)
+
+par(mfrow = c(1,1))
+plot(x = vmov_high[[1]][,1],y = vmov_high[[1]][,3],  type = "l", col = lcol[1], 
+     lwd = 2, ylim = c(100,0), xlim = c(7500,6500), ylab = "Depth in cm",
+     xlab = "Samples per year", 
+     main = "20 layers with samples affected by vertical movement")
+for (i in 2:20){
+  lines(x = vmov_high[[i]][,1],y = vmov_high[[i]][,3], col = lcol[i], lwd = 2)
+}
+text(x=seq(7380,6380,-50),y=seq(100,0,-5),
+     labels = seq(20,1,-1), cex = 0.7)
+```
+
+Which is also appreciated when observing the resulting distribution.
+
+```{r, echo = FALSE}
+## Create layers for plots
+high_l23wd1 <- vmov_high[[2]]
+high_l23wd2 <- vmov_high[[3]]
+
+## Plot of samples per year (per layer)
+par(mfrow = c(2,2))
+plot(table(l23wod1[,1]), col = "darkred", ylab = "N samples",
+     ylim = c(0,160),
+     main = "N samples layer 2 without disturbation")
+plot(table(l23wod2[,1]), col = "darkblue", ylab = "N samples",
+     ylim = c(0,190),
+     main = "N samples layer 3 without disturbation")
+plot(table(high_l23wd1[,1]), col = "darkred", ylab = "N samples",
+     ylim = c(0,90),
+     main = "N samples layer 2 with disturbation b = 0.5")
+plot(table(high_l23wd2[,1]), col = "darkblue", ylab = "N samples",
+     ylim = c(0,130),
+     main = "N samples layer 3 with disturbation b = 0.5")
+```
+
+In the SPDs, we can now see some changes, but the distributions of the non-disturbed and the disturbed samples do not seem to differ that much.
+
+```{r, echo = FALSE, results=FALSE}
+## Build SPDs
+## SPD layers 2,3 with disturbance
+
+cal_high_l23wd1 <- calibrate(high_l23wd1[,1],errors = rep(20,nrow(high_l23wd1)))
+cal_high_l23wd2 <- calibrate(high_l23wd2[,1],errors = rep(20,nrow(high_l23wd2)))
+
+spd_high_l23wd1 <- spd(cal_high_l23wd1, timeRange = c(7600,7400))
+spd_high_l23wd2 <- spd(cal_high_l23wd2, timeRange = c(7650,7400))
+
+## PLOTS
+par(mfrow=c(2,2))
+plot(spd_l23wod1, main = "Layer 2 without disturbation")
+plot(spd_l23wod2, main = "Layer 3 without disturbation")
+plot(spd_high_l23wd1, main = "Layer 2 with disturbation b = 0.5")
+plot(spd_high_l23wd2, main = "Layer 3 with disturbation b = 0.5")
+```
+
+We can take it to an extreme case, where maximum displacement of samples can reach values between 70 and 100 cm.
+
+```{r, echo = FALSE}
+### NOW WE TRY WITH EXTREME DISTURBATION EFFECT
+vmov_ext <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 0.1,nlayers = 20, tlayers = tlay)
+
+par(mfrow = c(1,1))
+plot(x = vmov_ext[[1]][,1],y = vmov_ext[[1]][,3],  type = "l", col = lcol[1], 
+     lwd = 2, ylim = c(100,0), xlim = c(7500,6500), ylab = "Depth in cm",
+     xlab = "Samples per year", 
+     main = "20 layers with samples affected by vertical movement")
+for (i in 2:20){
+  lines(x = vmov_ext[[i]][,1],y = vmov_ext[[i]][,3], col = lcol[i], lwd = 2)
+}
+text(x=seq(7380,6380,-50),y=seq(100,0,-5),
+     labels = seq(20,1,-1), cex = 0.7)
+```
+
+In this case, we can see the long tail for disturbed sample. Note that the tail is assymmetric because, as stated above, all samples displaced further up than depth 0 (which would the surface and coincides with year 6501 BP) are discarded, as they are considered lost.
+
+```{r, echo = FALSE}
+## Create layers for plots
+ext_l23wd1 <- vmov_ext[[2]]
+ext_l23wd2 <- vmov_ext[[3]]
+
+
+## Plot of samples per year (per layer)
+par(mfrow = c(2,2))
+plot(table(l23wod1[,1]), col = "darkred", ylab = "N samples",
+     ylim = c(0,160),
+     main = "N samples layer 2 without disturbation")
+plot(table(l23wod2[,1]), col = "darkblue", ylab = "N samples",
+     ylim = c(0,190),
+     main = "N samples layer 3 without disturbation")
+plot(table(ext_l23wd1[,1]), col = "darkred", ylab = "N samples",
+     ylim = c(0,50),
+     main = "N samples layer 2 with disturbation b = 0.5")
+plot(table(ext_l23wd2[,1]), col = "darkblue", ylab = "N samples",
+     ylim = c(0,50),
+     main = "N samples layer 3 with disturbation b = 0.5")
+```
+
+Now we can see how the SPD for the disturbed deposits span through a larger timespan than the non-disturbed deposits. Even more if we take into account that the expansion towards the present is disregarded for the above mentioned reasons.
+
+```{r, echo = FALSE, results=FALSE}
+## Build SPDs
+
+## SPD layers 2,3 with disturbance
+
+cal_ext_l23wd1 <- calibrate(ext_l23wd1[,1],errors = rep(20,nrow(ext_l23wd1)))
+cal_ext_l23wd2 <- calibrate(ext_l23wd2[,1],errors = rep(20,nrow(ext_l23wd2)))
+
+spd_ext_l23wd1 <- spd(cal_ext_l23wd1, timeRange = c(8100,7400))
+spd_ext_l23wd2 <- spd(cal_ext_l23wd2, timeRange = c(8100,7400))
+
+## PLOTS
+par(mfrow=c(2,2))
+plot(spd_l23wod1, main = "Layer 2 without disturbation")
+plot(spd_l23wod2, main = "Layer 3 without disturbation")
+plot(spd_ext_l23wd1, main = "Layer 2 with disturbation b = 0.1")
+plot(spd_ext_l23wd2, main = "Layer 3 with disturbation b = 0.1")
+```
+
+### Archaeological sampling
+
+In any case, the images above were showing assuming a very hypothetical research data; that is, assuming that the researcher could dispose of every single (remaining) 14C sample in the site for dating or, at least, a good representative amount of them. However, dating is expensive, and it is not frequent to have dating programs including several samples for one layer. Usually, at most two or three dates are retrieved from a layer in case of doubt (which is already indicated uncertainty), where in the most common situation, a single is considered enough to date a site.
+
+Focusing only on layer 3, in the following sequence of plots, we have randomly selected and calibrated one single date to see if that would approach the actual age of the layer, mimicking general archaeological methodology.
+
+For the case where the samples are not disturbed, all the dates selected show similar curves and could be fairly indicative of the actual age of the layer.
+
+```{r, echo = FALSE, results = FALSE}
+layer3_wod <- cbind(l23wod2[sample(nrow(l23wod2), 9),],rep(20,9))
+layer3_wd <- cbind(l23wd2[sample(nrow(l23wd2), 9),],rep(20,9))
+layer3_high_wd <- cbind(high_l23wd2[sample(nrow(high_l23wd2), 9),],rep(20,9))
+layer3_ext_wd <- cbind(ext_l23wd2[sample(nrow(ext_l23wd2), 9),],rep(20,9))
+
+par(mfrow = c(3,3))
+
+for (i in 1:9){
+  c <- calibrate(layer3_wod[i,1],layer3_wod[i,3])
+  plot(c, main = "Non disturbed sample")
+}
+```
+
+If $b = 1$ we still have a general good approach, although some differences in the distribution are appreciated and some dates (such as date number 9) show a different behaviour.
+
+```{r, echo = FALSE, results = FALSE}
+for (i in 1:9){
+  c <- calibrate(layer3_wd[i,1],layer3_wd[i,3])
+  plot(c, main = "b = 1")
+}
+```
+
+For the case of $b = 0.5$ there are indeed even more differences among the dates.
+
+```{r, echo = FALSE, results = FALSE}
+for (i in 1:9){
+  c <- calibrate(layer3_high_wd[i,1],layer3_high_wd[i,3])
+  plot(c, main = "b = 0.5")
+}
+```
+
+If $b = 0.1$ more than half of the dates would not be representative of the actual age of the site.
+
+```{r, echo = FALSE, results = FALSE}
+for (i in 1:9){
+  c <- calibrate(layer3_ext_wd[i,1],layer3_ext_wd[i,3])
+  plot(c, main = "b = 0.1")
+}
+```
+
