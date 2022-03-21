@@ -1,22 +1,22 @@
 ---
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   always_allow_html: true
 ---
 # Record loss
 
 ## Theoretical model
 ### General purpose
-Our main interest is to show and test the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
+Our main interest is showing and testing the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
 
-However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally (also vertically). This *record loss* model assumes and normalises this when $W$ is retrieved from the previous *record formation* model. However, this needs to be taken into account both if the user wants to introduce the values for $W$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W$ which is *waste produced per* $m^2$.
+However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be taken into account both if the user wants to introduce the values for $W$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W$ which is *waste produced per* $m^2$.
 
 ### Model layers
 We have considered the following two main ways in which the archaeological record can be affected by post-depositional processes. The first one refers to the loss of that record and the second one takes into account the vertical displacements of the remaining record.
 
 #### Loss of the record
-The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss* ($tdtl$) and the second one is *anthropic action* ($aa$). These two variables can be applied together (advised), separately or none at all. 
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss* ($tdtl$) and the second one is *anthropic action* ($aa$). These two variables can be applied together (advised), separately or not at all. 
 
 ```{r, echo = FALSE,cache=FALSE}
 library(DiagrammeR)
@@ -75,13 +75,15 @@ Where $a$, $b$ and $c$ are the constants proposed by Surovell, based on taphonom
 
 * **Anthropic action** ($aa$): However, Surovell's proposal is thought to measure the loss of record from the moment of abandonment of the site, and it does not take into account the possible effect of human continued daily activities (such as trampling, cleaning, etc.) for the case of sites with frequent reoccupation or long occupational time spans. In this regard, we apply the above method for each year during the occupational time span, to which we add the possible effect of $aa$, which is modelled as 
 
-$$W_{t+1} = W_t - (W_t \times h_t \times s_t)$$
-Where $h$ is the strength of the anthropic effect and $s$ accounts for sedimentation rates. In this regard, and conditioning on $s$ it is considered that once an object is completely buried a certain depth (depending on the soil), $aa$ has no further effect on it.
+$$W_{t}' = W_t - (W_t \times h_t \times s_t)$$
+Where $h$ is the strength of the anthropic effect and $s$ accounts for sedimentation rates. In this regard, and depending on $s$ it is considered that once an object is completely buried a certain depth, $aa$ has no further effect on it.
 
 #### Vertical displacement
-This model layer accounts for vertical movement within the archaeological record. In the previous layer, the loss of record has already been accounted for according to Surovell's proposition and an adition of the possible effect of everyday activity in subsequent years of occupation of the site. For the remaining record, there is still a wide range of processes that can affect vertical deposition. In turn, vertical post-depositional movement can be one of the main causes confounding archaeological interpretation, and result in complicated chronological palimpsests. 
+We are aware that there are multiple causes affecting vertical displacements in archaeological sites, such as water activity, crioturbation, animal action, geochemical processes, geological processes, etc. However, modelling each of those independently, and due to the cumulative uncertainty for the quantification of each parameter, would probably result in a model which would (1) be overcomplicated and (2) risk being completely uninformative due to the randomness of intertwined stochastic processes.
 
-Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$, but the result will be provided according to the archaeological layers provided by the user where, in essence, if $W_{n} = layers_{n}$ the model acts on the complete sequence. Without deepening into the discussion of the exact factors provoking vertical displacement, we could consider tow considered two broad categories, and could denominate them as *low energy processes* and *high energy processes*, and understand them, respectively, as natural mechanical processes (e.g. hydric displacement, aeolic erosion) occurring at a constant but relatively slow rate through time and high impact processes, natural or human, occurring during shorter periods of time but with much greater impact (e.g. rockfall, flood, human extraction of manure, ploughing, etc.)
+With this in mind, this model layer accounts for vertical movement within the archaeological record. In the previous layer, the loss of record has already been accounted for according to Surovell's proposition and an adition of the possible effect of everyday activity in subsequent years of occupation of the site. For the remaining record, there is still a wide range of processes that can affect vertical deposition. In turn, vertical post-depositional movement can be one of the main causes confounding archaeological interpretation, and result in complicated chronological palimpsests. 
+
+Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$, but the result will be provided according to the archaeological layers provided by the user where, in essence, if $W_{n} = layers_{n}$ the model acts on the complete sequence. Without deepening into the discussion of the exact factors provoking vertical displacement, we could consider two broad categories, denominated here as *low energy processes* and *high energy processes*, and understand them, respectively, as natural mechanical processes (e.g. hydric displacement, aeolic erosion) occurring at a constant but relatively slow rate through time and high impact processes, natural or human, occurring during shorter periods of time but with much greater impact (e.g. rockfall, flood, human extraction of manure, ploughing, etc.)
 
 In any case, the rationale to model this is the same, so we have only created a single function (explained below). If the researcher considers that both processes are occurring in a site, and that it is worth apply them both. Then the best option is to run the function twice (one for low energy process and another one for high energy processes) with the specific parameterisation (explained below) for each process. Finally, soil type is not modelled, since  it is assumed that its impact on vertical displacement is already considered by the user when parameterising the function.
 
@@ -129,8 +131,6 @@ c -> {d}
 [4]: 'Waste'
 ")
 ```
-
-As explained above, we are aware that there are multiple causes affecting vertical displacements in archaeological sites, such as water activity, crioturbation, animal action, geochemical processes, geological processes, etc. However, modelling each of this independently, and due to the cumulative uncertainty for the quantitification of each parameter, would probably result in a model which would (1) be overcomplicated and (2) risk being completely uninformative due to the randomness of intertwined stochastic processes.
 
 ## Implementation
 ```{r, echo = FALSE}
@@ -349,7 +349,7 @@ tdtf <- function(x,t){
 
 ```
 
-Second, we consider the function `adc`, accounting for anthropic daily action. This function acts as well on the waste produced. In this case, there are three parameters: `sed.r`, `yleft` and `h.act`. `sed.r` is the sedimentary rates and, ideally, it should be the same as the sedimentary rates proposed for the natural deposition rates in the previous model. On its part `h.act` is the direct effect of the human action. Since the final result uses a multiplication of `h.act` by the years it took for the record to be buried (accounting for sedimentary rates), `yleft` is an additional parameter that makes sure that those multiplying years do not exceed the time of occupation of the site.
+Second, we consider the function `adc`, accounting for anthropic daily action. This function acts as well on the waste produced. In this case, there are three parameters: `sed.r`, `yleft` and `h.act`. `sed.r` is the sedimentary rates and it should be the same as the sedimentary rates proposed for the natural deposition rates in the previous model, if this has been used. On its part `h.act` is the direct effect of the human action. Since the final result uses a multiplication of `h.act` by the years it took for the record to be buried (accounting for sedimentary rates), `yleft` is an additional parameter that makes sure that those multiplying years do not exceed the time of occupation of the site.
 
 ```{r}
 ## Function 2. Anthropic daily action.
@@ -592,7 +592,7 @@ legend("topright",
 
 ```
 
-Of course, one of the strengths of this function is that it can successfully reproduce the mixture processes frequently occurring in archaeological sites, so that we can reverse-engineering towards a better comprehension of the archaeological record. If we observe its result taking into account several archaeological layers (three for this example), we can observe how, when the samples are disturbed, the chronological uncertainty associated to the transition of each layer increases.
+Of course, one of the strengths of this function is that it can successfully reproduce the mixture processes frequently occurring in archaeological sites, so that we can reverse-engineer towards a better comprehension of the archaeological record. If we observe its result taking into account several archaeological layers (three for this example), we can observe how, when the samples are disturbed, the chronological uncertainty associated to the transition of each layer increases.
 
 ```{r}
 ## Effect on layers
@@ -623,7 +623,7 @@ legend("topright", legend = c("Layer 1", "Layer 2", "Layer 3"), lty = c(1,1,1),
 
 ### Effects of vertical displacement
 
-For the example, we consider that we have divided the whole sequence in 5 cm layers, which is a standard measure in field archaeology. For simplicity, we will focus in one only transition. For example, the transition between layers 2 and 3 (it could be any, as this dataset is artificial). In the following plot we can observe the partition between the layers, and how the sampes are effectively disturbed accross the depth of the site.
+For the example, we consider a hypothetical complete sequence divided in 5 cm layers, which is a standard measure in field archaeology. For simplicity, we will focus in only one transition. For example, the transition between layers 2 and 3 (it could be any, as this dataset is artificial). In the following plot we can observe the partition between the layers, and how the sampes are effectively disturbed accross the depth of the site.
 
 ```{r}
 set.seed(1234)
@@ -662,7 +662,7 @@ text(x=seq(7380,6380,-50),y=seq(100,0,-5),
 
 ```
 
-We can also observe below how, without disturbance, the samples are grouped by their year and their value is similar to Markov processes seen before, whereas for the disturbed, the Markov process seems broken and the samples have been redistributed randomly (according to the specified distribution), although the initial distribution (without disturbance) can still be hinted.
+We can also observe below how, without disturbance, the samples are grouped by their year and their value is similar to the Markov processes seen before, whereas for the disturbed, the Markov process seems broken and the samples have been redistributed according to the specifications, although the initial distribution (without disturbance) can still be hinted.
 
 ```{r}
 ### Prepare for plots
@@ -731,7 +731,7 @@ plot(spd_l23wd2, main = "Layer 3 with disturbation b = 1")
 
 ```
 
-To check for the possible effect, we can increase the effect of the parameter $b$ within the Laplace distribution to increase the vertical displacement. In this case, setting $b = 0.5$ show a greater vertical displacement.
+To check for the possible effect, we can increase the effect of the parameter $b$ within the Laplace distribution to increase the vertical displacement. In this case, setting $b = 0.5$ shows greater vertical displacement.
 
 ```{r, echo = FALSE}
 ### NOW WE TRY WITH HIGHER DISTURBATION EFFECT
@@ -810,7 +810,7 @@ text(x=seq(7380,6380,-50),y=seq(100,0,-5),
      labels = seq(20,1,-1), cex = 0.7)
 ```
 
-In this case, we can see the long tail for disturbed sample. Note that the tail is assymmetric because, as stated above, all samples displaced further up than depth 0 (which would the surface and coincides with year 6501 BP) are discarded, as they are considered lost.
+In this case, we can see the long tail for disturbed sample. Note that the tail is assymmetric because, as stated above, all samples displaced further up than depth 0 (which would be the surface and coincides with year 6501 BP) are discarded, as they are considered lost.
 
 ```{r, echo = FALSE}
 ## Create layers for plots
@@ -834,7 +834,7 @@ plot(table(ext_l23wd2[,1]), col = "darkblue", ylab = "N samples",
      main = "N samples layer 3 with disturbation b = 0.5")
 ```
 
-Now we can see how the SPD for the disturbed deposits span through a larger timespan than the non-disturbed deposits. Even more if we take into account that the expansion towards the present is disregarded for the above mentioned reasons.
+Now we can see how the SPD for the disturbed deposits spans through a larger timespan than the non-disturbed deposits. Even more if we take into account that the expansion towards the present is disregarded for the above mentioned reasons.
 
 ```{r, echo = FALSE, results=FALSE}
 ## Build SPDs
@@ -857,7 +857,7 @@ plot(spd_ext_l23wd2, main = "Layer 3 with disturbation b = 0.1")
 
 ### Archaeological sampling
 
-In any case, the images above were showing assuming a very hypothetical research data; that is, assuming that the researcher could dispose of every single (remaining) 14C sample in the site for dating or, at least, a good representative amount of them. However, dating is expensive, and it is not frequent to have dating programs including several samples for one layer. Usually, at most two or three dates are retrieved from a layer in case of doubt (which is already indicated uncertainty), where in the most common situation, a single is considered enough to date a site.
+In any case, the images shown above were assuming a very hypothetical research data; that is, assuming that the researcher could dispose of every single (remaining) 14C sample in the site for dating or, at least, a good representative amount of them. However, dating is expensive, and it is not frequent to have dating programs including several samples for one layer. Usually, at most two or three dates are retrieved from a layer in case of doubt (which is already indicating uncertainty), where in the most common situation, a single sample is considered enough to date a layer.
 
 Focusing only on layer 3, in the following sequence of plots, we have randomly selected and calibrated one single date to see if that would approach the actual age of the layer, mimicking general archaeological methodology.
 
@@ -880,6 +880,7 @@ for (i in 1:9){
 If $b = 1$ we still have a general good approach, although some differences in the distribution are appreciated and some dates (such as date number 9) show a different behaviour.
 
 ```{r, echo = FALSE, results = FALSE}
+par(mfrow = c(3,3))
 for (i in 1:9){
   c <- calibrate(layer3_wd[i,1],layer3_wd[i,3])
   plot(c, main = "b = 1")
@@ -889,6 +890,7 @@ for (i in 1:9){
 For the case of $b = 0.5$ there are indeed even more differences among the dates.
 
 ```{r, echo = FALSE, results = FALSE}
+par(mfrow = c(3,3))
 for (i in 1:9){
   c <- calibrate(layer3_high_wd[i,1],layer3_high_wd[i,3])
   plot(c, main = "b = 0.5")
@@ -898,6 +900,7 @@ for (i in 1:9){
 If $b = 0.1$ more than half of the dates would not be representative of the actual age of the site.
 
 ```{r, echo = FALSE, results = FALSE}
+par(mfrow = c(3,3))
 for (i in 1:9){
   c <- calibrate(layer3_ext_wd[i,1],layer3_ext_wd[i,3])
   plot(c, main = "b = 0.1")
