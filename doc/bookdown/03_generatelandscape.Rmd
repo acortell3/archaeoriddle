@@ -78,7 +78,10 @@ plot(faketemp,type="l",ylab="temperature change",xlab="time")
 
 Generate a 2D landscape using perlin noise cf [this post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
 
-```{r}
+```{r perlinnoise,cache=F}
+library(terra)
+library(sf)
+
 perlin_noise <- function( 
   n = 5,   m = 7,    # Size of the grid for the vector field
   N = 100, M = 100   # Dimension of the image
@@ -128,36 +131,114 @@ k <- 8
 m <- perlin_noise(2,2,2^k,2^k)
 for( i in 2:k )
   m <- m + a^i * perlin_noise(2^i,2^i,2^k,2^k)
-image(m)
+plot(rast(m))
 ```
 
+
+rescal `m` as positive integer
+```{r,cache=F}
+height=(m[,])*20
+```
+
+Tweak a bit the perlin noise to have more difference between low area and high are
+
+```{r threedim,cache=F}
+library(rayshader)
+#height[height<50]=0
+height=height^3
+height=height+abs(mean(height))
+height[height<min(height)*.25]=min(height)*.25
+height_map = rayshader::raster_to_matrix(raster(height)) 
+
+
+height_map |>
+  sphere_shade(texture = "imhof1",zscale=5) |>
+  add_shadow(ray_shade(height_map, zscale = 19), 0.8) |>
+  add_shadow(ambient_shade(height_map), 0,5) |>
+  add_shadow(lamb_shade(height_map), 0) |>
+  plot_3d(height_map, zscale = 10, fov = 0, theta = 135, zoom = 1, phi = 65, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
+
+Sys.sleep(0.2)
+render_highquality( samples=256, clear = TRUE,parallel=TRUE,light=TRUE)
+
+```
+
+
+
+```{r,cache=F}
+height.ras=rast(height)
+plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
+height.ras=rast(height)
+height.ras[height.ras>mean(height.ras[])]=NA
+plot(height.ras,col="lightblue",add=T,legend=F)
+height.ras=rast(height)
+maxh=max(height.ras[],na.rm=T)
+height.ras[height.ras<mean(height.ras[])]=NA
+height.ras[height.ras<(maxh*.7)]=1
+height.ras[height.ras>(maxh*.7)]=200
+height.ras[is.na(height.ras)]=-1
+height.poly=as.polygons(height.ras)
+height.poly=as.polygons(height.ras)
+viable=height.poly[2,]
+n=10
+size=rexp(n)
+sites=spatSample(viable,n)
+plot(sites,cex=2,pch=21,add=T,bg=rainbow(10,alpha=.6))
+
+```
 Add a couple of sites with exponentially distributed size
 
-```{r}
-n=10
-lat=runif(n)
-lon=runif(n)
-size=rexp(n)
-image(m,axes=F)
-points(lon,lat,bg="green",pch=21,cex=size+1)
 
+
+```{r,cache=F}
+height.ras=rast(height)
+plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
+height.ras=rast(height)
+height.ras[height.ras>mean(height.ras[])]=NA
+plot(height.ras,col="lightblue",add=T,legend=F)
+height.ras=rast(height)
+maxh=max(height.ras[],na.rm=T)
+height.ras[height.ras<mean(height.ras[])]=NA
+height.ras[height.ras<(maxh*.7)]=1
+height.ras[height.ras>(maxh*.7)]=200
+height.ras[is.na(height.ras)]=-1
+height.poly=as.polygons(height.ras)
+height.poly=as.polygons(height.ras)
+viable=height.poly[2,]
+
+library(igraph)
+crs(sites)="+proj=moll"
+ig=graph_from_adjacency_matrix(as.matrix(distance(sites)),weighted=T,mode="undirected")
+ig=set_graph_attr(ig,"layout",crds(sites))
+
+    V(ig)$label=""
+    V(ig)$size=600
+    V(ig)$frame.color="black"
+    V(ig)$frame.width=.5
+    E(ig)$weight=1/(E(ig)$weight^2)
+    E(ig)$width=(E(ig)$weight*200+.6)
+
+    allcomu=cluster_louvain(ig)$memberships[1,]
+    V(ig)$color=allcomu
+    E(ig)$color=allcomu[head_of(ig,E(ig))]
+	plot(ig,add=T,rescale=F)
 ```
 
 let's say the climate modulate site size in a naive way:
 
 
-```{r,animation.hook="gifski",interval=0.2,cache=TRUE}
+```{r,animation.hook="gifski",interval=0.2,cache=TRUE,eval=F}
 for(i in seq(1,tstep,length.out=100)){
 	layout(matrix(1:2,nrow=2,ncol=1),heights=c(.8,.2))
 	par(mar=c(1,2,2,1))
 	image(m,ann=F,axes=F,main=i)
 	mtext(round(i),3,1)
 	nsize=size*faketemp[i]+size+1
-	points(lon,lat,bg="green",pch=21,cex=nsize)
+	points(crds(sites),bg="green",pch=21,cex=nsize)
 	par(mar=c(2,2,0,1))
 	plot(1:tstep,faketemp,type="l",ylab="temp",xlab="time",ylim=range(faketemp),ann=F,frame.plot=F)
 	points(i,faketemp[i],col="red",pch=20)
 }
 ```
 
-i
+
