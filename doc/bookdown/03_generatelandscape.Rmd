@@ -79,6 +79,7 @@ plot(faketemp,type="l",ylab="temperature change",xlab="time")
 Generate a 2D landscape using perlin noise cf [this post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
 
 ```{r perlinnoise,cache=F}
+install.packages(c("terra","sf"))
 library(terra)
 library(sf)
 
@@ -186,7 +187,8 @@ sites=spatSample(viable,n)
 plot(sites,cex=2,pch=21,add=T,bg=rainbow(10,alpha=.6))
 
 ```
-Add a couple of sites with exponentially distributed size
+
+Add a couple of sites with exponentially distributed size and make a network out of it.  
 
 
 
