@@ -144,12 +144,13 @@ height=(m[,])*20
 Tweak a bit the perlin noise to have more difference between low area and high are
 
 ```{r threedim,cache=F}
+library(vctrs)
 library(rayshader)
 #height[height<50]=0
 height=height^3
 height=height+abs(mean(height))
 height[height<min(height)*.25]=min(height)*.25
-height_map = rayshader::raster_to_matrix(raster(height)) 
+height_map = raster_to_matrix(raster::raster(height)) 
 
 
 height_map |>
@@ -195,17 +196,17 @@ sites=spatSample(viable,n)
 
 height.ras=rast(height)
 plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
-height.ras=rast(height)
-height.ras[height.ras>mean(height.ras[])]=NA
+height.wat=height.ras
+height.wat[height.wat>mean(height.wat[])]=NA
 plot(height.ras,col="lightblue",add=T,legend=F)
 plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
-height.ras=rast(height)
+height.groups=height.ras
 maxh=max(height.ras[],na.rm=T)
-height.ras[height.ras<mean(height.ras[])]=NA
-height.ras[height.ras<(maxh*.7)]=1
-height.ras[height.ras>(maxh*.7)]=200
-height.ras[is.na(height.ras)]=-1
-height.poly=as.polygons(height.ras)
+height.groups[height.groups<mean(height.groups[])]=NA
+height.groups[height.groups<(maxh*.7)]=1
+height.groups[height.groups>(maxh*.7)]=200
+height.groups[is.na(height.groups)]=-1
+height.poly=as.polygons(height.groups)
 viable=height.poly[2,]
 ```
 
@@ -229,12 +230,8 @@ allcomu=cluster_louvain(ig)$memberships[1,]
 V(ig)$color=allcomu
 E(ig)$color=allcomu[head_of(ig,E(ig))]
 
-height.ras=rast(height)
 plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
-height.ras=rast(height)
-height.ras[height.ras>mean(height.ras[])]=NA
-plot(height.ras,col="lightblue",add=T,legend=F)
-plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
+plot(height.water,col="lightblue",add=T,legend=F)
 plot(ig,add=T,rescale=F)
 ```
 
