@@ -152,7 +152,7 @@ height[height<min(height)*.25]=min(height)*.25
 
 Rayshader play
 
-```{r threedim,cache=F,eval=F}
+```{r threedim,cache=F,eval=T}
 library(vctrs)
 library(rayshader)
 height_map = raster_to_matrix(raster::raster(height)) 
@@ -232,7 +232,7 @@ plot(ig,add=T,rescale=F)
 
 Visualise sites on the 3D plots
 
-```{r 3Dnetwork,cache=F,eval=F}
+```{r 3Dnetwork,cache=F,eval=T}
 height_map |>
   sphere_shade(texture = "imhof1",zscale=5) |>
   add_shadow(ray_shade(height_map, zscale = 19), 0.8) |>
