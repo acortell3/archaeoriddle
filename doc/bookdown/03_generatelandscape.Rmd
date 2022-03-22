@@ -78,7 +78,7 @@ plot(faketemp,type="l",ylab="temperature change",xlab="time")
 
 Generate a 2D landscape using perlin noise cf [this post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
 
-```{r perlinnoise,cache=F}
+```{r perlinnoise}
 #install.packages(c("terra","sf"))
 library(terra)
 library(sf)
@@ -138,7 +138,7 @@ plot(rast(m))
 
 Tweak a bit the perlin noise to have more difference between low area and high area and make it more "DEM" looking
 
-```{r padjuperlin,cache=F}
+```{r padjuperlin}
 height=(m[,])*20
 #height[height<50]=0
 height=height^3
@@ -148,7 +148,7 @@ height[height<min(height)*.25]=min(height)*.25
 
 Rayshader play
 
-```{r threedim,cache=F,eval=T}
+```{r threedim,eval=T}
 library(vctrs)
 library(rayshader)
 height_map = raster_to_matrix(raster::raster(height)) 
@@ -166,7 +166,7 @@ render_highquality( samples=256, clear = TRUE,light=TRUE)
 Visual the map as a simple 2D raster
 
 
-```{r 2dVisu,cache=F}
+```{r 2dVisu}
 
 height.ras=rast(height)
 maxh=max(height.ras[],na.rm=T)
@@ -183,7 +183,7 @@ Generate sites in specific location (not on mountains, not in water) with expone
 
 
 
-```{r splitArea,cache=F}
+```{r splitArea}
 n=10
 size=rexp(n)
 
@@ -204,7 +204,7 @@ plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 
 Use sites to create a network
 
-```{r sitesnetwork,cache=F}
+```{r sitesnetwork}
 
 library(igraph)
 crs(sites)="+proj=moll"
@@ -229,7 +229,7 @@ plot(ig,add=T,rescale=F)
 
 Visualise sites on the 3D plot
 
-```{r 3Dnetwork,cache=F,eval=T}
+```{r 3Dnetwork,eval=T}
 
 plot_3d(hm_lamb,height_map, zscale = 20, fov = 0, theta = 20, zoom = 1, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7)
 
