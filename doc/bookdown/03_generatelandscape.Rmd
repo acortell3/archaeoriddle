@@ -160,8 +160,7 @@ height_map |>
   add_shadow(lamb_shade(height_map), 0) |>
   plot_3d(height_map, zscale = 10, fov = 0, theta = 135, zoom = 1, phi = 65, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
 
-Sys.sleep(0.2)
-render_highquality( samples=256, clear = TRUE,parallel=TRUE,light=TRUE)
+render_highquality( samples=256, clear = TRUE,light=TRUE)
 
 ```
 
@@ -196,12 +195,15 @@ height.poly=as.polygons(height.groups)
 viable=height.poly[2,]
 
 sites=spatSample(viable,n)
+
+plot(height.ras^1.9,col=terrain.colors(50),legend=F,reset=F)
+plot(height.wat,col="lightblue",add=T,legend=F)
 plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 ```
 
 Use sites to create a network
 
-```{r sitesnetwork}
+```{r sitesnetwork,cache=F}
 
 library(igraph)
 crs(sites)="+proj=moll"
@@ -222,6 +224,24 @@ E(ig)$color=allcomu[head_of(ig,E(ig))]
 plot(height.ras^1.9,col=terrain.colors(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
 plot(ig,add=T,rescale=F)
+```
+
+Visualise sites on the 3D plots
+
+```{r 3Dnetwork,cache=F}
+height_map |>
+  sphere_shade(texture = "imhof1",zscale=5) |>
+  add_shadow(ray_shade(height_map, zscale = 19), 0.8) |>
+  add_shadow(ambient_shade(height_map), 0,5) |>
+  add_shadow(lamb_shade(height_map), 0) |>
+  plot_3d(height_map, zscale = 20, fov = 0, theta = 135, zoom = 1, phi = 65, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7)
+
+render_points(extent = raster::extent(raster::raster(height.ras)),
+             lat = crds(sites)[,"y"], long = crds(sites)[,"x"], altitude =extract(height.ras,sites)[,2]+20,
+             zscale=20,size=2,col="red",clear_previous = TRUE)
+       
+render_highquality(point_radius=2,samples=256, clear = TRUE,light=TRUE)
+
 ```
 
 let's say the climate modulate site size in a naive way:
