@@ -227,7 +227,7 @@ plot(height.wat,col="lightblue",add=T,legend=F)
 plot(ig,add=T,rescale=F)
 ```
 
-Visualise sites on the 3D plots
+Visualise sites on the 3D plot
 
 ```{r 3Dnetwork,cache=F,eval=T}
 
