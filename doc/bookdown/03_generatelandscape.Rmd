@@ -79,7 +79,7 @@ plot(faketemp,type="l",ylab="temperature change",xlab="time")
 Generate a 2D landscape using perlin noise cf [this post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
 
 ```{r perlinnoise,cache=F}
-install.packages(c("terra","sf"))
+#install.packages(c("terra","sf"))
 library(terra)
 library(sf)
 
