@@ -143,15 +143,19 @@ height=(m[,])*20
 
 Tweak a bit the perlin noise to have more difference between low area and high are
 
-```{r threedim,cache=F}
-library(vctrs)
-library(rayshader)
+```{r padjuperlin,cache=F}
 #height[height<50]=0
 height=height^3
 height=height+abs(mean(height))
 height[height<min(height)*.25]=min(height)*.25
-height_map = raster_to_matrix(raster::raster(height)) 
+```
 
+Rayshader play
+
+```{r threedim,cache=F,eval=F}
+library(vctrs)
+library(rayshader)
+height_map = raster_to_matrix(raster::raster(height)) 
 
 height_map |>
   sphere_shade(texture = "imhof1",zscale=5) |>
@@ -228,7 +232,7 @@ plot(ig,add=T,rescale=F)
 
 Visualise sites on the 3D plots
 
-```{r 3Dnetwork,cache=F}
+```{r 3Dnetwork,cache=F,eval=F}
 height_map |>
   sphere_shade(texture = "imhof1",zscale=5) |>
   add_shadow(ray_shade(height_map, zscale = 19), 0.8) |>
