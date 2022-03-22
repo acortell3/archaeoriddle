@@ -2,7 +2,7 @@
 
 Let's Create a fake environment
 
-```{r}
+```{r function_autocorel}
 
 #' From tuneR package (implemented in the file Waveforms.R in tuneR source)
 #'
@@ -70,7 +70,7 @@ gauss <- function(N,mean,delta,v){
 To generate a fake climate with various properties:
 
 
-```{r}
+```{r generateFakeClimate}
 tstep=1000
 faketemp=environment(tstep,omega=3,delta=1.5)+1.5
 plot(faketemp,type="l",ylab="temperature change",xlab="time")   
@@ -136,14 +136,10 @@ plot(rast(m))
 ```
 
 
-rescal `m` as positive integer
-```{r,cache=F}
-height=(m[,])*20
-```
-
-Tweak a bit the perlin noise to have more difference between low area and high are
+Tweak a bit the perlin noise to have more difference between low area and high area and make it more "DEM" looking
 
 ```{r padjuperlin,cache=F}
+height=(m[,])*20
 #height[height<50]=0
 height=height^3
 height=height+abs(mean(height))
@@ -157,12 +153,11 @@ library(vctrs)
 library(rayshader)
 height_map = raster_to_matrix(raster::raster(height)) 
 
-height_map |>
-  sphere_shade(texture = "imhof1",zscale=5) |>
-  add_shadow(ray_shade(height_map, zscale = 19), 0.8) |>
-  add_shadow(ambient_shade(height_map), 0,5) |>
-  add_shadow(lamb_shade(height_map), 0) |>
-  plot_3d(height_map, zscale = 10, fov = 0, theta = 135, zoom = 1, phi = 65, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
+hm_shade <-  sphere_shade(height_map,texture = "imhof1",zscale=5) 
+hm_ray  <-  add_shadow(hm_shade,ray_shade(height_map, zscale = 19), 0.8) 
+hm_ambiant  <- add_shadow(hm_ray,ambient_shade(height_map), 0,5) 
+hm_lamb = add_shadow(hm_ambiant,lamb_shade(height_map), 0) 
+plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 135, zoom = 1, phi = 65, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
 
 render_highquality( samples=256, clear = TRUE,light=TRUE)
 
@@ -171,11 +166,13 @@ render_highquality( samples=256, clear = TRUE,light=TRUE)
 Visual the map as a simple 2D raster
 
 
-```{r,cache=F}
+```{r 2dVisu,cache=F}
 
 height.ras=rast(height)
 maxh=max(height.ras[],na.rm=T)
-plot((height.ras)^1.9,col=terrain.colors(50),legend=F,reset=F)
+col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
+
+plot(height.ras^1.9,col=col_ramp(20),legend=F,reset=F)
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 plot(height.wat,col="lightblue",add=T,legend=F)
@@ -186,7 +183,7 @@ Generate sites in specific location (not on mountains, not in water) with expone
 
 
 
-```{r,cache=F}
+```{r splitArea,cache=F}
 n=10
 size=rexp(n)
 
@@ -200,7 +197,7 @@ viable=height.poly[2,]
 
 sites=spatSample(viable,n)
 
-plot(height.ras^1.9,col=terrain.colors(50),legend=F,reset=F)
+plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
 plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 ```
@@ -225,7 +222,7 @@ allcomu=cluster_louvain(ig)$memberships[1,]
 V(ig)$color=allcomu
 E(ig)$color=allcomu[head_of(ig,E(ig))]
 
-plot(height.ras^1.9,col=terrain.colors(50),legend=F,reset=F)
+plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
 plot(ig,add=T,rescale=F)
 ```
@@ -233,18 +230,14 @@ plot(ig,add=T,rescale=F)
 Visualise sites on the 3D plots
 
 ```{r 3Dnetwork,cache=F,eval=T}
-height_map |>
-  sphere_shade(texture = "imhof1",zscale=5) |>
-  add_shadow(ray_shade(height_map, zscale = 19), 0.8) |>
-  add_shadow(ambient_shade(height_map), 0,5) |>
-  add_shadow(lamb_shade(height_map), 0) |>
-  plot_3d(height_map, zscale = 20, fov = 0, theta = 135, zoom = 1, phi = 65, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7)
+
+plot_3d(hm_lamb,height_map, zscale = 20, fov = 0, theta = 135, zoom = 1, phi = 65, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7)
 
 render_points(extent = raster::extent(raster::raster(height.ras)),
              lat = crds(sites)[,"y"], long = crds(sites)[,"x"], altitude =extract(height.ras,sites)[,2]+20,
-             zscale=20,size=2,col="red",clear_previous = TRUE)
+             zscale=20,size=1,col=categorical_pal(max(allcomu))[allcomu],clear_previous = TRUE)
        
-render_highquality(point_radius=2,samples=256, clear = TRUE,light=TRUE)
+render_highquality(point_radius=5,samples=256, clear = TRUE,light=TRUE)
 
 ```
 
