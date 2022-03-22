@@ -7,4 +7,9 @@ Please feel free to edit, add and remove anything you want.
 
 I was thinking to leave this for a while, so that everyone can bring in her/his ideas, and then do a poll among all of us to see the path to take for the final model
 
-pushpull test
+## usefull notes (to be reorganize)
+
+To force compilation:
+```
+ssh git@jomon >> EOF rm _main.Rmd ; Rscript -e 'bookdown::render_book("index.Rmd",output_dir="/var/www/html/collaborabm")' EOF
+```
