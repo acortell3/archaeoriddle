@@ -165,23 +165,17 @@ render_highquality( samples=256, clear = TRUE,parallel=TRUE,light=TRUE)
 
 ```
 
+Visual the map as a simple 2D raster
 
 
 ```{r,cache=F}
-height.ras=rast(height)
-plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
-height.ras=rast(height)
-height.ras[height.ras>mean(height.ras[])]=NA
-plot(height.ras,col="lightblue",add=T,legend=F)
+
 height.ras=rast(height)
 maxh=max(height.ras[],na.rm=T)
-height.ras[height.ras<mean(height.ras[])]=NA
-height.ras[height.ras<(maxh*.7)]=1
-height.ras[height.ras>(maxh*.7)]=200
-height.ras[is.na(height.ras)]=-1
-height.poly=as.polygons(height.ras)
-height.poly=as.polygons(height.ras)
-viable=height.poly[2,]
+plot((height.ras)^1.9,col=terrain.colors(50),legend=F,reset=F)
+height.wat=height.ras
+height.wat[height.wat>mean(height.wat[])]=NA
+plot(height.wat,col="lightblue",add=T,legend=F)
 
 ```
 
@@ -192,22 +186,17 @@ Generate sites in specific location (not on mountains, not in water) with expone
 ```{r,cache=F}
 n=10
 size=rexp(n)
-sites=spatSample(viable,n)
 
-height.ras=rast(height)
-plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-plot(height.ras,col="lightblue",add=T,legend=F)
-plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 height.groups=height.ras
-maxh=max(height.ras[],na.rm=T)
 height.groups[height.groups<mean(height.groups[])]=NA
 height.groups[height.groups<(maxh*.7)]=1
 height.groups[height.groups>(maxh*.7)]=200
 height.groups[is.na(height.groups)]=-1
 height.poly=as.polygons(height.groups)
 viable=height.poly[2,]
+
+sites=spatSample(viable,n)
+plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 ```
 
 Use sites to create a network
@@ -220,17 +209,17 @@ ig=graph_from_adjacency_matrix(as.matrix(distance(sites)),weighted=T,mode="undir
 ig=set_graph_attr(ig,"layout",crds(sites))
 
 V(ig)$label=""
-V(ig)$size1=(size+1)*300
+V(ig)$size=(size+1)*350
 V(ig)$frame.color="black"
 V(ig)$frame.width=.5
 E(ig)$weight=1/(E(ig)$weight^2)
-E(ig)$width=(E(ig)$weight*200+.6)
+E(ig)$width=(exp(E(ig)$weight)+.6)
 
 allcomu=cluster_louvain(ig)$memberships[1,]
 V(ig)$color=allcomu
 E(ig)$color=allcomu[head_of(ig,E(ig))]
 
-plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
+plot(height.ras^1.9,col=terrain.colors(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
 plot(ig,add=T,rescale=F)
 ```
