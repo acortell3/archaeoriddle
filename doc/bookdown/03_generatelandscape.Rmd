@@ -192,20 +192,19 @@ Generate sites in specific location (not on mountains, not in water) with expone
 n=10
 size=rexp(n)
 sites=spatSample(viable,n)
-plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 
 height.ras=rast(height)
 plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
 height.ras=rast(height)
 height.ras[height.ras>mean(height.ras[])]=NA
 plot(height.ras,col="lightblue",add=T,legend=F)
+plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 height.ras=rast(height)
 maxh=max(height.ras[],na.rm=T)
 height.ras[height.ras<mean(height.ras[])]=NA
 height.ras[height.ras<(maxh*.7)]=1
 height.ras[height.ras>(maxh*.7)]=200
 height.ras[is.na(height.ras)]=-1
-height.poly=as.polygons(height.ras)
 height.poly=as.polygons(height.ras)
 viable=height.poly[2,]
 ```
@@ -229,6 +228,13 @@ E(ig)$width=(E(ig)$weight*200+.6)
 allcomu=cluster_louvain(ig)$memberships[1,]
 V(ig)$color=allcomu
 E(ig)$color=allcomu[head_of(ig,E(ig))]
+
+height.ras=rast(height)
+plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
+height.ras=rast(height)
+height.ras[height.ras>mean(height.ras[])]=NA
+plot(height.ras,col="lightblue",add=T,legend=F)
+plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 plot(ig,add=T,rescale=F)
 ```
 
