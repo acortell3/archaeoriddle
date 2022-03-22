@@ -231,7 +231,7 @@ V(ig)$color=allcomu
 E(ig)$color=allcomu[head_of(ig,E(ig))]
 
 plot(height.ras,col=terrain.colors(50),legend=F,reset=F)
-plot(height.water,col="lightblue",add=T,legend=F)
+plot(height.wat,col="lightblue",add=T,legend=F)
 plot(ig,add=T,rescale=F)
 ```
 
