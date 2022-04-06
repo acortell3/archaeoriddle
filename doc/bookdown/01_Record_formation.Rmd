@@ -168,7 +168,7 @@ This is how each variable works specifically:
 
 * **Waste produced** ($W/m^2$ or just $W$) **(outcome variable)**: Archaeological record present per $m^2$. Since we are considering C14 dates, then this is a proportion of the organic material that could be found in a site. We have considered these a discrete variable (number of potential samples) with range $[0,\propto K]$. *Defined in code as* `W`.
 * **Population (group size)** ($Pop$): Discrete variable with range $[0,\sim K]$. Population group size is key to determine anthropogenic deposition rates (which in turn determine $W$) but it can also be used as a proxy to determine $W$ in case those are not accounted for since, in that case, $W \propto Pop$. Although this variable can, like the rest, be set as a constant by the user, this is unadvised, as demographic processes are rarely constant. In any case, the user does have to provide a value for the carrying capacity ($K$) as this will limit population growth. The user must infer carrying capacity (maximum possible number of people within a site) based on prior expert knowledge. *Defined in code as* `Pop`.
-* **Anthropogenic deposition rates** ($Adr$): This is a continuous variable, with range $[0,\infty]$, measured in *cm/year*. Ultimately, this should define the amount of waste produced in a site, and we have considered its possible conditioning on two other variables: (1) $Pop$ and (2) $Site function$ or $Sf$. The user can decide to condition $Adr$ on $Pop$, on $Sf$, on both or on none, by providing directly the value. *Defined in code as* `Adr`.  <font size ="0.5"> *The upper range must be reassessed based on literature* </font>.
+* **Anthropogenic deposition** ($Adr$): Amount of bone kilogram/year deposited by each unit (group or person). This is a continuous variable, with range $[0,\infty]$, measured in *Kg*. See *Anthropogenic deposition protocol* for full definition.
 * **Natural deposition rates** ($Ndr$): This is a continuous variable, with range $[0,\infty]$, measured in *cm/year*. Deposition rates from natural causes can heavily condition the formation process of the archaeological record. In turn, the type of site (whether it is an open-air site, a cave or a rockshelter) can severely affect them. As in all the other cases, the user can chose to set them, if known, to model them or to disable them. *Defined in code as* `Ndr`. <font size ="0.5"> *The upper range must be reassessed based on literature* </font>.
 * **Site function** ($Sf$): This is a categoric variable with four categories: *residential*, *logistic*, *permanent* and *funeral*. Although the production of archaeological waste usually is strongly related to $Pop$, the function of site ($Sf$), or what was its purpose, and the activities developed in that site, can also condition $Adr$. For example, in the most obvious case, a group with the same number of people would not be producing the same amount of waste per year for a residential camp, occupied during long periods or even permanently, than for a logistic camp, occupied only during a few weeks per year. *Defined in code as* `S_f`.
 * **Site type** ($St$): Categoric variable with three categories, representing the three main types of site in Prehistory: *open-air site*, *cave* and *rockshelter*. The site belonging to one category or the other can have a strong effect on natural deposition rates ($Ndr$). Although this variable can also be disabled, in practice this forces the user to introduce a value for $Ndr$ in case it is considered for modelling. *Defined in code as* `S_t`.
@@ -287,15 +287,28 @@ K_lim <- function(x,k,prob = 0.8){
 
 ```
 
-### Anthropogenic deposition rates ($Adr$) Adr-protocol
+### Anthropogenic deposition ($Adr$) Adr-protocol
 
-This generates the amount of human waste produced per year. It can be used either directly from the previous Pop-protocol, only taking into account the site function (which unavoidably yields a fixed rate for all the period considered) or, the most advisable, as a combination of the previous processes. It contains one function `A_dep_r()`, which includes one parameter `S_f`, defining the function of the site. If `S_f = NULL`, then the site function has no effect. Alternatively, the parameter `Pop` can be introduced manually, or retrieved from the previuous protocol. If the parameter `Pop = NULL`, population has no effect on deposition rates. If both `Pop` and `S_f` are active, they both configure the final `Adr` outcome. However, if both are `NULL`, then the function will throw an error. In that case, the user will have to introduce manually the anthropogenic deposition rates for the computation of $W$ in subsequent processes.
+This generates the amount of human waste produced per year (In bone kilograms). It can be used either directly from the previous Pop-protocol, only taking into account the site function (which unavoidably yields a fixed rate for all the period considered) or, the most advisable, as a combination of the previous processes. The amount of bone kilogram consumed per year is defined as:
+
+$$Adr_t = F \times \left( \frac {P_t \times (\frac {Tc \times C}{Ck})}{12} \times O \right)$$
+Where:
+* $F$ is the quantity of bone per meat consumed, expressed as a percentage with range $[0,1]$
+* $P_t$ is the population at a specific time
+* $Tc$ it the total amount of Kilocalories extracted from bone consumed by an individual in one year. We will call $Ca$ the amount of Kcal per day and person and this is considered a discrete value with range $[1500,3000]$. In addition, we must consider that not all of the calories consumed by humans belong to meat. Thus, we need to include a correction, accounting for how much of those calories is extracted from meat. This correction is introduced as a percentage $M[0,1]$. Thus, $Tc$ is defined as
+
+$$Tc = Ca \times M \times 365$$
+
+* $C$ Mainly among hunter-gatherer societies, foray parties do not consume a variable amount of food within the camp, but they do so during their activities. This has been reported to be up to 90% of food consumed in a day for the foraging group (Collette-Barbesque et al. 2016). Thus, the variable $c[0,1]$, again as percentage, control for hoy much meat is brought back to the camp. 
+* $Ck$ is the amount of Kilocalories produced by each Kilogram of meat. Again, this can be variable, but to keep it reasonable, we have decided to express this as a continuous variables (although frequently discrete values will be provided) with range $[1000,2500]$.
+* $O$ represents the month of occupations of the site in a year. This is a discrete variable with range $[1,12]$ and, for permanent and funeral sites, it $O = 12$.
+
+The function `A_dep_r()`, contains the specifications from above. It also includes one parameter `S_f`, defining the function of the site. If `S_f = NULL`, then the site function has no effect. Alternatively, the parameter `Pop` can be introduced manually, or retrieved from the previous protocol. If both `Pop` and `S_f` are active, they both configure the final `Adr` outcome. However, if both are `NULL`, then the function will throw an error. In that case, the user will have to introduce manually the anthropogenic deposition rates for the computation of $W$ in subsequent processes.
 
 ```{r}
 
 ## Function 4. Simulation of anthropogenic deposition rates
-#' Returns the total amount of waste produced in the site. An integer.
-#' @title A_dep_r
+#' Returns the Kilograms of bone produced per year in a site.
 #' @param x: Integer (user provided) or data.frame. It is the number of people
 #' inhabiting the site. If data.frame, the number of people is the number of rows. 
 #' @param S_f: String. It is the site functionality, and it modulates the effect
@@ -308,9 +321,24 @@ This generates the amount of human waste produced per year. It can be used eithe
 #' per year, in months) must be specified. Default is NULL, but if left NULL,
 #' the function considers 1 month for logistic camps and 3 months for 
 #' residential camps.
+#' @param ca: Continuous value. It is the average of calories per adult person 
+#' consumed per day. It's the mean between man average and woman average. Although
+#' it is not limited, values should range between 1500 and 3000. Default is 2000.
+#' @param m: Percentage. It is the amount of those calories that is meat (and not
+#' other types of food, such as cereal, fish, etc.). Some values for this are offered 
+#' in Cordain (2002) and Cordain et al. (2000). Default is 0.65.
+#' @param c: Percentage. Represents how much of the food is consumed within the camp.
+#' Default is 0.6, following the work of Collette-Barbesque et al. (2016).
+#' @param ck: Kcalories per Kilogram of meet. Continuous variable. This can be very
+#' variable. Although it is not limited, values should stay between 1000 and 2500.
+#' Defaul is 1850, since this is the mean after checking with BEDCA database. More
+#' info in paper. 
+#' @param f: Percentage of bone per meat consumed. Default is 0.07 following
+#' archaeological literature. 
 #' @export
 
-A_dep_r <- function(x,S_f = "p", occ = NULL){
+A_dep_r <- function(x,S_f = "p", occ = NULL, ca = 2000, m = 0.65, c = 0.6, 
+                    ck = 1850, f = 0.07){
   try(if(is.null(x) == TRUE & is.null(S_f) == TRUE) 
     stop("Population and Site function undefined"))
   
@@ -327,19 +355,17 @@ A_dep_r <- function(x,S_f = "p", occ = NULL){
       occ <- 3
     } else if (S_f == 'l'){
       occ <- 1
+    } else if ((S_f == 'p')){
+      occ <- 12
     }
   }
   
-  ## Population times goats per person a year (5) times bone Kg per goat (20)
-  ## Dayenoff et al., 2019 for the weight of the carcass.
-  adr <- Pop*5*20
+  ## See main text for definitions
+  ca <- ca*365 ## Calories per person/year
+  tc <- ca*m ## Define total calories
+  adr <- (((Pop*((tc*c)/ck))/12)*occ)*f
   
-  if (S_f == 'r'){
-    adr <- round(adr/12*occ)
-  } else if (S_f == 'l'){
-    adr <- round((adr/12*occ)/4) ## Divides by 4 because it is considered that 
-                                 ## heavy food is not brought in place
-  } else if (S_f == 'f'){
+  if (S_f == 'f'){
     adr <- Pop*17 # 17 kg of bone as an average per person
   }
   return(adr)
