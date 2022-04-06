@@ -293,8 +293,11 @@ This generates the amount of human waste produced per year (In bone kilograms). 
 
 $$Adr_t = F \times \left( \frac {P_t \times (\frac {Tc \times C}{Ck})}{12} \times O \right)$$
 Where:
+
 * $F$ is the quantity of bone per meat consumed, expressed as a percentage with range $[0,1]$
+
 * $P_t$ is the population at a specific time
+
 * $Tc$ it the total amount of Kilocalories extracted from bone consumed by an individual in one year. We will call $Ca$ the amount of Kcal per day and person and this is considered a discrete value with range $[1500,3000]$. In addition, we must consider that not all of the calories consumed by humans belong to meat. Thus, we need to include a correction, accounting for how much of those calories is extracted from meat. This correction is introduced as a percentage $M[0,1]$. Thus, $Tc$ is defined as
 
 $$Tc = Ca \times M \times 365$$
