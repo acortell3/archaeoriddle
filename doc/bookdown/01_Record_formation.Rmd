@@ -1,14 +1,14 @@
 ---
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
   always_allow_html: true
 ---
 
 # Record formation
 
 ## Theoretical model
-We have produced an Agent-Based Model, replicating the process of formation of the archaeological record in a specific site, accounting for different variables. In order to consider the possible relation between those variables, we have decided to express them as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretic directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by $m^2$).
+We have produced a computational model, replicating the process of formation of the archaeological record in a specific site, accounting for different variables. In order to consider the possible relation between those variables, we have decided to express them as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretic directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by $m^2$).
 
 ```{r, echo = FALSE}
 library(DiagrammeR)
@@ -68,7 +68,7 @@ e -> {f}
 
 ```
 
-The above graph represents a very schematic way to represent the formation of the archaeological record ($W/m^2$). In this case, we are interested in radiocarbon dating; that is the number (and range) of potential 14C dates produced in a site, and this is key to understand the way in which we produced the model. We are aware that generating a specific archaeological palimpsest depends on a large quantity of variables, some of which may be controlled by field archaeologists and some of which may not (or are not). Therefore, the graph above must be read as follows. Asides from the outcome variable, the exposure variables, *Pop (group size)*, *Anthropogenic deposition rates* and *Natural deposition rates* (depicted in orange), are designed in a way that they can be activated for the model to infer them, they can be provided by the archaeologist, or they can be simply ignored. In the most elementary case, the archaeologist could introduce directly the outcome variable ($W/m^2$) without taking into account anything else, if she/he is confident to provide an accurate value.
+The above graph depicts a very schematic way to represent the formation of the archaeological record ($W/m^2$). In this case, we are interested in radiocarbon dating, focusing on bone samples; that is the number (and range) of potential 14C dates produced in a site, and this is key to understand the way in which we produced the model. We are aware that generating a specific archaeological palimpsest depends on a large quantity of variables, some of which may be controlled by field archaeologists and some of which may not (or are not). Therefore, the graph above must be read as follows. Asides from the outcome variable, the exposure variables, *Pop (group size)*, *Anthropogenic deposition rates* and *Natural deposition rates* (depicted in orange), are designed in a way that they can be activated for the model to infer them, they can be provided by the archaeologist, or they can be simply ignored. In the most elementary case, the archaeologist could introduce directly the outcome variable ($W/m^2$) without taking into account anything else, if she/he is confident to provide an accurate value.
 
 However, in most cases, this information will not be known to the field researcher, and in this situation, this variable can be modelled to different extents of complexity. While. For example, in the case of the most simple simulation, the field archaeologist could ignore deposition rates. In this case, and because we are only considering 14C dates, then the quantity of the sample becomes broadly proportional to the number of people present in a site, and thus it could be modelled like this.
 
@@ -162,20 +162,36 @@ b -> {c}
 
 ```
 
-Finally, if these are not known to the archaeologist, but she/he wants to model them, then we would go back to the first DAG where, again, each variable can be either enabled by the user, provided as a user defined value or directly disabled.
+Finally, if these are not known to the archaeologist, but she/he wants to model them, then we would go back to the first DAG. In this case, keep reading for the specificities of the model.
 
 This is how each variable works specifically:
 
-* **Waste produced** ($W/m^2$ or just $W$) **(outcome variable)**: Archaeological record present per $m^2$. Since we are considering C14 dates, then this is a proportion of the organic material that could be found in a site. We have considered these a discrete variable (number of potential samples) with range $[0,\propto K]$. *Defined in code as* `W`.
-* **Population (group size)** ($Pop$): Discrete variable with range $[0,\sim K]$. Population group size is key to determine anthropogenic deposition rates (which in turn determine $W$) but it can also be used as a proxy to determine $W$ in case those are not accounted for since, in that case, $W \propto Pop$. Although this variable can, like the rest, be set as a constant by the user, this is unadvised, as demographic processes are rarely constant. In any case, the user does have to provide a value for the carrying capacity ($K$) as this will limit population growth. The user must infer carrying capacity (maximum possible number of people within a site) based on prior expert knowledge. *Defined in code as* `Pop`.
-* **Anthropogenic deposition** ($Adr$): Amount of bone kilogram/year deposited by each unit (group or person). This is a continuous variable, with range $[0,\infty]$, measured in *Kg*. See *Anthropogenic deposition protocol* for full definition.
-* **Natural deposition rates** ($Ndr$): This is a continuous variable, with range $[0,\infty]$, measured in *cm/year*. Deposition rates from natural causes can heavily condition the formation process of the archaeological record. In turn, the type of site (whether it is an open-air site, a cave or a rockshelter) can severely affect them. As in all the other cases, the user can chose to set them, if known, to model them or to disable them. *Defined in code as* `Ndr`. <font size ="0.5"> *The upper range must be reassessed based on literature* </font>.
-* **Site function** ($Sf$): This is a categoric variable with four categories: *residential*, *logistic*, *permanent* and *funeral*. Although the production of archaeological waste usually is strongly related to $Pop$, the function of site ($Sf$), or what was its purpose, and the activities developed in that site, can also condition $Adr$. For example, in the most obvious case, a group with the same number of people would not be producing the same amount of waste per year for a residential camp, occupied during long periods or even permanently, than for a logistic camp, occupied only during a few weeks per year. *Defined in code as* `S_f`.
-* **Site type** ($St$): Categoric variable with three categories, representing the three main types of site in Prehistory: *open-air site*, *cave* and *rockshelter*. The site belonging to one category or the other can have a strong effect on natural deposition rates ($Ndr$). Although this variable can also be disabled, in practice this forces the user to introduce a value for $Ndr$ in case it is considered for modelling. *Defined in code as* `S_t`.
+* **Waste produced** ($W/m^2$ or just $W$) **(outcome variable)**: Archaeological record present per $m^2$. Since we are considering C14 dates coming from bone, this is the quantity of C14 samples present a time *t* and at a depth *d*. Thus, this variable depends on time and depth. 
+
+$$W(t,d)=function(t,d)$$. 
+
+We have considered this a discrete variable (number of potential samples) with range $[0,\propto K]$. *Defined in code as* `W`.
+
+The variables time ($T$) and depth ($D$) must also be defined. Thus
+
+* **T** describes the time, in years, of existence of the site. For the simulation, this time will be known. Thus, in the simulation $T_{birth}=(T=0)$ and $T_{max}=T_{death}$. Values of $T$ are represented by $t$.
+* **D** is the depth, in cms, where each specific sample is deposited at a time $t$. This is a continuous variable with range $[0,\infty]$, and for any $t$, we know that $0\leq D(t)\leq d_0$ and that 
+
+$$D(t)=D(t-1)-r, t=1,2,...,t_{max}$$
+
+Where $r$ is the deposition rates.
+
+* **Population (group size)** ($P$): Discrete variable with range $[0,\sim K]$. Population group size is key to determine anthropogenic deposition rates (which in turn determine $W$) but it can also be used as a proxy to determine $W$ in case deposition rates are not accounted for since, in any case, $W \propto Pop$. The model includes the possibility to create a stochastic demographic process (see below), but the user can also set fix values for population or set the parameters in a way that the stochastic process is constrained. In any case, the user does have to provide a value for the carrying capacity ($K$) as this will limit population growth. *Defined in code as* `Pop`.
+* **Anthropogenic deposition** ($A$): Amount of bone kilogram/year deposited by each group at a time $t$. This is a continuous variable, with range $[0,\infty]$, measured in *Kg*. See *Anthropogenic deposition protocol* for full definition.
+* **Natural deposition rates** ($r$): This is a continuous variable, with range $[0,0.5]$, measured in *cm/year*. Because, under normal circumstances, bones are thicker that any possible amount of earth deposited per year, even in a perfectly uncorrupted archaeological sequence (which is what is being modelled here), those would occupy microstrats belonging to different years. This variable is one of the responsibles for how many microstrats will each bone be occupying. See *Depth protocol* to understand how it works. *Defined in code as* `r`. 
+* **Site function**: Has not been considered as a variable *per se* but, rather, as a group of variables, which are defined by the functionality of the site, and that condition the outcome of $A$. See *Anthropogenic deposition protocol* to see how these are modelled. 
+* **Site type**: Site type (whether a site is a cave, a rockshelter or an open-air camp) can heavily condition the deposition rates at any archaeological location. However, in order to reduce uncertainty and not make an overcomplex model, we have decided to embed this condition, and the possible expert knowledge related to it, within the definition of the variable $r$.
 
 ## Implementation
 
-In order to fully understand the process, first we will show the protocols and functions that we use to generate each variable.
+This simulation for the creation of the archaeological record has been divided in three phases, or protocols. First, we populate the site, according to a stochastic demographic process, second we generate a sample for each $t$ and, in the third and final step, we distribute the amount of waste for each $d$.
+
+In order to fully understand the process, first we will show the protocols and functions used.
 
 ### Population ($Pop$) Pop-protocol
 
@@ -191,23 +207,27 @@ However, this function also relies on two other functions: `death()` and `K_lim(
 ## Function 1. Generation of population dynamics
 #' Returns a data.frame with two columns, where the number of rows is the number of
 #' people. The first column contains the ages and the second column contains the sex.
-#' @title Gpd
 #' @param x: Input data. A data frame or matrix with two columns and nrow = Initial
 #' population. One row per individual. The first column is the age of the individual.
 #' The second column is the sex of the individual, and must be c("F","M").
 #' @param W_fer_age: Vector with two values. The first value is the youngest age
-#' at which it is considered that women can have children for prehistoric societies.
-#' The second value is the oldest age at which it is considered that women can 
-#' have children. Default is c(10,30).
+#' at which is considered that women can have children for prehistoric societies.
+#'  The second value is the oldest age at which is considered that women can 
+#'  have children. Default is c(10,30).
 #' @param M_fer_age: Vector with two values. The first value is the youngest age
-#' at which it is considered that men can have children for prehistoric societies.
-#' The second value is the oldest age at which it is considered that men can have 
+#' at which is considered that men can have children for prehistoric societies.
+#' The second value is the oldest age at which is considered that men can have 
 #' children. Default is c(15,40)
 #' @param  P_o: Probability of a woman having a son per year. Default is 0.3.
+#' @param prob: Probability that an individual will die if total population
+#' exceeds K. Default is 0.8
+#' @param K: Carrying capacity.
+#' @param ...: This function uses the embedded function death(). 
+#' Their arguments can be added.
 #' @export
 
 Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
-                P_o = 0.3){
+                P_o = 0.3, prob = 0.8, K, ...){
   
   ### Process of having offspring
   
@@ -234,23 +254,21 @@ Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
   
   ### Process of dying
   
-  vec_d <- apply(x,1,death)
+  vec_d <- apply(x,1,death,...)
   x <- x[vec_d==0,]
   
   ## Apply carrying capacty restrictions
-  x <- K_lim(x, K)
+  x <- K_lim(x, k = K, prob = prob)
   
   return(x)
 }
 
 ## Function 2. Simulation of death process
-#' @title death
 #' Returns a value (0,1) where 0 = person lives and 1 = person dies, based
 #' on pd (the probability matrix)
 #' Thought to use with apply
 #' @param x: An integer with the age of the person
-#' @param pd: The probability matrix for mortality by age. A matrix is provided as 
-#' default, but the user should provide another adapted to her/his population.
+#' @param pd: The probability matrix for mortality by age
 #' @export
 
 death <- function(x,pd=data.frame("Age" = c(0:99),
@@ -268,9 +286,9 @@ death <- function(x,pd=data.frame("Age" = c(0:99),
 ## Function 3. Simulation of carrying capacity limitation
 ## If the population exceeds the carrying capacity, it eliminates oversize
 ## with 0.8 probability per person exceeding.
-#' @title K_lim
 #' @param x: Data frame or matrix. Population (number of people)
 #' @param k: Integer. Carrying capacity. Provided by the user
+#' @param prob: It is the probability of dying when surpassing carrying capacity
 #' @export
 
 K_lim <- function(x,k,prob = 0.8){
@@ -284,353 +302,347 @@ K_lim <- function(x,k,prob = 0.8){
   return(x)
 }
 
-
 ```
 
-### Anthropogenic deposition ($Adr$) Adr-protocol
+### Anthropogenic deposition ($A$) A-protocol
 
-This generates the amount of human waste produced per year (In bone kilograms). It can be used either directly from the previous Pop-protocol, only taking into account the site function (which unavoidably yields a fixed rate for all the period considered) or, the most advisable, as a combination of the previous processes. The amount of bone kilogram consumed per year is defined as:
+This generates the amount of human waste produced for each $t$ (In bone kilograms). It is defined as:
 
-$$Adr_t = F \times \left( \frac {P_t \times (\frac {Tc \times C}{Ck})}{12} \times O \right)$$
+$$A(t)= P(t)\times O(t)\times F(t) \times G(t) \tag{1}$$
 Where:
-* $F$ is the quantity of bone per meat consumed, expressed as a percentage with range $[0,1]$
-* $P_t$ is the population at a specific time
-* $Tc$ it the total amount of Kilocalories extracted from bone consumed by an individual in one year. We will call $Ca$ the amount of Kcal per day and person and this is considered a discrete value with range $[1500,3000]$. In addition, we must consider that not all of the calories consumed by humans belong to meat. Thus, we need to include a correction, accounting for how much of those calories is extracted from meat. This correction is introduced as a percentage $M[0,1]$. Thus, $Tc$ is defined as
 
-$$Tc = Ca \times M \times 365$$
+* $P(t)$ is a discrete variable representing the number of living people at a time $t$.
+* $O(t)$ is the proportion of time of the year that the group spends in the camp for each time $t$. It is a continuous variable with range $[0,1]$. In the code, this is defined as the parameter `in_camp_stay` and it is provided as the number of weeks, considering 52 the maximum number of weeks for a year.
+* $F(t)$ is the proportion of bone for the full weight of each Kg of an animal consumed for a time $t$. This is a unit interval variable $[0,1]$.
+* $G(t)$ is the quantity, in Kg, of a (full-weight) animal consumed in a site by each individual at a time $t$. This is a continuous variable with range $[0,\propto K]$. This is a hierarchical variable, defined as follows:
 
-* $C$ Mainly among hunter-gatherer societies, foray parties do not consume a variable amount of food within the camp, but they do so during their activities. This has been reported to be up to 90% of food consumed in a day for the foraging group (Collette-Barbesque et al. 2016). Thus, the variable $c[0,1]$, again as percentage, control for hoy much meat is brought back to the camp. 
-* $Ck$ is the amount of Kilocalories produced by each Kilogram of meat. Again, this can be variable, but to keep it reasonable, we have decided to express this as a continuous variables (although frequently discrete values will be provided) with range $[1000,2500]$.
-* $O$ represents the month of occupations of the site in a year. This is a discrete variable with range $[1,12]$ and, for permanent and funeral sites, it $O = 12$.
+$$G(t)=\frac{C(t)\times S(t)}{R(t)} \tag{2}$$
 
-The function `A_dep_r()`, contains the specifications from above. It also includes one parameter `S_f`, defining the function of the site. If `S_f = NULL`, then the site function has no effect. Alternatively, the parameter `Pop` can be introduced manually, or retrieved from the previous protocol. If both `Pop` and `S_f` are active, they both configure the final `Adr` outcome. However, if both are `NULL`, then the function will throw an error. In that case, the user will have to introduce manually the anthropogenic deposition rates for the computation of $W$ in subsequent processes.
+Where:
+
+$S(t)$ is the proportion of meat consumed within the camp. $[0,1]$
+
+$R(t)$ is the quantity of kilocalories produced for each kilogram of meat. This is a continuous with range $[1,2.5]$. Total kilocalories have been divided by 1000 for easier computation.
+
+And $C(t)$ is the quantity of kilocalories, extracted from meat, consumed by person for each time $t$, and it is defined as
+
+$$C(t)=B(t) \times M(t) \tag{3}$$
+Where 
+
+$B(t)$ is the quantity of kilocalories consumed by an individual for each $t$, and it has a range $[1.5,2.5] \times 365$. For easier computation, the actual average of kilocalories consumed per person/day has been divided by 1000.
+
+$M(t)$ is the proportion of kilocalories coming from meat relating to the total calories consumed per each individual. $[0,1]$.
+
+As it can be seen, the above definitions embed the functionality of the site, which can be considered by the user. In practice, setting the variables $O(t) = 1$ and $S(t)=1$ would eliminate site functionality, but would assume that a site is inhabited by all the group during the full year, and that this group consumes all the food within the site.
+
+Up to now, we have obtained the value for the variable $A$, which is the amount of kilograms of bone for each time $t$. From this, extracting the number of samples for each $t$ is straightforward
+
+$$W(t)=\mbox{Integer part of } \Bigg(\frac{1000 \times A(t)}{4} \Bigg) \tag{4}$$
+
+Considering 4 grams of non-heated bones necessary for a sample.
+
+This protocol is captured through the following code.
 
 ```{r}
-
-## Function 4. Simulation of anthropogenic deposition rates
+## Function 4. 
+#' @title A_rates
+#' Simulation of samples generated per year (anthropogenic deposition rates)
 #' Returns the Kilograms of bone produced per year in a site.
-#' @param x: Integer (user provided) or data.frame. It is the number of people
-#' inhabiting the site. If data.frame, the number of people is the number of rows. 
-#' @param S_f: String. It is the site functionality, and it modulates the effect
-#' of number of people by considering partial occupation of the site and different
-#' deposition rates according the activities deployed. Possible states are:
-#' 'residential' ('r'), 'logistic' ('l'), 'permanent' ('p') and 'funeral' ('f').
-#' If S_f = 'f', number of buried individuals must be specified (in the argument x).
-#'  Default is 'p'.
-#' @param occ: If S_f = 'r' or S_f = 'l', occ (time of occupation of the camp
-#' per year, in months) must be specified. Default is NULL, but if left NULL,
-#' the function considers 1 month for logistic camps and 3 months for 
-#' residential camps.
-#' @param ca: Continuous value. It is the average of calories per adult person 
-#' consumed per day. It's the mean between man average and woman average. Although
-#' it is not limited, values should range between 1500 and 3000. Default is 2000.
-#' @param m: Percentage. It is the amount of those calories that is meat (and not
-#' other types of food, such as cereal, fish, etc.). Some values for this are offered 
-#' in Cordain (2002) and Cordain et al. (2000). Default is 0.65.
-#' @param c: Percentage. Represents how much of the food is consumed within the camp.
-#' Default is 0.6, following the work of Collette-Barbesque et al. (2016).
-#' @param ck: Kcalories per Kilogram of meet. Continuous variable. This can be very
-#' variable. Although it is not limited, values should stay between 1000 and 2500.
-#' Defaul is 1850, since this is the mean after checking with BEDCA database. More
-#' info in paper. 
-#' @param f: Percentage of bone per meat consumed. Default is 0.07 following
-#' archaeological literature. 
+#' @param x: Integer (user provided), vector or data.frame. It is the number of 
+#' people inhabiting the site. If data.frame, the number of people is the number 
+#' of rows. If vector, it is the length of the vector.
+#' @param kcalpers: Quantity of kilocalories consumed per year per adult person.
+#' For easier computation, it has a range of [1.5,2.5]. Defaul is 2
+#' @param kcalmeat_eat: Proportion of kilocalories extracted from meat. Range [0,1].
+#' Default is 0.45, based on Cordain et al (2000)
+#' @param kcalmeat_prod: Quantity of kiocalories per meat kilogram. Range [1,2.5]
+#' Default is 1.5, considering goat meat.
+#' @param in_camp_eat: Proportion of food consumed within the camp. Range [0,1]. 
+#' Default is 0.55 based on Collette-Barbesque et al. (2016).
+#' @param in_camp_stay: Proportion of time spent in a specific camp. Valid for 
+#' groups with high mobility. The proportion is computed within the function, but
+#' the user introduces the weeks of occupation of the camp, where the maximum is
+#' 52 (full year). Default is 13 (weeks, or 0.25 of the year).
+#' three months a year.
+#' @param kg: Bone proportion for each animal consumed. Default is 0.07 for now, 
+#' based on Johnston et al. (2021), but perhaps I should change that. Review
 #' @export
 
-A_dep_r <- function(x,S_f = "p", occ = NULL, ca = 2000, m = 0.65, c = 0.6, 
-                    ck = 1850, f = 0.07){
-  try(if(is.null(x) == TRUE & is.null(S_f) == TRUE) 
-    stop("Population and Site function undefined"))
+A_rates <- function(x,
+                   kcalpers = 2,
+                   kcalmeat_eat = 0.45,
+                   kcalmeat_prod = 1.5,
+                   in_camp_eat = 0.55,
+                   in_camp_stay = 13,
+                   kg = 0.07){
   
-  ## Set the number of individuals
-  if (is.vector(x)==TRUE){
-    Pop <- length(x)
+  if (in_camp_stay > 52) stop('A year cannot have more than 52 weeks')
+  
+  if (is.data.frame(x) == TRUE){
+    P <- nrow(x)
+  } else if (length(x) == 1){
+    P <- x
   } else {
-    Pop <- nrow(x)
+    P <- length(x)
   }
   
-  ## Define time for logistic/residential camps if time = NULL
-  if (is.null(occ) == TRUE){
-    if (S_f == 'r'){
-      occ <- 3
-    } else if (S_f == 'l'){
-      occ <- 1
-    } else if ((S_f == 'p')){
-      occ <- 12
-    }
-  }
+  B <- kcalpers*365
+  M <- kcalmeat_eat
+  R <- kcalmeat_prod
+  S <- in_camp_eat
+  O <- round(in_camp_stay/52,2)
+  Kg <- kg
+
+  C <- B*M
   
-  ## See main text for definitions
-  ca <- ca*365 ## Calories per person/year
-  tc <- ca*m ## Define total calories
-  adr <- (((Pop*((tc*c)/ck))/12)*occ)*f
+  G <- (C*S)/R ## Quantity (in kg) of animal consumed per person in camp during year t
   
-  if (S_f == 'f'){
-    adr <- Pop*17 # 17 kg of bone as an average per person
-  }
-  return(adr)
+  A <- P*O*Kg*G ## kilograms of meat consumed within a camp by the group
+  W <- round((1000*A)/4) ## samples extracted from that meat
+  
+  return(W)
 }
 ```
 
-### Natural deposition rates ($Ndr$) Ndr-protocol
-Natural deposition rates usually have an effect on the archaeological waste product, where the density of $W$ is usually inversely proportional to the speed of the natural deposition rates. This protocol consists of one function `N_dep_r()` where the argument `S_t` (site type) can be enabled or disabled. If disabled, natural deposition rates are only considered through the parameter `sed.r`. When enabled it conditions the deposition rates on the type of site (open-air, cave or rockshelter). We are aware that there are many causes determining natural deposition rates. However, for the sake of simplicity, we have decided to include only one extra layer, the parameter `sed.r`, accounting for the speed of such rates, disregarding the causes which might provoke that speed.
-In any case, deposition rates can also be computed, if the user is confident enough,
-as layer thickness (in cm) between time of occupation (in years). For doing this, the user must set the parameter `site.based = TRUE` and specify the parameter `layers` with a data frame structured as in the example below.
+### Depth protocol D-protocol
+This protocol is designed to respond for the fact that, despite a bone is deposited in a time $t$, it can occupy the stratigraphic space of many subsquent years until us fully buried. The years it takes to be fully buried depends on the thickness of the bone and the natural deposition rates $r$.
+
+Since the thickest bones are usually the minority within a sampl, whereas the majority is usually conformed by smaller bones, we have considered that bone presence diminishes exponentially as it departs from $t_0$, being $t_0$ the year when it was deposited. Thus, this process can be modelled as follows:
+
+$$W_{b_{(t_u,t_l)}}=W(t=t_l)\times(1-e^{-\lambda(t_u-t_l)}) \tag{5}$$
+
+Where
+
+* $W$ has been defined before, and it is the number of samples deposited at a time $t_l$
+* $W_b$ is the number of samples buried at a time $t_u$ from the ones generated at $t_l$. Thus, $t_u \geq t_l$
+* $t_l$ is the moment in time $t$ when the samples $W$ are deposited.
+* $t_u$ is each time $t$, $\geq t_l$, when the sample is being buried according to the parameter $r$. Thus, at $t_{u_{max}}$, the sample is completely buried.
+
+$t_{u_{max}}$ depends on two factors:
+
+* $L$ is the maximum thickness of the sample (the thickest considered bone), in cm.
+* $r$ is the deposition rates, in cm. For this model, we have considered the values 0.1, 0.2, 0.3, 0.4 and 0.5
+
+Thus
+
+$$t_{u_{max}}=\frac{L}{r} \tag{6}$$
+
+Is the time for the sample to be fully buried.
+
+**Estimation of $\lambda$**
+
+For the exponential process to work correctly, we need to estimate $\lambda$ in equation $(5)$. In order to do so, we consider the following
+
+$$\frac{W_b(t_{u_{max}}=1,t_l)}{W(t_l=1)} \tag{7}$$
+
+Is the proportion of buried samples in $t_{u_{max}}$ from the ones that were deposited in $t_l$. Thus,
+
+$$\frac{W_b(t_{u_{max}}=1,t_l)}{W(t_l=1)}=1-e^{-t_{u_{max}}\lambda} \tag{8}$$
+
+However, if we consider all of the samples buried in $t_{u_{max}}$, then $t_{u_{max}} =1$, but in this situation $\lambda \rightarrow \infty$ and, thus, the solution to this equation is too complex. Therefore, we can give an error margin to the buried samples in $t_{u_{max}}$ (say $99\%$). In this case, $\lambda$ can be easily computed as follows
+
+$$1-e^{-\lambda t_{u_{max}}}=P_b$$
+
+and thus
+
+$$\lambda=\frac{-log(1-P_b)}{t_{u_{max}}} \tag{9}$$
+
+Where $P_b$ is the proportion of buried samples in $t_{u_{max}}$
+
+The following function captures this process
 
 ```{r}
-## Function 5. Simulation of deposition deposition rates
-#' For the output. If site.based == FALSE, it returns a single value, as it 
-#' considers the same value for each year. If site.based == TRUE, it returns
-#' a vector with as many values as years considered, with the specific sedimentary
-#' rate for each year.
-#' @title N_dep_r
-#' @param S_t: Three possible site types have been considered: 'open-air' ('oa'),
-#' 'cave' ('c') and rockshelter ('rs'). When enabled, this parameter modules the 
-#' effect of the speed. Default is NULL.
-#' @param sed.r: This is the speed at which the natural sediment deposits on the 
-#' 'site. It has three levels: 'slow' ('s'), 'medium' ('m') and 'fast' ('f'). 
-#' Default is 'm'.
-#' @param site.based: Boolean. It states whether the depositio rates are based 
-#' directly from the site. It TRUE, then the parameter 'layers' must be specified.
-#' Default is FALSE
-#' @param layers: A data frame, whith as many rows as layers. For the columns,
-#' the first column is the name of each layer, the second column is the thickness
-#' of the layer (in cms), the third column is the first year from where the layer
-#' is to be computed and the last column is the last of the layer. The deposition
-#' rate is computed as cm/nyears
+
+## Function 5. 
+#' @title D_along
+#' It distributes the samples produced in one specific year along the depth of the
+#' site, without any kind of post-depositional alteration, and according to 
+#' pre-established post-deposition rates. Returns a vector with the samples exponentially
+#' distributed. The vector is as long as L/r and the error (Pb) is considered.
+#' @param x: Integer (user provided), vector or data.frame. It is the number samples
+#' produced at a specifi 't'.
+#' @param r: Is the deposition rates. At this moment, values > than 0.5 are not accepted.
+#' If values with two or more decimals are provided, the function will automatically round 
+#' the value to one decimal.
+#' @param Max_bone_thickness: Maximum thickness of bones within the assemblage. Four
+#' values are possible: small ('s') = 2.5 cm; medium ('m') = 5 cm; large ('l') = 10 cm
+#' and very large ('vl') = 20 cm. Default is 'm'.
+#' @param Pb: Proportion of samples buried sample at tmax, considering error. Pb 
+#' cannot be higher or equal to 1. Default is 0.9999, which stands for 99.99%.
 #' @export
 
-## Example for parameter 'layers'
-#nlay <- data.frame("Layers" = c(1,2,3), "Thickness" = c(16,14,13),
-#                   "Initial year" = c(7500,7100,6800), "Final year" = 
-
-N_dep_r <- function(S_t = NULL, sed.r = 'm', site.based = FALSE,
-                    layers){
+D_along <- function(x,r, Max_bone_thickness = "m", Pb = .9999){
   
-  if (site.based == FALSE){
-    ## Set the general speed of the deposition rates
-    if (sed.r == 's'){
-      s <- 0.05
-    } else if (sed.r == 'm'){
-      s <- 0.1
-    } else if (sed.r == 'f'){
-      s <- 0.15
-    }
+  # Define W
+  W <- x
+  
+  # Define parameter r
+  r <- round(r,1)
+  if(r>0.5) stop("values > 0.5 are not accepted for param 'r'")
+  
+  # Define parameter Max_bone_thickness (L)
+  if (Max_bone_thickness == 's'){
+    L <- 2.5
+  } else if (Max_bone_thickness == 'm'){
+    L <- 5
+  } else if (Max_bone_thickness == 'l'){
+    L <- 10
+  } else if (Max_bone_thickness == 'vl'){
+    L <- 20
+  }
+  
+  # Constraints for parameter Pb
+  if (Pb >= 1) stop("Pb must be lower than 1")
+  
+  # Define tmax
+  tm <- L/r
+  ss <- rep(0,round(tm)) ## Vector to distribute samples over
+  
+  # Estimate lambda
+  l <- -log(1-Pb)/tm
+  tl <- 0 # Year where the sample is deposited
+  tu <- 1 # Year when it is covered
+  
+  for (i in 1:tm){
+    Wb <- W*(1-exp(-l*(tu-tl))) ## Apply formula
+    Wbprev <- W*(1-exp(-l*((tu-1)-tl))) ## To substract values previous to tu
+    ss[i] <- round(Wb-Wbprev) ## Number of samples for each year
+    tu <- tu + 1
+  }
+  
+  return(ss)
+}
+
+```
+
+
+### Example and simulation
+
+With the above functions, the user can model (1) a generative demographic process, (2) how many different dates would a group of people produce in a site, according to different constraints and (3) how those dates distribute along the depth of a site under the assumption that there has not been any kind of record loss or post-depositional process (this will be modelled in a second layer of modelling).
+
+However, in order to account for the chronological occupation of  the site, a demographic process must be produced, where the sample is generated accordingly. The following functions can produce this. In the function `Rec_c` the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can used the modelled values (with the functions above) as an input to this function, or introduce them directly, for example, in the case that fix population rates per year were preferred. 
+
+```{r}
+## Function 6. 
+#' @title Pop_stoch
+#' It reproduces the population stochastic process. The result is a vector with the 
+#' number of individuals for each year.
+#' @param Pop: Integer with the initial population
+#' @param K: Only if model_pop = TRUE. In this case, it is the carrying capacity
+#' @param ts: Time-span, the number of years considered for the process
+#' @param prob: Probability that an individual will die if total population
+#' exceeds K. Default is 0.8
+#' @param K: Carrying capacity.
+#' @param ...: This function uses the functions Gpd(), and thus it also uses
+#' death() and K_lim(). The additional arguments can be added.
+#' @export
+
+Pop_stoch <- function(Pop, K, prob = 0.8, ts, ...){
+  
+  ## Create initial population
+  Ip <- Pop
+  Ip <- data.frame("Age" = sample(10:30,Ip,10:30, replace = TRUE),
+                   "Sex" = sample(c("M","F"), Ip, prob = c(0.5,0.5), replace = TRUE))
     
-    ## Set the value for site type
-    if(is.null(S_t) == FALSE){
-      if (S_t == 'oa'){
-        s <- s*3
-      } else if (S_t == 'rs'){
-        s <- s*2
-      }
-    }
-  } else {
-    l_rates <- rep(0,nrow(layers))
-    for (i in 1:nrow(layers)){
-      l_rates[i] <- round(layers[i,2]/(layers[i,3]-layers[i,4]),2)
-    }
-    s <- c()
-    for (i in 1:nrow(layers)){
-      s <- append(s,rep(l_rates[i],layers[i,3]-layers[i,4]))
-    }
+  pop <- c()
+  
+  ## Run stochastic process  
+  for (i in 1:ts){
+    pop[i] <- nrow(Gpd(Ip, K = K, prob = prob, ...))
+    Ip <- Gpd(Ip, K = K, prob = prob, ...)
   }
-  return(s)
+  
+  return(pop)
 }
 
-```
-
-### Waste production ($W$) W-protocol
-This is the final step of the model. As explained above, the user can take a modular approach to the formation of the archaeological waste by enabling/disabling some or all of the previous components. In the same way, the user can decide to provide the previous components not as a simulation, but as a value, provided this can be correctly inferred. Ultimately, $W$ will be the input (theoretically, a complete archaeological record) for the simulation of the **record loss process**. Thus, if the user is confident enough that the total amount of the archaeological record can be correctly inferred, this value can be passed on to the record loss process directly, without the need of this simulation. 
-
-If `Adr == NULL`, the waste produced $w$ is inferred on the basis of the total population only and, if `Ndr == NULL`, it is equal to `A_dep_r(Pop, S_f = 'p', occ = NULL)`. `Adr` can be provided either as a value or modelled, as shown above. For simplicity, we assimilate $Pop$ to $Adr$ (regardless of whether $Adr$ has been taken into account or not). In this case, if `Ndr != NULL`, then $w$ is computed as $\frac{Adr}{10 \times Ndr}$, and the case the `Adr != NULL` and `Ndr == NULL`, then $w = Adr$. Finally, the result $W$ is computed as $\frac{w}{area}$.
-
-```{r}
-## Function 6. Waste production
-#' Returns the final product of the waste produced in a site. An integer.
-#' @title W_prod
-#' @param x: Integer (user provided) or data.frame. It is the number of people
-#' inhabiting the site. If data.frame, the number of people is the number of rows.
-#' @param Adr: An integer. Can be inserted directly or modelled.
-#' @param Ndr: A double. Can be inserted directly or modelled.
-#' @param area: An integer. This is the total area of the site.
-#' @param ss: An integer. This is the sample size required for 14C dating.
-#' Default is 4, considering 4 gm of non-charred bone needed for one dating.
+## Function 7. 
+#' @title Rec_c
+#' It spreads the different amount of samples accord different profundities
+#' @param x: Vector with the number of samples per year
+#' @param persqm: If TRUE, the total record is divided by the area of the site
+#' (in square meters), so that the output belongs to each square meter. Default is
+#' FALSE
+#' @param area: Only if persqm = TRUE. In this case, the total area of the site 
+#' must be provided
+#' @param ts: Time-span, the number of years considered for the process
+#' @param InitBP: Initial year considered for the process. In BP.
+#' @param ...: This function uses the functions D_along(). The additional 
+#' arguments can be added.
 #' @export
 
-W_prod <- function(x,Adr = NULL,Ndr = NULL, area, ss = 4){
+Rec_c <- function(x, persqm = FALSE, area, ts, InitBP, ...){
   
-  ## Set the number of individuals
-  if (is.vector(x)==TRUE){
-    Pop <- length(x)
-  } else {
-    Pop <- nrow(x)
+  ## Whether sqm division must be included or not
+  if (persqm == TRUE){
+    x <- x/area
   }
   
-  if (is.null(Adr) == TRUE & is.null(Ndr) == TRUE){
-    w <- Pop*5*20
-  } else if (is.null(Adr) == TRUE & is.null(Ndr) == FALSE){
-    w <- (Pop*5*20)/(10*Ndr)
-  } else if (is.null(Adr) == FALSE & is.null(Ndr) == FALSE){
-    w <- Adr/(10*Ndr)
-  } else if (is.null(Adr) == FALSE & is.null(Ndr) == TRUE){
-    w <- Adr
-  }
+  ## Spread dates along different depths
+  matdim <- length(x)
+  mat <- matrix(nrow=matdim,ncol=matdim)
   
-  w <- w*(1000/ss)
+  for (i in 1:matdim){
+    new <- D_along(x[i], ...)
+    st <- i-1
+    pos <- c(rep(0,st),new)
+    pos <- pos[1:matdim]
+    mat[,i] <- pos
+  }
+  mat[is.na(mat)] <- 0
+  
+  ## Names for columns (each year)
+  years <- seq(InitBP,InitBP-ts)
+  nyears <- c()
+  for (i in 1:matdim){
+    nyears[i] <- paste0(years[i], " BP")
+  }
+  colnames(mat) <- nyears
+  
+  ## Names for rows (each depth)
+  ## Extract arguments as a list
+  Extract_param <- function(x, ...){ 
+    extras <- list(...)
+    return(list(extras=extras)) 
+  }
 
-  w <- round(w/area)
-  return(w)
-} 
+  dr <- Extract_param(D_along, ...)
+  dr <- dr$extras$r
+  
+  d <- rev(cumsum(rep(dr,nrow(mat)))) ## computes depths
+  rownames(mat) <- paste0("d = ", d, " cm")
+
+  return(mat)
+}
+
 ```
 
-## Simulation
-Each of the functions in section 1.2 are thought to be introduced in a stochastic process. The desired result is a time series where each year has its own amount of archaeological waste, depending on the previous year, and based on the rules of the previous section.
+After this, we can start the simulation, in this case with the parameters seen below.
 
-In order to start the process, we need te set the starting values.
-```{r, cache = FALSE}
-
-## Set initial values
+```{r}
 set.seed(1234)
-ts <- 1000 # Time span
-K <- 150
-area <- 1000
-Gs_init <- 100 # Initial population
-Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
-                      "Sex" = sample(c("M","F"), Gs_init, prob = c(0.5,0.5), replace = TRUE))
-
-
+Ps <- Pop_stoch(Pop=100, ts= 100, K = 150)
+samp <- unlist(lapply(Ps,A_rates)) ## Extract sample per time steps
+Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, Max_bone_thickness = "m")
 ```
 
-Once this is done, we can implement the protocol one, where we compute the population during the desired time span. For this first simulation, we have decided to leave all values as the default values, this meaning a site with permanent occupation, without specifying the type of site and with medium natural deposition rates.
+With which we can obtain, among other things, the distribution of the samples for each specific date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example.
 
-```{r, cache = FALSE}
-## Start the loop
-res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
-Pop <- Gs_init
 
-for (i in 1:ts){
-  Pop <- Gpd(Pop)
-  a_w <- A_dep_r(Pop)
-  ndp <- N_dep_r()
-  
-  res$Pop[i] <- nrow(Pop)
-  res$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
-  Pop$Age <- Pop$Age+1
-}
+```{r, echo = FALSE, message=FALSE}
+
+## Some nice plots
+library(viridis)
+## Plot dates
+#sdate <- 1
+#edate <- 5
+#sdepth <- 1
+#edepth <- 5
+#barplot(Rec[sdepth:edepth,sdate:edate], col = viridis(10), legend = rownames(Rec)[sdate:edate],
+#        xlab = "Years BP", ylab = "nsamples", main = "Distribution of samples for each year at different depths")
+
+tRec <- t(Rec)
+barplot(tRec[c(1:4,77:79),], col = viridis(10), legend = colnames(Rec)[c(1:4,77:79)],
+        xlab = "Depth", ylab = "nsamples", main = "Distribution of specific years along depth with population")
+lines(Ps*300, col = "darkred", lwd = 1.5)
 ```
-
-Obviously, the number of potential c14 samples is correlated to the population.
-
-```{r, cache = FALSE}
-## Plots
-par(mfrow = c(1,2))
-plot(res$Pop, type = "l", col = "darkblue", ylab = "Population",
-     xlab = "Years", main = "Site population")
-plot(res$W, type = "l", col = "darkred", ylab = "N samples per m^2",
-     xlab = "Years", main = "Waste produced")
-```
-
-In this case, we consider the same population strcture and behaviour. However, we change the depositional processes. In this case, we consider a logistic camp with an average occupation of one month a year. This is an open-air site with fast $Ndr$.
-
-```{r, cache = FALSE}
-## Different conditions
-# Start the loop
-
-res2 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
-Pop <- Gs_init
-
-for (i in 1:ts){
-  Pop <- Gpd(Pop)
-  a_w <- A_dep_r(Pop, S_f = "l", occ = 1)
-  ndp <- N_dep_r(S_t = "oa", sed.r = "f")
-  
-  res2$Pop[i] <- nrow(Pop)
-  res2$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
-  Pop$Age <- Pop$Age+1
-}
-```
-
-Results still correlate to the population of the site (they always will as food consumed directly correlates to existent people) but we can see how, in this case, the number of potential samples is much smaller than before.
-
-```{r, cache = FALSE}
-## Plots
-par(mfrow = c(1,2))
-plot(res2$Pop, type = "l", col = "darkblue", ylab = "Population",
-     xlab = "Years", main = "Site population")
-plot(res2$W, type = "l", col = "darkred", ylab = "N samples per m^2",
-     xlab = "Years", main = "Waste produced")
-```
-
-Trying a different population structure, the correlation persists.
-
-```{r, cache = FALSE}
-## Different conditions
-# Start the loop
-
-res3 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
-Pop <- Gs_init
-
-for (i in 1:ts){
-  Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
-  a_w <- A_dep_r(Pop, S_f = "h", occ = 8)
-  ndp <- N_dep_r(S_t = "c", sed.r = "s")
-  
-  res3$Pop[i] <- nrow(Pop)
-  res3$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
-  Pop$Age <- Pop$Age+1
-}
-
-## Plots
-par(mfrow = c(1,2))
-plot(res3$Pop, type = "l", col = "darkblue", ylab = "Population",
-     xlab = "Years", main = "Site population")
-plot(res3$W, type = "l", col = "darkred", ylab = "N samples per m^2",
-     xlab = "Years", main = "Waste produced")
-
-```
-
-As does the effect on the site of fast $Ndr$ combined with slower $Adr$.
-
-```{r, cache = FALSE}
-## Different conditions
-# Start the loop
-
-res4 <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
-Pop <- Gs_init
-
-for (i in 1:ts){
-  Pop <- Gpd(Pop, W_fer_age = c(15,35), M_fer_age = c(15,35), P_o = 0.2)
-  a_w <- A_dep_r(Pop, S_f = "l", occ = 1)
-  ndp <- N_dep_r(S_t = "oa", sed.r = "f")
-  
-  res4$Pop[i] <- nrow(Pop)
-  res4$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
-  Pop$Age <- Pop$Age+1
-}
-
-## Plots
-par(mfrow = c(1,2))
-plot(res4$Pop, type = "l", col = "darkblue", ylab = "Population",
-     xlab = "Years", main = "Site population")
-plot(res4$W, type = "l", col = "darkred", ylab = "N samples per m^2",
-     xlab = "Years", main = "Waste produced")
-
-```
-
-We can observe the four simulations with the archaeological waste together.
-
-```{r, cache = FALSE}
-## Plots
-par(mfrow = c(2,2))
-plot(res$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
-     xlab = "Years", main = "High Adr low Ndr")
-plot(res2$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
-     xlab = "Years", main = "Low Adr high Ndr")
-plot(res3$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
-     xlab = "Years")
-plot(res4$W, type = "l", col = "darkblue", ylab = "N samples per m^2",
-     xlab = "Years")
-```
-
 
