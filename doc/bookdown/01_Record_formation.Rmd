@@ -408,7 +408,7 @@ A_rates <- function(x,
                    in_camp_eat = 0.55,
                    in_camp_stay = 13,
                    kg = 0.07){
-=======
+
 ## Function 4. Simulation of anthropogenic deposition rates
 #' Returns the Kilograms of bone produced per year in a site.
 #' @param x: Integer (user provided) or data.frame. It is the number of people
