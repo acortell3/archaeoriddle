@@ -627,6 +627,7 @@ Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, Max_bone_thickness = "m")
 
 With which we can obtain, among other things, the distribution of the samples for each specific date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example.
 
+*The total number of population has been adapted for visualisation*
 
 ```{r, echo = FALSE, message=FALSE}
 
