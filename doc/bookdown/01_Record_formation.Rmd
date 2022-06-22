@@ -29,15 +29,17 @@ node [fontname = Helvetica, ## General node definition
       
 ## Per node definition
 a [label = '@@1',
-   fillcolor = Orangered]
-b [label = '@@2']
+   fillcolor = cadetblue3]
+b [label = '@@2',
+   fillcolor = cadetblue1]
 c [label = '@@3',
-   fillcolor = Orangered]
-d [label = '@@4']
+   fillcolor = cadetblue3]
+d [label = '@@4',
+   fillcolor = cadetblue1]
 e [label = '@@5',
-   fillcolor = Orangered]
+   fillcolor = cadetblue3]
 f [label = '@@6',
-   fillcolor = orange,
+   fillcolor = cadetblue,
    fixedsize = shape,
    width = 4.5,
    height = 1,
@@ -89,9 +91,9 @@ node [fontname = Helvetica, ## General node definition
       
 ## Per node definition
 a [label = '@@1',
-   fillcolor = Orangered]
+   fillcolor = cadetblue3]
 b [label = '@@2',
-   fillcolor = orange,
+   fillcolor = cadetblue,
    fixedsize = shape,
    width = 4.5,
    height = 1,
@@ -133,11 +135,11 @@ node [fontname = Helvetica, ## General node definition
       
 ## Per node definition
 a [label = '@@1',
-   fillcolor = Orangered]
+   fillcolor = cadetblue3]
 b [label = '@@2',
-   fillcolor = Orangered]
+   fillcolor = cadetblue3]
 c [label = '@@3',
-   fillcolor = orange,
+   fillcolor = cadetblue,
    fixedsize = shape,
    width = 4.5,
    height = 1,
@@ -177,7 +179,7 @@ The variables time ($T$) and depth ($D$) must also be defined. Thus
 * **T** describes the time, in years, of existence of the site. For the simulation, this time will be known. Thus, in the simulation $T_{birth}=(T=0)$ and $T_{max}=T_{death}$. Values of $T$ are represented by $t$.
 * **D** is the depth, in cms, where each specific sample is deposited at a time $t$. This is a continuous variable with range $[0,\infty]$, and for any $t$, we know that $0\leq D(t)\leq d_0$ and that 
 
-$$D(t)=D(t-1)-r, t=1,2,...,t_{max}$$
+$$D(t)=max\{D(t-1)-r,0\}, t=1,2,...,T_{max}$$
 
 Where $r$ is the deposition rates.
 
@@ -205,6 +207,7 @@ However, this function also relies on two other functions: `death()` and `K_lim(
 ### Population protocol
 
 ## Function 1. Generation of population dynamics
+#' @title Gpd
 #' Returns a data.frame with two columns, where the number of rows is the number of
 #' people. The first column contains the ages and the second column contains the sex.
 #' @param x: Input data. A data frame or matrix with two columns and nrow = Initial
@@ -226,7 +229,7 @@ However, this function also relies on two other functions: `death()` and `K_lim(
 #' Their arguments can be added.
 #' @export
 
-Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
+Gpd <- function(x, W_fer_age = c(10,45), M_fer_age = c(15,55),
                 P_o = 0.3, prob = 0.8, K, ...){
   
   ### Process of having offspring
@@ -248,6 +251,7 @@ Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
   P_o <- P_o*pen
   
   Offspring <- sum(rbinom(nrow(W_fert),1,P_o))
+  x$Age <- x$Age+1 ## They get one year older
   New_pop <- data.frame("Age" = rep(0,Offspring),                        
                         "Sex" = sample(c("M","F"),Offspring,prob=c(0.5,0.5),replace = TRUE))
   x <- rbind(x,New_pop)
@@ -258,12 +262,13 @@ Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
   x <- x[vec_d==0,]
   
   ## Apply carrying capacty restrictions
-  x <- K_lim(x, k = K, prob = prob)
+  x <- K_lim(x, K = K, prob = prob)
   
   return(x)
 }
 
 ## Function 2. Simulation of death process
+#' @title death
 #' Returns a value (0,1) where 0 = person lives and 1 = person dies, based
 #' on pd (the probability matrix)
 #' Thought to use with apply
@@ -271,30 +276,34 @@ Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
 #' @param pd: The probability matrix for mortality by age
 #' @export
 
+## The age-structured data frame is based on Gurven, Kaplan and Supa, 2007.
+## It is extracted adapted after computation from their text (not graphs or tables)
+
 death <- function(x,pd=data.frame("Age" = c(0:99),
-                                  "P_d" = c(rep(0.13,2),
-                                            rep(0.08,8),
-                                            rep(0.01,25),
-                                            rep(0.1,15),
-                                            rep(0.15,10),
-                                            rep(0.25,5),
-                                            rep(0.99,35)))){
+                                  "P_d" = c(rep(0.14,1),
+                                            rep(0.16,4),
+                                            rep(0.05,5),
+                                            rep(0.01,24),
+                                            rep(0.03,14),
+                                            rep(0.1,10),
+                                            rep(0.3,42)))){
   age <- as.numeric(x[1])
   return(rbinom(1,1,prob = pd[pd$Age==age,2]))
 }
 
 ## Function 3. Simulation of carrying capacity limitation
-## If the population exceeds the carrying capacity, it eliminates oversize
-## with 0.8 probability per person exceeding.
+#' @title K_lim
+#' If the population exceeds the carrying capacity, it eliminates oversize
+#' with 0.8 probability per person exceeding.
 #' @param x: Data frame or matrix. Population (number of people)
-#' @param k: Integer. Carrying capacity. Provided by the user
+#' @param K: Integer. Carrying capacity. Provided by the user
 #' @param prob: It is the probability of dying when surpassing carrying capacity
 #' @export
 
-K_lim <- function(x,k,prob = 0.8){
+K_lim <- function(x,K,prob = 0.8){
   p <- nrow(x)
-  if (p>k){
-    o <- rbinom(p-k,1,prob)
+  if (p>K){
+    o <- rbinom(p-K,1,prob)
     o <- sum(o[o==1])
     o[o==0] <- 1 ## Avoids problem eliminating all the df if remove == 0
     x <- x[-sample(1:nrow(x),o,replace = FALSE),]
@@ -302,16 +311,17 @@ K_lim <- function(x,k,prob = 0.8){
   return(x)
 }
 
+
 ```
 
 ### Anthropogenic deposition ($A$) A-protocol
 
 This generates the amount of human waste produced for each $t$ (In bone kilograms). It is defined as:
 
-$$A(t)= P(t)\times O(t)\times F(t) \times G(t) \tag{1}$$
+$$A(t)= Pop(t)\times O(t)\times F(t) \times G(t), t = 1,2,...,T_{death} \tag{1}$$
 Where:
 
-* $P(t)$ is a discrete variable representing the number of living people at a time $t$.
+* $Pop(t)$ is a discrete variable representing the number of living people at a time $t$.
 * $O(t)$ is the proportion of time of the year that the group spends in the camp for each time $t$. It is a continuous variable with range $[0,1]$. In the code, this is defined as the parameter `in_camp_stay` and it is provided as the number of weeks, considering 52 the maximum number of weeks for a year.
 * $F(t)$ is the proportion of bone for the full weight of each Kg of an animal consumed for a time $t$. This is a unit interval variable $[0,1]$.
 * $G(t)$ is the quantity, in Kg, of a (full-weight) animal consumed in a site by each individual at a time $t$. This is a continuous variable with range $[0,\propto K]$. This is a hierarchical variable, defined as follows:
@@ -409,7 +419,7 @@ This protocol is designed to respond for the fact that, despite a bone is deposi
 
 Since the thickest bones are usually the minority within a sampl, whereas the majority is usually conformed by smaller bones, we have considered that bone presence diminishes exponentially as it departs from $t_0$, being $t_0$ the year when it was deposited. Thus, this process can be modelled as follows:
 
-$$W_{b_{(t_u,t_l)}}=W(t=t_l)\times(1-e^{-\lambda(t_u-t_l)}) \tag{5}$$
+$$W_b(t_u,t_l)=W(t=t_l)\times(1-e^{-\lambda(t_u-t_l)}), t_u < t_l \tag{5}$$
 
 Where
 
@@ -433,7 +443,7 @@ Is the time for the sample to be fully buried.
 
 For the exponential process to work correctly, we need to estimate $\lambda$ in equation $(5)$. In order to do so, we consider the following
 
-$$\frac{W_b(t_{u_{max}}=1,t_l)}{W(t_l=1)} \tag{7}$$
+$$\frac{W_b(t_{u_{max}}=1,t_l)}{W(t_l)} \tag{7}$$
 
 Is the proportion of buried samples in $t_{u_{max}}$ from the ones that were deposited in $t_l$. Thus,
 
@@ -441,13 +451,13 @@ $$\frac{W_b(t_{u_{max}}=1,t_l)}{W(t_l=1)}=1-e^{-t_{u_{max}}\lambda} \tag{8}$$
 
 However, if we consider all of the samples buried in $t_{u_{max}}$, then $t_{u_{max}} =1$, but in this situation $\lambda \rightarrow \infty$ and, thus, the solution to this equation is too complex. Therefore, we can give an error margin to the buried samples in $t_{u_{max}}$ (say $99\%$). In this case, $\lambda$ can be easily computed as follows
 
-$$1-e^{-\lambda t_{u_{max}}}=P_b$$
+$$1-e^{-\lambda t_{u_{max}}}=\theta_e$$
 
 and thus
 
-$$\lambda=\frac{-log(1-P_b)}{t_{u_{max}}} \tag{9}$$
+$$\lambda=\frac{-log(1-\theta_e)}{t_{u_{max}}} \tag{9}$$
 
-Where $P_b$ is the proportion of buried samples in $t_{u_{max}}$
+Where $\theta_b$ is the proportion of buried samples in $t_{u_{max}}$
 
 The following function captures this process
 
@@ -625,9 +635,8 @@ samp <- unlist(lapply(Ps,A_rates)) ## Extract sample per time steps
 Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, Max_bone_thickness = "m")
 ```
 
-With which we can obtain, among other things, the distribution of the samples for each specific date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example.
+With which we can obtain, among other things, the distribution of the samples for each specific date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example. The user can also check how the model work and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). 
 
-*The total number of population has been adapted for visualisation*
 
 ```{r, echo = FALSE, message=FALSE}
 
