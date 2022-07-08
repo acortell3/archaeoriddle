@@ -632,6 +632,8 @@ install.packages("printr")
     library(printr)
 ?ls
 help(ls)
+ls
+print(ls)
 
 ```
 
