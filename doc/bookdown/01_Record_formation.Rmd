@@ -628,6 +628,7 @@ Rec_c <- function(x, persqm = FALSE, area, ts, InitBP, ...){
 
 ```{r}
 ?ls
+install.packages("printr")
     library(printr)
 ?ls
 help(ls)
