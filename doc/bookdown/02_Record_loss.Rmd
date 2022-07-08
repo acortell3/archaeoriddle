@@ -4,140 +4,36 @@ output:
   html_document: default
   always_allow_html: true
 ---
-# Record loss
 
-## Theoretical model
-### General purpose
-Our main interest is showing and testing the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
-
-However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be taken into account both if the user wants to introduce the values for $W$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W$ which is *waste produced per* $m^2$.
-
-### Model layers
-We have considered the following two main ways in which the archaeological record can be affected by post-depositional processes. The first one refers to the loss of that record and the second one takes into account the vertical displacements of the remaining record.
-
-#### Loss of the record
-The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss* ($tdtl$) and the second one is *anthropic action* ($aa$). These two variables can be applied together (advised), separately or not at all. 
-
-```{r, echo = FALSE,cache=FALSE}
-library(DiagrammeR)
-
-grViz("
-digraph record_formation {
-
-graph [layout = dot, ## Set title and layout
-       label = 'Record loss process',
-       labelloc = 't'
-       fontname = Helvetica,
-       fontsize = 30]
-
-# node definitions with substituted label text
-node [fontname = Helvetica, ## General node definition
-      style = filled,
-      color = MistyRose]
-      
-## Per node definition
-a [label = '@@1',
-   fillcolor = Orangered]
-b [label = '@@2',
-   fillcolor = Orangered]
-c [label = '@@3',
-   fillcolor = orange,
-   fixedsize = shape,
-   width = 6.5,
-   height = 1,
-   fontsize = 30]
-
-## General edge definition
-edge [color = grey,
-       arrowhead = vee,
-       arrowtail = vee]
-
-## Specific edges
-a -> {c}
-b -> {c}
-}
-
-## Label definition
-[1]: 'Time-dependent taphonomic loss'
-[2]: 'Anthropic action'
-[3]: 'Remaining archaeological waste'
-
-")
-```
-
-These variables are modelled as follows:
-
-* **Time-dependent taphonomic loss** ($tdtf$): This is a continuous variable. It represents the amount of loss record for each time $t$. It follows Surovell's (2007, 2009) works assessing the loss of archaeological record through time. Because this measure is intended as comprehensive, there is no need to condition the time-dependent record loss in different sub-processes which would add unnecessary complexity and uncertainty. Thus, this can be conceived as an overall record loss, and it is modelled through an adaptation of Surovell's proposal 
-
- $$n_t=\frac{a(b+t)^c}{a(b+t_1)^c} \times W_t$$
- 
-Where $a$, $b$ and $c$ are the constants proposed by Surovell, based on taphonomic regression, $t$ is the time step and $W$ is the original waste.
-
-* **Anthropic action** ($aa$): However, Surovell's proposal is thought to measure the loss of record from the moment of abandonment of the site, and it does not take into account the possible effect of human continued daily activities (such as trampling, cleaning, etc.) for the case of sites with frequent reoccupation or long occupational time spans. In this regard, we apply the above method for each year during the occupational time span, to which we add the possible effect of $aa$, which is modelled as 
-
-$$W_{t}' = W_t - (W_t \times h_t \times s_t)$$
-Where $h$ is the strength of the anthropic effect and $s$ accounts for sedimentation rates. In this regard, and depending on $s$ it is considered that once an object is completely buried a certain depth, $aa$ has no further effect on it.
-
-#### Vertical displacement
-We are aware that there are multiple causes affecting vertical displacements in archaeological sites, such as water activity, crioturbation, animal action, geochemical processes, geological processes, etc. However, modelling each of those independently, and due to the cumulative uncertainty for the quantification of each parameter, would probably result in a model which would (1) be overcomplicated and (2) risk being completely uninformative due to the randomness of intertwined stochastic processes.
-
-With this in mind, this model layer accounts for vertical movement within the archaeological record. In the previous layer, the loss of record has already been accounted for according to Surovell's proposition and an adition of the possible effect of everyday activity in subsequent years of occupation of the site. For the remaining record, there is still a wide range of processes that can affect vertical deposition. In turn, vertical post-depositional movement can be one of the main causes confounding archaeological interpretation, and result in complicated chronological palimpsests. 
-
-Essentially, this layer of the model reproduces vertical displacement, resulting in mixed chronologies, according to the user's specification. It can be used on the full chronological distribution of waste $W$, but the result will be provided according to the archaeological layers provided by the user where, in essence, if $W_{n} = layers_{n}$ the model acts on the complete sequence. Without deepening into the discussion of the exact factors provoking vertical displacement, we could consider two broad categories, denominated here as *low energy processes* and *high energy processes*, and understand them, respectively, as natural mechanical processes (e.g. hydric displacement, aeolic erosion) occurring at a constant but relatively slow rate through time and high impact processes, natural or human, occurring during shorter periods of time but with much greater impact (e.g. rockfall, flood, human extraction of manure, ploughing, etc.)
-
-In any case, the rationale to model this is the same, so we have only created a single function (explained below). If the researcher considers that both processes are occurring in a site, and that it is worth apply them both. Then the best option is to run the function twice (one for low energy process and another one for high energy processes) with the specific parameterisation (explained below) for each process. Finally, soil type is not modelled, since  it is assumed that its impact on vertical displacement is already considered by the user when parameterising the function.
-
-```{r, echo = FALSE,cache=FALSE}
-grViz("
-digraph record_formation {
-
-graph [layout = dot, ## Set title and layout
-       label = 'Record loss process',
-       labelloc = 't'
-       fontname = Helvetica,
-       fontsize = 30]
-
-# node definitions with substituted label text
-node [fontname = Helvetica, ## General node definition
-      style = filled,
-      color = MistyRose]
-      
-## Per node definition
-a [label = '@@1']
-b [label = '@@2',
-   fillcolor = Orangered]
-c [label = '@@3',
-   fillcolor = Orangered]
-d [label = '@@4',
-   fillcolor = orange]
-
-
-## General edge definition
-edge [color = grey,
-       arrowhead = vee,
-       arrowtail = vee]
-
-## Specific edges
-a -> {b,c}
-b -> {d}
-c -> {d}
-
-}
-
-## Label definition
-[1]: 'Soil type'
-[2]: 'Low energy process'
-[3]: 'High energy proceess'
-[4]: 'Waste'
-")
-```
-
-## Implementation
 ```{r, echo = FALSE}
-## To have the object res
 
-Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
-                P_o = 0.3){
+### Population protocol
+
+## Function 1. Generation of population dynamics
+#' @title Gpd
+#' Returns a data.frame with two columns, where the number of rows is the number of
+#' people. The first column contains the ages and the second column contains the sex.
+#' @param x: Input data. A data frame or matrix with two columns and nrow = Initial
+#' population. One row per individual. The first column is the age of the individual.
+#' The second column is the sex of the individual, and must be c("F","M").
+#' @param W_fer_age: Vector with two values. The first value is the youngest age
+#' at which is considered that women can have children for prehistoric societies.
+#'  The second value is the oldest age at which is considered that women can 
+#'  have children. Default is c(10,30).
+#' @param M_fer_age: Vector with two values. The first value is the youngest age
+#' at which is considered that men can have children for prehistoric societies.
+#' The second value is the oldest age at which is considered that men can have 
+#' children. Default is c(15,40)
+#' @param  P_o: Probability of a woman having a son per year. Default is 0.3.
+#' @param prob: Probability that an individual will die if total population
+#' exceeds K. Default is 0.8
+#' @param K: Carrying capacity.
+#' @param ...: This function uses the embedded function death(). 
+#' Their arguments can be added.
+#' @export
+
+Gpd <- function(x, W_fer_age = c(10,45), M_fer_age = c(15,55),
+                P_o = 0.3, prob = 0.8, K, ...){
   
   ### Process of having offspring
   
@@ -158,37 +54,59 @@ Gpd <- function(x, W_fer_age = c(10,30), M_fer_age = c(15,40),
   P_o <- P_o*pen
   
   Offspring <- sum(rbinom(nrow(W_fert),1,P_o))
+  x$Age <- x$Age+1 ## They get one year older
   New_pop <- data.frame("Age" = rep(0,Offspring),                        
                         "Sex" = sample(c("M","F"),Offspring,prob=c(0.5,0.5),replace = TRUE))
   x <- rbind(x,New_pop)
   
   ### Process of dying
   
-  vec_d <- apply(x,1,death)
+  vec_d <- apply(x,1,death,...)
   x <- x[vec_d==0,]
   
   ## Apply carrying capacty restrictions
-  x <- K_lim(x, K)
+  x <- K_lim(x, K = K, prob = prob)
   
   return(x)
 }
 
+## Function 2. Simulation of death process
+#' @title death
+#' Returns a value (0,1) where 0 = person lives and 1 = person dies, based
+#' on pd (the probability matrix)
+#' Thought to use with apply
+#' @param x: An integer with the age of the person
+#' @param pd: The probability matrix for mortality by age
+#' @export
+
+## The age-structured data frame is based on Gurven, Kaplan and Supa, 2007.
+## It is extracted adapted after computation from their text (not graphs or tables)
+
 death <- function(x,pd=data.frame("Age" = c(0:99),
-                                  "P_d" = c(rep(0.13,2),
-                                            rep(0.08,8),
-                                            rep(0.01,25),
-                                            rep(0.1,15),
-                                            rep(0.15,10),
-                                            rep(0.25,5),
-                                            rep(0.99,35)))){
+                                  "P_d" = c(rep(0.14,1),
+                                            rep(0.16,4),
+                                            rep(0.05,5),
+                                            rep(0.01,24),
+                                            rep(0.03,14),
+                                            rep(0.1,10),
+                                            rep(0.3,42)))){
   age <- as.numeric(x[1])
   return(rbinom(1,1,prob = pd[pd$Age==age,2]))
 }
 
-K_lim <- function(x,k,prob = 0.8){
+## Function 3. Simulation of carrying capacity limitation
+#' @title K_lim
+#' If the population exceeds the carrying capacity, it eliminates oversize
+#' with 0.8 probability per person exceeding.
+#' @param x: Data frame or matrix. Population (number of people)
+#' @param K: Integer. Carrying capacity. Provided by the user
+#' @param prob: It is the probability of dying when surpassing carrying capacity
+#' @export
+
+K_lim <- function(x,K,prob = 0.8){
   p <- nrow(x)
-  if (p>k){
-    o <- rbinom(p-k,1,prob)
+  if (p>K){
+    o <- rbinom(p-K,1,prob)
     o <- sum(o[o==1])
     o[o==0] <- 1 ## Avoids problem eliminating all the df if remove == 0
     x <- x[-sample(1:nrow(x),o,replace = FALSE),]
@@ -196,714 +114,462 @@ K_lim <- function(x,k,prob = 0.8){
   return(x)
 }
 
-A_dep_r <- function(x,S_f = "p", occ = NULL){
-  try(if(is.null(x) == TRUE & is.null(S_f) == TRUE) 
-    stop("Population and Site function undefined"))
+
+## Function 4. 
+#' @title A_rates
+#' Simulation of samples generated per year (anthropogenic deposition rates)
+#' Returns the Kilograms of bone produced per year in a site.
+#' @param x: Integer (user provided), vector or data.frame. It is the number of 
+#' people inhabiting the site. If data.frame, the number of people is the number 
+#' of rows. If vector, it is the length of the vector.
+#' @param kcalpers: Quantity of kilocalories consumed per year per adult person.
+#' For easier computation, it has a range of [1.5,2.5]. Defaul is 2
+#' @param kcalmeat_eat: Proportion of kilocalories extracted from meat. Range [0,1].
+#' Default is 0.45, based on Cordain et al (2000)
+#' @param kcalmeat_prod: Quantity of kiocalories per meat kilogram. Range [1,2.5]
+#' Default is 1.5, considering goat meat.
+#' @param in_camp_eat: Proportion of food consumed within the camp. Range [0,1]. 
+#' Default is 0.55 based on Collette-Barbesque et al. (2016).
+#' @param in_camp_stay: Proportion of time spent in a specific camp. Valid for 
+#' groups with high mobility. The proportion is computed within the function, but
+#' the user introduces the weeks of occupation of the camp, where the maximum is
+#' 52 (full year). Default is 13 (weeks, or 0.25 of the year).
+#' three months a year.
+#' @param kg: Bone proportion for each animal consumed. Default is 0.07 for now, 
+#' based on Johnston et al. (2021), but perhaps I should change that. Review
+#' @export
+
+A_rates <- function(x,
+                   kcalpers = 2,
+                   kcalmeat_eat = 0.45,
+                   kcalmeat_prod = 1.5,
+                   in_camp_eat = 0.55,
+                   in_camp_stay = 13,
+                   kg = 0.07){
   
-  ## Set the number of individuals
-  if (is.vector(x)==TRUE){
-    Pop <- length(x)
+  if (in_camp_stay > 52) stop('A year cannot have more than 52 weeks')
+  
+  if (is.data.frame(x) == TRUE){
+    P <- nrow(x)
+  } else if (length(x) == 1){
+    P <- x
   } else {
-    Pop <- nrow(x)
+    P <- length(x)
   }
   
-  ## Define time for logistic/residential camps if time = NULL
-  if (is.null(occ) == TRUE){
-    if (S_f == 'r'){
-      occ <- 3
-    } else if (S_f == 'l'){
-      occ <- 1
-    }
-  }
+  B <- kcalpers*365
+  M <- kcalmeat_eat
+  R <- kcalmeat_prod
+  S <- in_camp_eat
+  O <- round(in_camp_stay/52,2)
+  Kg <- kg
+
+  C <- B*M
   
-  ## Population times goats per person a year (5) times bone Kg per goat (20)
-  ## Dayenoff et al., 2019 for the weight of the carcass.
-  adr <- Pop*5*20
+  G <- (C*S)/R ## Quantity (in kg) of animal consumed per person in camp during year t
   
-  if (S_f == 'r'){
-    adr <- round(adr/12*occ)
-  } else if (S_f == 'l'){
-    adr <- round((adr/12*occ)/4) ## Divides by 4 because it is considered that 
-                                 ## heavy food is not brought in place
-  } else if (S_f == 'f'){
-    adr <- Pop*17 # 17 kg of bone as an average per person
-  }
-  return(adr)
+  A <- P*O*Kg*G ## kilograms of meat consumed within a camp by the group
+  W <- round((1000*A)/4) ## samples extracted from that meat
+  
+  return(W)
 }
 
-N_dep_r <- function(S_t = NULL, sed.r = 'm', site.based = FALSE,
-                    layers){
+
+## Function 5. 
+#' @title D_along
+#' It distributes the samples produced in one specific year along the depth of the
+#' site, without any kind of post-depositional alteration, and according to 
+#' pre-established post-deposition rates. Returns a vector with the samples exponentially
+#' distributed. The vector is as long as L/r and the error (Pb) is considered.
+#' @param x: Integer (user provided), vector or data.frame. It is the number samples
+#' produced at a specifi 't'.
+#' @param r: Is the deposition rates. At this moment, values > than 0.5 are not accepted.
+#' If values with two or more decimals are provided, the function will automatically round 
+#' the value to one decimal.
+#' @param Max_bone_thickness: Maximum thickness of bones within the assemblage. Four
+#' values are possible: small ('s') = 2.5 cm; medium ('m') = 5 cm; large ('l') = 10 cm
+#' and very large ('vl') = 20 cm. Default is 'm'.
+#' @param Pb: Proportion of samples buried sample at tmax, considering error. Pb 
+#' cannot be higher or equal to 1. Default is 0.9999, which stands for 99.99%.
+#' @export
+
+D_along <- function(x,r, Max_bone_thickness = "m", Pb = .9999){
   
-  if (site.based == FALSE){
-    ## Set the general speed of the deposition rates
-    if (sed.r == 's'){
-      s <- 0.05
-    } else if (sed.r == 'm'){
-      s <- 0.1
-    } else if (sed.r == 'f'){
-      s <- 0.15
-    }
+  # Define W
+  W <- x
+  
+  # Define parameter r
+  r <- round(r,1)
+  if(r>0.5) stop("values > 0.5 are not accepted for param 'r'")
+  
+  # Define parameter Max_bone_thickness (L)
+  if (Max_bone_thickness == 's'){
+    L <- 2.5
+  } else if (Max_bone_thickness == 'm'){
+    L <- 5
+  } else if (Max_bone_thickness == 'l'){
+    L <- 10
+  } else if (Max_bone_thickness == 'vl'){
+    L <- 20
+  }
+  
+  # Constraints for parameter Pb
+  if (Pb >= 1) stop("Pb must be lower than 1")
+  
+  # Define tmax
+  tm <- L/r
+  ss <- rep(0,round(tm)) ## Vector to distribute samples over
+  
+  # Estimate lambda
+  l <- -log(1-Pb)/tm
+  tl <- 0 # Year where the sample is deposited
+  tu <- 1 # Year when it is covered
+  
+  for (i in 1:tm){
+    Wb <- W*(1-exp(-l*(tu-tl))) ## Apply formula
+    Wbprev <- W*(1-exp(-l*((tu-1)-tl))) ## To substract values previous to tu
+    ss[i] <- round(Wb-Wbprev) ## Number of samples for each year
+    tu <- tu + 1
+  }
+  
+  return(ss)
+}
+
+
+## Function 6. 
+#' @title Pop_stoch
+#' It reproduces the population stochastic process. The result is a vector with the 
+#' number of individuals for each year.
+#' @param Pop: Integer with the initial population
+#' @param K: Only if model_pop = TRUE. In this case, it is the carrying capacity
+#' @param ts: Time-span, the number of years considered for the process
+#' @param prob: Probability that an individual will die if total population
+#' exceeds K. Default is 0.8
+#' @param K: Carrying capacity.
+#' @param ...: This function uses the functions Gpd(), and thus it also uses
+#' death() and K_lim(). The additional arguments can be added.
+#' @export
+
+Pop_stoch <- function(Pop, K, prob = 0.8, ts, ...){
+  
+  ## Create initial population
+  Ip <- Pop
+  Ip <- data.frame("Age" = sample(10:30,Ip,10:30, replace = TRUE),
+                   "Sex" = sample(c("M","F"), Ip, prob = c(0.5,0.5), replace = TRUE))
     
-    ## Set the value for site type
-    if(is.null(S_t) == FALSE){
-      if (S_t == 'oa'){
-        s <- s*3
-      } else if (S_t == 'rs'){
-        s <- s*2
+  pop <- c()
+  
+  ## Run stochastic process  
+  for (i in 1:ts){
+    pop[i] <- nrow(Gpd(Ip, K = K, prob = prob, ...))
+    Ip <- Gpd(Ip, K = K, prob = prob, ...)
+  }
+  
+  return(pop)
+}
+
+## Function 7. 
+#' @title Rec_c
+#' It spreads the different amount of samples accord different profundities
+#' @param x: Vector with the number of samples per year
+#' @param persqm: If TRUE, the total record is divided by the area of the site
+#' (in square meters), so that the output belongs to each square meter. Default is
+#' FALSE
+#' @param area: Only if persqm = TRUE. In this case, the total area of the site 
+#' must be provided
+#' @param ts: Time-span, the number of years considered for the process
+#' @param InitBP: Initial year considered for the process. In BP.
+#' @param ...: This function uses the functions D_along(). The additional 
+#' arguments can be added.
+#' @export
+
+Rec_c <- function(x, persqm = FALSE, area, ts, InitBP, ...){
+  
+  ## Whether sqm division must be included or not
+  if (persqm == TRUE){
+    x <- x/area
+  }
+  
+  ## Spread dates along different depths
+  matdim <- length(x)
+  mat <- matrix(nrow=matdim,ncol=matdim)
+  
+  for (i in 1:matdim){
+    new <- D_along(x[i], ...)
+    st <- i-1
+    pos <- c(rep(0,st),new)
+    pos <- pos[1:matdim]
+    mat[,i] <- pos
+  }
+  mat[is.na(mat)] <- 0
+  
+  ## Names for columns (each year)
+  years <- seq(InitBP,InitBP-ts)
+  nyears <- c()
+  for (i in 1:matdim){
+    nyears[i] <- paste0(years[i], " BP")
+  }
+  colnames(mat) <- nyears
+  
+  ## Names for rows (each depth)
+  ## Extract arguments as a list
+  Extract_param <- function(x, ...){ 
+    extras <- list(...)
+    return(list(extras=extras)) 
+  }
+
+  dr <- Extract_param(D_along, ...)
+  dr <- dr$extras$r
+  
+  d <- rev(cumsum(rep(dr,nrow(mat)))) ## computes depths
+  rownames(mat) <- paste0("d = ", d, " cm")
+
+  return(mat)
+}
+
+
+set.seed(1234)
+Ps <- Pop_stoch(Pop=100, ts= 100, K = 150)
+samp <- unlist(lapply(Ps,A_rates)) ## Extract sample per time steps
+Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, Max_bone_thickness = "m")
+
+tRec <- t(Rec)
+
+```
+
+
+# Record loss
+
+## Theoretical model
+### General purpose
+Our main interest is showing and testing the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
+
+However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W(t)$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be taken into account both if the user wants to introduce the values for $W(t)$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W(t)$ which is *waste produced*, and can be computed to be produced by $m^2$.
+
+### Model layers
+Although in the future we will introduce additional layers which account for how the record moves vertically along the sequence, at this point, we are only considering the processes of record loss.
+
+#### Loss of the record
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term process affecting the record for every $t$ from the moment of its depositions to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all. 
+
+```{r, echo = FALSE,cache=FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph record_formation {
+
+graph [layout = dot, ## Set title and layout
+       label = 'Record loss process',
+       labelloc = 't'
+       fontname = Helvetica,
+       fontsize = 30]
+
+# node definitions with substituted label text
+node [fontname = Helvetica, ## General node definition
+      style = filled,
+      color = MistyRose]
+      
+## Per node definition
+a [label = '@@1',
+   fillcolor = cadetblue3]
+b [label = '@@2',
+   fillcolor = cadetblue3]
+c [label = '@@3',
+   fillcolor = cadetblue,
+   fixedsize = shape,
+   width = 8.5,
+   height = 1.5,
+   fontsize = 30]
+
+## General edge definition
+edge [color = grey,
+       arrowhead = vee,
+       arrowtail = vee]
+
+## Specific edges
+a -> {c}
+b -> {c}
+}
+
+## Label definition
+[1]: 'Low impact - long term action'
+[2]: 'High impact - short term action'
+[3]: 'Remaining archaeological waste'
+
+")
+```
+
+These variables are modelled as follows:
+
+* **Long-term loss** ($V_l(t)$: Attending to the proxy we are considering (bones), we understand this variable as the processes which on the short to run have little to none impact on bone preservation, but which can have severe consequences in the long term. These can refer, for example to the pH of the earth of the site, temperature and humidity changes, etc, and must be considered by the researcher or the user. We can subsume this information as a single probability $\theta_l$ within a binomial distribution. Then, the number of archaeological samples currently surviving from all the $W(t)$ generated at a time $t$ follows the distribution
+
+$$V_l(t) \sim Bi(W(t), \theta_l)$$
+Although mathematically this computation is straightforward, it can be quite expensive computationally. Therefore, because we can assume independence of the effect altering the sample for each $t$, and for computational efficiency, we compute $\theta_l$ as
+
+$$\theta_l = \theta^{t+1950}$$
+
+Where $\theta_l$ is the considered probability, $t$ is the time period before present where the sample was deposited and 1950 is the year that is conventionally treated as *the present* in radiocarbon dating.
+
+* **Short-term loss** ($V_s(t+1)$): Most of the short-term high impact destruction of the archaeological record happens during the first year after deposition. Therefore, for this variable, we have consider the effect acting only once on the archaeological record, with an action, in any case, more agressive than the previous variable. Again, we can consider this a binomial distribution, where
+
+$$V_s(t+1)\sim Bi(W(t),\theta_s)$$
+
+where $\theta_s$ is the probability that the record survives. Again, this probability must be estimated according to previous information such as, for exemple, whether there has been human reoccupation or animal action at the site at $t +1$. In this case, one good way to measure this is having in account that for $\theta_s = 0.5$, half the record would be lost after this first year.
+
+All in all, if we put together these variables, then the remaining record for a site could be defined as
+
+$$V(t)=V_l(t)+V_s(t+1)$$
+There have been other quantitative approaches to the survival of the archaeological record, such as Surovell's (2007, 2009) approaches. Although these are rather focused on the loss of complete sites, and not that much on the loss of specific records, and despite the fact that, as the authors acknowledge, they refer to specific geographic locations, with specific parameter combinations of our loss probabilities, we can obtain correlations higher than 0.98 regarding Surovell's loss curves. In the case shown, for example, we have considered $\theta_s=0.9$ and $\theta_l=0.9997$
+
+```{r, echo = FALSE, message=FALSE,results=FALSE}
+
+
+### COMPARISON OF SUROVELL AGAINST BINOMIAL
+
+Ns <- 10000 ## Number of sites (proxies)
+t <- 40000 ## Time span
+
+## Surovell proposal
+# Constants
+a <- 5.726442e06  
+b <- 2176.4
+c <- -1.3925309
+
+
+## Surovell's sites
+Ss <- rep(Ns,t)
+for (i in 2:t){
+  tm <- a*((c(0,i)+b)^c)
+  tm <- round((tm[2]/tm[1])*Ns)
+  Ss[i] <- tm
+}
+
+
+#plot(Ss, type = "l")
+
+## Binomial proposal
+
+Bs <- rep(Ns,t)
+for (i in 2:t){
+  Ns <- rbinom(1,Ns,0.99964)
+  Bs[i] <- Ns 
+}
+pbinom(10000,Ns,0.99964)
+#Bs[2]
+#?dbinom
+plot(Ss, type = "l", lwd = 1.5, col = "darkred",ylab="nsamples")
+lines(Bs, lwd = 1.5, col = "darkblue")
+
+cor.test(Ss, Bs)
+Bs[1:10]
+Ss[1:10]
+summary(lm(Ss ~ Bs))
+
+dbinom(9997,10000,0.99964)
+rbinom(1,10000,.9999)
+
+
+## two thetas proposal
+Ns <- 10000
+th_l <- 0.9995
+th_s <- 1
+
+Ls <- rbinom(1,Ns,th_s)
+
+Th_ss <- c(Ns,rep(Ls,t-1))
+
+for (i in 2:t){
+  Ls <- rbinom(1,Ls,th_l)
+  Th_ss[i] <- Ls
+}
+Th_ss[10000]
+Th_ss[10000:11000]
+#plot(Ss, type = "l", lwd = 2, col = "darkred", main = "Different proposals of record loss", 
+#     ylab = "Nsamples", xlab = "t")
+#lines(Th_ss, lwd = 2, col = "darkblue")
+#legend("topright", legend = c("Surovell", "Current"), lty = c(1,1), col = c("darkred","darkblue"))
+
+cor.test(Ss,Th_ss)
+
+```
+
+## Implementation
+This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are as follows
+
+```{r}
+
+## Function 8. Short term taphonomic loss
+#' @title short_loss
+#' Returns a data frame in the same form that the inserted data frame with 
+#' reduced values for short-term taphonomic loss process
+#' @param x: A vector with the amount of sample per depth. If used for many years, use
+#' with apply function, where the rows of the data frame are the depths and the columns 
+#' the years.
+#' @param theta_s: Probability of the record surviving after the first year after deposition
+#' @export
+
+short_loss <- function(x,theta_s){
+  res <- c()
+  for (i in 1:length(x)){
+    res[i] <- rbinom(1,x[i],theta_s)
+  }
+  return(res)
+}
+
+## Function 9. Long term taphonomic loss
+#' @title long_loss
+#' Returns a data frame in the same form that the inserted data frame with 
+#' reduced values for short-term taphonomic loss process
+#' @param x: A vector with the amount of sample per depth. If used for many years, use
+#' with apply function, where the rows of the data frame are the depths and the columns 
+#' the years.
+#' @param theta_l: Probability of the record surviving after the first year after deposition
+#' @param it: Initial time. Initial year of occupation in BP.
+#' @export
+
+long_loss <- function(x, theta_l, it){
+  t <- it+1950
+  
+  for (i in 1:ncol(x)){
+    prob <- theta_l^(t-i)
+    s <- x[,i]
+      for (k in 1:length(s)){
+        s[k] <- rbinom(1,s[k],prob)
+               
       }
-    }
-  } else {
-    l_rates <- rep(0,nrow(layers))
-    for (i in 1:nrow(layers)){
-      l_rates[i] <- round(layers[i,2]/(layers[i,3]-layers[i,4]),2)
-    }
-    s <- c()
-    for (i in 1:nrow(layers)){
-      s <- append(s,rep(l_rates[i],layers[i,3]-layers[i,4]))
-    }
+    x[,i] <- s  
   }
-  return(s)
-}
-
-W_prod <- function(x,Adr = NULL,Ndr = NULL, area, ss = 4){
-  
-  ## Set the number of individuals
-  if (is.vector(x)==TRUE){
-    Pop <- length(x)
-  } else {
-    Pop <- nrow(x)
-  }
-  
-  if (is.null(Adr) == TRUE & is.null(Ndr) == TRUE){
-    w <- Pop*5*20
-  } else if (is.null(Adr) == TRUE & is.null(Ndr) == FALSE){
-    w <- (Pop*5*20)/(10*Ndr)
-  } else if (is.null(Adr) == FALSE & is.null(Ndr) == FALSE){
-    w <- Adr/(10*Ndr)
-  } else if (is.null(Adr) == FALSE & is.null(Ndr) == TRUE){
-    w <- Adr
-  }
-  
-  w <- w*(1000/ss)
-
-  w <- round(w/area)
-  return(w)
-} 
-
-## Set initial values
-set.seed(1234)
-ts <- 1000 # Time span
-K <- 150
-area <- 1000
-Gs_init <- 100 # Initial population
-Gs_init <- data.frame("Age" = sample(10:30,Gs_init,10:30, replace = TRUE),
-                      "Sex" = sample(c("M","F"), Gs_init, prob = c(0.5,0.5), replace = TRUE))
-
-
-## Start the loop
-res <- data.frame("Pop" = rep(0,ts), "W" = rep(0,ts))
-Pop <- Gs_init
-
-for (i in 1:ts){
-  Pop <- Gpd(Pop)
-  a_w <- A_dep_r(Pop)
-  ndp <- N_dep_r()
-  
-  res$Pop[i] <- nrow(Pop)
-  res$W[i] <- W_prod(Pop, Adr= a_w, Ndr = ndp, area = area)
-  Pop$Age <- Pop$Age+1
+  return(x)
 }
 ```
 
-This model is constituted of two layers. A first layer implements the loss of the record, while the second layer accounts for the processes which may affect its vertical displacement, resulting in chronological palimpsests. In order to understand the process, first we show the protocols and functions that we use to generate each variable.
 
-### Time-dependent record loss
-As explained above, this is constituted essentially by two functions, one accounting for Surovell's equation for taphonomic loss, applied to each year of occupation, and the other adding the effect of human daily activities over previous years of occupation. 
-
-First, we consider time-dependent taphonomic loss, computed in the terms mentioned in the previous section, as the function `tdtl()`. For this funtion, an estimated time for the occupation of the site, as the parameter `t`, has to be provided.
+Once this is done, it is fairly easy to recompute the remaining record, and show it in the same terms as before. In this case, we have computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can heck how the model work and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). 
 
 ```{r}
-## Function 1. Application of time-dependent taphonomic loss (Surovell et al., 2009)
-#' It applies Surovell's equation to compute time dependent taphonomic loss. It 
-#' returns the amount of preserved samples, based on Surovell's equation, which is
-#' itself based on time passed since deposition
-#' @param x: Input data. Amount of waste for specific t. Integer.
-#' @param t: Time of abandonment. An integer.
-#' @export
-
-tdtf <- function(x,t){
-
-  ## Surovell's taphonomic model
-  ## Constants
-  a <- 5.726442e-06  
-  b <- 2176.4
-  c <- -1.3925309
-  
-  ## Application of the model
-  tm <- a*((c(0:t)+b)^c)
-  tm <- round((tm/max(tm))*x)
-  fw <- tm[length(tm)]
-  return(fw)
-
-}
-
+tlRec <- apply(Rec, 2, short_loss, 0.9)
+lRec <- long_loss(tlRec,.9997,7500)
+tlRec <- t(lRec)
 ```
 
-Second, we consider the function `adc`, accounting for anthropic daily action. This function acts as well on the waste produced. In this case, there are three parameters: `sed.r`, `yleft` and `h.act`. `sed.r` is the sedimentary rates and it should be the same as the sedimentary rates proposed for the natural deposition rates in the previous model, if this has been used. On its part `h.act` is the direct effect of the human action. Since the final result uses a multiplication of `h.act` by the years it took for the record to be buried (accounting for sedimentary rates), `yleft` is an additional parameter that makes sure that those multiplying years do not exceed the time of occupation of the site.
-
-```{r}
-## Function 2. Anthropic daily action.
-## This function accounts for the daily anthropic action of the groupd living in 
-## a site prior to the abandoment. It does not consider specifically aggresive 
-## actions such as Neolithic holes, current extraction of manouver, etc. 
-## Those will be considered later in the model per layers. It returns the same
-## stochastic process, but with this loss incorporated.
-#' @param x: Input data. Amount of waste for specific t. Integer.
-#' @param sed.r: Natural sedimentary rate. It can be introduced directly as a double
-#' if the rates are known, or it can be specified as slow ('s'), medium ('m') and
-#' fast ('f'), where sedimentary rates are respectively 0.05, 0.1 and 0.15 cm/year
-#' @param yleft: If specified, it marks the end of occupation of the site, so that
-#' years of anthropic action do not exceed years of occupation. Default is NA.
-#' @param h.act: The human activity in the cave. It can by high ('h'), medium ('m') 
-#' or slow ('s'), corresponding to the rates 0.9, 0.6, 0.3. The user can introduce
-#' the value.
-#' @export
-
-adc <- function(x, sed.r, yleft = NA, h.act){
-  
-  ## Set the general speed of the deposition rates
-  if (sed.r == 's'){
-    s <- 0.05
-  } else if (sed.r == 'm'){
-    s <- 0.1
-  } else if (sed.r == 'f'){
-    s <- 0.15
-  } else if (is.numeric(sed.r) == TRUE){
-    s <- sed.r
-  }
-  
-  ## Time until the record is buried (in years). 8 cm (16/2) based on Strauss, 1990: p. 266 but
-  ## this is wrong. I have some biblio to read further on this. It should also 
-  ## depend on the type of earth
-  y <- round(8/s)
-  if (is.na(yleft) == FALSE){
-    if (yleft < y){
-      y <- yleft
-    }
-  }
-  
-  ## Set the intensity of anthropic action
-  
-  if (h.act == 's'){
-    h <- 0.001
-  } else if (h.act == 'm'){
-    h <- 0.003
-  } else if (h.act == 'h'){
-    h <- 0.005
-  } else if (is.numeric(h.act) == TRUE){
-    h <- h.act
-  }
-  
-  x <- x-(x*h*y)
-  return(round(x))
-  
-}
-```
-
-We can see some short examples of the behaviour of the two functions.
-```{r}
-w <- res[,2]
-# Store in different vectors for the example, but could be the same.
-re <- rep(0,length(w))
-re_a <- rep(0,length(w))
-
-# To reproduce the time span
-
-for (i in 1:length(w)){
-  re[i] <- tdtf(w[i],7501-i)
-  ## Uses the same deposition rates
-  re_a[i] <- adc(re[i],sed.r = N_dep_r(), h.act = 'h', yleft = length(w)-i)
-}
-
-```
-
-First, we observe the effect in the loss of record of time-dependent taphonomic loss, both in absolute and normalised values. We can see the changes in the effect as the site age approaches the present.
-
-```{r}
-## Plot example time-dependent taphonomic loss
-
-par(mfrow=c(2,1))
-plot(x = c(7500:6501), y = res[,2], xlim = c(7500,6500), type = "l",
-     col = "darkred", main = "Time-dependent taphonomic loss", ylim = c(0,4000),
-     ylab = "N samples", xlab = "Year BP")
-lines(x = c(7500:6501), y = re, col = "orange")
-
-## And on normalised
-plot(x = c(7500:6501), y = res[,2]/max(res[,2]), xlim = c(7500,6500), type = "l",
-     col = "darkred", main = "Time-dependent taphonomic loss (Normalised)",
-     ylab = "N samples", xlab = "Year BP")
-lines(x = c(7500:6501), y = re/max(re), col = "orange")
-```
-
-Second, we can add the effect of anthropic action, also showing a greater effect towards the end of the occupation, as expected.
-
-```{r}
-### Example anthropic action
-par(mfrow=c(2,1))
-plot(x = c(7500:6501), y = re, xlim = c(7500,6500), type = "l",
-     col = "orange", main = "Adding anthropic action", ylim = c(0,500),
-     ylab = "N samples", xlab = "Year BP")
-#lines(x = c(7500:6501), y = re, col = "orange")
-lines(x = c(7500:6501), y = re_a, col = "darkblue")
-
-
-## And on normalised
-plot(x = c(7500:6501), y = res[,2]/max(res[,2]), xlim = c(7500,6500), type = "l",
-     col = "darkred", main = "Adding anthropic action (Normalised)",
-     ylab = "N samples", xlab = "Year BP")
-lines(x = c(7500:6501), y = re/max(re), col = "orange")
-lines(x = c(7500:6501), y = re_a/max(re_a), col = "darkblue")
-```
-
-### Vertical displacements
-
-The function `mix_rec` controls for the vertical displacement processes. It works on a *per sample* basis. That is, for each sample in one (or any) year, it selects it and moves it accross the depth of the site according the pre-specified criteria. More in particular, in order to move each sample, it uses a double exponential, or Laplace distribution. This distribution consists of two parameters $(\mu, b)$, where the parameter $\mu$ is the mean and the parameter $b$ controls for its dispersion. Therefore, the parameter $b$, defined in the function as the parameter `effect`, is the key for the dispersion of the assemblage. If $\mu = 0$, we can consider the dispersion values as the vertical cms of displacement. Thus, if $\mu = depth_{i}$, then $b$ would account for how far the specific sample has been displaced from its origin.
-
-The function returns a list where each object is an archaeological layer (as defined by the archaeologist). If one sample displaces to another layer, the function is able to recover this, thus accounting for archaeological mixing. If one sample displaces further than the overall boundaries, that sample disappears from the record, as it is considered non-accessible by the archaeologist or, at maximum, in a layer not under study. Finally, if `nlayers = 1` no layer will be created, and the function will return the complete redistribution of samples along the vertical sequence.
-
-```{r}
-## Function 3. Create archaeological layers
-#' It returns a list with as many objects as defined layers. Each object of the list
-#' is a matrix where the first column is the year, the second column is its original
-#' depth and the third column is the depth after the application of vertical 
-#' displacement. If maxdiff = TRUE, it adds another object to the list, indicating
-#' the maximum displacement (in cms) for the year selected.
-#' @param x: Input data. Amount of waste for specific t. Vector.
-#' @param iy: Initial year. Integer
-#' @param ts: Time span. Integer
-#' @param sed.r: Natural sedimentary rate. It can be introduced directly as a double
-#' if the rates are known, or it can be specified as slow ('s'), medium ('m') and
-#' fast ('f'), where sedimentary rates are respectively 0.05, 0.1 and 0.15 cm/year.
-#' In the case that the record formation model model has not been produced, 
-#' deposition rates from each model must coincide. N_dep_r() function can be used
-#' for this as it is non-stochastic.
-#' @param effect: Double or integer. Parameter for the double exponential distribution.
-#' It control the vertical spread of the samples. Values are advised between 0.5 and 10
-#' @param nlayers: Integer. How many layers should the time span be subdivided into?
-#' @param tlayers: It indicates the upper and lower bound of each layer. A data frame
-#' with two columns, and nrow == nlayers. The first column indicates the upper bound
-#' for each layer (each row is a layer) and the second column indicates the lower
-#' bound of a layer. See example.
-#' @param maxdiff: As a control check, if TRUE, this function provide the maximum 
-#' displacement for the samples of one specific year, defined with the parameter
-#' yeardiff. Default is FALSE.
-#' @param yeardiff: Only in use when maxdiff = TRUE. It specifies the year for which
-#' the maximum displacement will be computed. Integer. 
-#' @export
-
-tlayers <- data.frame("High" = c(0,30,60), "Low" = c(30,60,100))
-mix_rec <- function(x,iy,ts,sed.r,effect,nlayers,tlayers,
-                    maxdiff = FALSE,yeardiff){
-  
-  ## Build depth
-  if(length(sed.r) == 1){
-    s <- rep(sed.r,ts)
-  } else {
-    s <- sed.r
-  }
-  
-  ## Creates depth. Takes into account sedimentary rates from the top to the bottom
-  td <- sort(cumsum(rev(s)), decreasing = TRUE)
-  t <- seq(iy,iy-(ts-1))
-
-  ## Create matrix with two columns for efficiency
-  pr <- matrix(nrow = 0, ncol = 2)
-  for (i in 1:length(t)){
-    y <- rep(t[i],x[i]) ## One row per sample/year
-    d <- rep(td[i],x[i]) ## One row per sample/depth
-    
-    l <- cbind(y,d)
-    pr <- rbind(pr,l)
-  }
-
-  ## Create column with moved samples
-  pr <- cbind(pr,pr[,2]-replicate(nrow(pr),sample(c(-1,1),1)*rexp(1,effect)))
-  colnames(pr) <- c("Year BP","Original Depth","Mixed Depth")
-
-  ## Distribute the dates per layer
-  result <- vector(mode = "list", nlayers)
-  
-  for (i in 1:nlayers){
-    result[[i]] <- pr[pr[,3]>=tlayers[i,1] & pr[,3]<tlayers[i,2],]
-  }
-  
-  ## Add the difference in cms for one year
-  if (maxdiff == TRUE){
-    diff <- pr[pr[,1]==yeardiff,]
-    diff <- max(diff[,3])-min(diff[,3])
-    result[[nlayers+1]] <- diff
-  }
-  
-  return(result)
-}
-```
-
-In order to appreciate the effect of different values for the parameter $b$, here we show the vertical displacement from 7000 BP, and only for 250 years. The black line is the original depth, whereas the red shape is the vertical displacement in centimiters. It can be appreciated that, whilst values where $b < 1$ offer large displacements, when $b = 10$ the displacement is minimal, and could be considered even without strong post-depositional effects. Maximum displacement (obtained with the parameter `maxdiff = TRUE`) is offered for the user to observe if the displacement reproduced is in relative accordance to the site under study where, broadly, a general amount of displacement in cms can be assessed. In turn, this allows to tune $b$ until it reproduces the actual vertical displacement of the site as accurately as possible. 
-
-```{r}
-mdist1 <- mix_rec(re_a,7000,250,N_dep_r(),effect = .5,nlayers = 1, tlayers = tlayers,
-                 maxdiff = TRUE,yeardiff = 7000)
-mdist2 <- mix_rec(re_a,7000,250,N_dep_r(),effect = 1,nlayers = 1, tlayers = tlayers,
-                 maxdiff = TRUE,yeardiff = 7000)
-mdist3 <- mix_rec(re_a,7000,250,N_dep_r(),effect = 5,nlayers = 1, tlayers = tlayers,
-                 maxdiff = TRUE,yeardiff = 7000)
-mdist4 <- mix_rec(re_a,7000,250,N_dep_r(),effect = 10,nlayers = 1, tlayers = tlayers,
-                 maxdiff = TRUE,yeardiff = 7000)
-
-par(mfrow = c(2,2))
-
-plot(mdist1[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
-     main = "Vertical displacement with 'b' = 0.5")
-lines(mdist1[[1]][,2], col = "black")
-legend("topright",
-       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist1[[2]],2)," cm")),
-       cex = 0.7)
-
-plot(mdist2[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
-     main = "Vertical displacement with 'b' = 1")
-lines(mdist2[[1]][,2], col = "black")
-legend("topright",
-       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist2[[2]],2)," cm")),
-       cex = 0.7)
-
-plot(mdist3[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
-     main = "Vertical displacement with 'b' = 5")
-lines(mdist3[[1]][,2], col = "black")
-legend("topright",
-       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist3[[2]],2)," cm")),
-       cex = 0.7)
-
-plot(mdist4[[1]][,3], type = "l", col = "darkred",ylab = "Depth in cms",
-     main = "Vertical displacement with 'b' = 10")
-lines(mdist4[[1]][,2], col = "black")
-legend("topright",
-       legend = c(paste0("Max displacement in 7000 BP = ",round(mdist4[[2]],2)," cm")),
-       cex = 0.7)
-
-```
-
-Of course, one of the strengths of this function is that it can successfully reproduce the mixture processes frequently occurring in archaeological sites, so that we can reverse-engineer towards a better comprehension of the archaeological record. If we observe its result taking into account several archaeological layers (three for this example), we can observe how, when the samples are disturbed, the chronological uncertainty associated to the transition of each layer increases.
-
-```{r}
-## Effect on layers
-mdist <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 1,nlayers = 3, tlayers = tlayers)
-
-par(mfrow = c(1,2))
-plot(x = mdist[[3]][,1],y = mdist[[3]][,2],  type = "l", col = "darkblue", 
-     lwd = 2, ylim = c(0,100), xlim = c(7500,6500), ylab = "Depth in cm",
-     xlab = "Samples per year", 
-     main = "Samples per death and year without vertical movement")
-lines(x = mdist[[2]][,1],y = mdist[[2]][,2], col = "darkred", lwd = 2)
-lines(x = mdist[[1]][,1],y = mdist[[1]][,2], col = "darkgreen", lwd = 2)
-legend("topright", legend = c("Layer 1", "Layer 2", "Layer 3"), lty = c(1,1,1),
-       lwd = c(2,2,2), col= c("darkblue", "darkred","darkgreen"))
-
-plot(x = mdist[[3]][,1],y = mdist[[3]][,3],  type = "l", col = "darkblue", 
-     lwd = 2, ylim = c(0,100), xlim = c(7500,6500), ylab = "Depth in cm",
-     xlab = "Samples per year", 
-     main = "Samples per death and year with vertical movement")
-lines(x = mdist[[2]][,1],y = mdist[[2]][,3], col = "darkred", lwd = 2)
-lines(x = mdist[[1]][,1],y = mdist[[1]][,3], col = "darkgreen", lwd = 2)
-legend("topright", legend = c("Layer 1", "Layer 2", "Layer 3"), lty = c(1,1,1),
-       lwd = c(2,2,2), col= c("darkblue", "darkred","darkgreen"))
-
-```
-
-## Example
-
-### Effects of vertical displacement
-
-For the example, we consider a hypothetical complete sequence divided in 5 cm layers, which is a standard measure in field archaeology. For simplicity, we will focus in only one transition. For example, the transition between layers 2 and 3 (it could be any, as this dataset is artificial). In the following plot we can observe the partition between the layers, and how the sampes are effectively disturbed accross the depth of the site.
-
-```{r}
-set.seed(1234)
-w <- res[,2]
-# Store in different vectors for the example, but could be the same.
-re <- rep(0,length(w))
-re_a <- rep(0,length(w))
-
-# To reproduce the time span
-
-for (i in 1:length(w)){
-  re[i] <- tdtf(w[i],7501-i)
-  ## Uses the same deposition rates
-  re_a[i] <- adc(re[i],sed.r = N_dep_r(), h.act = 'h', yleft = length(w)-i)
-}
-
-tlay <- data.frame("High" = seq(0,95,5), "Low" = seq(5,100,5))
-
-lcol <- c("seashell2","yellow3","hotpink4","seashell2","seashell3","seashell4",
-          "seashell2","seashell3","seashell4","seashell2","seashell3","seashell4",
-          "seashell2","seashell3","seashell4","seashell2","seashell3","seashell4",
-          "seashell2","seashell3")
-
-vmov <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 1,nlayers = 20, tlayers = tlay)
-
-plot(x = vmov[[1]][,1],y = vmov[[1]][,3],  type = "l", col = lcol[1], 
-     lwd = 2, ylim = c(100,0), xlim = c(7500,6500), ylab = "Depth in cm",
-     xlab = "Samples per year", 
-     main = "20 layers with samples affected by vertical movement")
-for (i in 2:20){
-  lines(x = vmov[[i]][,1],y = vmov[[i]][,3], col = lcol[i], lwd = 2)
-}
-text(x=seq(7380,6380,-50),y=seq(100,0,-5),
-     labels = seq(20,1,-1), cex = 0.7)
-
-
-```
-
-We can also observe below how, without disturbance, the samples are grouped by their year and their value is similar to the Markov processes seen before, whereas for the disturbed, the Markov process seems broken and the samples have been redistributed according to the specifications, although the initial distribution (without disturbance) can still be hinted.
-
-```{r}
-### Prepare for plots
-l23wod <- matrix(nrow = 0, ncol = 2)
-t <- c(7500:6501)
-td <- sort(cumsum(rev(rep(0.1,1000))), decreasing = TRUE)
-
-for (i in 1:length(t)){
-  y <- rep(t[i],re_a[i]) ## One row per sample/year
-  d <- rep(td[i],re_a[i]) ## One row per sample/depth
-  
-  l <- cbind(y,d)
-  l23wod <- rbind(l23wod,l)
-}
-
-## Create layers for plots
-l23wod1 <- l23wod[l23wod[,2] >= 5 & l23wod[,2] < 10,]
-l23wod2 <- l23wod[l23wod[,2] >= 10 & l23wod[,2] < 15,]
-l23wd1 <- vmov[[2]]
-l23wd2 <- vmov[[3]]
-
-## Plot of samples per year (per layer)
-par(mfrow = c(2,2))
-plot(table(l23wod1[,1]), col = "darkred", ylab = "N samples",
-     ylim = c(0,160),
-     main = "N samples layer 2 without disturbation")
-plot(table(l23wod2[,1]), col = "darkblue", ylab = "N samples",
-     ylim = c(0,190),
-     main = "N samples layer 3 without disturbation")
-plot(table(l23wd1[,1]), col = "darkred", ylab = "N samples",
-     ylim = c(0,120),
-     main = "N samples layer 2 with disturbation")
-plot(table(l23wd2[,1]), col = "darkblue", ylab = "N samples",
-     ylim = c(0,190),
-     main = "N samples layer 3 with disturbation")
-
-```
-
-As a result, if we build a Summed Probability Distribution (SPD) from the total of the samples (one for non-disturbed and one for the disturbed) we can see how the final effect of vertical displacement (if field-archaeologists retrieved every 14C date remaining in the site) after applying the calibration is negligible. 
-
-```{r, message = FALSE, results=FALSE}
-## Build SPDs
-library(rcarbon)
-
-## SPD layers 2,3 without disturbance
-cal_l23wod1 <- calibrate(l23wod1[,1],errors = rep(20,nrow(l23wod1)))
-cal_l23wod2 <- calibrate(l23wod2[,1],errors = rep(20,nrow(l23wod2)))
-
-spd_l23wod1 <- spd(cal_l23wod1, timeRange = c(7600,7400))
-spd_l23wod2 <- spd(cal_l23wod2, timeRange = c(7600,7400))
-
-## SPD layers 2,3 with disturbance
-
-cal_l23wd1 <- calibrate(l23wd1[,1],errors = rep(20,nrow(l23wd1)))
-cal_l23wd2 <- calibrate(l23wd2[,1],errors = rep(20,nrow(l23wd2)))
-
-spd_l23wd1 <- spd(cal_l23wd1, timeRange = c(7600,7400))
-spd_l23wd2 <- spd(cal_l23wd2, timeRange = c(7600,7400))
-
-## PLOTS
-par(mfrow=c(2,2))
-plot(spd_l23wod1, main = "Layer 2 without disturbation")
-plot(spd_l23wod2, main = "Layer 3 without disturbation")
-plot(spd_l23wd1, main = "Layer 2 with disturbation b = 1")
-plot(spd_l23wd2, main = "Layer 3 with disturbation b = 1")
-
-```
-
-To check for the possible effect, we can increase the effect of the parameter $b$ within the Laplace distribution to increase the vertical displacement. In this case, setting $b = 0.5$ shows greater vertical displacement.
 
 ```{r, echo = FALSE}
-### NOW WE TRY WITH HIGHER DISTURBATION EFFECT
-vmov_high <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 0.5,nlayers = 20, tlayers = tlay)
+library(viridis)
+barplot(tlRec[c(1:4,77:79),], col = viridis(10), legend = colnames(Rec)[c(1:4,77:79)],
+        xlab = "Depth", ylab = "nsamples", main = "Distribution of specific years along depth with population")
+lines(Ps*300, col = "darkred", lwd = 1.5)
 
-par(mfrow = c(1,1))
-plot(x = vmov_high[[1]][,1],y = vmov_high[[1]][,3],  type = "l", col = lcol[1], 
-     lwd = 2, ylim = c(100,0), xlim = c(7500,6500), ylab = "Depth in cm",
-     xlab = "Samples per year", 
-     main = "20 layers with samples affected by vertical movement")
-for (i in 2:20){
-  lines(x = vmov_high[[i]][,1],y = vmov_high[[i]][,3], col = lcol[i], lwd = 2)
-}
-text(x=seq(7380,6380,-50),y=seq(100,0,-5),
-     labels = seq(20,1,-1), cex = 0.7)
-```
+colnames(tlRec) <- colnames(tRec)
+rownames(tlRec) <- rownames(tRec)
 
-Which is also appreciated when observing the resulting distribution.
+barplot(tRec, col = viridis(ncol(tRec)), #legend = colnames(Rec),
+        xlab = "Depth", ylab = "nsamples", main = "Distribution of samples for specific years")
 
-```{r, echo = FALSE}
-## Create layers for plots
-high_l23wd1 <- vmov_high[[2]]
-high_l23wd2 <- vmov_high[[3]]
-
-## Plot of samples per year (per layer)
-par(mfrow = c(2,2))
-plot(table(l23wod1[,1]), col = "darkred", ylab = "N samples",
-     ylim = c(0,160),
-     main = "N samples layer 2 without disturbation")
-plot(table(l23wod2[,1]), col = "darkblue", ylab = "N samples",
-     ylim = c(0,190),
-     main = "N samples layer 3 without disturbation")
-plot(table(high_l23wd1[,1]), col = "darkred", ylab = "N samples",
-     ylim = c(0,90),
-     main = "N samples layer 2 with disturbation b = 0.5")
-plot(table(high_l23wd2[,1]), col = "darkblue", ylab = "N samples",
-     ylim = c(0,130),
-     main = "N samples layer 3 with disturbation b = 0.5")
-```
-
-In the SPDs, we can now see some changes, but the distributions of the non-disturbed and the disturbed samples do not seem to differ that much.
-
-```{r, echo = FALSE, results=FALSE}
-## Build SPDs
-## SPD layers 2,3 with disturbance
-
-cal_high_l23wd1 <- calibrate(high_l23wd1[,1],errors = rep(20,nrow(high_l23wd1)))
-cal_high_l23wd2 <- calibrate(high_l23wd2[,1],errors = rep(20,nrow(high_l23wd2)))
-
-spd_high_l23wd1 <- spd(cal_high_l23wd1, timeRange = c(7600,7400))
-spd_high_l23wd2 <- spd(cal_high_l23wd2, timeRange = c(7650,7400))
-
-## PLOTS
-par(mfrow=c(2,2))
-plot(spd_l23wod1, main = "Layer 2 without disturbation")
-plot(spd_l23wod2, main = "Layer 3 without disturbation")
-plot(spd_high_l23wd1, main = "Layer 2 with disturbation b = 0.5")
-plot(spd_high_l23wd2, main = "Layer 3 with disturbation b = 0.5")
-```
-
-We can take it to an extreme case, where maximum displacement of samples can reach values between 70 and 100 cm.
-
-```{r, echo = FALSE}
-### NOW WE TRY WITH EXTREME DISTURBATION EFFECT
-vmov_ext <- mix_rec(re_a,7500,1000,N_dep_r(),effect = 0.1,nlayers = 20, tlayers = tlay)
-
-par(mfrow = c(1,1))
-plot(x = vmov_ext[[1]][,1],y = vmov_ext[[1]][,3],  type = "l", col = lcol[1], 
-     lwd = 2, ylim = c(100,0), xlim = c(7500,6500), ylab = "Depth in cm",
-     xlab = "Samples per year", 
-     main = "20 layers with samples affected by vertical movement")
-for (i in 2:20){
-  lines(x = vmov_ext[[i]][,1],y = vmov_ext[[i]][,3], col = lcol[i], lwd = 2)
-}
-text(x=seq(7380,6380,-50),y=seq(100,0,-5),
-     labels = seq(20,1,-1), cex = 0.7)
-```
-
-In this case, we can see the long tail for disturbed sample. Note that the tail is assymmetric because, as stated above, all samples displaced further up than depth 0 (which would be the surface and coincides with year 6501 BP) are discarded, as they are considered lost.
-
-```{r, echo = FALSE}
-## Create layers for plots
-ext_l23wd1 <- vmov_ext[[2]]
-ext_l23wd2 <- vmov_ext[[3]]
+barplot(tlRec, col = viridis(ncol(tlRec)), #legend = colnames(Rec),
+        xlab = "Depth", ylab = "nsamples", main = "Distribution of samples for specific years after loss")
 
 
-## Plot of samples per year (per layer)
-par(mfrow = c(2,2))
-plot(table(l23wod1[,1]), col = "darkred", ylab = "N samples",
-     ylim = c(0,160),
-     main = "N samples layer 2 without disturbation")
-plot(table(l23wod2[,1]), col = "darkblue", ylab = "N samples",
-     ylim = c(0,190),
-     main = "N samples layer 3 without disturbation")
-plot(table(ext_l23wd1[,1]), col = "darkred", ylab = "N samples",
-     ylim = c(0,50),
-     main = "N samples layer 2 with disturbation b = 0.5")
-plot(table(ext_l23wd2[,1]), col = "darkblue", ylab = "N samples",
-     ylim = c(0,50),
-     main = "N samples layer 3 with disturbation b = 0.5")
-```
 
-Now we can see how the SPD for the disturbed deposits spans through a larger timespan than the non-disturbed deposits. Even more if we take into account that the expansion towards the present is disregarded for the above mentioned reasons.
 
-```{r, echo = FALSE, results=FALSE}
-## Build SPDs
-
-## SPD layers 2,3 with disturbance
-
-cal_ext_l23wd1 <- calibrate(ext_l23wd1[,1],errors = rep(20,nrow(ext_l23wd1)))
-cal_ext_l23wd2 <- calibrate(ext_l23wd2[,1],errors = rep(20,nrow(ext_l23wd2)))
-
-spd_ext_l23wd1 <- spd(cal_ext_l23wd1, timeRange = c(8100,7400))
-spd_ext_l23wd2 <- spd(cal_ext_l23wd2, timeRange = c(8100,7400))
-
-## PLOTS
-par(mfrow=c(2,2))
-plot(spd_l23wod1, main = "Layer 2 without disturbation")
-plot(spd_l23wod2, main = "Layer 3 without disturbation")
-plot(spd_ext_l23wd1, main = "Layer 2 with disturbation b = 0.1")
-plot(spd_ext_l23wd2, main = "Layer 3 with disturbation b = 0.1")
-```
-
-### Archaeological sampling
-
-In any case, the images shown above were assuming a very hypothetical research data; that is, assuming that the researcher could dispose of every single (remaining) 14C sample in the site for dating or, at least, a good representative amount of them. However, dating is expensive, and it is not frequent to have dating programs including several samples for one layer. Usually, at most two or three dates are retrieved from a layer in case of doubt (which is already indicating uncertainty), where in the most common situation, a single sample is considered enough to date a layer.
-
-Focusing only on layer 3, in the following sequence of plots, we have randomly selected and calibrated one single date to see if that would approach the actual age of the layer, mimicking general archaeological methodology.
-
-For the case where the samples are not disturbed, all the dates selected show similar curves and could be fairly indicative of the actual age of the layer.
-
-```{r, echo = FALSE, results = FALSE}
-layer3_wod <- cbind(l23wod2[sample(nrow(l23wod2), 9),],rep(20,9))
-layer3_wd <- cbind(l23wd2[sample(nrow(l23wd2), 9),],rep(20,9))
-layer3_high_wd <- cbind(high_l23wd2[sample(nrow(high_l23wd2), 9),],rep(20,9))
-layer3_ext_wd <- cbind(ext_l23wd2[sample(nrow(ext_l23wd2), 9),],rep(20,9))
-
-par(mfrow = c(3,3))
-
-for (i in 1:9){
-  c <- calibrate(layer3_wod[i,1],layer3_wod[i,3])
-  plot(c, main = "Non disturbed sample")
-}
-```
-
-If $b = 1$ we still have a general good approach, although some differences in the distribution are appreciated and some dates (such as date number 9) show a different behaviour.
-
-```{r, echo = FALSE, results = FALSE}
-par(mfrow = c(3,3))
-for (i in 1:9){
-  c <- calibrate(layer3_wd[i,1],layer3_wd[i,3])
-  plot(c, main = "b = 1")
-}
-```
-
-For the case of $b = 0.5$ there are indeed even more differences among the dates.
-
-```{r, echo = FALSE, results = FALSE}
-par(mfrow = c(3,3))
-for (i in 1:9){
-  c <- calibrate(layer3_high_wd[i,1],layer3_high_wd[i,3])
-  plot(c, main = "b = 0.5")
-}
-```
-
-If $b = 0.1$ more than half of the dates would not be representative of the actual age of the site.
-
-```{r, echo = FALSE, results = FALSE}
-par(mfrow = c(3,3))
-for (i in 1:9){
-  c <- calibrate(layer3_ext_wd[i,1],layer3_ext_wd[i,3])
-  plot(c, main = "b = 0.1")
-}
 ```
 
