@@ -554,12 +554,13 @@ Pop_stoch <- function(Pop, K, prob = 0.8, ts, ...){
   Ip <- data.frame("Age" = sample(10:30,Ip,10:30, replace = TRUE),
                    "Sex" = sample(c("M","F"), Ip, prob = c(0.5,0.5), replace = TRUE))
     
-  pop <- c()
+  pop <- vector(length=ts)
   
   ## Run stochastic process  
   for (i in 1:ts){
-    pop[i] <- nrow(Gpd(Ip, K = K, prob = prob, ...))
-    Ip <- Gpd(Ip, K = K, prob = prob, ...)
+    New_pop <- Gpd(Ip, K = K, prob = prob, ...)
+    pop[i] <- nrow(New_pop)
+    Ip <- Gpd(New_pop, K = K, prob = prob, ...)
   }
   
   return(pop)
