@@ -193,13 +193,14 @@ height.groups[height.groups<(maxh*.7)]=1
 height.groups[height.groups>(maxh*.7)]=200
 height.groups[is.na(height.groups)]=-1
 height.poly=as.polygons(height.groups)
-viable=height.poly[2,]
+viable=makeValid(height.poly[2,])
 
 sites=spatSample(viable,n)
 
 plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
 plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
+
 ```
 
 Use sites to create a network
