@@ -168,7 +168,7 @@ Visual the map as a simple 2D raster
 
 ```{r 2dVisu}
 
-height.ras=rast(height)
+height.ras=rast(height,extent=c(-2,-1,1,2),crs="+proj=latlon")
 maxh=max(height.ras[],na.rm=T)
 col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
 
@@ -207,12 +207,12 @@ Use sites to create a network
 ```{r sitesnetwork}
 
 library(igraph)
-crs(sites)="+proj=moll"
+crs(sites)="+proj=lonlat"
 ig=graph_from_adjacency_matrix(as.matrix(distance(sites)),weighted=T,mode="undirected")
 ig=set_graph_attr(ig,"layout",crds(sites))
 
 V(ig)$label=""
-V(ig)$size=(size+1)*350
+V(ig)$size=(size+1)
 V(ig)$frame.color="black"
 V(ig)$frame.width=.5
 E(ig)$weight=1/(E(ig)$weight^2)
