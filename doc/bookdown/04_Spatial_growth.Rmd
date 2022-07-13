@@ -6,7 +6,7 @@
 
 #initialisation
 
-ts=300
+ts=200
 ss=sample(seq_along(sites),.8*nrow(sites))
 K=100
 INs=round(runif(length(ss),.5,1.5)*K) #Population size at initialisation
@@ -40,14 +40,14 @@ for (i in 2:(ts+1)){
         plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
         plot(height.wat,col="lightblue",add=T,legend=F)
         city=NULL
-        Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8, )
+        Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8 )
         newN=nrow(Ips[[s]])
         if(newN>(Ks[[s]])){ #migration scenario
             migrants=newN-round(Ks[[s]]*0.95)
             ##Creation of new city
             new_site=NULL
             if(migrants>20){
-                territory=erase(viable,buffer(sites,10000))
+                territory=erase(viable,buffer(sites,Nts[i-1,]*100))
                 if(length(territory)>0){
                     new_site=spatSample(territory,1)
                     if(length(new_site)>0){
@@ -56,6 +56,7 @@ for (i in 2:(ts+1)){
                         Ks[length(Ks)+1]=50+round(rexp(1)*200)
                         city=(length(Ks))
                         Nts=cbind(Nts,rep(0,ts+1))
+                        print("ii")
                     }
                 }
             }
