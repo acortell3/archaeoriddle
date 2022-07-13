@@ -4,14 +4,17 @@
 
 ```{r}
 
+#initialisation
+
+ts=300
 ss=sample(seq_along(sites),.8*nrow(sites))
 K=100
-INs=round(runif(length(ss),.5,1.5)*100) #Population size at initialisation
-INs=round(runif(length(sites),.5,1.5)*100) #Population size at initialisation
+INs=round(runif(length(ss),.5,1.5)*K) #Population size at initialisation
+INs=round(runif(length(sites),.5,1.5)*K) #Population size at initialisation
 
 Nts=matrix(0,nrow=ts+1,ncol=length(sites))
 
-Ks=50+round(rexp(length(sites)))*200
+Ks=50+round(rexp(length(sites))*200)
 Ips <- lapply(INs,function(Ip) data.frame("Age" = sample(10:30,Ip,10:30, replace = TRUE), "Sex" = sample(c("M","F"), Ip, prob = c(0.5,0.5), replace = TRUE)))
 Nts[1,]=sapply(Ips,nrow)
 #Ips <- sapply(seq_along(sites),function(i) Pop_stoch(Ips[i],K=Ks[i],ts=100))
@@ -23,47 +26,62 @@ Step by step to allow interaction between sites:
 
 ```{r}
 ## Run stochastic process  
+frame=0
+foldervid="mapgrowth"
 plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
-plot(sitesrcex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(n,alpha=.6))
+plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(n,alpha=.6))
 for (i in 2:(ts+1)){
     print(paste("decades",i))
     for(s in sample(seq_along(sites))){
+        frame=frame+1
+        filename=sprintf("map_%04d.png", frame)
+        png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
+        plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
+        plot(height.wat,col="lightblue",add=T,legend=F)
         city=NULL
         Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8, )
         newN=nrow(Ips[[s]])
         if(newN>(Ks[[s]])){ #migration scenario
             migrants=newN-round(Ks[[s]]*0.95)
             ##Creation of new city
+            new_site=NULL
             if(migrants>20){
                 territory=erase(viable,buffer(sites,10000))
-                new=spatSample(territory,1)
-                sites=rbind(sites,new)
-                Ips[[length(Ips)+1]]= data.frame("Age" = sample(10:30,migrants,10:30, replace = TRUE), "Sex" = sample(c("M","F"), migrants, prob = c(0.5,0.5), replace = TRUE))
-                Ks[length(Ks)+1]=50+round(rexp(1))*200
-                city=(length(Ks))
-                Nts=cbind(Nts,rep(0,ts))
+                if(length(territory)>0){
+                    new_site=spatSample(territory,1)
+                    if(length(new_site)>0){
+                        sites=rbind(sites,new_site)
+                        Ips[[length(Ips)+1]]= data.frame("Age" = sample(10:30,migrants,10:30, replace = TRUE), "Sex" = sample(c("M","F"), migrants, prob = c(0.5,0.5), replace = TRUE))
+                        Ks[length(Ks)+1]=50+round(rexp(1)*200)
+                        city=(length(Ks))
+                        Nts=cbind(Nts,rep(0,ts+1))
+                    }
+                }
             }
             ##migration to new city
-            else{
+            if(length(new_site)==0){
                 city=which.max(Ks-(Nts[i-1,]+migrants))
             }
-            Nts[i,city]=Nts[i,city]+migrants
+            Nts[i,city]=Nts[i-1,city]+migrants
             newN=newN-migrants
         }
         Nts[i,s]=newN
         sitescols=rep(1,length(sites))
         siteslwd=rep(1,length(sites))
+        ii=NULL
         if(!is.null(city)){
             sitescols[s]="yellow"
             sitescols[city]="red"
             siteslwd[s]=3
             siteslwd[city]=3
-            #plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
-            #plot(height.wat,col="lightblue",add=T,legend=F)
-            #plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(n,alpha=.6),lwd=siteslwd,col=sitescols)
-            #plot(st_cast(st_combine(st_as_sf(sites[c(s,city)])),"LINESTRING"),add=T)
+            ii=st_cast(st_combine(st_as_sf(sites[c(s,city)])),"LINESTRING")
         }
+        if(!is.null(ii))plot(ii,add=T)
+        tmp=Nts[i-1,]
+        tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
+        plot(sites,cex=(1+tmp/100),pch=21,add=T,bg=rainbow(n,alpha=.6),lwd=siteslwd,col=sitescols)
+        dev.off()
     }
 }
 ```
@@ -71,10 +89,11 @@ for (i in 2:(ts+1)){
 Visualise:
 
 ```{r}
-plot(1,1,type="n",xlim=c(0,max(ts)),ylim=c(0,max(Nts)))
+par(mfrow=c(2,1))
+plot(1,1,type="n",xlim=c(0,max(ts)),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
 apply(Nts,2,lines)
+plot(apply(Nts,1,sum),xlab="time",ylab="popsize")
 territory=st_union(st_as_sf(buffer(sites,5000)))
-inter<Plug>Tex <- MathCalk 
 
 ```
 
