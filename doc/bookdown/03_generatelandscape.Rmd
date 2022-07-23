@@ -159,7 +159,7 @@ hm_ambiant  <- add_shadow(hm_ray,ambient_shade(height_map), 0,5)
 hm_lamb = add_shadow(hm_ambiant,lamb_shade(height_map), 0) 
 plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = 1, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
 
-render_highquality( samples=256, clear = TRUE,light=TRUE)
+#render_highquality( samples=256, clear = TRUE,light=TRUE)
 
 ```
 
@@ -168,7 +168,8 @@ Visual the map as a simple 2D raster
 
 ```{r 2dVisu}
 
-height.ras=rast(height,extent=c(-2,-1,1,2),crs="+proj=latlon")
+#height.ras=rast(height,extent=c(-2,-1,1,2),crs="+proj=latlon")
+height.ras=rast("east_narnia.tif")
 maxh=max(height.ras[],na.rm=T)
 col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
 
@@ -203,12 +204,23 @@ plot(sites,cex=2,pch=21,add=T,bg=rainbow(n,alpha=.6))
 
 ```
 
+Extract data for the end user:
+
+```{r,eval=F}
+coastline=st_as_sf(as.polygons(height.ras>0))[2,]  ##get only the non submerged actual land
+plot(coastline,col=NA,bgc=adjustcolor("cyan",.1),add=T)
+st_write(dsn="coastline.shp",coastline)
+writeRaster(filename="east_narnia.tif",height.ras,overwrite=T)
+```
+
+
 Use sites to create a network
 
 ```{r sitesnetwork}
 
 library(igraph)
 crs(sites)="+proj=lonlat"
+sites=sites[sample(nrow(sites),20),]
 ig=graph_from_adjacency_matrix(as.matrix(distance(sites)),weighted=T,mode="undirected")
 ig=set_graph_attr(ig,"layout",crds(sites))
 
@@ -225,17 +237,17 @@ E(ig)$color=allcomu[head_of(ig,E(ig))]
 
 plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
-plot(ig,add=T,rescale=F)
+plot(ig,add=T,rescale=F,alpha=.2)
 ```
 
 Visualise sites on the 3D plot
 
-```{r 3Dnetwork,eval=T}
+```{r 3Dnetwork,eval=F}
 
 plot_3d(hm_lamb,height_map, zscale = 20, fov = 0, theta = 20, zoom = 1, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7)
 
 render_points(extent = raster::extent(raster::raster(height.ras)),
-             lat = crds(sites)[,"y"], long = crds(sites)[,"x"], altitude =extract(height.ras,sites)[,2]+20,
+             lat = crds(sites)[,"y"], long = crds(sites)[,"x"], altitude =extract(height.ras,sites)[,1]+20,
              zscale=20,size=1,col=categorical_pal(max(allcomu))[allcomu],clear_previous = TRUE)
        
 render_highquality(point_radius=5,samples=256, clear = TRUE,light=TRUE)
