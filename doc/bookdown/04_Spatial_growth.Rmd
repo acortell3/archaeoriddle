@@ -1,7 +1,5 @@
 # Populatin grow on multiple sites
 
-## Initial sites and size:
-
 ```{r}
 #' @param pt a vector point around witch decvay is computed
 #' @param rast a raster to compute distances
@@ -18,7 +16,6 @@ logisticdecay <- function(pt,rast,L=1,k=0.0001,x0=60000){
 initpopstruc <- function(n=100,ages=10:30,p_sex=c(0.5,0.5)) data.frame("Age" = sample(ages,n,ages, replace = TRUE), "Sex" = sample(c("M","F"), n, prob = p_sex, replace = TRUE))   
 
 #' @param list_sites a list of population for all initial sites of the simulation
-#' @param K baseline carrying capacity
 #' @param ts length of simulation
 initlistsites <- function(list_sites,ts=200){
     Nts=matrix(0,nrow=ts+1,ncol=length(list_sites))
@@ -27,26 +24,21 @@ initlistsites <- function(list_sites,ts=200){
 }
 
 
+#' @param Kbase baseline carrying capacity or different culturesj
+#' @param sites raster with site and culture
+#' @param ressources a raster type for fall sites
+initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources){
+    Ks=Kbase[sites$culture]+round(rnorm(length(sites),0,10))
+    #Ks[sites$culture=="F"]=Ks[sites$culture=="F"]*runif(sum(sites$culture=="F"),1,1)
+    Ks=Ks*(1+extract(ressources,sites)[,2])
+    Ks
+}
 
-#initialisation
-
-ts=50
-K=100
-
-ss=sample(seq_along(sites),.8*nrow(sites))
-INs=round(runif(length(ss),.5,1.5)*K) #Population size at initialisation
-
-
-
-INs=round(runif(length(sites),.5,1.5)*K) #Population size at initialisation
-
-
-Ips <- lapply(INs,initpopstruc ) #initialise population structure for all sites
-
-Nts=initlistsites(Ips,ts=ts)
 
 ```
 
+
+## Environmental resources
 We generate zone of hight resource, that will attract settlements and support higher K
 
 ```{r}
@@ -54,14 +46,14 @@ We generate zone of hight resource, that will attract settlements and support hi
 ##ressource geolocalisation set manually
 goodressources=vect(
                     cbind(
-                     x=c(-1.685411,-1.146645,-1.138227,-1.618065),
-                     y=c(1.619488,1.850545,1.195183,1.100659)
+                     x=c(-0.2300711,-3.1455282,-0.5086485,-1.9639755,-0.4077843,0.019688,-3.116710),
+                     y=c(3.6423000,-0.2551019,-0.7440748,1.1303214,1.0248567,0.2194895,2.0267718)
                      )
                     )
 #spread of ressources
-areas=c(100,2000,200,300)
+areas=4*c(100,2000,200,300,100,200,400)
 #speed of ressource decay:
-ks=c(0.0002,0.0001000,0.0001600,0.0001800)
+ks=c(0.0002,0.0001000,0.0001600,0.0001800,0.00040,.0002,0.0002)/4
 
 crs(goodressources)=crs(height.ras)
 
@@ -73,19 +65,45 @@ for(i in 2:length(allres))
 ress=mask(ress,viable)
 plot(ress)
 ```
+## Initial sites and size:
+
+```{r,eval=F}
+
+#initialisation
+
+ts=800
+Kbase=c("HG"=30,"F"=120)
+
+
+cultures=rep("HG",length(sites))
+
+cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
+sites$culture=as.factor(cultures)
+
+sites$Ks=initKs(Kbase,sites,ress)
+Ks=sites$Ks
+
+sites=vect(readRDS("goodiste_init.RDS"))
+INs=round(runif(length(sites),.5,1.5)*sites$Ks) #Population size at initialisation
+
+
+Ips <- lapply(INs,initpopstruc ) #initialise population structure for all sites
+
+Nts=initlistsites(Ips,ts=ts)
+
+```
+
 
 Use ressource to adjust the Ks:
-```{r}
-Ks=K/2+round(rexp(length(Ips))*20)
-Ks=Ks*(1+10*extract(ress,sites)[,1])
-plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(n,alpha=.6))
+```{r,eval=F}
+plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 ```
 
 
 We will run the simulation step by stepk
 Step by step to allow interaction between sites:
 
-```{r}
+```{r,eval=F}
 ## Run stochastic process  
 
 ### visualisation =====
