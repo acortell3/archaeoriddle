@@ -111,7 +111,7 @@ frame=0
 foldervid="mapgrowth"
 plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
-plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(n,alpha=.6))
+plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(cultures)])
 plot(ress,add=T,alpha=.2,col=colorRampPalette(c("white","yellow","orange","red"))(80))
 ###
 
@@ -132,15 +132,20 @@ for (i in 2:(ts+1)){
         Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8 ) #compute new population for the sites
         newN=nrow(Ips[[s]]) #count population size
 
-        if(newN>(Ks[[s]])){ #if new population is more than carrying capacity: migration scenario
+        if(newN>=(Ks[[s]])){ #if new population is more than carrying capacity: migration scenario
             migrants=newN-round(Ks[[s]]*0.9)
             ##Creation of new city
             new_site=NULL
-            if(migrants>10 && runif(1)<.05){ #if supropulation > 10 people, 10% chance of creation of a new city
+            #print(paste("possib",migrants))
+            if(migrants>=.2*Ks[[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
 
-                territory=erase(viable,buffer(sites,Nts[i-1,]*100))
+                print(paste("look for new spot",migrants))
+                tmp=Nts[i-1,]
+                tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
+                territory=erase(viable,buffer(sites,(tmp)/2*1000))
 
                 if(length(territory)>0){
+                    print(paste("found new spot",migrants))
 
                     ##select a new site given its distance to the old one and the ressource available in ress
                     d2=logisticdecay(sites[s],height.ras,x=20000)
@@ -150,12 +155,17 @@ for (i in 2:(ts+1)){
 
                     if(length(new_site)>0){
                         ##add new site to site listes
-                        sites=rbind(sites,new_site)
                         ##initialise population struc of new site
                         Ips[[length(Ips)+1]]= initpopstruc(n=migrants)
-                        Ks[length(Ks)+1]=(K/2+round(rexp(1)*20))*(1+10*extract(ress,new_site)[,1])
+                        new_site$culture=sites$culture[s]
+                        new_site$Ks=initKs(Kbase,sites=new_site,ress)
+
+                        sites=rbind(sites,new_site)
+
+                        Ks[length(Ks)+1]=new_site$Ks
                         city=(length(Ks))
                         Nts=cbind(Nts,rep(0,ts+1))
+                        cultures=c(cultures,cultures[s])
                         print("ii")
                     }
                 }
@@ -164,10 +174,11 @@ for (i in 2:(ts+1)){
             if(length(new_site)==0 && runif(1)>.1 ){
 
                 #getj
-                att=extract(ress,sites)[,1]
-                space=Ks-(Nts[i-1,]+migrants)
-                dis=extract(logisticdecay(sites[s],height.ras,k=0.00002,x=1),sites)[,1]
+                att=extract(ress,sites)[,2]
+                space=sites$Ks-(Nts[i-1,]+migrants)
+                dis=extract(logisticdecay(sites[s],height.ras,k=0.00002,x=1),sites)[,2]
                 attractivity=att*space*dis
+                attractivity=attractivity*(1+(sites$culture[s]==sites$culture)) #2 times more likely to go to similar culture
                 attractivity[s]=min(attractivity)-1
                 attractivity=exp(attractivity)/sum(exp(attractivity))
                 city=sample(size=1,x=seq_along(sites),prob=attractivity)
@@ -200,7 +211,7 @@ for (i in 2:(ts+1)){
 
 Visualise:
 Record deposit and  loss
-```{r,fig.width=25%}
+```{r,fig.width="25%"}
 alldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = "m"))
 maxy=max(sapply(alldeposit,function(i)max(apply(i,2,sum))))
 
