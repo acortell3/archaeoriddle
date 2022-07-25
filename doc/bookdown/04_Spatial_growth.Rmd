@@ -30,68 +30,136 @@ initlistsites <- function(list_sites,ts=200){
 
 #initialisation
 
-ts=200
-ss=sample(seq_along(sites),.8*nrow(sites))
+ts=50
 K=100
+
+ss=sample(seq_along(sites),.8*nrow(sites))
 INs=round(runif(length(ss),.5,1.5)*K) #Population size at initialisation
+
+
+
 INs=round(runif(length(sites),.5,1.5)*K) #Population size at initialisation
 
-Nts=matrix(0,nrow=ts+1,ncol=length(sites))
 
-Ks=50+round(rexp(length(sites))*200)
-Ips <- lapply(INs,function(Ip) data.frame("Age" = sample(10:30,Ip,10:30, replace = TRUE), "Sex" = sample(c("M","F"), Ip, prob = c(0.5,0.5), replace = TRUE)))
-Nts[1,]=sapply(Ips,nrow)
-#Ips <- sapply(seq_along(sites),function(i) Pop_stoch(Ips[i],K=Ks[i],ts=100))
-#plot(1,1,ylim=c(min(unlist(Ips)),max(unlist(Ips))),xlim=c(0,ts),type="n")
-#apply(Ips,2,lines)
+Ips <- lapply(INs,initpopstruc ) #initialise population structure for all sites
+
+Nts=initlistsites(Ips,ts=ts)
+
 ```
 
+We generate zone of hight resource, that will attract settlements and support higher K
+
+```{r}
+
+##ressource geolocalisation set manually
+goodressources=vect(
+                    cbind(
+                     x=c(-1.685411,-1.146645,-1.138227,-1.618065),
+                     y=c(1.619488,1.850545,1.195183,1.100659)
+                     )
+                    )
+#spread of ressources
+areas=c(100,2000,200,300)
+#speed of ressource decay:
+ks=c(0.0002,0.0001000,0.0001600,0.0001800)
+
+crs(goodressources)=crs(height.ras)
+
+allres=lapply(seq_along(goodressources),function(i)logisticdecay(goodressources[i],mask(height.ras,viable),x=areas[i],k=ks[i]))
+
+ress=allres[[1]]
+for(i in 2:length(allres))
+    ress=ress+allres[[i]]
+ress=mask(ress,viable)
+plot(ress)
+```
+
+Use ressource to adjust the Ks:
+```{r}
+Ks=K/2+round(rexp(length(Ips))*20)
+Ks=Ks*(1+10*extract(ress,sites)[,1])
+plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(n,alpha=.6))
+```
+
+
+We will run the simulation step by stepk
 Step by step to allow interaction between sites:
 
 ```{r}
 ## Run stochastic process  
+
+### visualisation =====
 frame=0
 foldervid="mapgrowth"
 plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
 plot(height.wat,col="lightblue",add=T,legend=F)
 plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(n,alpha=.6))
+plot(ress,add=T,alpha=.2,col=colorRampPalette(c("white","yellow","orange","red"))(80))
+###
+
+
 for (i in 2:(ts+1)){
     print(paste("decades",i))
     for(s in sample(seq_along(sites))){
+
+        ### visualisation =====
         frame=frame+1
         filename=sprintf("map_%04d.png", frame)
         png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
         plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
         plot(height.wat,col="lightblue",add=T,legend=F)
+        ########
+
         city=NULL
-        Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8 )
-        newN=nrow(Ips[[s]])
-        if(newN>(Ks[[s]])){ #migration scenario
-            migrants=newN-round(Ks[[s]]*0.95)
+        Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8 ) #compute new population for the sites
+        newN=nrow(Ips[[s]]) #count population size
+
+        if(newN>(Ks[[s]])){ #if new population is more than carrying capacity: migration scenario
+            migrants=newN-round(Ks[[s]]*0.9)
             ##Creation of new city
             new_site=NULL
-            if(migrants>20){
+            if(migrants>10 && runif(1)<.05){ #if supropulation > 10 people, 10% chance of creation of a new city
+
                 territory=erase(viable,buffer(sites,Nts[i-1,]*100))
+
                 if(length(territory)>0){
-                    new_site=spatSample(territory,1)
+
+                    ##select a new site given its distance to the old one and the ressource available in ress
+                    d2=logisticdecay(sites[s],height.ras,x=20000)
+                    w=(.7*d2+.3*ress)/(.7*minmax(d2)[2] + .3*minmax(ress)[2])
+                    new_site=spatSample(x=mask(w*logisticdecay(sites[s],height.ras,k=0.00002,x=1),territory),size=1,method="weights",xy=T)[1:2]
+                    new_site=vect(new_site,geom=c("x","y"))
+
                     if(length(new_site)>0){
+                        ##add new site to site listes
                         sites=rbind(sites,new_site)
-                        Ips[[length(Ips)+1]]= data.frame("Age" = sample(10:30,migrants,10:30, replace = TRUE), "Sex" = sample(c("M","F"), migrants, prob = c(0.5,0.5), replace = TRUE))
-                        Ks[length(Ks)+1]=50+round(rexp(1)*200)
+                        ##initialise population struc of new site
+                        Ips[[length(Ips)+1]]= initpopstruc(n=migrants)
+                        Ks[length(Ks)+1]=(K/2+round(rexp(1)*20))*(1+10*extract(ress,new_site)[,1])
                         city=(length(Ks))
                         Nts=cbind(Nts,rep(0,ts+1))
                         print("ii")
                     }
                 }
             }
-            ##migration to new city
-            if(length(new_site)==0){
-                city=which.max(Ks-(Nts[i-1,]+migrants))
+            ## if no creation of new city happen, there is 90% chance that people will move
+            if(length(new_site)==0 && runif(1)>.1 ){
+
+                #getj
+                att=extract(ress,sites)[,1]
+                space=Ks-(Nts[i-1,]+migrants)
+                dis=extract(logisticdecay(sites[s],height.ras,k=0.00002,x=1),sites)[,1]
+                attractivity=att*space*dis
+                attractivity[s]=min(attractivity)-1
+                attractivity=exp(attractivity)/sum(exp(attractivity))
+                city=sample(size=1,x=seq_along(sites),prob=attractivity)
             }
             Nts[i,city]=Nts[i-1,city]+migrants
             newN=newN-migrants
         }
         Nts[i,s]=newN
+
+        ###visualisation=========
         sitescols=rep(1,length(sites))
         siteslwd=rep(1,length(sites))
         ii=NULL
@@ -107,18 +175,41 @@ for (i in 2:(ts+1)){
         tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
         plot(sites,cex=(1+tmp/100),pch=21,add=T,bg=rainbow(n,alpha=.6),lwd=siteslwd,col=sitescols)
         dev.off()
+        ###=======================
     }
 }
 ```
 
 Visualise:
+Record deposit and  loss
+```{r,fig.width=25%}
+alldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = "m"))
+maxy=max(sapply(alldeposit,function(i)max(apply(i,2,sum))))
 
-```{r}
+lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)))
+```
+
+
+```{r,eval=F}
 par(mfrow=c(2,1))
 plot(1,1,type="n",xlim=c(0,max(ts)),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
 apply(Nts,2,lines)
 plot(apply(Nts,1,sum),xlab="time",ylab="popsize")
 territory=st_union(st_as_sf(buffer(sites,5000)))
+
+
+
+
+new_site=vect(as.data.frame(locator()),geom=c("x","y"))
+crs(new_site)=crs(height.ras)
+d2=logisticdecay(new_site,height.ras,x=20000)
+
+plot(d2)
+w=(.7*d2+.3*ress)/(.7*minmax(d2)[2] + .3*minmax(ress)[2])
+plot(w)
+plot(mask(w*logisticdecay(new_site,height.ras,k=0.00002,x=1),territory))
+multisamp=sapply(1:1000,function(i)spatSample(x=w,size=1,method="weights",xy=T)[1:2])
+
 
 ```
 
