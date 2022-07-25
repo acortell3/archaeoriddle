@@ -3,6 +3,30 @@
 ## Initial sites and size:
 
 ```{r}
+#' @param pt a vector point around witch decvay is computed
+#' @param rast a raster to compute distances
+#' @param L sstarting point of decay
+logisticdecay <- function(pt,rast,L=1,k=0.0001,x0=60000){
+    ds=distance(rast,pt)
+    (L-L/(1+exp(-k*(ds-x0))))
+}
+
+#' @param n number of individuals
+#' @param ages initial ages
+#' @param p_sex proportion of the different sex
+#' return a dataframe with age and sex of every individual of the population
+initpopstruc <- function(n=100,ages=10:30,p_sex=c(0.5,0.5)) data.frame("Age" = sample(ages,n,ages, replace = TRUE), "Sex" = sample(c("M","F"), n, prob = p_sex, replace = TRUE))   
+
+#' @param list_sites a list of population for all initial sites of the simulation
+#' @param K baseline carrying capacity
+#' @param ts length of simulation
+initlistsites <- function(list_sites,ts=200){
+    Nts=matrix(0,nrow=ts+1,ncol=length(list_sites))
+    Nts[1,]=sapply(list_sites,nrow)
+    Nts
+}
+
+
 
 #initialisation
 
