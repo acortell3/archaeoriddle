@@ -35,6 +35,10 @@ initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources){
     Ks
 }
 
+plotMap <- function(height,water,maintitle=""){
+        plot(height^1.9,col=col_ramp(50),legend=F,reset=F,main=maintitle )
+        plot(water,col="lightblue",add=T,legend=F)
+}
 
 ```
 
@@ -131,20 +135,18 @@ if(visumin){
         frame=frame+1
         filename=sprintf("map_%08d.png", frame)
         png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
-        plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F,main=paste0("year ",i) )
-        plot(height.wat,col="lightblue",add=T,legend=F)
+        plotMap(height.ras,height.wat,paste0("year ",i))
         ########
 }
-
-    for(s in sample(seq_along(sites))){
+    inactives=Nts[i,]==0
+    for(s in sample(seq_along(sites)[!inactives])){
 
 if(visu){
         ### visualisation =====
         frame=frame+1
         filename=sprintf("map_%08d.png", frame)
         png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
-        plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F,main=paste0("year ",i) )
-        plot(height.wat,col="lightblue",add=T,legend=F)
+        plotMap(height.ras,height.wat,paste0("year ",i))
         ########
 }
 
