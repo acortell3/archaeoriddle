@@ -28,7 +28,8 @@ initlistsites <- function(list_sites,ts=200){
 #' @param sites raster with site and culture
 #' @param ressources a raster type for fall sites
 initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources){
-    Ks=Kbase[sites$culture]+round(rnorm(length(sites),0,10))
+    Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
+    while(any(Ks<1)) Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
     #Ks[sites$culture=="F"]=Ks[sites$culture=="F"]*runif(sum(sites$culture=="F"),1,1)
     Ks=Ks*(1+extract(ressources,sites)[,2])
     Ks
@@ -72,7 +73,13 @@ plot(ress)
 #initialisation
 
 ts=800
-Kbase=c("HG"=30,"F"=120)
+Kbase=c("HG"=30,"F"=120) #difference in K for the two cultures
+minimals=c("HG"=.14,"F"=.19) #how big the group of migrant should be to create a new city vs migrate to a existisng one 
+cul_ext=c("HG"=10,"F"=2) #spatial penality to extent: lower, bigger penality
+penal_cul=c("HG"=3,"F"=2.2) #penality of occupational area: low, other sites can cam close
+prob_birth=c("HG"=0.3,"F"=0.35)
+prob_survive=c("HG"=0.8,"F"=0.4)
+prob_split=c("HG"=0.7,"F"=0.44)
 
 
 cultures=rep("HG",length(sites))
@@ -81,10 +88,11 @@ cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
 sites$culture=as.factor(cultures)
 
 sites$Ks=initKs(Kbase,sites,ress)
-Ks=sites$Ks
 
-sites=vect(readRDS("goodiste_init.RDS"))
-INs=round(runif(length(sites),.5,1.5)*sites$Ks) #Population size at initialisation
+sites=vect(readRDS("testsites.RDS"))
+Ks=sites$Ks
+cultures=sites$culture
+INs=round(runif(length(sites),.85,.95)*sites$Ks) #Population size at initialisation
 
 
 Ips <- lapply(INs,initpopstruc ) #initialise population structure for all sites
