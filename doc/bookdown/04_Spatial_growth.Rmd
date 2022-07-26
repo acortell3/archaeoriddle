@@ -24,6 +24,14 @@ initlistsites <- function(list_sites,ts=200){
 }
 
 
+#sample through an existing population
+#This should be change by a funciton that allow to: sample the existing pop and kill some, swapp between two pop
+reducePop <- function(popdistrib,size,new=F) {
+    print(paste("initi",nrow(popdistrib),"new",size))
+    popdistrib[sample(x=1:nrow(popdistrib),size=size,replace=new),]
+}
+
+
 #' @param Kbase baseline carrying capacity or different culturesj
 #' @param sites raster with site and culture
 #' @param ressources a raster type for fall sites
@@ -40,6 +48,51 @@ plotMap <- function(height,water,maintitle=""){
         plot(water,col="lightblue",add=T,legend=F)
 }
 
+
+#' check who's touchin site i
+#' @param i indice of the site checked
+#' @param sites raster with site coordinates,  cultures and karying capacityes
+#' @param homophily if true, return all sites that touch (even same culture)
+#' @param Ne population size of all sites (could be remove if Ne was stored in the raster)
+whotouch <- function(i,sites,homophily=F,buffersize=200,Ne){
+     touch=st_intersects(st_make_valid(st_as_sf(buffer(sites[i],Ne[i]*buffersize))),st_make_valid(st_as_sf(buffer(sites,Ne*buffersize))))
+    if(length(touch)>0){
+        enemies=unlist(touch)
+        if(homophily) enemies=enemies[enemies!=i]
+        else enemies=enemies[sites$culture[enemies]!=sites$culture[i]]
+    }
+    else enemies=NA
+    enemies
+}
+
+simplefight <- function(Ne,a,b){
+    if(runif(1)<Ne[a]/(Ne[a]+Ne[b])){
+        v=a
+        l=b
+    }
+    else{
+        v=b
+        l=a
+    }
+    one=Ne
+    Ne[v]=rbinom(n=1,prob=.9,size=Ne[v])
+    Ne[l]=rbinom(n=1,prob=.4,size=Ne[l])
+    print(paste("victory",v,"(",one[v],"-", Ne[v],") over",l,"(",one[l],"-",Ne[l],"), total of:",(one[v]-Ne[v])+(one[l]-Ne[l]),"people"))
+}   
+
+
+warpoints <- function(sites,a,b,Ne,buffersize=300,plot=T,sizewar=2){
+    meetpoints=crop(buffer(sites[a],1+Ne[a]*buffersize),buffer(sites[b],1+Ne[b]*buffersize))
+    if(length(meetpoints)>0){
+    p=spatSample(meetpoints,1)
+    if(plot & length(p)>0){
+        plot(p,add=T,bg="red",pch="🔥",cex=sizewar,col=adjustcolor("yellow",.1))
+        plot(p,add=T,bg="yellow",pch="⚔️",cex=sizewar)
+    }
+    p
+}
+else NULL
+}
 ```
 
 
@@ -235,10 +288,27 @@ if(visu){
         ###=======================
 }
     }
-if(visumin){
-        plot(sites,cex=(as.integer(Nts[i,]>0)+Nts[i,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
-        dev.off()
+    if(visumin){
+            plot(sites,cex=(as.integer(Nts[i,]>0)+Nts[i,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+    }
+    for(s in sample(which(sites$culture=="F" & Nts[i,]>0))){
+        buff=800
+        clash=whotouch(s,sites,Ne=Nts[i,],buffersize=buff)
+        if(length(clash)>0){
+            if(length(clash)==1)attack=clash
+            else attack=sample(clash,1)
+            newns=simplefight(Ne=Nts[i,],a=s,b=attack)
+            sizew=sum(Nts[i,c(s,attack)]-newns[c(s,attack)])^2/1000
+            warpoints(sites,s,attack,Ne=Nts[i,],buffersize=buff,sizewar=)
+            Nts[i,]=newns
+    #effectively kill people in population (could be done taking into account the age to be more realistic)
+            Ips[[s]]=reducePop(Ips[[s]],Nts[i,s])
+            Ips[[attack]]=reducePop(Ips[[attack]],Nts[i,attack])
+        }
+    }
+    if(visumin)dev.off()
 }
+
 #par(mfrow=c(2,1))
 #plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
 #lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
