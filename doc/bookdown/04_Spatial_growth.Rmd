@@ -216,12 +216,12 @@ if(visu){
             tmp=Nts[i-1,]
             tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
             #tmp=tmp+sqrt(sites$Ks)
-            buffersize=(sqrt(tmp)+penal_cul[cultures])*3000*runif(1,.95,1.25)
-            buffersize[tmp==0]=0
 
             if(migrants>= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
 
                 print(paste("look for new spot for ",migrants, "from site",s,"culture",sites$culture[s]))
+                buffersize=(sqrt(tmp)+penal_cul[cultures])*3000*runif(1,.95,1.25)
+                buffersize[tmp==0]=0
                 territory=erase(viable,buffer(sites,buffersize))
 
                 if(length(territory)>0){
@@ -261,12 +261,16 @@ if(visu){
                 attractivity=attractivity*(1+3*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
                 attractivity[s]=min(attractivity)-1
                 attractivity=exp(attractivity)/sum(exp(attractivity))
+                attractivity[Nts[i-1,]==0]=0 
                 city=sample(size=1,x=seq_along(sites),prob=attractivity)
             }
             Nts[i,city]=Nts[i-1,city]+migrants
+            Ips[[city]]=reducePop(Ips[[city]],Nts[i,city],new=T)
             newN=newN-migrants
         }
         Nts[i,s]=newN
+        Ips[[s]]=reducePop(Ips[[s]],Nts[i,s],new=T)
+
 
 if(visu){
         ###visualisation=========
