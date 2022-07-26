@@ -104,7 +104,7 @@ Nts=initlistsites(Ips,ts=ts)
 
 Use ressource to adjust the Ks:
 ```{r,eval=F}
-plot(sites,cex=(1+Nts[1,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+plot(sites,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 ```
 
 
@@ -126,15 +126,27 @@ plot(ress,add=T,alpha=.2,col=colorRampPalette(c("white","yellow","orange","red")
 
 for (i in 2:(ts+1)){
     print(paste("decades",i))
-    for(s in sample(seq_along(sites))){
-
+if(visumin){
         ### visualisation =====
         frame=frame+1
-        filename=sprintf("map_%04d.png", frame)
+        filename=sprintf("map_%08d.png", frame)
         png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
-        plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
+        plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F,main=paste0("year ",i) )
         plot(height.wat,col="lightblue",add=T,legend=F)
         ########
+}
+
+    for(s in sample(seq_along(sites))){
+
+if(visu){
+        ### visualisation =====
+        frame=frame+1
+        filename=sprintf("map_%08d.png", frame)
+        png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
+        plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F,main=paste0("year ",i) )
+        plot(height.wat,col="lightblue",add=T,legend=F)
+        ########
+}
 
         city=NULL
         Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8 ) #compute new population for the sites
@@ -196,6 +208,7 @@ for (i in 2:(ts+1)){
         }
         Nts[i,s]=newN
 
+if(visu){
         ###visualisation=========
         sitescols=rep(1,length(sites))
         siteslwd=rep(1,length(sites))
@@ -210,10 +223,19 @@ for (i in 2:(ts+1)){
         if(!is.null(ii))plot(ii,add=T)
         tmp=Nts[i-1,]
         tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
-        plot(sites,cex=(1+tmp/100),pch=21,add=T,bg=rainbow(n,alpha=.6),lwd=siteslwd,col=sitescols)
+        plot(sites,cex=(1+tmp/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)],lwd=siteslwd,col=sitescols)
         dev.off()
         ###=======================
+}
     }
+if(visumin){
+        plot(sites,cex=(as.integer(Nts[i,]>0)+Nts[i,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+        dev.off()
+}
+#par(mfrow=c(2,1))
+#plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
+#lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
+#plot(apply(Nts,1,sum),xlab="time",ylab="popsize")
 }
 ```
 
@@ -229,10 +251,9 @@ lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)
 
 ```{r,eval=F}
 par(mfrow=c(2,1))
-plot(1,1,type="n",xlim=c(0,max(ts)),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-apply(Nts,2,lines)
+plot(1,1,type="n",xlim=c(0,ts),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
+lapply(1:ncol(Nts),function(i)lines(Nts[,i],col=rainbow(2)[as.factor(sites$culture)[i]]))
 plot(apply(Nts,1,sum),xlab="time",ylab="popsize")
-territory=st_union(st_as_sf(buffer(sites,5000)))
 
 
 
