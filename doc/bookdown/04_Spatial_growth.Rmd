@@ -149,31 +149,36 @@ if(visu){
 }
 
         city=NULL
-        Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], prob = .8 ) #compute new population for the sites
+        Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], P_o=prob_birth[sites$culture[s]],prob = prob_survive[sites$culture[s]] ) #compute new population for the sites
         newN=nrow(Ips[[s]]) #count population size
+
 
         if(newN>=(Ks[[s]])){ #if new population is more than carrying capacity: migration scenario
             migrants=newN-round(Ks[[s]]*0.9)
             ##Creation of new city
             new_site=NULL
-            #print(paste("possib",migrants))
-            if(migrants>=.2*Ks[[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
+            #if(sites$culture[s]=="F")print(paste("possib",migrants, (minimals[sites$culture[s]]*sites$Ks[s])))
+            tmp=Nts[i-1,]
+            tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
+            #tmp=tmp+sqrt(sites$Ks)
+            buffersize=(sqrt(tmp)+penal_cul[cultures])*3000*runif(1,.95,1.25)
+            buffersize[tmp==0]=0
 
-                print(paste("look for new spot",migrants))
-                tmp=Nts[i-1,]
-                tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
-                territory=erase(viable,buffer(sites,(tmp)/2*1000))
+            if(migrants>= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
+
+                print(paste("look for new spot for ",migrants, "from site",s,"culture",sites$culture[s]))
+                territory=erase(viable,buffer(sites,buffersize))
 
                 if(length(territory)>0){
                     print(paste("found new spot",migrants))
 
                     ##select a new site given its distance to the old one and the ressource available in ress
-                    d2=logisticdecay(sites[s],height.ras,x=20000)
+                    d2=logisticdecay(sites[s],height.ras,x=20000*cul_ext[sites$culture[s]])
                     w=(.7*d2+.3*ress)/(.7*minmax(d2)[2] + .3*minmax(ress)[2])
-                    new_site=spatSample(x=mask(w*logisticdecay(sites[s],height.ras,k=0.00002,x=1),territory),size=1,method="weights",xy=T)[1:2]
+                    new_site=spatSample(x=mask(w*logisticdecay(sites[s],height.ras,k=0.00002,x=20000*cul_ext[sites$culture[s]]),territory),size=1,method="weights",xy=T)[1:2]
                     new_site=vect(new_site,geom=c("x","y"))
 
-                    if(length(new_site)>0){
+                    if(length(new_site)>0 & all(!is.na(crds(new_site)))){
                         ##add new site to site listes
                         ##initialise population struc of new site
                         Ips[[length(Ips)+1]]= initpopstruc(n=migrants)
@@ -198,7 +203,7 @@ if(visu){
                 space=sites$Ks-(Nts[i-1,]+migrants)
                 dis=extract(logisticdecay(sites[s],height.ras,k=0.00002,x=1),sites)[,2]
                 attractivity=att*space*dis
-                attractivity=attractivity*(1+(sites$culture[s]==sites$culture)) #2 times more likely to go to similar culture
+                attractivity=attractivity*(1+3*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
                 attractivity[s]=min(attractivity)-1
                 attractivity=exp(attractivity)/sum(exp(attractivity))
                 city=sample(size=1,x=seq_along(sites),prob=attractivity)
