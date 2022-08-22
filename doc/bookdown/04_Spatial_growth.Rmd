@@ -374,7 +374,7 @@ if(visu){
 Visualise:
 Record deposit and  loss
 ```{r,fig.width="25%"}
-alldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = "m"))
+4lldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 15000,ts=ts,r = 0.2, Max_bone_thickness = "m"))
 maxy=max(sapply(alldeposit,function(i)max(apply(i,2,sum))))
 
 lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)))
@@ -384,7 +384,7 @@ lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)
 ```{r,eval=F}
 par(mfrow=c(2,1))
 plot(1,1,type="n",xlim=c(0,ts),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-lapply(1:ncol(Nts),function(i)lines(Nts[,i],col=rainbow(2)[as.factor(sites$culture)[i]]))
+lapply(1:ncol(Nts),function(i)lines(Nts[,i],col=rainbow(2)[as.factor(cultures)[i]]))
 plot(apply(Nts,1,sum),xlab="time",ylab="popsize")
 
 
@@ -403,5 +403,19 @@ multisamp=sapply(1:1000,function(i)spatSample(x=w,size=1,method="weights",xy=T)[
 
 ```
 
+
+```{r}
+plot(apply(Nts[1:2865,sites$culture=="HG"],1,sum),col="red",type="l",lwd=2)
+ points(apply(Nts[1:2865,sites$culture=="F"],1,sum),col="blue",lwd=2,type="l")
+```
+
+Population density:
+
+overal: .7 
+
+or: >1 and 1.2 for Farmers
+or: <1  for Hunter Gather
+
+HG: 0.08 - 0.16
 
 
