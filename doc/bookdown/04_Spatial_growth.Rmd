@@ -240,16 +240,17 @@ if(visumin){
             tmp=Nts[i-1,]
             tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
             #tmp=tmp+sqrt(sites$Ks)
+            havemoved=F
 
             if(migrants>= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
 
-                print(paste("look for new spot for ",migrants, "from site",s,"culture",sites$culture[s]))
-                buffersize=(sqrt(tmp)+penal_cul[cultures])*3000*runif(1,.95,1.25)
+                #print(paste("look for new spot for ",migrants, "from site",s,"culture",sites$culture[s]))
+                buffersize=(sqrt(tmp)+penal_cul[cultures])*2000*runif(1,.5,1.5)
                 buffersize[tmp==0]=0
                 territory=erase(viable,buffer(sites,buffersize))
 
                 if(length(territory)>0){
-                    print(paste("found new spot",migrants))
+                    #print(paste("found new spot",migrants))
 
                     ##select a new site given its distance to the old one and the ressource available in ress
                     d2=logisticdecay(sites[s],height.ras,x=20000*cul_ext[sites$culture[s]])
@@ -260,40 +261,62 @@ if(visumin){
                     if(length(new_site)>0 & all(!is.na(crds(new_site)))){
                         ##add new site to site listes
                         ##initialise population struc of new site
-                        Ips[[length(Ips)+1]]= initpopstruc(n=migrants)
+                        print(paste("new settlement (",sites$culture[s],")"))
+                        #print(paste("total sites:",length(Ips)))
+                        #print(paste("dim Nts:",dim(Nts)[2]))
+                        #print(paste("site sf Nts:",length(sites)))
+
+                        Ips[[length(Ips)+1]]=initpopstruc(n=migrants) #initialise a fake populaition, will be updated by real migrants later
                         new_site$culture=sites$culture[s]
                         new_site$Ks=initKs(Kbase,sites=new_site,ress)
 
                         sites=rbind(sites,new_site)
 
                         Ks[length(Ks)+1]=new_site$Ks
-                        city=(length(Ks))
+                        city=(length(Ips))
                         Nts=cbind(Nts,rep(0,ts+1))
+                        Nts[i,city]=migrants
                         cultures=c(cultures,cultures[s])
-                        print("ii")
+                        #print(paste("new site sf Nts:",length(sites)))
+                        #print(paste("new dim Nts:",dim(Nts)[2]))
+                        #print(paste("new total sites:",length(Ips)))
+                        havemoved=T
                     }
                 }
             }
             ## if no creation of new city happen, there is 90% chance that people will move
-            if(length(new_site)==0 && runif(1)>.1 ){
+            if(length(new_site)==0 && runif(1)<prob_move[sites$culture[s]] ){
+                print("migration")
 
                 #getj
                 att=extract(ress,sites)[,2]
                 space=sites$Ks-(Nts[i-1,]+migrants)
                 dis=extract(logisticdecay(sites[s],height.ras,k=0.00002,x=1),sites)[,2]
                 attractivity=att*space*dis
-                attractivity=attractivity*(1+3*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
+                attractivity=attractivity*(1+5*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
                 attractivity[s]=min(attractivity)-1
                 attractivity=exp(attractivity)/sum(exp(attractivity))
                 attractivity[Nts[i-1,]==0]=0 
                 city=sample(size=1,x=seq_along(sites),prob=attractivity)
+                Nts[i,city]=Nts[i-1,city]+migrants
+#print(paste("from",sites$culture[s],"to",sites$culture[city]))
+                havemoved=T
             }
-            Nts[i,city]=Nts[i-1,city]+migrants
-            Ips[[city]]=reducePop(Ips[[city]],Nts[i,city],new=T)
-            newN=newN-migrants
+            if(havemoved){
+               
+                #print(paste("old spot",migrants," for ",nrow(Ips[[s]])))
+                #print(paste("old new spot",migrants," for ",nrow(Ips[[city]])))
+
+                #if(city>length(Ips))print(paste("problem, migrants:",migrants))
+                #print(paste("the other:",city))
+                Ips[c(s,city)]=changePopSize(loosingPop=Ips[[s]],winingPop=Ips[[city]],size=migrants)
+                newN=newN-migrants
+                #print(paste("loosing ",newN," vs ",nrow(Ips[[s]])))
+                #print(paste("wining ",newN," vs ",nrow(Ips[[city]])))
+            }
+
         }
         Nts[i,s]=newN
-        Ips[[s]]=reducePop(Ips[[s]],Nts[i,s],new=T)
 
 
 if(visu){
