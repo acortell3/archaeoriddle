@@ -313,26 +313,26 @@ for (i in 2:(ts+1)){
                     }
                 }
             }
-            ## if no creation of new city happen, there is 90% chance that people will move
+            ## if no creation of new city happen, there is a certain probability that people will move
             if(length(new_site)==0 && runif(1)<prob_move[sites$culture[s]] ){
-                print("migration")
 
                 #getj
                 att=extract(ress,sites)[,2]
                 space=sites$Ks-(Nts[i-1,]+migrants)
                 dis=extract(logisticdecay(sites[s],height.ras,k=0.00002,x=1),sites)[,2]
                 attractivity=att*space*dis
-                attractivity=attractivity*(1+5*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
+                attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
                 attractivity[s]=min(attractivity)-1
                 attractivity=exp(attractivity)/sum(exp(attractivity))
-                attractivity[Nts[i-1,]==0]=0 
+                attractivity[Nts[i-1,]<5]=0 
+                attractivity[sites$culture!=sites$culture[s]]=0 
                 city=sample(size=1,x=seq_along(sites),prob=attractivity)
                 Nts[i,city]=Nts[i-1,city]+migrants
-#print(paste("from",sites$culture[s],"to",sites$culture[city]))
+                print(paste("migration from",sites$culture[s],"to",sites$culture[city]))
                 havemoved=T
             }
             if(havemoved){
-               
+
                 #print(paste("old spot",migrants," for ",nrow(Ips[[s]])))
                 #print(paste("old new spot",migrants," for ",nrow(Ips[[city]])))
 
