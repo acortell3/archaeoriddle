@@ -78,6 +78,12 @@ whotouch <- function(i,sites,homophily=F,buffersize=200,Ne){
     enemies
 }
 
+#' @tile simplefight
+#' A function to compute lost during a fighting
+#' return the updated population size of both settlements engaged in the fight
+#' @param Ne list of population size for the fighting settlement
+#' @param a indice of the first settlement
+#' @param b indice of the second settlement
 simplefight <- function(Ne,a,b){
     if(runif(1)<Ne[a]/(Ne[a]+Ne[b])){
         v=a
@@ -91,9 +97,11 @@ simplefight <- function(Ne,a,b){
     Ne[v]=rbinom(n=1,prob=.9,size=Ne[v])
     Ne[l]=rbinom(n=1,prob=.4,size=Ne[l])
     print(paste("victory",v,"(",one[v],"-", Ne[v],") over",l,"(",one[l],"-",Ne[l],"), total of:",(one[v]-Ne[v])+(one[l]-Ne[l]),"people"))
+    return(Ne)
 }   
 
 
+##draw a war symbole where two clans are fighting
 warpoints <- function(sites,a,b,Ne,buffersize=300,plot=T,sizewar=2){
     meetpoints=crop(buffer(sites[a],1+Ne[a]*buffersize),buffer(sites[b],1+Ne[b]*buffersize))
     if(length(meetpoints)>0){
