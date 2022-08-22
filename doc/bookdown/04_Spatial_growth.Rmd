@@ -343,18 +343,22 @@ if(visu){
             plot(sites,cex=(as.integer(Nts[i,]>0)+Nts[i,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
     }
     for(s in sample(which(sites$culture=="F" & Nts[i,]>0))){
-        buff=800
+        buff=400
         clash=whotouch(s,sites,Ne=Nts[i,],buffersize=buff)
-        if(length(clash)>0){
+        if(length(clash)>0 && !is.na(clash) && runif(1)<.1){
+            clash=clash[Nts[i,clash]>0]
             if(length(clash)==1)attack=clash
             else attack=sample(clash,1)
             newns=simplefight(Ne=Nts[i,],a=s,b=attack)
-            sizew=sum(Nts[i,c(s,attack)]-newns[c(s,attack)])^2/1000
-            warpoints(sites,s,attack,Ne=Nts[i,],buffersize=buff,sizewar=)
+            sizew=sum(Nts[i,c(s,attack)]-newns[c(s,attack)])^2/4000
+            warpoints(sites,s,attack,Ne=Nts[i,],buffersize=buff,sizewar=sizew+.5)
+            
+            print(paste(s,"(",cultures[s],") attack:",attack,"(",cultures[attack],")","war size",sqrt(sizew)*4000))
+
+            #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
+            Ips[[s]]=changePopSize(loosingPop=Ips[[s]],size=(Nts[i,s]-newns[s]))
+            Ips[[attack]]=changePopSize(loosingPop=Ips[[attack]],size=(Nts[i,attack]-newns[attack]))
             Nts[i,]=newns
-    #effectively kill people in population (could be done taking into account the age to be more realistic)
-            Ips[[s]]=reducePop(Ips[[s]],Nts[i,s])
-            Ips[[attack]]=reducePop(Ips[[attack]],Nts[i,attack])
         }
     }
     if(visumin)dev.off()
