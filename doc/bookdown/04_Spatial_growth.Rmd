@@ -48,12 +48,13 @@ changePopSize <- function(loosingPop,winingPop=NULL,size,new=F,method="random",p
 #' @param Kbase baseline carrying capacity or different culturesj
 #' @param sites raster with site and culture
 #' @param ressources a raster type for fall sites
-initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources){
+initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources,sizeexp=NULL){
     Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
     while(any(Ks<1)) Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
     #Ks[sites$culture=="F"]=Ks[sites$culture=="F"]*runif(sum(sites$culture=="F"),1,1)
-    Ks=Ks*(1+extract(ressources,sites)[,2])
-    Ks
+    tmp=Ks*(1+extract(ressources,sites)[,2])
+    if(!is.null(sizeexp))tmp[sites$culture==sizeexp]=Ks[sites$culture==sizeexp]*(1+rexp(sum(sites$culture==sizeexp),rate=.3)*extract(ressources,sites[sites$culture==sizeexp])[,2])
+    tmp
 }
 
 plotMap <- function(height,water,maintitle=""){
