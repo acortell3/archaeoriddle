@@ -139,6 +139,214 @@ else NULL
 }
 
 
+run_simulation <- function(cultures=NULL,
+                           sites=sites,
+                           dem=height.ras,
+                           ressources=ress,
+                           water=height.wat,
+                           foldervid="pathtofinal",
+                           visu=F,visumin=TRUE,
+                           ts=20000,#length of simulation in year
+                           Kbase=c("HG"=35,"F"=120),#difference in K for the two cultures
+                           cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
+                           penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
+                           prob_birth=c("HG"=0.3,"F"=0.5),#proba to give birth every year
+                           prob_survive=c("HG"=0.8,"F"=0.6),#proba to die when pop > K
+                           prob_split=c("HG"=.2,"F"=.6),#proba to create new settlement when Ne > K
+                           minimals=c("HG"=.14,"F"=.20),#how big the group of migrant should be to create a new city vs migrate to a existing one 
+                           bufferatack=400,#distance max around which settlement can fight
+                           buffersettl=2000,#distance min around which settlement cannnot settle
+                           prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
+                           ){
+    ## Run stochastic process  
+
+    Ks=sites$Ks
+    cultures=sites$culture
+    INs=round(runif(length(sites),.85,.95)*sites$Ks) #Population size at initialisation
+
+
+    Ips <- lapply(INs,initpopstruc ) #initialise population structure for all sites
+
+    Nts=initlistsites(Ips,ts=ts)
+    ### visualisation =====
+    frame=0
+    foldervid="pathtofinal"
+    plotMap(dem,water)
+    plot(sites,cex=(.3+Nts[1,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(cultures)])
+    plot(ressources,add=T,alpha=.2,col=colorRampPalette(c("white","yellow","orange","red"))(80))
+    tmp=Nts[1,]
+    buffersize=(sqrt(tmp)+penal_cul[cultures])*buffersettl*runif(1,.5,1.5)
+    territory=erase(viable,buffer(sites,buffersize))
+    plot(territory,add=T,alpha=.2,col="red")
+    ###
+
+    warcasualties=vector("integer",ts)
+
+    for (i in 2:(ts+1)){
+        print(paste("year",i,"total",sum(sapply(Ips,nrow)),"with",length(sites),"sites"))
+        print(table(sites$culture[Nts[i-1,]>0]))
+        if(visumin){
+            ### visualisation =====
+            frame=frame+1
+            filename=sprintf("map_%06d.png", frame)
+            png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
+            plotMap(dem,water,paste0("year ",i))
+            ########
+        }
+        inactives=(Nts[i-1,]==0)
+        for(s in sample(seq_along(sites)[!inactives])){
+
+            if(visu){
+                ### visualisation =====
+                frame=frame+1
+                filename=sprintf("map_%08d.png", frame)
+                png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
+                plotMap(dem,water,paste0("year ",i))
+                ########
+            }
+
+            city=NULL
+            Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], P_o=prob_birth[sites$culture[s]],prob = prob_survive[sites$culture[s]] ) #compute new population for the sites
+            newN=nrow(Ips[[s]]) #count population size
+
+            if(newN>=(Ks[[s]])){ #if new population is more than carrying capacity: migration scenario
+                migrants=newN-round(Ks[[s]]*0.9)
+                ##Creation of new city
+                new_site=NULL
+                #if(sites$culture[s]=="F")print(paste("possib",migrants, (minimals[sites$culture[s]]*sites$Ks[s])))
+                tmp=Nts[i-1,]
+                tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
+                #tmp=tmp+sqrt(sites$Ks)
+                havemoved=F
+
+                if(migrants>= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
+
+                    #print(paste("look for new spot for ",migrants, "from site",s,"culture",sites$culture[s]))
+                    buffersize=(sqrt(tmp)+penal_cul[cultures])*buffersettl*runif(1,.5,1.5)
+                    buffersize[tmp==0]=0
+                    territory=erase(viable,buffer(sites,buffersize))
+
+                    if(length(territory)>0){
+                        #print(paste("found new spot",migrants))
+
+                        ##select a new site given its distance to the old one and the ressourcesource available in ressources
+                        d2=logisticdecay(sites[s],dem,x=20000*cul_ext[sites$culture[s]])
+                        w=(.7*d2+.3*ressources)/(.7*minmax(d2)[2] + .3*minmax(ressources)[2])
+                        new_site=spatSample(x=mask(w*logisticdecay(sites[s],dem,k=0.00002,x=20000*cul_ext[sites$culture[s]]),territory),size=1,method="weights",xy=T)[1:2]
+                        new_site=vect(new_site,geom=c("x","y"))
+
+                        if(length(new_site)>0 & all(!is.na(crds(new_site)))){
+                            ##add new site to site listes
+                            ##initialise population struc of new site
+                            #print(paste("total sites:",length(Ips)))
+                            #print(paste("dim Nts:",dim(Nts)[2]))
+                            #print(paste("site sf Nts:",length(sites)))
+
+                            Ips[[length(Ips)+1]]=initpopstruc(n=migrants) #initialise a fake populaition, will be updated by real migrants later
+                            new_site$culture=sites$culture[s]
+                            new_site$Ks=round(initKs(Kbase,sites=new_site,ressources,sizeex="F"))
+                            print(paste0("new settlement (",sites$culture[s],") of K ",new_site$Ks, " and pop ",migrants))
+
+                            sites=rbind(sites,new_site)
+
+                            Ks[length(Ks)+1]=new_site$Ks
+                            city=(length(Ips))
+                            Nts=cbind(Nts,rep(0,ts+1))
+                            Nts[i,city]=migrants
+                            cultures=c(cultures,cultures[s])
+                            #print(paste("new site sf Nts:",length(sites)))
+                            #print(paste("new dim Nts:",dim(Nts)[2]))
+                            #print(paste("new total sites:",length(Ips)))
+                            havemoved=T
+                        }
+                    }
+                }
+                ## if no creation of new city happen, there is a certain probability that people will move
+                if(length(new_site)==0 && runif(1)<prob_move[sites$culture[s]] ){
+
+                    #getj
+                    att=extract(ressources,sites)[,2]
+                    space=sites$Ks-(Nts[i-1,]+migrants)
+                    dis=extract(logisticdecay(sites[s],dem,k=0.00002,x=1),sites)[,2]
+                    attractivity=att*space*dis
+                    attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
+                    attractivity[s]=min(attractivity)-1
+                    attractivity=exp(attractivity)/sum(exp(attractivity))
+                    attractivity[Nts[i-1,]<10]=0 
+                    attractivity[sites$culture!=sites$culture[s]]=0 
+                    city=sample(size=1,x=seq_along(sites),prob=attractivity)
+                    Nts[i,city]=Nts[i-1,city]+migrants
+                    print(paste("migration from",sites$culture[s],"to",sites$culture[city]))
+                    havemoved=T
+                }
+                if(havemoved){
+
+                    #print(paste("old spot",migrants," for ",nrow(Ips[[s]])))
+                    #print(paste("old new spot",migrants," for ",nrow(Ips[[city]])))
+
+                    #if(city>length(Ips))print(paste("problem, migrants:",migrants))
+                    #print(paste("the other:",city))
+                    Ips[c(s,city)]=changePopSize(loosingPop=Ips[[s]],winingPop=Ips[[city]],size=migrants)
+                    newN=newN-migrants
+                    #print(paste("loosing ",newN," vs ",nrow(Ips[[s]])))
+                    #print(paste("wining ",newN," vs ",nrow(Ips[[city]])))
+                }
+
+            }
+            Nts[i,s]=newN
+
+
+            if(visu){
+                ###visualisation=========
+                sitescols=rep(1,length(sites))
+                siteslwd=rep(1,length(sites))
+                ii=NULL
+                if(!is.null(city)){
+                    sitescols[s]="yellow"
+                    sitescols[city]="red"
+                    siteslwd[s]=3
+                    siteslwd[city]=3
+                    ii=st_cast(st_combine(st_as_sf(sites[c(s,city)])),"LINESTRING")
+                }
+                if(!is.null(ii))plot(ii,add=T)
+                tmp=Nts[i-1,]
+                tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
+                plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)],lwd=siteslwd,col=sitescols)
+                dev.off()
+                ###=======================
+            }
+        }
+        if(visumin){
+            plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+        }
+        for(s in sample(which(sites$culture=="F" & Nts[i,]>0))){
+            buff=bufferatack
+            clash=whotouch(s,sites,Ne=Nts[i,],buffersize=buff)
+            if(length(clash)>0 && !is.na(clash) && runif(1)<.1){
+                clash=clash[Nts[i,clash]>0]
+                if(length(clash)==1)attack=clash
+                else attack=sample(clash,1)
+                newns=fightbetterloss(Ne=Nts[i,],a=s,b=attack)
+                casualties=sum(Nts[i,c(s,attack)]-newns[c(s,attack)])
+                warcasualties[i]=casualties
+                sizew=casualties^2/4000
+                warpoints(sites,s,attack,Ne=Nts[i,],buffersize=buff,sizewar=sizew+.5)
+
+                print(paste0(s," (",cultures[s],") with ",Nts[i,s]," individual, attacks: ",attack," (",cultures[attack],") with ",Nts[i,attack]," individual, #casualties=",casualties))
+
+                #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
+                Ips[[s]]=changePopSize(loosingPop=Ips[[s]],size=(Nts[i,s]-newns[s]))
+                Ips[[attack]]=changePopSize(loosingPop=Ips[[attack]],size=(Nts[i,attack]-newns[attack]))
+                Nts[i,]=newns
+                print(paste0("fight : #", s," (",cultures[s],") left with ",Nts[i,s]," (bef:",Nts[i-1,s],") ind., attacked: #",attack," (",cultures[attack],") with ",Nts[i,attack]," (bef:",Nts[i-1,attack],") ind., #death=",casualties))
+            }
+        }
+        if(visumin)dev.off()
+    }
+    return(list(Nts=Nts,warcasualties=warcasualties,Ips=Ips))
+}
+
+
 ```
 
 
@@ -179,7 +387,6 @@ plot(ress)
 #sites$Ks=initKs(Kbase,sites,ress,sizeexp="F")
 
 #but we got those saved in a RDS so:
-sites=vect(readRDS("testsites.RDS"))
 
 #initialisation
 
@@ -193,18 +400,29 @@ prob_split=c("HG"=.2,"F"=.6) #proba to create new settlement when Ne > K
 minimals=c("HG"=.14,"F"=.20) #how big the group of migrant should be to create a new city vs migrate to a existing one 
 prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
 
+sites=vect(readRDS("testsites.RDS"))
 
+onesimu=run_simulation (
+                           sites=vect(readRDS("testsites.RDS")),
+                           dem=height.ras,
+                           ressources=ress,
+                           water=height.wat,
+                           foldervid="pathtofinal",
+                           visu=F,visumin=TRUE,
+                           ts=10,#length of simulation in year
+                           Kbase=c("HG"=35,"F"=120),#difference in K for the two cultures
+                           cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
+                           penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
+                           prob_birth=c("HG"=0.3,"F"=0.5),#proba to give birth every year
+                           prob_survive=c("HG"=0.8,"F"=0.6),#proba to die when pop > K
+                           prob_split=c("HG"=.2,"F"=.6),#proba to create new settlement when Ne > K
+                           minimals=c("HG"=.14,"F"=.20),#how big the group of migrant should be to create a new city vs migrate to a existing one 
+                           bufferatack=400,#distance max around which settlement can fight
+                           prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
+                           )
 
-#saveRDS(file="testsites.RDS",sites)
-Ks=sites$Ks
-cultures=sites$culture
-INs=round(runif(length(sites),.85,.95)*sites$Ks) #Population size at initialisation
-
-
-Ips <- lapply(INs,initpopstruc ) #initialise population structure for all sites
-
-Nts=initlistsites(Ips,ts=ts)
-
+Nts=onesimu$Nts
+warcasualties=onesimu$warcasualties
 ```
 
 
@@ -220,181 +438,6 @@ Step by step to allow interaction between sites:
 ```{r,eval=F}
 ## Run stochastic process  
 
-### visualisation =====
-frame=0
-foldervid="pathtofinal"
-plotMap(height.ras,height.wat)
-plot(sites,cex=(.3+Nts[1,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(cultures)])
-plot(ress,add=T,alpha=.2,col=colorRampPalette(c("white","yellow","orange","red"))(80))
-tmp=Nts[1,]
-buffersize=(sqrt(tmp)+penal_cul[cultures])*3000*runif(1,.5,1.5)
-territory=erase(viable,buffer(sites,buffersize))
-plot(territory,add=T,alpha=.2,col="red")
-###
-
-warcasualties=vector("integer",ts)
-
-for (i in 2:(ts+1)){
-    print(paste("year",i,"total",sum(sapply(Ips,nrow)),"with",length(sites),"sites"))
-    print(table(sites$culture[Nts[i-1,]>0]))
-    if(visumin){
-            ### visualisation =====
-            frame=frame+1
-            filename=sprintf("map_%06d.png", frame)
-            png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
-            plotMap(height.ras,height.wat,paste0("year ",i))
-            ########
-    }
-    inactives=(Nts[i-1,]==0)
-    for(s in sample(seq_along(sites)[!inactives])){
-
-        if(visu){
-                ### visualisation =====
-                frame=frame+1
-                filename=sprintf("map_%08d.png", frame)
-                png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
-                plotMap(height.ras,height.wat,paste0("year ",i))
-                ########
-        }
-
-        city=NULL
-        Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], P_o=prob_birth[sites$culture[s]],prob = prob_survive[sites$culture[s]] ) #compute new population for the sites
-        newN=nrow(Ips[[s]]) #count population size
-
-        if(newN>=(Ks[[s]])){ #if new population is more than carrying capacity: migration scenario
-            migrants=newN-round(Ks[[s]]*0.9)
-            ##Creation of new city
-            new_site=NULL
-            #if(sites$culture[s]=="F")print(paste("possib",migrants, (minimals[sites$culture[s]]*sites$Ks[s])))
-            tmp=Nts[i-1,]
-            tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
-            #tmp=tmp+sqrt(sites$Ks)
-            havemoved=F
-
-            if(migrants>= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
-
-                #print(paste("look for new spot for ",migrants, "from site",s,"culture",sites$culture[s]))
-                buffersize=(sqrt(tmp)+penal_cul[cultures])*2000*runif(1,.5,1.5)
-                buffersize[tmp==0]=0
-                territory=erase(viable,buffer(sites,buffersize))
-
-                if(length(territory)>0){
-                    #print(paste("found new spot",migrants))
-
-                    ##select a new site given its distance to the old one and the ressource available in ress
-                    d2=logisticdecay(sites[s],height.ras,x=20000*cul_ext[sites$culture[s]])
-                    w=(.7*d2+.3*ress)/(.7*minmax(d2)[2] + .3*minmax(ress)[2])
-                    new_site=spatSample(x=mask(w*logisticdecay(sites[s],height.ras,k=0.00002,x=20000*cul_ext[sites$culture[s]]),territory),size=1,method="weights",xy=T)[1:2]
-                    new_site=vect(new_site,geom=c("x","y"))
-
-                    if(length(new_site)>0 & all(!is.na(crds(new_site)))){
-                        ##add new site to site listes
-                        ##initialise population struc of new site
-                        #print(paste("total sites:",length(Ips)))
-                        #print(paste("dim Nts:",dim(Nts)[2]))
-                        #print(paste("site sf Nts:",length(sites)))
-
-                        Ips[[length(Ips)+1]]=initpopstruc(n=migrants) #initialise a fake populaition, will be updated by real migrants later
-                        new_site$culture=sites$culture[s]
-                        new_site$Ks=round(initKs(Kbase,sites=new_site,ress,sizeex="F"))
-                        print(paste0("new settlement (",sites$culture[s],") of K ",new_site$Ks, " and pop ",migrants))
-
-                        sites=rbind(sites,new_site)
-
-                        Ks[length(Ks)+1]=new_site$Ks
-                        city=(length(Ips))
-                        Nts=cbind(Nts,rep(0,ts+1))
-                        Nts[i,city]=migrants
-                        cultures=c(cultures,cultures[s])
-                        #print(paste("new site sf Nts:",length(sites)))
-                        #print(paste("new dim Nts:",dim(Nts)[2]))
-                        #print(paste("new total sites:",length(Ips)))
-                        havemoved=T
-                    }
-                }
-            }
-            ## if no creation of new city happen, there is a certain probability that people will move
-            if(length(new_site)==0 && runif(1)<prob_move[sites$culture[s]] ){
-
-                #getj
-                att=extract(ress,sites)[,2]
-                space=sites$Ks-(Nts[i-1,]+migrants)
-                dis=extract(logisticdecay(sites[s],height.ras,k=0.00002,x=1),sites)[,2]
-                attractivity=att*space*dis
-                attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
-                attractivity[s]=min(attractivity)-1
-                attractivity=exp(attractivity)/sum(exp(attractivity))
-                attractivity[Nts[i-1,]<5]=0 
-                attractivity[sites$culture!=sites$culture[s]]=0 
-                city=sample(size=1,x=seq_along(sites),prob=attractivity)
-                Nts[i,city]=Nts[i-1,city]+migrants
-                print(paste("migration from",sites$culture[s],"to",sites$culture[city]))
-                havemoved=T
-            }
-            if(havemoved){
-
-                #print(paste("old spot",migrants," for ",nrow(Ips[[s]])))
-                #print(paste("old new spot",migrants," for ",nrow(Ips[[city]])))
-
-                #if(city>length(Ips))print(paste("problem, migrants:",migrants))
-                #print(paste("the other:",city))
-                Ips[c(s,city)]=changePopSize(loosingPop=Ips[[s]],winingPop=Ips[[city]],size=migrants)
-                newN=newN-migrants
-                #print(paste("loosing ",newN," vs ",nrow(Ips[[s]])))
-                #print(paste("wining ",newN," vs ",nrow(Ips[[city]])))
-            }
-
-        }
-        Nts[i,s]=newN
-
-
-        if(visu){
-                ###visualisation=========
-                sitescols=rep(1,length(sites))
-                siteslwd=rep(1,length(sites))
-                ii=NULL
-                if(!is.null(city)){
-                    sitescols[s]="yellow"
-                    sitescols[city]="red"
-                    siteslwd[s]=3
-                    siteslwd[city]=3
-                    ii=st_cast(st_combine(st_as_sf(sites[c(s,city)])),"LINESTRING")
-                }
-                if(!is.null(ii))plot(ii,add=T)
-                tmp=Nts[i-1,]
-                tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
-                plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)],lwd=siteslwd,col=sitescols)
-                dev.off()
-                ###=======================
-        }
-    }
-    if(visumin){
-            plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
-    }
-    for(s in sample(which(sites$culture=="F" & Nts[i,]>0))){
-        buff=400
-        clash=whotouch(s,sites,Ne=Nts[i,],buffersize=buff)
-        if(length(clash)>0 && !is.na(clash) && runif(1)<.1){
-            clash=clash[Nts[i,clash]>0]
-            if(length(clash)==1)attack=clash
-            else attack=sample(clash,1)
-            newns=fightbetterloss(Ne=Nts[i,],a=s,b=attack)
-            casualties=sum(Nts[i,c(s,attack)]-newns[c(s,attack)])
-            warcasualties[i]=casualties
-            sizew=casualties^2/4000
-            warpoints(sites,s,attack,Ne=Nts[i,],buffersize=buff,sizewar=sizew+.5)
-
-            print(paste0(s," (",cultures[s],") with ",Nts[i,s]," individual, attacks: ",attack," (",cultures[attack],") with ",Nts[i,attack]," individual, #casualties=",casualties))
-
-            #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
-            Ips[[s]]=changePopSize(loosingPop=Ips[[s]],size=(Nts[i,s]-newns[s]))
-            Ips[[attack]]=changePopSize(loosingPop=Ips[[attack]],size=(Nts[i,attack]-newns[attack]))
-            Nts[i,]=newns
-            print(paste0("results :", s," (",cultures[s],") with ",Nts[i,s]," individual, attacked: ",attack," (",cultures[attack],") with ",Nts[i,attack]," individual, #casualties=",casualties))
-        }
-    }
-    if(visumin)dev.off()
-}
 
 #par(mfrow=c(2,1))
 #plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
@@ -438,13 +481,15 @@ multisamp=sapply(1:1000,function(i)spatSample(x=w,size=1,method="weights",xy=T)[
 ```{r}
 plot(apply(Nts[1:i,sites$culture=="F"],1,sum),col="red",type="l",lwd=2)
  points(apply(Nts[1:i,sites$culture=="HG"],1,sum),col="blue",lwd=2,type="l")
+pdf("growth_utils.pdf")
+plot(warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="")
+axis(4)
+par(new=T)
 growF=apply(Nts[1:(i-1),sites$culture=="F"],1,sum)
 growHG=apply(Nts[1:(i-1),sites$culture=="HG"],1,sum)
 plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)))
  points(growHG,col="blue",lwd=2,type="l")
-par(new=T)
-plot(warcasualties[1:(i-1)],lwd=2,col="green",type="l",yaxt="n",ylab="")
-axis(4)
+dev.off()
 ```
 
 Population density:
