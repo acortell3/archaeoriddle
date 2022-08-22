@@ -150,17 +150,18 @@ plot(ress)
 
 #initialisation
 
-ts=800
-Kbase=c("HG"=30,"F"=120) #difference in K for the two cultures
-minimals=c("HG"=.14,"F"=.19) #how big the group of migrant should be to create a new city vs migrate to a existisng one 
-cul_ext=c("HG"=10,"F"=2) #spatial penality to extent: lower, bigger penality
-penal_cul=c("HG"=3,"F"=2.2) #penality of occupational area: low, other sites can cam close
-prob_birth=c("HG"=0.3,"F"=0.35)
-prob_survive=c("HG"=0.8,"F"=0.4)
-prob_split=c("HG"=0.7,"F"=0.44)
-
+ts=20000
+Kbase=c("HG"=35,"F"=150) #difference in K for the two cultures
+minimals=c("HG"=.14,"F"=.21) #how big the group of migrant should be to create a new city vs migrate to a existing one 
+cul_ext=c("HG"=7,"F"=6) #spatial penality to extent: lower, bigger penality
+penal_cul=c("HG"=4,"F"=5) #penality of occupational area: low, other sites can cam close
+prob_birth=c("HG"=0.3,"F"=0.5)
+prob_survive=c("HG"=0.8,"F"=0.5)
+prob_split=c("HG"=.1,"F"=.7)
+prob_move=c("HG"=.2,"F"=.2)
 
 cultures=rep("HG",length(sites))
+
 
 cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
 sites$culture=as.factor(cultures)
