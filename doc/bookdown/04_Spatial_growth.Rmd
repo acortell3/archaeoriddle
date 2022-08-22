@@ -335,13 +335,13 @@ if(visu){
         if(!is.null(ii))plot(ii,add=T)
         tmp=Nts[i-1,]
         tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
-        plot(sites,cex=(1+tmp/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)],lwd=siteslwd,col=sitescols)
+        plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)],lwd=siteslwd,col=sitescols)
         dev.off()
         ###=======================
 }
     }
     if(visumin){
-            plot(sites,cex=(as.integer(Nts[i,]>0)+Nts[i,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+            plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
     }
     for(s in sample(which(sites$culture=="F" & Nts[i,]>0))){
         buff=400
@@ -368,8 +368,7 @@ if(visu){
 #par(mfrow=c(2,1))
 #plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
 #lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
-#plot(apply(Nts,1,sum),xlab="time",ylab="popsize")
-}
+
 ```
 
 Visualise:
