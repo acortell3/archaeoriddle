@@ -26,9 +26,22 @@ initlistsites <- function(list_sites,ts=200){
 
 #sample through an existing population
 #This should be change by a funciton that allow to: sample the existing pop and kill some, swapp between two pop
-reducePop <- function(popdistrib,size,new=F) {
-    print(paste("initi",nrow(popdistrib),"new",size))
-    popdistrib[sample(x=1:nrow(popdistrib),size=size,replace=new),]
+#@param size size of moving/killed population
+changePopSize <- function(loosingPop,winingPop=NULL,size,new=F,method="random",probs=dnorm,prob.option=list("sd"=10,"mean"=22)) {
+    #print(dim(loosingPop))
+    #if(!is.null(winingPop))
+    #    print(dim(winingPop))
+    #if(length(size)==0 || size==0)return(data.frame(Age=numeric(),Sex=character()))
+    if(nrow(loosingPop)==0)kill=0
+    else if(method=="random")kill=sample(x=1:nrow(loosingPop),size=size,prob=probs(loosingPop$Age,mean=prob.option$mean,sd=prob.option$sd))
+    #print(paste("diff",nrow(popdistrib)-size,"new",size))
+    if(!is.null(winingPop)){winingPop=rbind(winingPop,loosingPop[kill,])}
+    loosingPop=loosingPop[-kill,]
+    if(!is.null(winingPop))
+        return(list(loosingPop,winingPop))
+    else
+        return(loosingPop)
+
 }
 
 
