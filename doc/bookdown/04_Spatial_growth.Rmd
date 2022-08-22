@@ -101,6 +101,28 @@ simplefight <- function(Ne,a,b){
     return(Ne)
 }   
 
+#' @tile fightbetterloss
+#' A function to compute lost during a fighting
+#' return the updated population size of both settlements engaged in the fight
+#' @param Ne list of population size for the fighting settlement
+#' @param a indice of the first settlement
+#' @param b indice of the second settlement
+fightbetterloss <- function(Ne,a,b){
+    if(runif(1)<Ne[a]/(Ne[a]+Ne[b])){
+        v=a
+        l=b
+    }
+    else{
+        v=b
+        l=a
+    }
+    one=Ne
+    Ne[v]=rbinom(n=1,prob=1-Ne[l]/(Ne[v] + Ne[l]),size=Ne[v])
+    Ne[l]=rbinom(n=1,prob=1-Ne[v]/(Ne[v] + Ne[l]),size=Ne[l])
+    print(paste("victory",v,"(",one[v],"-", Ne[v],") over",l,"(",one[l],"-",Ne[l],"), total of:",(one[v]-Ne[v])+(one[l]-Ne[l]),"people"))
+    return(Ne)
+}   
+
 
 ##draw a war symbole where two clans are fighting
 warpoints <- function(sites,a,b,Ne,buffersize=300,plot=T,sizewar=2){
