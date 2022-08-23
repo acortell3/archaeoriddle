@@ -471,7 +471,7 @@ fightbetterloss <- function(Ne,a,b){
     one=Ne
     Ne[v]=rbinom(n=1,prob=1-Ne[l]/(Ne[v] + Ne[l]),size=Ne[v])
     Ne[l]=rbinom(n=1,prob=1-Ne[v]/(Ne[v] + Ne[l]),size=Ne[l])
-    print(paste("victory",v,"(",one[v],"-", Ne[v],") over",l,"(",one[l],"-",Ne[l],"), total of:",(one[v]-Ne[v])+(one[l]-Ne[l]),"people"))
+    print(paste0("victory ",v,"(",one[v],"-", Ne[v],") over ",l," (",one[l],"-",Ne[l],"), tot:",(one[v]-Ne[v])+(one[l]-Ne[l]),"losses"))
     return(Ne)
 }   
 
@@ -536,8 +536,8 @@ run_simulation <- function(cultures=NULL,
     warcasualties=vector("integer",ts)
 
     for (i in 2:(ts+1)){
-        print(paste("year",i,"total",sum(sapply(Ips,nrow)),"with",length(sites),"sites"))
-        print(table(sites$culture[Nts[i-1,]>0]))
+        countcult=table(sites$culture)
+        print(paste("year",i,"total",sum(sapply(Ips,nrow)),"with",length(sites),"sites (",paste0(paste(names(countcult),countcult,sep=":"),collapse=","),")"))
         if(visumin){
             ### visualisation =====
             frame=frame+1
