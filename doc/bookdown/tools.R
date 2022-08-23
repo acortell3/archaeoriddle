@@ -551,7 +551,8 @@ run_simulation <- function(cultures=NULL,
     warcasualties=vector("integer",ts)
 
     for (i in 2:(ts+1)){
-        countcult=table(sites$culture)
+        countcult=table(sites$culture[Nts[i-1,]>0])
+		if(any(countcult==0)) return(list(Nts=Nts,warcasualties=warcasualties,Ips=Ips,sites=sites))
         print(paste("year",i,"total",sum(sapply(Ips,nrow)),"with",length(sites),"sites (",paste0(paste(names(countcult),countcult,sep=":"),collapse=","),")"))
         if(visumin){
             ### visualisation =====
