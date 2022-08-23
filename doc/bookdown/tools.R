@@ -351,6 +351,21 @@ short_loss <- function(x,theta_s){
 #' @param it: Initial time. Initial year of occupation in BP.
 #' @export
 
+long_loss <- function(x, theta_l, it){
+  t <- it+1950
+  
+  for (i in 1:ncol(x)){
+    prob <- theta_l^(t-i)
+    s <- x[,i]
+      for (k in 1:length(s)){
+        s[k] <- rbinom(1,s[k],prob)
+               
+      }
+    x[,i] <- s  
+  }
+  return(x)
+}
+
 
 #' @param pt a vector point around witch decvay is computed
 #' @param rast a raster to compute distances
