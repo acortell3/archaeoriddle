@@ -43,8 +43,9 @@ Nts=onesimu$Nts
 warcasualties=onesimu$warcasualties
 sites=onesimu$sites
 i=min(ts,which(apply(Nts,1,sum)==0))
-
-pdf(paste0(expname,"final,pdf"))
+saveRDS(file=paste0(expname,"_all.RDS"),onesimu)
+saveRDS(file=paste0(expname,"_sitesRast.RDS"),onesimu$sites)
+pdf(paste0(expname,"_mapFinal.pdf"))
 plotMap(height.ras,height.wat,paste0("year ",i))
 plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 text(sites)
@@ -57,16 +58,16 @@ axis(4)
 par(new=T)
 growF=apply(Nts[1:i,sites$culture=="F"],1,sum)
 growHG=apply(Nts[1:i,sites$culture=="HG"],1,sum)
-plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)),xlim=c(0,nrow(Nts)))
+plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)),xlim=c(0,i))
 points(growHG,col="blue",lwd=2,type="l")
 dev.off()
 
 pdf(paste0(expname,"growth_tot.pdf"))
-plot(warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="",xlim=c(0,i))
+plot(warcasualties[1:i-1],lwd=2,col="green",type="h",yaxt="n",ylab="")
 axis(4)
 par(new=T)
-growT=apply(Nts[1:(i-1),],1,sum)
-plot(growT,col="black",type="l",lwd=2,ylim=c(0,max(growT)),xlim=c(0,i))
+growT=apply(Nts[1:i,],1,sum)
+plot(growT,col="black",type="l",lwd=2,ylim=c(0,max(growT)))
 dev.off()
 
-saveRDS(file=paste0(expname,".RDS"),onesimu)
+
