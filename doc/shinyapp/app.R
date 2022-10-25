@@ -3,7 +3,6 @@ library(shiny)
 library(shinythemes)
 library(terra)
 library(sf)
-library(mailtoR)
 library(shinyjs)
 
 ## Sampling function
@@ -36,11 +35,11 @@ rabbithole_height <- rast("east_narnia4x.tif")
 rabbithole_water <- rabbithole_height
 rabbithole_water[rabbithole_water>mean(rabbithole_water[])]=NA
 coast_line <- st_geometry(st_read("coastline2.shp"))
-sq14 <- read.csv("fakedata/public/square_14.csv")[,-1]
-sq30 <- read.csv("fakedata/public/square_30.csv")[,-1]
-sq45 <- read.csv("fakedata/public/square_45.csv")[,-1]
-sq65 <- read.csv("fakedata/public/square_65.csv")[,-1]
-sq66 <- read.csv("fakedata/public/square_66.csv")[,-1]
+sq14 <- read.csv("../bookdown/fakedata/public/square_14.csv")[,-1]
+sq30 <- read.csv("../bookdown/fakedata/public/square_30.csv")[,-1]
+sq45 <- read.csv("../bookdown/fakedata/public/square_45.csv")[,-1]
+sq65 <- read.csv("../bookdown/fakedata/public/square_65.csv")[,-1]
+sq66 <- read.csv("../bookdown/fakedata/public/square_66.csv")[,-1]
 
 sq14$economy <- rep("F",4)
 sq45$economy <- "F"
@@ -92,6 +91,7 @@ ui <- fluidPage(
                       helpText(HTML("<p style='font-family:Courier New'>Enrico R. Crema (<em>as random unexpected walker</em>)</p>")),
                       helpText(HTML("<p style='font-family:Courier New'>With the priceless collaboration of Jasmine Vieri and Chris Stevens</p>")),
                       helpText(HTML("<p style='font-family:Courier New'>If you want to join us, drop us a line!! Alfredo and Simon's contact at the <b><em>'How to participate?'</em></b> tab!</p>"))),
+
              tabPanel(HTML("<p style='font-family:Courier New'><b>How to participate?</b></p>"),
                       helpText(HTML("<p style='font-family:Courier New'>There are no specific requirements. All you need to do is to download the data, play around, and be willing to share your thoughts with the wider community!! However, we do provide some general guidance to streamline your experience: </p>")),
                       helpText(HTML("<p style='font-family:Courier New'><b><em>Guidance</em></b></p>")),
@@ -100,7 +100,7 @@ ui <- fluidPage(
                       helpText(HTML("<p style='font-family:Courier New;text-indent: 60px'><u><em>2.1. Core shared data:</em></u> Core shared data: This dataset is the same for everyone. It primarily consists of a raster map containing some information about the background environment, coordinates of the locations of the known sites, and radiocarbon dates.</p>")),
                       helpText(HTML("<p style='font-family:Courier New;text-indent: 60px'><u><em>2.2. Additional data</em></u> Additional data: Each participant can carry out additional virtual site surveys to collect more information. You can select up to five grid squares from our map and obtain additional data from those locations. To keep the game fair, we ask participants (and research groups) not to make multiple requests and download datasets from more than five grid squares. While we will inspect each request, we ask participants to collaborate with us. This is not about winning, it is about learning!</p>")),
                       helpText(HTML("<p style='font-family:Courier New;text-indent: 20px'><u><em>3. Objectives:</em></u> Once participants (and research groups) have their own data, they can use any kind of methodology or analysis that they want in order to answer the research questions proposed in the tab <b><em>'RQs'</em></b>. Participants can answer any number of RQs that they want to (even all of them!). In fact, they can also propose their own questions and are indeed encouraged to do so.</p>")),
-                      helpText(HTML("<p style='font-family:Courier New;text-indent: 20px'><u><em>4. Timing and contact:</em></u> The ‘experiment’ will start officially on the 6th September 2022. After that, we will allow approximately one year for the participants to play and develop their methods. During that year, we can be in touch as much as you want. We will post new information and news (and videos!) periodically on twitter, so you can follow us there to stay tuned!</p>"),tags$a(img(src = "twitter_logo.png", height = 40), href = "http://twitter.com/archaeoriddle"),HTML("<p>In any case, if you need any additional information, or just want to discuss different aspects of the project, you can contact </p>"),mailtoR(email="ac2320@cam.ac.uk", text = "Alfredo"),HTML("<p> or </p>"),mailtoR(email="sc2297@cam.ac.uk", text = "Simon")),
+                      helpText(HTML("<p style='font-family:Courier New;text-indent: 20px'><u><em>4. Timing and contact:</em></u> The ‘experiment’ will start officially on the 6th September 2022. After that, we will allow approximately one year for the participants to play and develop their methods. During that year, we can be in touch as much as you want. We will post new information and news (and videos!) periodically on twitter, so you can follow us there to stay tuned!</p>"),tags$a(img(src = "twitter_logo.png", height = 40), href = "http://twitter.com/archaeoriddle"),HTML("<p>In any case, if you need any additional information, or just want to discuss different aspects of the project, you can contact </p>"),tags$a("Alfredo",href="mailto:ac2320@cam.ac.uk", text = "Alfredo"),HTML("<p> or </p>"),tags$a("Simon",href="mailto:sc2297@cam.ac.uk", text = "Simon")),
                       helpText(HTML("<p style='font-family:Courier New;text-indent: 20px'><u><em>5. Workshop:</em></u> In the summer of 2023, we will organise a dedicated workshop to discuss the different methods and results that have been proposed, and reveal <em>what really happened!</em>. This workshop will be in hybrid format so that everyone will have a chance to attend.</p>")),
                       helpText(HTML("<p style='font-family:Courier New;text-indent: 20px'><u><em>6. Publication:</em></u> At the conclusion of the workshop, anyone willing to do so, will be invited to participate in a collaborative special issue, where we will show (1) the actual process and the model used to create it, (2) the different contributions and approaches used by the participants with individual chapters and (3) a collaborative reflection of the overall experiment.</p>")),
                       helpText(HTML("<p style='font-family:Courier New;text-indent: 20px'><u><em>7. Involvement:</em></u> Of course, the level of involvement that you wish to have is entirely up to you. From participating anonymously, not submitting your analyses and results, to even help us coordinate things. Just feel free to join and play in any way you like!</p>"))),
@@ -144,10 +144,8 @@ ui <- fluidPage(
                       helpText(HTML("<p style='font-family:Courier New; text-indent: 20px'><u><em>06/09/2022</em></u> And we are on!!!! Go!! Start downloading data!! </p>")),
                       helpText(HTML("<p style='font-family:Courier New; text-indent: 20px'><u><em>01/09/2022</em></u> Due to the wonderful Budapest gathering, we have decided to pospone our launching until next 6th September... Hey! don't complain! We know you want this, but even NASA postpones!! </p>")),                      
                       helpText(HTML("<p style='font-family:Courier New; text-indent: 20px'><u><em>11/08/2022</em></u> The project is not active yet. It will start on 1st September 2022. If you want to stay tuned, you can either drop us a line (you have the contacts in the <em><b>'How to participate?'</b></em> tab), keep checking this website, or follow us on twitter.</p>"), 
-                               tags$a(img(src = "twitter_logo.png", height = 40), href = "http://twitter.com/archaeoriddle"))),
-             
+                               tags$a(img(src = "twitter_logo.png", height = 40), href = "http://twitter.com/archaeoriddle")))
            )),
-  
   
   
 )
@@ -184,7 +182,7 @@ server <- function(input, output) {
   
 }
 ##plot(squares[select])
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server,option=list(port=1234))
 
 
 
