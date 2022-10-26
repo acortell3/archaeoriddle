@@ -6,7 +6,7 @@ library(sf)
 library(shinyjs)
 
 ## Sampling function
-plotmap <- function(x){ ## x is the map and y is the grid
+plotmap <- function(x,hl=NULL){ ## x is the map and y is the grid
   
   col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
   
@@ -14,9 +14,11 @@ plotmap <- function(x){ ## x is the map and y is the grid
   plot(x^1.9,col=col_ramp(50),legend=F,reset=F,main="Rabbithole" )
   plot(grid, lwd = 0.5, add = TRUE)
   plot(coast_line, add = TRUE)
-  plot(com_sites_sf, add = TRUE, col = "darkred", pch = 16)
-
-#  plot(grid[good_cells], add = TRUE, col = "blue")
+  plot(st_geometry(com_sites_sf), add = TRUE, col = "darkred", pch = 16)
+  if(!is.null(hl)){
+      plot(grid[hl], add = TRUE, col = adjustcolor("yellow",.6),lwd=2)
+      text(st_coordinates(st_centroid(grid[hl]))[1,1],st_coordinates(st_centroid(grid[hl]))[1,2],hl)
+  }
 
 }
 
@@ -65,7 +67,7 @@ grid <- st_make_grid(rabbithole_height, 0.5)
 ui <- fluidPage(
   #shinythemes::themeSelector(),
   theme = shinytheme("slate"),
-  titlePanel(title = div(HTML("<p style='font-family:Courier New'>Archaeo-riddle</p>"), img(src = "logo_cdal.png", height = 45, align = "right"))),
+  titlePanel(title = div(HTML("<p style='font-family:Courier New'>Archaeo-riddle</p>"), img(src = "logo_cdal.png", height = 45, align = "right")),windowTitle = "Archaeo-riddle"),
   h4(HTML("<p style='font-family:Courier New'>Trying methods to improve archaeological inference</p>")),
   hr(),
   useShinyjs(),
@@ -128,9 +130,9 @@ ui <- fluidPage(
                       fluidRow(
                         column(width = 4,
                                plotOutput("Map", click = "plot_click", hover = hoverOpts(id = "plot_hover"))),
-                        column(width = 1,
-                               verbatimTextOutput("info")),
-                        column(width = 7,
+                        column(width = 2,
+                               helpText(HTML("<p style='font-family:Courier New'><u><em> Possible place to survey:</u> </br>(click on the map)</em>"),div(style="width:100px",verbatimTextOutput("info")),HTML("</p>"))),
+                        column(width = 5,
                                helpText(HTML("<p style='font-family:Courier New'><u><em>Additional information</em></u></p>")),
                                helpText(HTML("<p style='font-family:Courier New'>Your data consists of:</p>")),
                                helpText(HTML("<p style='font-family:Courier New'>- One map with height values and another one with values with probabilities of settlement according to environmental fitness (these are common both for the rabbit skinners and the poppy chewers).</p>")),
@@ -157,10 +159,14 @@ server <- function(input, output) {
   output$Map <- renderPlot({plotmap(rabbithole_height)},width = 500, height = 500)
 
   ## Get name of cells for survey data
-  output$info <- renderText({x <- req(input$plot_click$x)
+   observe({
+                             x <- req(input$plot_click$x)
                              y <- req(input$plot_click$y)
                              selected_spatial <- st_multipoint(x=cbind(x,y))
-                             good_cells <- as.data.frame(st_intersects(grid,selected_spatial))[,1]})
+                             good_cells <- as.data.frame(st_intersects(grid,selected_spatial))[,1]
+                             output$Map <- renderPlot({plotmap(rabbithole_height,good_cells)},width = 500, height = 500)
+                             output$info <-renderText(paste0("square #",good_cells))
+                            })
   
   ## Download common data
   b_dat <- reactive(com_sites)
