@@ -6,7 +6,7 @@ library(sf)
 library(shinyjs)
 
 ## Sampling function
-plotmap <- function(x,hl=NULL,hcl=NULL){ ## x is the map and y is the grid
+plotmap <- function(x,hl=NULL){ ## x is the map and y is the grid
   
   col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
   
@@ -15,10 +15,12 @@ plotmap <- function(x,hl=NULL,hcl=NULL){ ## x is the map and y is the grid
   plot(grid, lwd = 0.5, add = TRUE)
   plot(coast_line, add = TRUE)
   plot(st_geometry(com_sites_sf), add = TRUE, col = "darkred", pch = 16)
-  if(!is.null(hl)){
-      if(is.null(hcl))hcl=yellow
+  if(!is.null(hl) & length(hl)>0){
+      hcl=rep("yellow",length(hl))
+      hcl[hl  %in% c(66,30,14,45,65)]="red"
       plot(grid[hl], add = TRUE, col = adjustcolor(hcl,.6),lwd=2)
-      text(st_coordinates(st_centroid(grid[hl]))[1,1],st_coordinates(st_centroid(grid[hl]))[1,2],hl)
+      hl_coord=sapply(grid[hl],st_centroid)
+      text(t(hl_coord)[,1],t(hl_coord)[,2],hl)
   }
 
 }
@@ -43,6 +45,8 @@ sq30 <- read.csv("../bookdown/fakedata/public/square_30.csv")[,-1]
 sq45 <- read.csv("../bookdown/fakedata/public/square_45.csv")[,-1]
 sq65 <- read.csv("../bookdown/fakedata/public/square_65.csv")[,-1]
 sq66 <- read.csv("../bookdown/fakedata/public/square_66.csv")[,-1]
+
+good_cells <- c()
 
 sq14$economy <- rep("F",4)
 sq45$economy <- "F"
@@ -132,7 +136,7 @@ ui <- fluidPage(
                         column(width = 4,
                                plotOutput("Map", click = "plot_click", hover = hoverOpts(id = "plot_hover"))),
                         column(width = 2,
-                               helpText(HTML("<p style='font-family:Courier New'><u><em> Possible place to survey:</u> </br>(click on the map)</em>"),div(style="width:100px",verbatimTextOutput("info")),HTML("</p>"))),
+                               helpText(HTML("<p style='font-family:Courier New'><u><em> Possible square(s) to survey:</u> </br>(click on the map to get their ID)</em></p>"),div(style="width:150px",verbatimTextOutput("info")),HTML("<p style='font-family:Courier New;font-size:9pt'><em>You'll need to copy paste these ID in your submission when you will click on \"Survey\".</em></p>"))),
                         column(width = 5,
                                helpText(HTML("<p style='font-family:Courier New'><u><em>Additional information</em></u></p>")),
                                helpText(HTML("<p style='font-family:Courier New'>Your data consists of:</p>")),
@@ -164,14 +168,20 @@ server <- function(input, output) {
                              x <- req(input$plot_click$x)
                              y <- req(input$plot_click$y)
                              selected_spatial <- st_multipoint(x=cbind(x,y))
-                             good_cells <- as.data.frame(st_intersects(grid,selected_spatial))[,1]
-                             if(good_cells %in% c(66,30,14,45,65))hlc="red"
-                             else hlc="yellow"
-                             output$Map <- renderPlot({plotmap(rabbithole_height,good_cells,hcl=hlc)},width = 500, height = 500)
+                             tmp_cell <- as.data.frame(st_intersects(grid,selected_spatial))[,1]
+                             if(tmp_cell %in% good_cells) good_cells <<- good_cells[good_cells != tmp_cell]
+                             else{
+                                 if(length(good_cells) == 5)alert("you can't select more than 5 squares")
+                                 else{
+                                     if(tmp_cell %in% c(66,30,14,45,65))alert(paste("This square (#",tmp_cell,") is publicly available! you may not want to survey it..."))
+                                     good_cells <<- c(good_cells, tmp_cell)
+                                 }
+                             }
+                             output$Map <- renderPlot({plotmap(rabbithole_height,good_cells)},width = 500, height = 500)
                              output$info <-renderText({
-                                 trail=""
-                                 if(good_cells %in% c(66,30,14,45,65))alert(paste("This square (#",good_cells,") is publicly available! you may not want to survey it..."))
-                                 paste0("square #",good_cells,trail)
+                                 trail=rep("",length(good_cells))
+                                 trail[good_cells %in% c(66,30,14,45,65)]=" (public)"
+                                 paste0("square #",good_cells, trail ,"\n")
                              })
                             })
   
