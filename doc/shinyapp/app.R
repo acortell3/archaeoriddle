@@ -6,7 +6,7 @@ library(sf)
 library(shinyjs)
 
 ## Sampling function
-plotmap <- function(x,hl=NULL){ ## x is the map and y is the grid
+plotmap <- function(x,hl=NULL,hcl=NULL){ ## x is the map and y is the grid
   
   col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
   
@@ -16,7 +16,8 @@ plotmap <- function(x,hl=NULL){ ## x is the map and y is the grid
   plot(coast_line, add = TRUE)
   plot(st_geometry(com_sites_sf), add = TRUE, col = "darkred", pch = 16)
   if(!is.null(hl)){
-      plot(grid[hl], add = TRUE, col = adjustcolor("yellow",.6),lwd=2)
+      if(is.null(hcl))hcl=yellow
+      plot(grid[hl], add = TRUE, col = adjustcolor(hcl,.6),lwd=2)
       text(st_coordinates(st_centroid(grid[hl]))[1,1],st_coordinates(st_centroid(grid[hl]))[1,2],hl)
   }
 
@@ -164,8 +165,14 @@ server <- function(input, output) {
                              y <- req(input$plot_click$y)
                              selected_spatial <- st_multipoint(x=cbind(x,y))
                              good_cells <- as.data.frame(st_intersects(grid,selected_spatial))[,1]
-                             output$Map <- renderPlot({plotmap(rabbithole_height,good_cells)},width = 500, height = 500)
-                             output$info <-renderText(paste0("square #",good_cells))
+                             if(good_cells %in% c(66,30,14,45,65))hlc="red"
+                             else hlc="yellow"
+                             output$Map <- renderPlot({plotmap(rabbithole_height,good_cells,hcl=hlc)},width = 500, height = 500)
+                             output$info <-renderText({
+                                 trail=""
+                                 if(good_cells %in% c(66,30,14,45,65))alert(paste("This square (#",good_cells,") is publicly available! you may not want to survey it..."))
+                                 paste0("square #",good_cells,trail)
+                             })
                             })
   
   ## Download common data
