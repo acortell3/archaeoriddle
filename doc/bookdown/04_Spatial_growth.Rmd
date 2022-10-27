@@ -170,14 +170,7 @@ run_simulation <- function(cultures=NULL,
     Nts=initlistsites(Ips,ts=ts)
     ### visualisation =====
     frame=0
-    foldervid="pathtofinal"
-    plotMap(dem,water)
-    plot(sites,cex=(.3+Nts[1,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(cultures)])
-    plot(ressources,add=T,alpha=.2,col=colorRampPalette(c("white","yellow","orange","red"))(80))
-    tmp=Nts[1,]
-    buffersize=(sqrt(tmp)+penal_cul[cultures])*buffersettl*runif(1,.5,1.5)
-    territory=erase(viable,buffer(sites,buffersize))
-    plot(territory,add=T,alpha=.2,col="red")
+    if(!dir.exists(foldervid))dir.create(foldervid)
     ###
 
     warcasualties=vector("integer",ts)
@@ -343,7 +336,7 @@ run_simulation <- function(cultures=NULL,
         }
         if(visumin)dev.off()
     }
-    return(list(Nts=Nts,warcasualties=warcasualties,Ips=Ips))
+    return(list(Nts=Nts,warcasualties=warcasualties,Ips=Ips,sites=sites))
 }
 
 
@@ -383,15 +376,16 @@ plot(ress)
 #a manual way to set cultures given general geography
 #cultures=rep("HG",length(sites))
 #cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
-#sites$culture=as.factor(cultures)
+#sites$culture=cultures
 #sites$Ks=initKs(Kbase,sites,ress,sizeexp="F")
+saveRDS(file="testsites.RDS",sites)
 
 #but we got those saved in a RDS so:
 
 #initialisation
 
 ts=20000
-Kbase=c("HG"=35,"F"=120) #difference in K for the two cultures
+Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
 cul_ext=c("HG"=7,"F"=6) #spatial penality to extent: lower, bigger penality
 penal_cul=c("HG"=4,"F"=5) #penality of occupational area: low, other sites can cam close
 prob_birth=c("HG"=0.3,"F"=0.5) #proba to give birth every year
@@ -400,22 +394,38 @@ prob_split=c("HG"=.2,"F"=.6) #proba to create new settlement when Ne > K
 minimals=c("HG"=.14,"F"=.20) #how big the group of migrant should be to create a new city vs migrate to a existing one 
 prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
 
+height.ras=rast("east_narnia4x.tif")
+height.wat=height.ras
+height.wat[height.wat>mean(height.wat[])]=NA
+height.groups=height.ras
+maxh=max(height.ras[],na.rm=T)
+height.groups[height.groups<mean(height.groups[])]=NA
+height.groups[height.groups<(maxh*.7)]=1
+height.groups[height.groups>(maxh*.7)]=200
+height.groups[is.na(height.groups)]=-1
+height.poly=as.polygons(height.groups)
+viable=makeValid(height.poly[2,])
 sites=vect(readRDS("testsites.RDS"))
+plotMap(height.ras,height.wat,paste0("year ",0))
+plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+text(sites)
+dev.off()
 
 onesimu=run_simulation (
+                           viable=viable,
                            sites=vect(readRDS("testsites.RDS")),
                            dem=height.ras,
                            ressources=ress,
                            water=height.wat,
-                           foldervid="pathtofinal",
+                           foldervid=paste0("pathtofinal_",i),
                            visu=F,visumin=TRUE,
-                           ts=10,#length of simulation in year
+                           ts=250,#length of simulation in year
                            Kbase=c("HG"=35,"F"=120),#difference in K for the two cultures
                            cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
                            penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
                            prob_birth=c("HG"=0.3,"F"=0.5),#proba to give birth every year
                            prob_survive=c("HG"=0.8,"F"=0.6),#proba to die when pop > K
-                           prob_split=c("HG"=.2,"F"=.6),#proba to create new settlement when Ne > K
+                           prob_split=c("HG"=.4,"F"=.6),#proba to create new settlement when Ne > K
                            minimals=c("HG"=.14,"F"=.20),#how big the group of migrant should be to create a new city vs migrate to a existing one 
                            bufferatack=400,#distance max around which settlement can fight
                            prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
@@ -423,12 +433,14 @@ onesimu=run_simulation (
 
 Nts=onesimu$Nts
 warcasualties=onesimu$warcasualties
+sites_new=onesimu$sites
+
 ```
 
 
 Use ressource to adjust the Ks:
 ```{r,eval=F}
-plot(sites,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+plot(sites_new,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 ```
 
 
@@ -448,7 +460,7 @@ Step by step to allow interaction between sites:
 Visualise:
 Record deposit and  loss
 ```{r,fig.width="25%"}
-4lldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 15000,ts=ts,r = 0.2, Max_bone_thickness = "m"))
+alldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 15000,ts=ts,r = 0.2, Max_bone_thickness = "m"))
 maxy=max(sapply(alldeposit,function(i)max(apply(i,2,sum))))
 
 lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)))
@@ -479,14 +491,14 @@ multisamp=sapply(1:1000,function(i)spatSample(x=w,size=1,method="weights",xy=T)[
 
 
 ```{r}
-plot(apply(Nts[1:i,sites$culture=="F"],1,sum),col="red",type="l",lwd=2)
- points(apply(Nts[1:i,sites$culture=="HG"],1,sum),col="blue",lwd=2,type="l")
+plot(apply(Nts[1:i,sites_new$culture=="F"],1,sum),col="red",type="l",lwd=2)
+ points(apply(Nts[1:i,sites_new$culture=="HG"],1,sum),col="blue",lwd=2,type="l")
 pdf("growth_utils.pdf")
 plot(warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="")
 axis(4)
 par(new=T)
-growF=apply(Nts[1:(i-1),sites$culture=="F"],1,sum)
-growHG=apply(Nts[1:(i-1),sites$culture=="HG"],1,sum)
+growF=apply(Nts[1:(i-1),sites_new$culture=="F"],1,sum)
+growHG=apply(Nts[1:(i-1),sites_new$culture=="HG"],1,sum)
 plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)))
  points(growHG,col="blue",lwd=2,type="l")
 dev.off()
