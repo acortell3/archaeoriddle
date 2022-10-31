@@ -4,6 +4,7 @@ library(shinythemes)
 library(terra)
 library(sf)
 library(shinyjs)
+library(shinyalert)
 
 ## Sampling function
 plotmap <- function(x,hl=NULL){ ## x is the map and y is the grid
@@ -72,6 +73,8 @@ grid <- st_make_grid(rabbithole_height, 0.5)
 ui <- fluidPage(
   #shinythemes::themeSelector(),
   theme = shinytheme("slate"),
+  tags$head(tags$style(HTML('.modal-header{background-color:#DD3553;text-align:center}'))),
+  tags$head(tags$style(HTML('.modal-body{background-color:white;color:black}'))),
   titlePanel(title = div(HTML("<p style='font-family:Courier New'>Archaeo-riddle</p>"), img(src = "logo_cdal.png", height = 45, align = "right")),windowTitle = "Archaeo-riddle"),
   h4(HTML("<p style='font-family:Courier New'>Trying methods to improve archaeological inference</p>")),
   hr(),
@@ -171,9 +174,9 @@ server <- function(input, output) {
                              tmp_cell <- as.data.frame(st_intersects(grid,selected_spatial))[,1]
                              if(tmp_cell %in% good_cells) good_cells <<- good_cells[good_cells != tmp_cell]
                              else{
-                                 if(length(good_cells) == 5)alert("you can't select more than 5 squares")
+                                 if(length(good_cells) == 5)shinyalert(title="uuuuppps",text="you can't select more than 5 squares",closeOnEsc=TRUE,closeOnClickOutside=TRUE,showConfirmButton=FALSE,showCancelButton=FALSE,type="error")
                                  else{
-                                     if(tmp_cell %in% c(66,30,14,45,65))alert(paste("This square (#",tmp_cell,") is publicly available! you may not want to survey it..."))
+                                     if(tmp_cell %in% c(66,30,14,45,65))showModal(modalDialog(title="you sure???",paste("This square (#",tmp_cell,") is publicly available! you may not want to survey it..."),easyClose=TRUE,size="s",footer=NULL))
                                      good_cells <<- c(good_cells, tmp_cell)
                                  }
                              }
