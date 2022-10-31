@@ -4,7 +4,6 @@ library(shinythemes)
 library(terra)
 library(sf)
 library(shinyjs)
-library(shinyalert)
 
 ## Sampling function
 plotmap <- function(x,hl=NULL){ ## x is the map and y is the grid
@@ -174,7 +173,7 @@ server <- function(input, output) {
                              tmp_cell <- as.data.frame(st_intersects(grid,selected_spatial))[,1]
                              if(tmp_cell %in% good_cells) good_cells <<- good_cells[good_cells != tmp_cell]
                              else{
-                                 if(length(good_cells) == 5)shinyalert(title="uuuuppps",text="you can't select more than 5 squares",closeOnEsc=TRUE,closeOnClickOutside=TRUE,showConfirmButton=FALSE,showCancelButton=FALSE,type="error")
+                                 if(length(good_cells) == 5) showModal(modalDialog(title=HTML("uuuuuppss"),HTML("<p style=\"text-align:center\"> you can't select more than 5 square, sorry! </br> ¯\\_(ツ)_/¯</p>"),easyClose=TRUE,size="s",footer=NULL))
                                  else{
                                      if(tmp_cell %in% c(66,30,14,45,65))showModal(modalDialog(title="you sure???",paste("This square (#",tmp_cell,") is publicly available! you may not want to survey it..."),easyClose=TRUE,size="s",footer=NULL))
                                      good_cells <<- c(good_cells, tmp_cell)
