@@ -55,7 +55,8 @@ sq45$economy <- "F"
 com_sites <- rbind(sq14,sq30,sq45,sq65,sq66)
 com_sites_sf <- st_as_sf(com_sites, coords = (c("lon","lat")))
 env <- rast("resources.tiff")
-grid <- st_make_grid(rabbithole_height, 0.5)
+#grid <- st_make_grid(rabbithole_height, 0.5)
+grid <- readRDS("grid.RDS")
 
 
 ################################################################################
