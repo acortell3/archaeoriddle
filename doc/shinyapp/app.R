@@ -48,16 +48,14 @@ sq66 <- read.csv("../bookdown/fakedata/public/square_66.csv")[,-1]
 
 good_cells <- c()
 
+#This is a quickfix to avoid the 'F' of farmer to be changed by FALSE"
 sq14$economy <- rep("F",4)
 sq45$economy <- "F"
 
 com_sites <- rbind(sq14,sq30,sq45,sq65,sq66)
 com_sites_sf <- st_as_sf(com_sites, coords = (c("lon","lat")))
 env <- rast("resources.tiff")
-#hh <- rast("Rabbithole_paleo_models.tiff")
-## s_dat <- st_read("siteanddata.shp") I don't have this yet
 grid <- st_make_grid(rabbithole_height, 0.5)
-#dat <- read.csv("fake_data.csv")
 
 
 ################################################################################
@@ -206,8 +204,8 @@ server <- function(input, output) {
   )
   
 }
-##plot(squares[select])
-shinyApp(ui = ui, server = server,option=list(port=1234))
+
+shinyApp(ui = ui, server = server)
 
 
 
