@@ -10,5 +10,9 @@ to run this app in the root folder:
 ```bash
 ln -s doc/shinyapp/grid.RDS .
 ln -s doc/bookdown/fakedata/public/ .
+ln -s doc/shinyapp/www/ .
+
+
+
 Rscript  -e  "shiny::runApp('.',port=1234)"
 ```
