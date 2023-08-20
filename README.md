@@ -6,7 +6,9 @@ ln -s ../bookdown/ressources.tiff resources.tiff
 ```
 
 
-to run this app:
+to run this app in the root folder:
 ```bash
+ln -s doc/shinyapp/grid.RDS .
+ln -s doc/bookdown/fakedata/public/ .
 Rscript  -e  "shiny::runApp('.',port=1234)"
 ```
