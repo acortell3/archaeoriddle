@@ -10,7 +10,8 @@ plotmap <- function(x,hl=NULL){ ## x is the map and y is the grid
   
   col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
   
-  grid <- st_make_grid(x, 0.5)
+  #grid <- st_make_grid(x, 0.5)
+  grid <- readRDS("grid.RDS")
   plot(x^1.9,col=col_ramp(50),legend=F,reset=F,main="Rabbithole" )
   plot(grid, lwd = 0.5, add = TRUE)
   plot(coast_line, add = TRUE)
@@ -40,11 +41,11 @@ rabbithole_height <- rast("east_narnia4x.tif")
 rabbithole_water <- rabbithole_height
 rabbithole_water[rabbithole_water>mean(rabbithole_water[])]=NA
 coast_line <- st_geometry(st_read("coastline2.shp"))
-sq14 <- read.csv("../bookdown/fakedata/public/square_14.csv")[,-1]
-sq30 <- read.csv("../bookdown/fakedata/public/square_30.csv")[,-1]
-sq45 <- read.csv("../bookdown/fakedata/public/square_45.csv")[,-1]
-sq65 <- read.csv("../bookdown/fakedata/public/square_65.csv")[,-1]
-sq66 <- read.csv("../bookdown/fakedata/public/square_66.csv")[,-1]
+sq14 <- read.csv("public/square_14.csv")[,-1]
+sq30 <- read.csv("public/square_30.csv")[,-1]
+sq45 <- read.csv("public/square_45.csv")[,-1]
+sq65 <- read.csv("public/square_65.csv")[,-1]
+sq66 <- read.csv("public/square_66.csv")[,-1]
 
 good_cells <- c()
 
@@ -123,7 +124,7 @@ ui <- fluidPage(
                                    column(width = 3,
                                      img(src='Leah_EAA.JPG', height = 400)),
                                    column(width = 9,
-                                     helpText(HTML("<p style='font-family:Courier New'>Archaeoriddle is able to help participants wanting to give it a go. More particularly, we will give <b>£650</b> to the best 10 proposals for the attendance at our workshop in the next EAA meeting in Belfast. These funds will be granted to the researcher presenting the proposal (in the case it is a research group, it will be this group deciding how to dispose of them). They will be given as a prize/single payment, and winners will decide how to use them (no accountability or reports for archaeoriddle are needed). It doesn't matter whether you have already signed up for the EAA or not. If you have not signed up, you can use these to pay fees/travel etc, but if you have, you can use them as a refund to you own expenses. The only thing we do ask is that winners <em>will</em> have to present their own methodological solution at the workshop held in Belfast.</p>")),
+                                     helpText(HTML("<p style='font-family:Courier New'>Archaeoriddle is able to help participants wanting to give it a go. More particularly, we will give <b>£650</b> to the best proposals for the attendance at our workshop in the next EAA meeting in Belfast. These funds will be granted to the researcher presenting the proposal (in the case it is a research group, it will be this group deciding how to dispose of them). They will be given as a prize/single payment, and winners will decide how to use them (no accountability or reports for archaeoriddle are needed). It doesn't matter whether you have already signed up for the EAA or not. If you have not signed up, you can use these to pay fees/travel etc, but if you have, you can use them as a refund to you own expenses. The only thing we do ask is that winners <em>will</em> have to present their own methodological solution at the workshop held in Belfast.</p>")),
                                      helpText(HTML("<p style='font-family:Courier New'>Now, if you want to participate and opt in for the $$, please provide </p>"),tags$a("Alfredo",href="mailto:ac2320@cam.ac.uk", text = "Alfredo"),HTML("<p> or </p>"),tags$a("Simon",href="mailto:sc2297@cam.ac.uk", text = "Simon")),
                                      helpText(HTML("<p style='font-family:Courier New'>With a document containing the following information:</p>")),
                                      helpText(HTML("<p style='font-family:Courier New'> - Name and affiliation of authors involved</p>")),
@@ -185,6 +186,7 @@ ui <- fluidPage(
 
 server <- function(input, output) {
   
+good_cells <- c()
   ## Plot map
   output$Map <- renderPlot({plotmap(rabbithole_height)},width = 500, height = 500)
 
@@ -215,6 +217,7 @@ server <- function(input, output) {
   output$download <- downloadHandler(
     filename = function(){"Biblio_data.csv"}, 
     content = function(fname){
+      message(paste(Sys.time(),"download bibliodata"))
       write.csv(b_dat(), fname)
     }
   )
@@ -222,6 +225,7 @@ server <- function(input, output) {
   output$download2 <- downloadHandler(
     filename = function(){"Maps.zip"}, 
     content = function(file){
+      message(paste(Sys.time(),"download maps"))
       files <- c("east_narnia4x.tif","resources.tiff");
       zip(file,files)
     },
