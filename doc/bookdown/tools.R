@@ -367,6 +367,22 @@ long_loss <- function(x, theta_l, it){
 }
 
 
+#' @param record a full archaeological record (each line some depth, column represent year)
+#' @param years better not to use, but if used should  be equal to \code{ncol(record)}
+#' @param n final amount of sample needed
+extractDates <- function(record,years=NULL,n){
+	if(n==0) return(NULL)
+	if(is.null(years)){
+		if(is.null(colnames(record))) years=seq_along(record)
+		else years=colnames(record)
+	}
+	peryear=apply(record,2,sum) #get the total amount of datable fragement per year
+	probs=peryear/sum(peryear) #distributions years
+	probs[is.na(probs)]=0
+	return(sample(x=years,size=n,prob=probs,replace=T))
+}
+
+
 #' @param pt a vector point around witch decvay is computed
 #' @param rast a raster to compute distances
 #' @param L sstarting point of decay
@@ -399,7 +415,7 @@ changePopSize <- function(loosingPop,winingPop=NULL,size,new=F,method="random",p
     #    print(dim(winingPop))
     #if(length(size)==0 || size==0)return(data.frame(Age=numeric(),Sex=character()))
     if(nrow(loosingPop)==0)kill=0
-    else if(method=="random")kill=sample(x=1:nrow(loosingPop),size=size,prob=probs(loosingPop$Age,mean=prob.option$mean,sd=prob.option$sd))
+    else if(method=="random")kill=tryCatch(sample(x=1:nrow(loosingPop),size=size,prob=probs(loosingPop$Age,mean=prob.option$mean,sd=prob.option$sd)),error=function(e){print(paste0("problem with population replacement for settlement of size:",nrow(loosingPop)," need to loose ",size));0})
     #print(paste("diff",nrow(popdistrib)-size,"new",size))
     if(!is.null(winingPop)){winingPop=rbind(winingPop,loosingPop[kill,])}
     loosingPop=loosingPop[-kill,]
@@ -425,7 +441,7 @@ initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources,sizeexp=NULL,rate=.
 }
 
 plotMap <- function(height,water,maintitle=""){
-        plot(height^1.9,col=col_ramp(50),legend=F,reset=F,main=maintitle )
+        plot(height^0.36,col=col_ramp(255),legend=F,reset=F,main=maintitle )
         plot(water,col="lightblue",add=T,legend=F)
 }
 
@@ -552,7 +568,7 @@ run_simulation <- function(cultures=NULL,
 
     for (i in 2:(ts+1)){
         countcult=table(sites$culture[Nts[i-1,]>0])
-		if(any(countcult==0)) return(list(Nts=Nts,warcasualties=warcasualties,Ips=Ips,sites=sites))
+		if(length(countcult)!=2) return(list(Nts=Nts[,1:i],warcasualties=warcasualties[1:i],Ips=Ips,sites=sites))
         print(paste("year",i,"total",sum(sapply(Ips,nrow)),"with",length(sites),"sites (",paste0(paste(names(countcult),countcult,sep=":"),collapse=","),")"))
         if(visumin){
             ### visualisation =====
@@ -722,4 +738,13 @@ run_simulation <- function(cultures=NULL,
 }
 
 
+
+#png(file.path("fight.png"),width=800,height=800,pointsize=20)
+#plotMap(height.ras,height.wat,paste0("year ",i))
+#points(-1.5,2,bg="red",pch="🔥",cex=6,col=adjustcolor("yellow",.1))
+#points(-1.5,2,bg="red",pch="⚔️",cex=6,col=adjustcolor("yellow",.1))
+#points(-1.5,1,bg="red",pch="🕊️",cex=6,col=adjustcolor("yellow",.1))
+#points(-.8,1.5,bg="red",pch="?",cex=6)
+#points(-2.2,1.5,bg="red",pch="?",cex=6)
+#dev.off()
 
