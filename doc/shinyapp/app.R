@@ -251,13 +251,9 @@ server <- function(input, output,session) {
 	output$Map <- renderPlot({plotmap(rabbithole_height)},width = 500, height = 500)
 	observe({
 		query <- parseQueryString(session$clientData$url_search)
-
-		
-		message(paste(Sys.time(),query$tab))
 		if ("tab" %in% names(query)) {
 			updateTabsetPanel(session, "menu", selected = query$tab)
 		}
-
 		utm_source <- query[['utm_source']]
 		message(paste(Sys.time(),"connect from:",utm_source))
 	})
