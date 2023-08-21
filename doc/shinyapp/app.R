@@ -84,9 +84,9 @@ people_info <- data.frame (
 									"16:55"
 									),
 						   abstract = c(
-										"Introduction to Archaeoriddle & a simple LLM solution", 
+										"Introduction to Archaeoriddle & a simple LLM solution.", 
 										"An ABM approach to the Archaeoriddle.",
-										"Quantile Regression and the Bayesian Framework to tackle regional variations in dispersal's tempo",
+										"Quantile Regression and the Bayesian Framework to tackle regional variations in dispersal's tempo.",
 										"A multimodal approach, from Logistic Regressions to Spatio-temporal Species Distribution Models.",
 										"Using Point Process Modelling to detect cooperation cs competition.",
 										"AI and dialectic.",
@@ -227,7 +227,7 @@ ui <- fluidPage(
                                strong(tags$h2(style='font-weight:900;color:white;font-family:Courier New'," The Archaeoriddle Workshop"),
 									  tags$h3(style='font-family:Courier New',"Saturday 2nd September 2023, Lanyon Building, room G059")),                      
 							   tags$br(),
-                               helpText(HTML("<p style='font-family:Courier New;'> The Archaeoriddle Workshop, where final results and proposal from participant will be presented wil be held at <a href='https://www.e-a-a.org/EAA2023/'>EAA Belfast</a> on the Saturday Afternoon at Lanyon Building (G059) starting at 14h00  </p> </br>")),                      
+                               helpText(HTML("<p style='font-family:Courier New;'> The Archaeoriddle Workshop. In this workshop the final results and the proposals from all participants will be presented.  All the code and methods use to generate the data will be unveiled. The workshop take place during <a href='https://www.e-a-a.org/EAA2023/'>EAA Belfast</a> on the Saturday Afternoon at Lanyon Building (G059). It will starting at 14h00  </p> </br>")),                      
                                helpText(HTML("<p style='font-family:Courier New;'> <b> Program:</b> </p>")),                      
                                tags$ul(
                                        lapply(1:nrow(people_info), function(i) {
