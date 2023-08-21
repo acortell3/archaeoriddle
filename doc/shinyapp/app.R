@@ -227,7 +227,7 @@ ui <- fluidPage(
                                strong(tags$h2(style='font-weight:900;color:white;font-family:Courier New'," The Archaeoriddle Workshop"),
 									  tags$h3(style='font-family:Courier New',"Saturday 2nd September 2023, Lanyon Building, room G059")),                      
 							   tags$br(),
-                               helpText(HTML("<p style='font-family:Courier New;'> The Archaeoriddle Workshop. In this workshop the final results and the proposals from all participants will be presented.  All the code and the methods used to generate the data will be unveiled. The workshop takes place during <a href='https://www.e-a-a.org/EAA2023/'>EAA Belfast</a> on the Saturday Afternoon at Lanyon Building (G059). It starts at 14h00 and finish early enough to leave time to people to join the annual EAA dinner party .</p> </br>")),                      
+                               helpText(HTML("<p style='font-family:Courier New;'> The Archaeoriddle Workshop. In this workshop the final results and the proposals from all participants will be presented.  All the code and the methods used to generate the data will be unveiled. The workshop will be held during the <a href='https://www.e-a-a.org/EAA2023/'>EAA conference in Belfast</a> on the Saturday Afternoon at Lanyon Building (G059). It will start at 14h00 and will finish early enough to leave time to people to join the annual EAA dinner party .</p> </br>")),                      
                                helpText(HTML("<p style='font-family:Courier New;'> <b> Program:</b> </p>")),                      
                                tags$ul(
                                        lapply(1:nrow(people_info), function(i) {
