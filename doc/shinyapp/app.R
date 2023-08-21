@@ -71,7 +71,7 @@ people_info <- data.frame (
 									"Daniel Hromada",
 									"Coffee Break",
 									"Alfredo Cortell-Nicolau",
-									"Round table"),
+									"Round table, Future work & Publication"),
 						   hour = c(
 									"14:00",
 									"14:20",
@@ -92,7 +92,7 @@ people_info <- data.frame (
 										"AI and dialectic.",
 										"We all need a break, don't we?",
 										"The final revelation, code and conclusions",
-										"Round table - What's next?"
+										"During the round table we invite people who haven't submitted proposal to discuss other approaches they think would have been interesting to explore. We will also gather ideas and opinions about the whole projects and propose to anyone interested to join us in writing a paper about modelling in archaeology and why and how we should keep such approaches as open and collaborative as possible."
 						   )
 )
 
@@ -227,13 +227,14 @@ ui <- fluidPage(
                                strong(tags$h2(style='font-weight:900;color:white;font-family:Courier New'," The Archaeoriddle Workshop"),
 									  tags$h3(style='font-family:Courier New',"Saturday 2nd September 2023, Lanyon Building, room G059")),                      
 							   tags$br(),
-                               helpText(HTML("<p style='font-family:Courier New;'> The Archaeoriddle Workshop. In this workshop the final results and the proposals from all participants will be presented.  All the code and methods use to generate the data will be unveiled. The workshop take place during <a href='https://www.e-a-a.org/EAA2023/'>EAA Belfast</a> on the Saturday Afternoon at Lanyon Building (G059). It will starting at 14h00  </p> </br>")),                      
+                               helpText(HTML("<p style='font-family:Courier New;'> The Archaeoriddle Workshop. In this workshop the final results and the proposals from all participants will be presented.  All the code and methods use to generate the data will be unveiled. The workshop take place during <a href='https://www.e-a-a.org/EAA2023/'>EAA Belfast</a> on the Saturday Afternoon at Lanyon Building (G059). It will start at 14h00 and finish early enough to leave time to people to join the annual EAA dinner party .</p> </br>")),                      
                                helpText(HTML("<p style='font-family:Courier New;'> <b> Program:</b> </p>")),                      
                                tags$ul(
                                        lapply(1:nrow(people_info), function(i) {
                                                   tags$li( tags$span(class = 'name', people_info$name[i]), ' – ', people_info$hour[i], tags$div(class = 'abstract', people_info$abstract[i]))})),
-                               helpText(HTML('<p style="font-family:Courier New;">  Every participant of the workshop is invited  to join us on the day before for an Ice Breaker dinner at the <a href="https://www.holohanspantry.co.uk/">Holohans</a>.</p> </br> <p> <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2312.0136764801796!2d-5.94126240385261!3d54.586133102218994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486108f1c8439857%3A0x30b0e6f91e0da027!2sHolohan&#39;s%20Pantry!5e0!3m2!1sen!2suk!4v1692553480159!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p> ')),                      
-
+                               helpText(tags$br(),
+HTML('<p style="font-family:Courier New;">  Every participant of the workshop is invited  to join us on the day before for an Ice Breaker dinner at the <a href="https://www.holohanspantry.co.uk/">Holohans</a>.. If you plan on comming <b><a href="ac2320@cam.ac.uk"> write us </a></b></p>'),tags$br(), 
+HTML(' <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2312.0136764801796!2d-5.94126240385261!3d54.586133102218994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486108f1c8439857%3A0x30b0e6f91e0da027!2sHolohan&#39;s%20Pantry!5e0!3m2!1sen!2suk!4v1692553480159!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p> ')),                      
                                )))
            )),
   
