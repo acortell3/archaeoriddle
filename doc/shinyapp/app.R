@@ -233,7 +233,7 @@ ui <- fluidPage(
                                        lapply(1:nrow(people_info), function(i) {
                                                   tags$li( tags$span(class = 'name', people_info$name[i]), ' – ', people_info$hour[i], tags$div(class = 'abstract', people_info$abstract[i]))})),
                                helpText(tags$br(),
-HTML('<p style="font-family:Courier New;">  Every participant of the workshop is invited  to join us on the day before for an Ice Breaker dinner at the <a href="https://www.holohanspantry.co.uk/">Holohans</a>.. If you plan on comming <b><a href="ac2320@cam.ac.uk"> write us </a></b></p>'),tags$br(), 
+HTML('<p style="font-family:Courier New;">  Every participant of the workshop is invited  to join us on the day before for an Ice Breaker dinner at the <a href="https://www.holohanspantry.co.uk/">Holohans</a>. If you plan on comming <b><a href="ac2320@cam.ac.uk"> write us </a></b></p>'),tags$br(), 
 HTML(' <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2312.0136764801796!2d-5.94126240385261!3d54.586133102218994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486108f1c8439857%3A0x30b0e6f91e0da027!2sHolohan&#39;s%20Pantry!5e0!3m2!1sen!2suk!4v1692553480159!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p> ')),                      
                                )))
            )),
