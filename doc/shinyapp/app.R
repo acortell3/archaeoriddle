@@ -121,7 +121,7 @@ ui <- fluidPage(
   
   
   tabPanel("The Model",
-           tabsetPanel(
+           tabsetPanel(id="menu",
              tabPanel(HTML("<p style='font-family:Courier New'><b>What is archaeo-riddle?</b></p>"),
                       fluidRow(
                         column(width = 9,
@@ -217,7 +217,7 @@ ui <- fluidPage(
                                helpText(HTML("<p style='font-family:Courier New; text-indent: 20px'>- Great news!! We are happy to announce that we can provide some help for participants to attend to our last workshop in the next EAA Conference (Belfast). Therefore, send us your proposal and we will select the ten best proposals (see <b> Workshop/grant sign up</b>), which will be granted <b>£650</b> to spend at their will at the next EAA conference! </p>")),                      
                                helpText(HTML("<p style='font-family:Courier New; text-indent: 20px'>- If you want to stay tuned, you can either drop us a line (you have the contacts in the <em><b>'How to participate?'</b></em> tab), keep checking this website, or follow us on twitter.</p>"), 
                                         tags$a(img(src = "twitter_logo.png", height = 40), href = "http://twitter.com/archaeoriddle"))))),
-                       tabPanel(HTML("<p style='font-family:Courier New'><b>EAA Workshop</b></p>"),
+                       tabPanel(id="vs",value="ws",title=HTML("<p style='font-family:Courier New'><b>EAA Workshop</b></p>"),
                       fluidRow(
                         column(width = 1),
                         column(width = 3,
@@ -244,13 +244,25 @@ ui <- fluidPage(
 #''
 
 
-server <- function(input, output) {
-  
-good_cells <- c()
-  ## Plot map
-  output$Map <- renderPlot({plotmap(rabbithole_height)},width = 500, height = 500)
+server <- function(input, output,session) {
 
-  ## Get name of cells for survey data
+	good_cells <- c()
+	## Plot map
+	output$Map <- renderPlot({plotmap(rabbithole_height)},width = 500, height = 500)
+	observe({
+		query <- parseQueryString(session$clientData$url_search)
+
+		
+		message(paste(Sys.time(),query$tab))
+		if ("tab" %in% names(query)) {
+			updateTabsetPanel(session, "menu", selected = query$tab)
+		}
+
+		utm_source <- query[['utm_source']]
+		message(paste(Sys.time(),"connect from:",utm_source))
+	})
+
+	## Get name of cells for survey data
    observe({
                              x <- req(input$plot_click$x)
                              y <- req(input$plot_click$y)
