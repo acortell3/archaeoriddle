@@ -60,6 +60,43 @@ env <- rast("resources.tiff")
 grid <- readRDS("grid.RDS")
 
 
+
+### WORKSHOP PROGRAMM
+people_info <- data.frame (
+						   name = c("Simon Carrignon", 
+									"Deborah Priss & Raphael Kahlenberg", 
+									"Alexes Mes",
+									"Peter Michael Yaworski" ,
+									"Xuan Zhang",
+									"Daniel Hromada",
+									"Coffee Break",
+									"Alfredo Cortell-Nicolau",
+									"Round table"),
+						   hour = c(
+									"14:00",
+									"14:20",
+									"14:40",
+									"15:00",
+									"15:20",
+									"15:40",
+									"16:00",
+									"16:30",
+									"16:55"
+									),
+						   abstract = c(
+										"Introduction to Archaeoriddle & a simple LLM solution", 
+										"An ABM approach to the Archaeoriddle.",
+										"Quantile Regression and the Bayesian Framework to tackle regional variations in dispersal's tempo",
+										"A multimodal approach, from Logistic Regressions to Spatiotempor Species Distributions.",
+										"AI and dialetic.",
+										"Using Point Process Modelling to detect cooperation cs competition.",
+										"We all need a break, don't we?",
+										"The final revelation, code and conclusions",
+										"Round table - What's next?"
+						   )
+)
+
+
 ################################################################################
 #######################
 ################################################################################
@@ -74,6 +111,8 @@ ui <- fluidPage(
   theme = shinytheme("slate"),
   tags$head(tags$style(HTML('.modal-header{background-color:#DD3553;text-align:center}'))),
   tags$head(tags$style(HTML('.modal-body{background-color:white;color:black}'))),
+  tags$style(HTML(" .name { cursor: pointer; color: white; text-decoration: underline; } ")),
+  tags$script(HTML(" $(document).ready(function() { $('.abstract').hide(); $('.name').click(function() { $(this).next('.abstract').toggle(); }); }); ")),
   titlePanel(title = div(HTML("<p style='font-family:Courier New'>Archaeo-riddle</p>"), img(src = "logo_cdal.png", height = 45, align = "right")),windowTitle = "Archaeo-riddle"),
   h4(HTML("<p style='font-family:Courier New'>Trying methods to improve archaeological inference</p>")),
   hr(),
@@ -177,11 +216,31 @@ ui <- fluidPage(
                         column(width = 9,
                                helpText(HTML("<p style='font-family:Courier New; text-indent: 20px'>- Great news!! We are happy to announce that we can provide some help for participants to attend to our last workshop in the next EAA Conference (Belfast). Therefore, send us your proposal and we will select the ten best proposals (see <b> Workshop/grant sign up</b>), which will be granted <b>£650</b> to spend at their will at the next EAA conference! </p>")),                      
                                helpText(HTML("<p style='font-family:Courier New; text-indent: 20px'>- If you want to stay tuned, you can either drop us a line (you have the contacts in the <em><b>'How to participate?'</b></em> tab), keep checking this website, or follow us on twitter.</p>"), 
-                                        tags$a(img(src = "twitter_logo.png", height = 40), href = "http://twitter.com/archaeoriddle")))))
+                                        tags$a(img(src = "twitter_logo.png", height = 40), href = "http://twitter.com/archaeoriddle"))))),
+                       tabPanel(HTML("<p style='font-family:Courier New'><b>EAA Workshop</b></p>"),
+                      fluidRow(
+                        column(width = 1),
+                        column(width = 3,
+                               helpText(HTML("</br><p style='font-family:Courier New;'>  </p>")),                      
+                               img(src='eaa_logo.jpg')
+							   ),
+                        column(width = 5,
+                               helpText(HTML("</br><p style='font-family:Courier New;'>  </p>")),                      
+                               helpText(HTML("<p style='font-family:Courier New;'> The Archaeoriddle Workshop, where final results and proposal from participant will be presented wil be held at <a href='https://www.e-a-a.org/EAA2023/'>EAA Belfast</a> on the Saturday Afternoon at Lanyon Building (G059) starting at 14h00  </p> </br>")),                      
+                               helpText(HTML("<p style='font-family:Courier New;'> <b> Program:</b> </p>")),                      
+                               tags$ul(
+                                       lapply(1:nrow(people_info), function(i) {
+                                                  tags$li( tags$span(class = 'name', people_info$name[i], ' (', people_info$hour[i], ')'), tags$div(class = 'abstract', people_info$abstract[i]))})),
+                               helpText(HTML('<p style="font-family:Courier New;">  Every participant of the workshop is invited  to join us on the day before for an Ice Breaker dinner at the <a href="https://www.holohanspantry.co.uk/">Holohans</a>.</p> </br> <p> <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2312.0136764801796!2d-5.94126240385261!3d54.586133102218994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x486108f1c8439857%3A0x30b0e6f91e0da027!2sHolohan&#39;s%20Pantry!5e0!3m2!1sen!2suk!4v1692553480159!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p> ')),                      
+
+                               )))
            )),
   
   
 )
+
+
+#''
 
 
 server <- function(input, output) {
