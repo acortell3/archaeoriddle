@@ -152,12 +152,15 @@ Rayshader play
 library(vctrs)
 library(rayshader)
 height_map = raster_to_matrix(raster::raster(height)) 
+height_map = raster_to_matrix(height)
 
 hm_shade <-  sphere_shade(height_map,texture = "imhof1",zscale=5) 
 hm_ray  <-  add_shadow(hm_shade,ray_shade(height_map, zscale = 19), 0.8) 
 hm_ambiant  <- add_shadow(hm_ray,ambient_shade(height_map), 0,5) 
 hm_lamb = add_shadow(hm_ambiant,lamb_shade(height_map), 0) 
-plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = 1, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
+plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = .5, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = 0, wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
+}
+else NULL
 
 render_highquality( samples=256, clear = TRUE,light=TRUE)
 
@@ -245,6 +248,7 @@ Visualise sites on the 3D plot
 ```{r 3Dnetwork,eval=F}
 
 plot_3d(hm_lamb,height_map, zscale = 20, fov = 0, theta = 20, zoom = 1, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7)
+render_points(extent = raster::extent(raster::raster(height.ras)), lat = 2.13828, long = -1.685547, altitude =extract(height.ras,sites)[,1]+20, zscale=20,size=1,col=categorical_pal(max(allcomu))[allcomu],clear_previous = TRUE)
 
 render_points(extent = raster::extent(raster::raster(height.ras)),
              lat = crds(sites)[,"y"], long = crds(sites)[,"x"], altitude =extract(height.ras,sites)[,1]+20,
