@@ -10,22 +10,7 @@ What scriptmini.R doesn basically is
 
 1. We first load the maps and the sites:
 
-```{r}
-library(terra)
-library(sf)
-source("tools.R")
-
-height.ras=rast("east_narnia4x.tif")
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-height.groups=height.ras
-maxh=max(height.ras[],na.rm=T)
-height.groups[height.groups<mean(height.groups[])]=NA
-height.groups[height.groups<(maxh*.7)]=1
-height.groups[height.groups>(maxh*.7)]=200
-height.groups[is.na(height.groups)]=-1
-height.poly=as.polygons(height.groups)
-viable=makeValid(height.poly[2,])
+```{r loadressources}
 sites=vect(readRDS("testsites.RDS"))
 ```
 
@@ -100,10 +85,16 @@ Let's redo that with the selected simulation:
 
 ```{r initialcondition}
 
-onesimu=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
-Nts=onesimu$Nts
-warcasualties=onesimu$warcasualties
+#onesimu=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
+Nts=readRDS("nts")
+warcasualties=readRDS("war")
 sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
+
+```
+
+Plot the sites at the begining 
+
+```{r}
 
 i=1
 plotMap(height.ras,height.wat,paste0("year ",i,", when it all begins"))
@@ -114,14 +105,14 @@ text(sites[Nts[1,]>0],pos=3)
 
 we can look at the war and the number of death for each battle
 
-```{r}
+```{r plotwar}
 i=1000
 plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",ylab="# dead",xlim=c(0,i))
 ```
 
 I comparison to the total population growth of each culture
 
-```{r}
+```{r plotwar2growths}
 i=1000
 par(mar=c(5,5,1,5))
 plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",yaxt="n",ylab="",xlim=c(0,i),xlab="time")
@@ -135,7 +126,7 @@ points(growHG,col="blue",lwd=5,type="l")
 ```
 
 If we look at the total population size, we can see how the clashes slowed down the population growth:
-```{r}
+```{r plotwarTotgrowths}
 par(mar=c(5,5,1,5))
 plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",yaxt="n",ylab="",xlim=c(0,i),xlab="time")
 axis(4)
@@ -144,23 +135,18 @@ par(new=T)
 growT=apply(Nts,1,sum)
 plot(growT,col="black",type="l",lwd=5,ylim=c(0,max(growT)),xlim=c(0,i),ylab="pop",xlab="")
 
-# Function to calculate simple moving average
-sma <- function(x, n) {
-      s <- stats::filter(x, rep(1/n, n), sides=2)
-  return(s)
-}
 ```
 
 This show if we looka at the growth rate:
 
-```{r}
+```{r rategrowth}
 plot(diff(growT,lag=100),type="l")
 ```
 
 
 Replaying all that will give this:
 
-```{r,echo=False}
+```{r,echo=F}
 htmltools::tags$video(src="general_results_selected_simu/buffattack300_K110_PSU065_3_out.mp4")
 ```
 
