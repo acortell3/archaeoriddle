@@ -45,7 +45,7 @@ onesimu=run_simulation (
 
 
 
-2. generate a few output, including a video that helps to select the good simulation
+2. generate a few output, including a video that helps to select the good simulation, these things are also do by `scriptmini.R`:
 
 ```{r,eval=F}
 
@@ -85,7 +85,7 @@ Let's redo that with the selected simulation:
 
 ```{r initialcondition}
 
-#onesimu=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
+onesimu=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
 Nts=readRDS("nts")
 warcasualties=readRDS("war")
 sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))

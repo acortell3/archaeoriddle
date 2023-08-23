@@ -148,7 +148,7 @@ height[height<min(height)*.25]=min(height)*.25
 
 Rayshader play
 
-```{r threedim,eval=T}
+```{r threedim,eval=F}
 library(vctrs)
 library(rayshader)
 height_map = raster_to_matrix(raster::raster(height)) 
