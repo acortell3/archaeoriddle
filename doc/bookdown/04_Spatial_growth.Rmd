@@ -374,17 +374,24 @@ plot(ress)
 
 ```{r,eval=F}
 #a manual way to set cultures given general geography
-#cultures=rep("HG",length(sites))
-#cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
-#sites$culture=cultures
-#sites$Ks=initKs(Kbase,sites,ress,sizeexp="F")
-saveRDS(file="testsites.RDS",sites)
+cultures=rep("HG",length(sites))
+cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
+sites$culture=cultures
+sites$Ks=initKs(Kbase,sites,ress,sizeexp="F")
+#saveRDS(file="testsites.RDS",sites)
+```
 
-#but we got those saved in a RDS so:
+Now we have sites with two cultures, initialise the parameters we will use:
+
+```{r}
+
+#(read sites saved before)
+sites=readRDS(file="testsites.RDS",sites)
+
 
 #initialisation
 
-ts=20000
+ts=250
 Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
 cul_ext=c("HG"=7,"F"=6) #spatial penality to extent: lower, bigger penality
 penal_cul=c("HG"=4,"F"=5) #penality of occupational area: low, other sites can cam close
@@ -407,19 +414,23 @@ height.poly=as.polygons(height.groups)
 viable=makeValid(height.poly[2,])
 sites=vect(readRDS("testsites.RDS"))
 plotMap(height.ras,height.wat,paste0("year ",0))
-plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+plot(sites,pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 text(sites)
-dev.off()
+```
+
+We can run a simple simulations using this:
+
+
+```{r}
 
 onesimu=run_simulation (
-                           viable=viable,
                            sites=vect(readRDS("testsites.RDS")),
                            dem=height.ras,
                            ressources=ress,
                            water=height.wat,
                            foldervid=paste0("pathtofinal_",i),
                            visu=F,visumin=TRUE,
-                           ts=250,#length of simulation in year
+                           ts=120,#length of simulation in year
                            Kbase=c("HG"=35,"F"=120),#difference in K for the two cultures
                            cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
                            penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
@@ -430,55 +441,64 @@ onesimu=run_simulation (
                            bufferatack=400,#distance max around which settlement can fight
                            prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
                            )
+```
 
-Nts=onesimu$Nts
-warcasualties=onesimu$warcasualties
-sites_new=onesimu$sites
+The list `onesimu`  contains a few interesting info:
+
+
+```{r}
+Nts=onesimu$Nts # population at each timestep
+warcasualties=onesimu$warcasualties #death by war at each time step
+sites_new=onesimu$sites #info about sites, position and culture
 
 ```
 
 
 Use ressource to adjust the Ks:
-```{r,eval=F}
+```{r,eval=T}
 plot(sites_new,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 ```
 
 
-We will run the simulation step by stepk
+We look at the simulation step by stepk
 Step by step to allow interaction between sites:
 
-```{r,eval=F}
+```{r,eval=T}
 ## Run stochastic process  
 
 
 #par(mfrow=c(2,1))
-#plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-#lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
+plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
+lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
 
 ```
 
 Visualise:
 Record deposit and  loss
-```{r,fig.width="25%"}
+```{r,out.width="25%"}
 alldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 15000,ts=ts,r = 0.2, Max_bone_thickness = "m"))
 maxy=max(sapply(alldeposit,function(i)max(apply(i,2,sum))))
 
 lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)))
 ```
 
+Population by time and culture
 
-```{r,eval=F}
+```{r,eval=T}
 par(mfrow=c(2,1))
 plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-lapply(1:ncol(Nts),function(i)lines(Nts[,i],col=rainbow(2)[as.factor(cultures)[i]]))
+lapply(1:ncol(Nts),function(i)lines(Nts[,i],col=rainbow(2)[as.factor(sites_new$culture)[i]]))
 plot(apply(Nts,1,sum)[1:i],xlab="time",ylab="popsize")
 
+```
 
 
-
-new_site=vect(as.data.frame(locator()),geom=c("x","y"))
+Below some code  to manually select the ressource origins on the map and explore differenet devay around them
+```{r,eval=F}
+plotMap(height.ras,height.wat,paste0("year ",0))
+new_site=vect(as.data.frame(locator()),geom=c("x","y"))  # select point on the sscreep
 crs(new_site)=crs(height.ras)
-d2=logisticdecay(new_site,height.ras,x=20000)
+d2=logisticdecay(new_site,height.ras,x=20000) # generate a logistic decay around the point
 
 plot(d2)
 w=(.7*d2+.3*ress)/(.7*minmax(d2)[2] + .3*minmax(ress)[2])
@@ -489,11 +509,11 @@ multisamp=sapply(1:1000,function(i)spatSample(x=w,size=1,method="weights",xy=T)[
 
 ```
 
+Exploring some trajectories of the simulations
 
-```{r}
-plot(apply(Nts[1:i,sites_new$culture=="F"],1,sum),col="red",type="l",lwd=2)
+```{r,eval=T}
+plot(apply(Nts[1:i,sites_new$culture=="F"],1,sum),col="red",type="l",lwd=2,ylim=c(0,max(apply(Nts,1,sum))))
  points(apply(Nts[1:i,sites_new$culture=="HG"],1,sum),col="blue",lwd=2,type="l")
-pdf("growth_utils.pdf")
 plot(warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="")
 axis(4)
 par(new=T)
@@ -501,7 +521,6 @@ growF=apply(Nts[1:(i-1),sites_new$culture=="F"],1,sum)
 growHG=apply(Nts[1:(i-1),sites_new$culture=="HG"],1,sum)
 plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)))
  points(growHG,col="blue",lwd=2,type="l")
-dev.off()
 ```
 
 Population density:
