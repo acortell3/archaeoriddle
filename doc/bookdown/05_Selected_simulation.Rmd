@@ -1,5 +1,6 @@
 # Final Choice and simulation
 
+
 As I (simon) am stupid I didn't generate seeds for each experiment so we cannot re-run it EXACTLY the same. But I kept lot of informations and output about it.
 
 They are stored in the folder `general_results_selected_simu/`
@@ -17,7 +18,7 @@ sites=vect(readRDS("testsites.RDS"))
 2. run one simulation
 
 
-```{r,eval=F}
+```{r fakesimu,eval=F}
 
 ts=1000
 print(paste0("Starting simulation ",expname))
@@ -47,7 +48,7 @@ onesimu=run_simulation (
 
 2. generate a few output, including a video that helps to select the good simulation, these things are also do by `scriptmini.R`:
 
-```{r,eval=F}
+```{r getfakeres,eval=F}
 
 
 Nts=onesimu$Nts
@@ -92,9 +93,13 @@ sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU0
 
 ```
 
-Plot the sites at the begining 
+Plot the sites at the beginning 
 
-```{r}
+```{r plotinitialcondition,cache=F}
+source("tools.R")
+
+expname="general_results_selected_simu/buffattack300_K110_PSU065_3"
+sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))
 height.ras=rast("east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
@@ -106,7 +111,7 @@ text(sites[Nts[1,]>0],pos=3)
 
 ```
 
-we can look at the war and the number of death for each battle
+We can look at the war and the number of death for each battle
 
 ```{r plotwar}
 i=1000
@@ -115,7 +120,7 @@ plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",ylab="# dead",xlim
 
 I comparison to the total population growth of each culture
 
-```{r plotwar2growths}
+```{r plotwarWRTgrowths}
 i=1000
 par(mar=c(5,5,1,5))
 plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",yaxt="n",ylab="",xlim=c(0,i),xlab="time")
@@ -149,11 +154,10 @@ plot(diff(growT,lag=100),type="l")
 
 Replaying all that will give this:
 
-```{r,echo=F}
-htmltools::tags$video(src="general_results_selected_simu/buffattack300_K110_PSU065_3_out.mp4")
+
+```{r finalvideo,echo=F,results="asis"}
+cat('<video controls> <source  src="interfinal.mp4" type="video/mp4"></video>')
 ```
-
-
 
 
 

@@ -1,6 +1,8 @@
 # Populatin grow on multiple sites
 
-```{r}
+All the function below are mere illustration, the exact functions, used for the final simulations are in `tools.R`
+
+```{r,eval=F}
 #' @param pt a vector point around witch decvay is computed
 #' @param rast a raster to compute distances
 #' @param L sstarting point of decay
@@ -421,11 +423,12 @@ text(sites)
 We can run a simple simulations using this:
 
 
-```{r}
+```{r,eval=F}
+
 
 onesimu=run_simulation (
                            sites=vect(readRDS("testsites.RDS")),
-                           dem=height.ras,
+                           dem=rast("east_narnia4x.tif"),
                            ressources=ress,
                            water=height.wat,
                            foldervid=paste0("pathtofinal_",i),
@@ -446,40 +449,40 @@ onesimu=run_simulation (
 The list `onesimu`  contains a few interesting info:
 
 
-```{r}
+```{r,cache=F}
+onesimu=readRDS("buffattack300_K110_PSU065_5_all.RDS")
 Nts=onesimu$Nts # population at each timestep
 warcasualties=onesimu$warcasualties #death by war at each time step
-sites_new=onesimu$sites #info about sites, position and culture
-
+sites_new=terra::vect(readRDS("buffattack300_K110_PSU065_5_sitesRast.RDS"))
 ```
 
 
 Use ressource to adjust the Ks:
 ```{r,eval=T}
-plot(sites_new,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+plot(sites_new,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites_new$culture)])
 ```
 
 
 We look at the simulation step by stepk
 Step by step to allow interaction between sites:
 
-```{r,eval=T}
+```{r,eval=T,messages=F}
 ## Run stochastic process  
 
 
 #par(mfrow=c(2,1))
+i=ncol(Nts)
 plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
+lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites_new$culture)[j]]))
 
 ```
 
-Visualise:
-Record deposit and  loss
+Visualise, Record deposit and  loss. for the 5 first sites
 ```{r,out.width="25%"}
-alldeposit=lapply(1:ncol(Nts),function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 15000,ts=ts,r = 0.2, Max_bone_thickness = "m"))
+alldeposit=lapply(1:5,function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 15000,ts=ts,r = 0.2, Max_bone_thickness = "m"))
 maxy=max(sapply(alldeposit,function(i)max(apply(i,2,sum))))
 
-lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)))
+nill=lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)))
 ```
 
 Population by time and culture
@@ -512,6 +515,7 @@ multisamp=sapply(1:1000,function(i)spatSample(x=w,size=1,method="weights",xy=T)[
 Exploring some trajectories of the simulations
 
 ```{r,eval=T}
+i=nrow(Nts)
 plot(apply(Nts[1:i,sites_new$culture=="F"],1,sum),col="red",type="l",lwd=2,ylim=c(0,max(apply(Nts,1,sum))))
  points(apply(Nts[1:i,sites_new$culture=="HG"],1,sum),col="blue",lwd=2,type="l")
 plot(warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="")
