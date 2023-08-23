@@ -169,6 +169,7 @@ sitesnames[5:19]=fr[1:(19-4)]
 spain=c("Zava" ,"Catadrid" ,"Tegon" ,"Alicia" ,"Mulid" ,"Zararbella" ,"Malid" ,"Cásca" ,"Granalejos" ,"Segorez" ,"Terteixo" ,"Astumanca" ,"Galle" ,"Talona" ,"Girovega" ,"Albanada" ,"Nadoba" ,"Senca" ,"Vallanca" ,"Taville")
 
 sitesnames[21:length(sitesnames)]=spain[1:(length(sitesnames)-20)]
+inter=cbind(inter,sitesnames)
 plotMap(height.ras,height.wat)
 plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
 text(st_coordinates(inter),inter$sitesnames,cex=.8)
