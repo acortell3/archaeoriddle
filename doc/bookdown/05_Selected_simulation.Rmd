@@ -85,7 +85,7 @@ Let's redo that with the selected simulation:
 
 ```{r initialcondition}
 
-onesimu=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
+#onesimu=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
 Nts=readRDS("nts")
 warcasualties=readRDS("war")
 sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
@@ -95,6 +95,9 @@ sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU0
 Plot the sites at the begining 
 
 ```{r}
+height.ras=rast("east_narnia4x.tif")
+height.wat=height.ras
+height.wat[height.wat>mean(height.wat[])]=NA
 
 i=1
 plotMap(height.ras,height.wat,paste0("year ",i,", when it all begins"))
