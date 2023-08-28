@@ -64,11 +64,11 @@ grid <- readRDS("grid.RDS")
 ### WORKSHOP PROGRAMM
 people_info <- data.frame (
 						   name = c("Simon Carrignon", 
-									"Deborah Priß & Raphael Kahlenberg", 
+									"Daniel Hromada",
 									"Alexes Mes",
 									"Peter Michael Yaworsky" ,
 									"Xuan Zhang",
-									"Daniel Hromada",
+									"Deborah Priß & Raphael Kahlenberg", 
 									"Coffee Break",
 									"Alfredo Cortell-Nicolau",
 									"Round table, Future work & Publication"),
