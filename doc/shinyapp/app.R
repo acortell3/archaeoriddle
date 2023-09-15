@@ -85,10 +85,10 @@ people_info <- data.frame (
 									),
 						   abstract = c(
 										"Introduction to Archaeoriddle & a simple LLM solution.", 
-										"An ABM approach to the Archaeoriddle.",
+										"<a href='deb.docx'>An ABM approach to the Archaeoriddle.</a>",
 										"Quantile Regression and the Bayesian Framework to tackle regional variations in dispersal's tempo.",
-										"A multimodal approach, from Logistic Regressions to Spatio-temporal Species Distribution Models.",
-										"Using Point Process Modelling to detect cooperation cs competition.",
+										"<a href='https://zenodo.org/record/8260754'>A multimodal approach, from Logistic Regressions to Spatio-temporal Species Distribution Models.</a>",
+										"<a href='alexes.pdf'>Using Point Process Modelling to detect cooperation vs competition.</a>",
 										"AI and dialectic.",
 										"We all need a break, don't we?",
 										"The final revelation, code and conclusions",
@@ -124,7 +124,7 @@ ui <- fluidPage(
            tabsetPanel(id="menu",
              tabPanel(HTML("<p style='font-family:Courier New'><b>What is archaeo-riddle?</b></p>"),
                       fluidRow(
-                        column(width = 9,
+                        column(width = 6,
                                helpText(HTML("<p style='font-family:Courier New'>Advances in archaeological practice have led to the development of a plethora of inferential techniques to reconstruct the human past. However, their ability to achieve their goals can never be properly estimated, as we will never have an absolute knowledge of what really happened in the past.</p>")),
                                helpText(HTML("<p style='font-family:Courier New'>Archaeo-riddle is a collaborative project developed to explore the current limits of such  methods. We simulated a virtual  world and its archaeological record, and ask you, the participants, to answer a series of questions about what happened. Just like in the real world, some questions will have a clear answer, while others may not. But in contrast to the real world, we actually know what happened, and can measure how accurate and  robust our inferential techniques are. All participants will have access to the same virtual dataset and contextual background (modulo a few user-driven choices). They will have the opportunity to answer a series of research questions with the method of their choice. The process generating the simulated dataset, i.e. what happened, will be revealed only at the very end. We believe this to be an opportunity to reflect and discuss archaeological theory and method. </p>")),
                                helpText(HTML("<p style='font-family:Courier New'>Which techniques work better than others? Why, and how much accuracy can they achieve? Do they converge to the same answer? Why does a particular statistical tool work? </p>")),
