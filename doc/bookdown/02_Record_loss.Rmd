@@ -6,6 +6,8 @@ output:
 ---
 
 ```{r, echo = FALSE}
+# We need to reimplement the functions and get the simulation results from chapter 1
+# to be able to use them again in this chapter
 
 ### Population protocol
 
@@ -341,16 +343,18 @@ tRec <- t(Rec)
 # Record loss
 
 ## Theoretical model
+
 ### General purpose
+
 Our main interest is showing and testing the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
 
-However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W(t)$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be taken into account both if the user wants to introduce the values for $W(t)$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always having in mind that the model will work over the variable $W(t)$ which is *waste produced*, and can be computed to be produced by $m^2$.
+However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W(t)$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be taken into account both if the user wants to introduce the values for $W(t)$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always bearing in mind that the model will work over the variable $W(t)$ (*waste produced*), and can be computed to be expressed by $m^2$.
 
 ### Model layers
 Although in the future we will introduce additional layers which account for how the record moves vertically along the sequence, at this point, we are only considering the processes of record loss.
 
 #### Loss of the record
-The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term process affecting the record for every $t$ from the moment of its depositions to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all. 
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term process affecting the record for every $t$ from the moment of its depositions to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.
 
 ```{r, echo = FALSE,cache=FALSE}
 library(DiagrammeR)
@@ -371,9 +375,9 @@ node [fontname = Helvetica, ## General node definition
       
 ## Per node definition
 a [label = '@@1',
-   fillcolor = cadetblue3]
+   fillcolor = orange]
 b [label = '@@2',
-   fillcolor = cadetblue3]
+   fillcolor = orange]
 c [label = '@@3',
    fillcolor = cadetblue,
    fixedsize = shape,
