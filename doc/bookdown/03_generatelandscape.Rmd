@@ -1,5 +1,8 @@
 # Landscape and climate
 
+## Temperature and climate
+
+An important part of the simulation is to generate a landscape and an environment. Doing so often rely on
 Let's Create a fake environment
 
 ```{r function_autocorel}
@@ -23,22 +26,6 @@ TK95 <- function(N, alpha = 1){
      # 0 and pi do not need an imaginary part
     reihe <- fft(fR, inverse=TRUE) # go back into time domain
     return(Re(reihe)) # imaginary part is 0
-}
-
-#return spectrum of a timeserie
-#' @export
-getSpectrum <- function(x){
-	N <- length(x)
-    pw=8
-	M <- 2^pw # zero-pad total length
-    while(M<N){
-        pw=pw+1
-        M <- 2^pw
-    }
-	freq <- seq(0, 0.5, by = 1/M)
-	x.zp <- c(x, rep(0, M-N))
-	S.pgram <- (1/N)*abs(fft(x.zp)[1:(M/2+1)])^2
-    S.pgram
 }
 
 #' Environment generator
@@ -76,12 +63,14 @@ faketemp=environment(tstep,omega=3,delta=1.5)+1.5
 plot(faketemp,type="l",ylab="temperature change",xlab="time")   
 ```
 
-Generate a 2D landscape using perlin noise cf [this post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
+## Slope and Elevation
+
+This autocorelate time series can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorellation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
 
 ```{r perlinnoise}
 #install.packages(c("terra","sf"))
-library(terra)
-library(sf)
+require(terra)
+require(sf)
 
 perlin_noise <- function( 
   n = 5,   m = 7,    # Size of the grid for the vector field
@@ -126,24 +115,31 @@ perlin_noise <- function(
   outer( xs, ys, Vectorize(f) )
 }
 
+```
 
+
+Different parameters for the perlin noise will give us a higher a lower definition for our future DEM raster ; here we choose a tradeoff between an environment detailled enough for on a relatively wide area but small enough to be handled easily in memory.
+
+```{r}
 a <- .6
 k <- 8
 m <- perlin_noise(2,2,2^k,2^k)
 for( i in 2:k )
   m <- m + a^i * perlin_noise(2^i,2^i,2^k,2^k)
 plot(rast(m))
+object.size(m)
 ```
 
+To make it slightly more realistic we tweaked a bit the extreme, to create here mountain and havening something closer to what a _real_ DEM would look like.
 
-Tweak a bit the perlin noise to have more difference between low area and high area and make it more "DEM" looking
 
 ```{r padjuperlin}
 height=(m[,])*20
 #height[height<50]=0
 height=height^3
 height=height+abs(mean(height))
-height[height<min(height)*.25]=min(height)*.25
+height[height<min(height)*.26]=min(height)*.25
+plot(height_map)
 ```
 
 Rayshader play
@@ -152,7 +148,6 @@ Rayshader play
 library(vctrs)
 library(rayshader)
 height_map = raster_to_matrix(raster::raster(height)) 
-height_map = raster_to_matrix(height)
 
 hm_shade <-  sphere_shade(height_map,texture = "imhof1",zscale=5) 
 hm_ray  <-  add_shadow(hm_shade,ray_shade(height_map, zscale = 19), 0.8) 
