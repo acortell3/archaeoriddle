@@ -44,7 +44,10 @@ bookdown::render_book(".")
 List of packages to install
 
 ```{r packages}
-install.packages(c("DiagrammeR","viridis","terra","sf","igraph","rayshader","vctrs"))
+needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader","vctrs")
+success=sapply(needed,require,character.only=T)
+sapply(needed[!success],install.packages)
+success=sapply(needed,require,character.only=T)
 ```
 
 
