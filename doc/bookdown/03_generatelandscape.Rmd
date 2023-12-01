@@ -138,28 +138,9 @@ height=(m[,])*20
 #height[height<50]=0
 height=height^3
 height=height+abs(mean(height))
-height[height<min(height)*.26]=min(height)*.25
-plot(height_map)
+height[height<min(height)*.25]=min(height)*.25
 ```
 
-Rayshader play
-
-```{r threedim,eval=F}
-library(vctrs)
-library(rayshader)
-height_map = raster_to_matrix(raster::raster(height)) 
-
-hm_shade <-  sphere_shade(height_map,texture = "imhof1",zscale=5) 
-hm_ray  <-  add_shadow(hm_shade,ray_shade(height_map, zscale = 19), 0.8) 
-hm_ambiant  <- add_shadow(hm_ray,ambient_shade(height_map), 0,5) 
-hm_lamb = add_shadow(hm_ambiant,lamb_shade(height_map), 0) 
-plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = .5, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = 0, wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
-}
-else NULL
-
-render_highquality( samples=256, clear = TRUE,light=TRUE)
-
-```
 
 Visual the map as a simple 2D raster
 
@@ -177,6 +158,26 @@ height.wat[height.wat>mean(height.wat[])]=NA
 plot(height.wat,col="lightblue",add=T,legend=F)
 
 ```
+
+If you really want to feel like being in a video game, you can play with rayshader, but its slow, tricky and you will probably loose a lot of time `¯\_(ツ)_/¯`
+
+```{r threedim,eval=F}
+require(rayshader)
+height_map = raster_to_matrix(raster::raster(height)) 
+
+hm_shade <-  sphere_shade(height_map,texture = "imhof1",zscale=5) 
+hm_ray  <-  add_shadow(hm_shade,ray_shade(height_map, zscale = 19), 0.8) 
+hm_ambiant  <- add_shadow(hm_ray,ambient_shade(height_map), 0,5) 
+hm_lamb = add_shadow(hm_ambiant,lamb_shade(height_map), 0) 
+plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = .5, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = 0, wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
+
+#HQ render, very slow
+#render_highquality( samples=256, clear = TRUE,light=TRUE)
+
+```
+
+
+## Settlements position
 
 Generate sites in specific location (not on mountains, not in water) with exponentially distributed size and make a network out of it.  
 
@@ -202,7 +203,7 @@ plot(sites,cex=2,pch=21,add=T,bg=rainbow(length(sites),alpha=.6))
 
 ```
 
-Extract data for the end user:
+In order to produce file to be given to people we need a couple of line of code that should be run online when a satisfying environment has been found:
 
 ```{r,eval=F}
 coastline=st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,]  ##get only the non submerged actual land
@@ -211,10 +212,13 @@ st_write(dsn="coastline2.shp",coastline)
 writeRaster(filename="east_narnia4x.tif",height.ras,overwrite=T)
 ```
 
+## Network, Site Size And Climatte -- DEPRECATED
+
+The following steps where designed but never used.
 
 Use sites to create a network
 
-```{r sitesnetwork}
+```{r sitesnetwork, eval=F}
 
 library(igraph)
 crs(sites)="+proj=lonlat"
