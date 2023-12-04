@@ -4,3 +4,4 @@
 *.pdf
 
 .Rproj.user
+doc/bookdown/_book*
