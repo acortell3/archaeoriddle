@@ -25,16 +25,16 @@ favicon: "favicon.ico"
 ```{r setup, include=FALSE}
 library(magrittr)
 
-knitr::opts_chunk$set(echo = TRUE,cache=TRUE,collapse=TRUE)
+knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE)
 ```
 
 ```{r write-bib, include=FALSE}
 knitr::write_bib(c(.packages(), 'bookdown','tidyverse'), 'packages.bib')
 ```
 
-This is a very firs draft to setup a github hook that compile a bookdown in a private space
+This is a very first draft to setup a github hook that compile a bookdown in a private space
 
-Tocompile the book:
+To compile the book:
 
 ```{r,eval=F}
 bookdown::render_book(".")

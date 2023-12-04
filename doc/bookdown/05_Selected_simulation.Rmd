@@ -12,7 +12,7 @@ What scriptmini.R doesn basically is
 1. We first load the maps and the sites:
 
 ```{r loadressources}
-sites=vect(readRDS("data_original/sitesinitialposition/"))
+sites=vect("data_original/sitesinitialposition/")
 ```
 
 2. run one simulation
@@ -21,6 +21,7 @@ sites=vect(readRDS("data_original/sitesinitialposition/"))
 ```{r fakesimu,eval=F}
 
 ts=1000
+expname="basar"
 print(paste0("Starting simulation ",expname))
 
 onesimu=run_simulation (
@@ -86,10 +87,12 @@ Let's redo that with the selected simulation:
 
 ```{r initialcondition}
 
-#onesimu=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
-Nts=readRDS("nts")
-warcasualties=readRDS("war")
-sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
+onesimu=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
+#Nts=readRDS("nts")
+#warcasualties=readRDS("war")
+#sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
+Nts=onesimu$Nts
+warcasualties=onesimu$warcasualties
 
 ```
 
@@ -98,8 +101,10 @@ Plot the sites at the beginning
 ```{r plotinitialcondition,cache=F}
 source("tools.R")
 
-expname="general_results_selected_simu/buffattack300_K110_PSU065_3"
-sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))
+#expname="general_results_selected_simu/buffattack300_K110_PSU065_3"
+#sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))
+
+sites=vect("data_original/sitesinitialposition/")
 height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA

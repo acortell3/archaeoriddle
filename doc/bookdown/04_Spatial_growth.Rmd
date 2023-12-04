@@ -332,7 +332,7 @@ viable=makeValid(height.poly[2,])
 sites=vect("data_original/sitesinitialposition/")
 ts=10
 
-print(paste0("Starting simulation ",expname))
+print(paste0("Starting simulation ","nan"))
 
 onesimu=run_simulation (
                            sites=sites,

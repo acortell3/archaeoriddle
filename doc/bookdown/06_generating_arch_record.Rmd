@@ -3,7 +3,7 @@
 
 ## Using sites size to generate deposite
 
-This has been down using file `dateGeneration.R`, we will describe it here now.
+This has been done using file `dateGeneration.R`, we will describe it here now.
 
 First we get the result of a simulation.
 
@@ -19,7 +19,7 @@ height.groups[height.groups>(maxh*.7)]=200
 height.groups[is.na(height.groups)]=-1
 height.poly=as.polygons(height.groups)
 viable=makeValid(height.poly[2,])
-expname="general_results_selected_simu/buffattack300_K110_PSU065_3"
+expname="data_original/general_results_selected_simu/buffattack300_K110_PSU065_3"
 onesimu=readRDS(paste0(expname,"_all.RDS"))
 sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))
 Nts=onesimu$Nts
@@ -89,9 +89,9 @@ height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 
 
-Nts=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
+Nts=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
 ress=rast("data_original/resources.tiff")
-allsites=vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
+allsites=vect(readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
 plotMap(height.ras,height.wat)
 plot(allsites,add=T)
 plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60)
@@ -100,7 +100,7 @@ plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60
 Loading dates:
 
 ```{r getfakedates,cache=F}
-dates=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
+dates=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
 ```
 
 Keep sites with foundable dates
