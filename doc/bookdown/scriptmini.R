@@ -1,3 +1,8 @@
+## to run the script:
+##Rscript scriptmini.R testfolder
+
+
+
 library(terra)
 library(sf)
 source("tools.R")
@@ -14,7 +19,7 @@ height.groups[height.groups>(maxh*.7)]=200
 height.groups[is.na(height.groups)]=-1
 height.poly=as.polygons(height.groups)
 viable=makeValid(height.poly[2,])
-sites=vect(readRDS("testsites.RDS"))
+sites=vect("data_original/sitesinitialposition/")
 ts=1000
 
 print(paste0("Starting simulation ",expname))

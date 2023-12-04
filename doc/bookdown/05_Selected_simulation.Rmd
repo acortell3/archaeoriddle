@@ -12,7 +12,7 @@ What scriptmini.R doesn basically is
 1. We first load the maps and the sites:
 
 ```{r loadressources}
-sites=vect(readRDS("testsites.RDS"))
+sites=vect(readRDS("data_original/sitesinitialposition/"))
 ```
 
 2. run one simulation

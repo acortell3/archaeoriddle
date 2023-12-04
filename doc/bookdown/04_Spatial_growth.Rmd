@@ -473,7 +473,7 @@ cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
 sites$culture=cultures
 Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
 sites$Ks=initKs(Kbase,sites,ress,sizeexp="F")
-#saveRDS(file="testsites.RDS",sites)
+#saveRDS(file="data_original/sitesinitialposition/",sites)
 ```
 
 Now we have sites with two cultures, initialise the parameters we will use:
@@ -481,7 +481,7 @@ Now we have sites with two cultures, initialise the parameters we will use:
 ```{r}
 
 #(read sites saved before)
-# sites=readRDS(file="testsites.RDS",sites)
+# sites=readRDS(file="data_original/sitesinitialposition/",sites)
 
 
 #initialisation
