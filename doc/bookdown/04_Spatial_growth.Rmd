@@ -455,6 +455,9 @@ crs(goodresources)=crs(height.ras)
 
 allres=lapply(seq_along(goodresources),function(i)logisticdecay(goodresources[i],mask(height.ras,viable),x=areas[i],k=ks[i]))
 
+allna=sapply(allres,function(i)any(is.na(values(i))))
+allres=allres[!allna]
+
 ress=allres[[1]]
 for(i in 2:length(allres))
     ress=ress+allres[[i]]
