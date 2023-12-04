@@ -6,7 +6,8 @@ An important part of the simulation is to generate a landscape and an environmen
 Let's Create a fake environment
 
 ```{r function_autocorel}
-
+## Function 10. Noise from Kimmer and Koening
+#' @title Noise from Kimmer and Koening
 #' From tuneR package (implemented in the file Waveforms.R in tuneR source)
 #'
 #' Based on Timmer and Koening 1995: https://ui.adsabs.harvard.edu/abs/1995A\%26A...300..707T/abstract
@@ -19,38 +20,36 @@ TK95 <- function(N, alpha = 1){
     f_ <- 1 / f^alpha # Power law
     RW <- sqrt(0.5*f_) * rnorm(N/2-1) # for the real part
     IW <- sqrt(0.5*f_) * rnorm(N/2-1) # for the imaginary part
-    fR <- complex(real = c(rnorm(1), RW, rnorm(1), RW[(N/2-1):1]), 
-                  imaginary = c(0, IW, 0, -IW[(N/2-1):1]), length.out=N)
-     # Those complex numbers that are to be back transformed for Fourier Frequencies 0, 2pi/N, 2*2pi/N, ..., pi, ..., 2pi-1/N 
-     # Choose in a way that frequencies are complex-conjugated and symmetric around pi 
-     # 0 and pi do not need an imaginary part
+    fR <- complex(real=c(rnorm(1), RW, rnorm(1), RW[(N/2-1):1]), 
+                  imaginary=c(0, IW, 0, -IW[(N/2-1):1]),
+                  length.out=N)
+    # Those complex numbers that are to be back transformed for
+    # Fourier Frequencies 0, 2pi/N, 2*2pi/N, ..., pi, ..., 2pi-1/N 
+    # Choose in a way that frequencies are complex-conjugated and symmetric around pi 
+    # 0 and pi do not need an imaginary part
     reihe <- fft(fR, inverse=TRUE) # go back into time domain
     return(Re(reihe)) # imaginary part is 0
 }
 
-#' Environment generator
-#'
-#' return a list of opitmum as a "1/f-noise" of N steps with sd = delta and the slope of it's spectrum decompoistion = -omega + possibility to increase the mean of the environment at a rate vt (in wich case the slop may not be -omega)
-#'
+## Function 11. Environment generator
+#' @title Environment generator
+#' Return a list of opitmum as a "1/f-noise" of N steps with sd = delta and
+#' the slope of it's spectrum decompoistion = -omega + possibility to increase
+#' the mean of the environment at a rate vt (in wich case the slop may not be -omega)
 #' @param omega the slope of the power distribution (called omega in whitehead)
 #' @param delta the standard deviation of the global environmental fluctuation 
 #' @param N the length of the timeserie to generate
 #' @param vt if not NULL, the  mean of the optimum increase at a rate vt  
 #' @return a list of N optima theta
 #' @export
-environment <- function(N,omega,delta,vt=NULL){
-    ts=TK95(N,omega)
-    ts=delta*ts/sd(ts)
-    if(!is.null(vt))ts = ts + vt*1:N
+environment <- function(N, omega, delta, vt=NULL){
+    ts <- TK95(N, omega)
+    ts <- delta * ts/sd(ts)
+    if(!is.null(vt)) {
+      ts = ts + vt*1:N
+    }
     return(ts)
 }
-
-# white noise
-#' @export
-gauss <- function(N,mean,delta,v){
-    sapply(1:N,function(t)rnorm(1,mean*v,delta))
-}
-
 
 ```
 
@@ -58,9 +57,9 @@ To generate a fake climate with various properties:
 
 
 ```{r generateFakeClimate}
-tstep=1000
-faketemp=environment(tstep,omega=3,delta=1.5)+1.5
-plot(faketemp,type="l",ylab="temperature change",xlab="time")   
+tstep <- 1000
+faketemp <- environment(tstep,omega=3,delta=1.5)+1.5
+plot(faketemp, type="l", ylab="temperature change", xlab="time")   
 ```
 
 ## Slope and Elevation
@@ -68,35 +67,34 @@ plot(faketemp,type="l",ylab="temperature change",xlab="time")
 This autocorelate time series can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorellation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
 
 ```{r perlinnoise}
-#install.packages(c("terra","sf"))
 require(terra)
 require(sf)
 
 perlin_noise <- function( 
   n = 5,   m = 7,    # Size of the grid for the vector field
   N = 100, M = 100   # Dimension of the image
-) {
+  ) {
   # For each point on this n*m grid, choose a unit 1 vector
   vector_field <- apply(
     array( rnorm( 2 * n * m ), dim = c(2,n,m) ),
     2:3,
     function(u) u / sqrt(sum(u^2))
   )
-  f <- function(x,y) {
+  f <- function(x, y) {
     # Find the grid cell in which the point (x,y) is
     i <- floor(x)
     j <- floor(y)
     stopifnot( i >= 1 || j >= 1 || i < n || j < m )
     # The 4 vectors, from the vector field, at the vertices of the square
-    v1 <- vector_field[,i,j]
-    v2 <- vector_field[,i+1,j]
-    v3 <- vector_field[,i,j+1]
-    v4 <- vector_field[,i+1,j+1]
+    v1 <- vector_field[, i, j]
+    v2 <- vector_field[, i+1, j]
+    v3 <- vector_field[, i, j+1]
+    v4 <- vector_field[, i+1, j+1]
     # Vectors from the point to the vertices
-    u1 <- c(x,y) - c(i,j)
-    u2 <- c(x,y) - c(i+1,j)
-    u3 <- c(x,y) - c(i,j+1)
-    u4 <- c(x,y) - c(i+1,j+1)
+    u1 <- c(x,y) - c(i, j)
+    u2 <- c(x,y) - c(i+1, j)
+    u3 <- c(x,y) - c(i, j+1)
+    u4 <- c(x,y) - c(i+1, j+1)
     # Scalar products
     a1 <- sum( v1 * u1 )
     a2 <- sum( v2 * u2 )
@@ -112,20 +110,20 @@ perlin_noise <- function(
   }
   xs <- seq(from = 1, to = n, length = N+1)[-(N+1)]
   ys <- seq(from = 1, to = m, length = M+1)[-(M+1)]
-  outer( xs, ys, Vectorize(f) )
+  return(outer( xs, ys, Vectorize(f) ))
 }
 
 ```
 
 
-Different parameters for the perlin noise will give us a higher a lower definition for our future DEM raster ; here we choose a tradeoff between an environment detailled enough for on a relatively wide area but small enough to be handled easily in memory.
+Different parameters for the perlin noise will give us a higher a lower definition for our future DEM raster. Here we choose a tradeoff between an environment detailled enough for on a relatively wide area but small enough to be handled easily in memory.
 
 ```{r}
 a <- .6
 k <- 8
-m <- perlin_noise(2,2,2^k,2^k)
+m <- perlin_noise(2, 2, 2^k, 2^k)
 for( i in 2:k )
-  m <- m + a^i * perlin_noise(2^i,2^i,2^k,2^k)
+  m <- m + a^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
 plot(rast(m))
 object.size(m)
 ```
@@ -134,11 +132,11 @@ To make it slightly more realistic we tweaked a bit the extreme, to create here 
 
 
 ```{r padjuperlin}
-height=(m[,])*20
+height <- (m[,])*20
 #height[height<50]=0
-height=height^3
-height=height+abs(mean(height))
-height[height<min(height)*.25]=min(height)*.25
+height <- height^3
+height <- height+abs(mean(height))
+height[height<min(height)*.25] <- min(height)*.25
 ```
 
 
@@ -147,15 +145,15 @@ Visual the map as a simple 2D raster
 
 ```{r 2dVisu}
 
-height.ras=rast(height,extent=c(-3.5,.5,-.5,3.5),crs="+proj=latlon")
-height.ras=rast("east_narnia4x.tif")
-maxh=max(height.ras[],na.rm=T)
+# height.ras <- rast(height, extent=c(-3.5,.5,-.5,3.5), crs="+proj=latlon")
+height.ras <- rast("east_narnia4x.tif")
+maxh <- max(height.ras[], na.rm=T)
 col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
 
-plot(height.ras^1.9,col=col_ramp(20),legend=F,reset=F)
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-plot(height.wat,col="lightblue",add=T,legend=F)
+plot(height.ras^1.9, col=col_ramp(20), legend=F, reset=F)
+height.wat <- height.ras
+height.wat[height.wat>mean(height.wat[])] <- NA
+plot(height.wat, col="lightblue", add=T, legend=F)
 
 ```
 
@@ -165,11 +163,15 @@ If you really want to feel like being in a video game, you can play with rayshad
 require(rayshader)
 height_map = raster_to_matrix(raster::raster(height)) 
 
-hm_shade <-  sphere_shade(height_map,texture = "imhof1",zscale=5) 
-hm_ray  <-  add_shadow(hm_shade,ray_shade(height_map, zscale = 19), 0.8) 
-hm_ambiant  <- add_shadow(hm_ray,ambient_shade(height_map), 0,5) 
-hm_lamb = add_shadow(hm_ambiant,lamb_shade(height_map), 0) 
-plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = .5, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = 0, wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7,baseshape="hex")
+hm_shade <- sphere_shade(height_map, texture = "imhof1", zscale=5) 
+hm_ray <- add_shadow(hm_shade, ray_shade(height_map, zscale = 19), 0.8) 
+hm_ambiant <- add_shadow(hm_ray, ambient_shade(height_map), 0,5) 
+hm_lamb <- add_shadow(hm_ambiant, lamb_shade(height_map), 0) 
+plot_3d(
+  hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = .5, phi = 45,
+  windowsize = c(1000, 800),water = TRUE, waterdepth = 0,
+  wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue",
+  waterlinealpha = .7, baseshape="hex")
 
 #HQ render, very slow
 #render_highquality( samples=256, clear = TRUE,light=TRUE)
@@ -184,35 +186,38 @@ Generate sites in specific location (not on mountains, not in water) with expone
 
 
 ```{r splitArea}
-n=20
-size=rexp(n)
+n <- 20
+size <- rexp(n)
 
-height.groups=height.ras
-height.groups[height.groups<mean(height.groups[])]=NA
-height.groups[height.groups<(maxh*.7)]=1
-height.groups[height.groups>(maxh*.7)]=200
-height.groups[is.na(height.groups)]=-1
-height.poly=as.polygons(height.groups)
-viable=makeValid(height.poly[2,])
+height.groups <- height.ras
+height.groups[height.groups<mean(height.groups[])] <- NA
+height.groups[height.groups<(maxh*.7)] <- 1
+height.groups[height.groups>(maxh*.7)] <- 200
+height.groups[is.na(height.groups)] <- -1
+height.poly <- as.polygons(height.groups)
+viable <- makeValid(height.poly[2,])
 
-sites=spatSample(viable,n)
+sites <- spatSample(viable,n)
 
-plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
-plot(height.wat,col="lightblue",add=T,legend=F)
-plot(sites,cex=2,pch=21,add=T,bg=rainbow(length(sites),alpha=.6))
+plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
+plot(height.wat, col="lightblue", add=T, legend=F)
+plot(sites, cex=2, pch=21, add=T, bg=rainbow(length(sites), alpha=.6))
+
+# get only the non submerged actual land and plot it
+above_level = height.ras > mean(height.ras[])
+coastline <- st_as_sf(as.polygons(above_level))[2,]
+plot(coastline, col=NA, bgc=adjustcolor("cyan", .1), add=T)
 
 ```
 
 In order to produce file to be given to people we need a couple of line of code that should be run online when a satisfying environment has been found:
 
-```{r,eval=F}
-coastline=st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,]  ##get only the non submerged actual land
-plot(coastline,col=NA,bgc=adjustcolor("cyan",.1),add=T)
-st_write(dsn="coastline2.shp",coastline)
-writeRaster(filename="east_narnia4x.tif",height.ras,overwrite=T)
+```{r, eval=F}
+# st_write(dsn="coastline2.shp",coastline)
+# writeRaster(filename="east_narnia4x.tif",height.ras,overwrite=T)
 ```
 
-## Network, Site Size And Climatte -- DEPRECATED
+## Network, Site Size And Climate -- DEPRECATED
 
 The following steps where designed but never used.
 
@@ -221,56 +226,73 @@ Use sites to create a network
 ```{r sitesnetwork, eval=F}
 
 library(igraph)
-crs(sites)="+proj=lonlat"
-sites=sites[sample(nrow(sites),20),]
-ig=graph_from_adjacency_matrix(as.matrix(distance(sites)),weighted=T,mode="undirected")
-ig=set_graph_attr(ig,"layout",crds(sites))
+crs(sites) <- "+proj=lonlat"
+sites <- sites[sample(nrow(sites), 20), ]
+ig <- graph_from_adjacency_matrix(
+  as.matrix(distance(sites)), weighted=T, mode="undirected")
+ig <- set_graph_attr(ig, "layout", crds(sites))
 
-V(ig)$label=""
-V(ig)$size=(size+1)*5
-V(ig)$frame.color="black"
-V(ig)$frame.width=.5
-E(ig)$weight=1/(E(ig)$weight^2)
-E(ig)$width=(exp(E(ig)$weight)+.6)
+V(ig)$label <- ""
+V(ig)$size <- (size+1)*5
+V(ig)$frame.color <- "black"
+V(ig)$frame.width <- .5
+E(ig)$weight <- 1/(E(ig)$weight^2)
+E(ig)$width <- exp(E(ig)$weight)+.6
 
-allcomu=cluster_louvain(ig)$memberships[1,]
-V(ig)$color=allcomu
-E(ig)$color=allcomu[head_of(ig,E(ig))]
+allcomu <- cluster_louvain(ig)$memberships[1,]
+V(ig)$color <- allcomu
+E(ig)$color <- allcomu[head_of(ig,E(ig))]
 
-plot(height.ras^1.9,col=col_ramp(50),legend=F,reset=F)
-plot(height.wat,col="lightblue",add=T,legend=F)
-plot(ig,add=T,rescale=F,alpha=.2)
+plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
+plot(height.wat, col="lightblue", add=T, legend=F)
+plot(ig, add=T, rescale=F, alpha=.2)
 ```
 
 Visualise sites on the 3D plot
 
-```{r 3Dnetwork,eval=F}
+```{r 3Dnetwork, eval=F}
 
-plot_3d(hm_lamb,height_map, zscale = 20, fov = 0, theta = 20, zoom = 1, phi = 45, windowsize = c(1000, 800),water = TRUE, waterdepth = mean(height), wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue", waterlinealpha = .7)
-render_points(extent = raster::extent(raster::raster(height.ras)), lat = 2.13828, long = -1.685547, altitude =extract(height.ras,sites)[,1]+20, zscale=20,size=1,col=categorical_pal(max(allcomu))[allcomu],clear_previous = TRUE)
+plot_3d(
+  hm_lamb,height_map, zscale=20, fov=0, theta=20, zoom=1, phi=45,
+  windowsize=c(1000, 800), water=TRUE, waterdepth=mean(height),
+  wateralpha=1, watercolor="lightblue", waterlinecolor="lightblue",
+  waterlinealpha=.7
+)
 
-render_points(extent = raster::extent(raster::raster(height.ras)),
-             lat = crds(sites)[,"y"], long = crds(sites)[,"x"], altitude =extract(height.ras,sites)[,1]+20,
-             zscale=20,size=1,col=categorical_pal(max(allcomu))[allcomu],clear_previous = TRUE)
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=2.13828, long=-1.685547, altitude=extract(height.ras,sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
+
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=crds(sites)[,"y"], long=crds(sites)[,"x"], altitude=extract(height.ras, sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
        
-render_highquality(point_radius=5,samples=256, clear = TRUE,light=TRUE)
+render_highquality(point_radius=5, samples=256, clear=TRUE, light=TRUE)
 
 ```
 
 let's say the climate modulate site size in a naive way:
 
 
-```{r,animation.hook="gifski",interval=0.2,cache=TRUE,eval=F}
-for(i in seq(1,tstep,length.out=100)){
-	layout(matrix(1:2,nrow=2,ncol=1),heights=c(.8,.2))
-	par(mar=c(1,2,2,1))
-	image(m,ann=F,axes=F,main=i)
-	mtext(round(i),3,1)
-	nsize=size*faketemp[i]+size+1
-	points(crds(sites),bg="green",pch=21,cex=nsize)
-	par(mar=c(2,2,0,1))
-	plot(1:tstep,faketemp,type="l",ylab="temp",xlab="time",ylim=range(faketemp),ann=F,frame.plot=F)
-	points(i,faketemp[i],col="red",pch=20)
+```{r, animation.hook="gifski", interval=0.2, cache=TRUE, eval=F}
+for(i in seq(1, tstep, length.out=100)){
+	layout(matrix(1:2, nrow=2, ncol=1), heights=c(.8, .2))
+	par(mar=c(1, 2, 2, 1))
+	image(m, ann=F, axes=F, main=i)
+	mtext(round(i), 3, 1)
+	nsize <- size*faketemp[i] + size + 1
+	points(crds(sites), bg="green", pch=21, cex=nsize)
+	par(mar=c(2, 2, 0, 1))
+	plot(
+	  1:tstep, faketemp, type="l", ylab="temp", xlab="time", ylim=range(faketemp),
+	  ann=F, frame.plot=F)
+	points(i, faketemp[i], col="red", pch=20)
 }
 ```
 
