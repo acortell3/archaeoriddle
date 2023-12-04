@@ -146,7 +146,7 @@ Visual the map as a simple 2D raster
 ```{r 2dVisu}
 
 # height.ras <- rast(height, extent=c(-3.5,.5,-.5,3.5), crs="+proj=latlon")
-height.ras <- rast("east_narnia4x.tif")
+height.ras <- rast("data_original/east_narnia4x.tif")
 maxh <- max(height.ras[], na.rm=T)
 col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
 
@@ -215,7 +215,7 @@ In order to produce file to be given to people we need a couple of line of code 
 
 ```{r, eval=F}
 # st_write(dsn="coastline2.shp",coastline)
-# writeRaster(filename="east_narnia4x.tif",height.ras,overwrite=T)
+# writeRaster(filename="data_original/east_narnia4x.tif",height.ras,overwrite=T)
 ```
 
 ## Network, Site Size And Climate -- DEPRECATED
