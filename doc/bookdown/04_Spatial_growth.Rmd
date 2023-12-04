@@ -232,7 +232,7 @@ warpoints <- function(sites, a, b, Ne, buffersize=300, plot=T, sizewar=2) {
 run_simulation <- function(cultures=NULL,
                            sites=sites,
                            dem=height.ras,
-                           resources=ress,
+                           ressources=ress,
                            water=height.wat,
                            foldervid="pathtofinal",
                            visu=F,visumin=TRUE,
@@ -466,14 +466,14 @@ plot(ress)
 ```
 ## Initial sites and size:
 
-```{r,eval=F}
+```{r,eval=T}
 #a manual way to set cultures given general geography
 cultures=rep("HG",length(sites))
 cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
 sites$culture=cultures
 Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
 sites$Ks=initKs(Kbase,sites,ress,sizeexp="F")
-saveRDS(file="testsites.RDS",sites)
+#saveRDS(file="testsites.RDS",sites)
 ```
 
 Now we have sites with two cultures, initialise the parameters we will use:
@@ -506,7 +506,6 @@ height.groups[height.groups>(maxh*.7)]=200
 height.groups[is.na(height.groups)]=-1
 height.poly=as.polygons(height.groups)
 viable=makeValid(height.poly[2,])
-sites=vect("testsites.RDS")
 plotMap(height.ras,height.wat,paste0("year ",0))
 plot(sites,pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 text(sites)
@@ -515,17 +514,17 @@ text(sites)
 We can run a simple simulations using this:
 
 
-```{r,eval=F}
+```{r,eval=T}
 
 
 onesimu=run_simulation (
-                           sites=vect("testsites.RDS"),
-                           dem=rast("east_narnia4x.tif"),
-                           resources=ress,
+                           sites=vect("data_original/sitesinitialposition/"),
+                           dem=rast("data_original/east_narnia4x.tif"),
+                           ressources=rast("ressources.tiff"),
                            water=height.wat,
-                           foldervid=paste0("pathtofinal_",i),
-                           visu=F,visumin=TRUE,
-                           ts=120,#length of simulation in year
+                           foldervid="tests",
+                           visu=T,visumin=TRUE,
+                           ts=150,#length of simulation in year
                            Kbase=c("HG"=35,"F"=120),#difference in K for the two cultures
                            cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
                            penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
@@ -542,16 +541,14 @@ The list `onesimu`  contains a few interesting info:
 
 
 ```{r,cache=F}
-onesimu=readRDS("buffattack300_K110_PSU065_5_all.RDS")
-Nts=onesimu$Nts # population at each timestep
-warcasualties=onesimu$warcasualties #death by war at each time step
-sites_new=terra::vect(readRDS("buffattack300_K110_PSU065_5_sitesRast.RDS"))
+Nts <- onesimu$Nts # population at each timestep
+warcasualties <- onesimu$warcasualties #death by war at each time step
 ```
 
 
 Use ressource to adjust the Ks:
 ```{r,eval=T}
-plot(sites_new,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites_new$culture)])
+plot(sites,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
 ```
 
 
@@ -565,7 +562,7 @@ Step by step to allow interaction between sites:
 #par(mfrow=c(2,1))
 i=ncol(Nts)
 plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites_new$culture)[j]]))
+lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
 
 ```
 
