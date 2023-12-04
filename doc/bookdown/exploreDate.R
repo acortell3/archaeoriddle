@@ -1,11 +1,11 @@
 library(terra)
 library(sf)
 source("tools.R")
-height.ras=rast("east_narnia4x.tif")
+height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 Nts=readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
-ress=rast("ressources.tiff")
+ress=rast("data_original/resources.tiff")
 allsites=vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
 plotMap(height.ras,height.wat)
 plot(allsites,add=T)

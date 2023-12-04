@@ -3,7 +3,7 @@ library(sf)
 source("tools.R")
 
 expname=commandArgs()[6]
-height.ras=rast("east_narnia4x.tif")
+height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 height.groups=height.ras
@@ -23,7 +23,7 @@ onesimu=run_simulation (
                            sites=sites,
                            viable=viable,
                            dem=height.ras,
-                           ressources=rast("ressources.tiff"),
+                           ressources=rast("data_original/resources.tiff"),
                            water=height.wat,
                            foldervid=expname,
                            visu=F,visumin=TRUE,

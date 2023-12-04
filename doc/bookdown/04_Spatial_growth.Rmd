@@ -520,7 +520,7 @@ We can run a simple simulations using this:
 onesimu=run_simulation (
                            sites=vect("data_original/sitesinitialposition/"),
                            dem=rast("data_original/east_narnia4x.tif"),
-                           ressources=rast("ressources.tiff"),
+                           ressources=rast("data_original/resources.tiff"),
                            water=height.wat,
                            foldervid="tests",
                            visu=T,visumin=TRUE,

@@ -27,7 +27,7 @@ onesimu=run_simulation (
                            sites=sites,
                            viable=viable,
                            dem=height.ras,
-                           ressources=rast("ressources.tiff"),
+                           ressources=rast("data_original/resources.tiff"),
                            water=height.wat,
                            foldervid=expname,
                            visu=F,visumin=TRUE,
