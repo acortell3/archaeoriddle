@@ -8,7 +8,7 @@ This has been down using file `dateGeneration.R`, we will describe it here now.
 First we get the result of a simulation.
 
 ```{r getRaster,eval=T,cache=F}
-height.ras=rast("east_narnia4x.tif")
+height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 height.groups=height.ras
@@ -84,7 +84,7 @@ This has been done using the script `exploreDate.R` but will be explain here:
 Loading simulation results, green are the sites who survived,dots are all the site that existed.
 
 ```{r getfakeresults,cache=F}
-height.ras=rast("east_narnia4x.tif")
+height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 

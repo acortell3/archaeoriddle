@@ -100,7 +100,7 @@ source("tools.R")
 
 expname="general_results_selected_simu/buffattack300_K110_PSU065_3"
 sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))
-height.ras=rast("east_narnia4x.tif")
+height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 
