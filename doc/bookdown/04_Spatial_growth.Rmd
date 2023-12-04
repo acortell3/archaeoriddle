@@ -350,6 +350,7 @@ We generate zone of hight resource, that will attract settlements and support hi
 
 ```{r}
 
+source("tools.R")
 ##ressource geolocalisation set manually
 goodressources=vect(
                     cbind(
@@ -362,6 +363,7 @@ areas=4*c(100,2000,200,300,100,200,400)
 #speed of ressource decay:
 ks=c(0.0002,0.0001000,0.0001600,0.0001800,0.00040,.0002,0.0002)/4
 
+height.ras=rast("east_narnia4x.tif")
 crs(goodressources)=crs(height.ras)
 
 allres=lapply(seq_along(goodressources),function(i)logisticdecay(goodressources[i],mask(height.ras,viable),x=areas[i],k=ks[i]))
@@ -403,7 +405,6 @@ prob_split=c("HG"=.2,"F"=.6) #proba to create new settlement when Ne > K
 minimals=c("HG"=.14,"F"=.20) #how big the group of migrant should be to create a new city vs migrate to a existing one 
 prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
 
-height.ras=rast("east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 height.groups=height.ras

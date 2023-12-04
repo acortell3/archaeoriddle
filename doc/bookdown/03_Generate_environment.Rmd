@@ -1,4 +1,4 @@
-# Landscape and climate
+# Landscape, climate & Environment
 
 ## Temperature and climate
 
@@ -130,7 +130,7 @@ plot(rast(m))
 object.size(m)
 ```
 
-To make it slightly more realistic we tweaked a bit the extreme, to create here mountain and havening something closer to what a _real_ DEM would look like.
+To make it slightly more realistic we tweaked a bit the extreme, to create seas and mountains a bit closer to what a _real_ DEM would look like.
 
 
 ```{r padjuperlin}
@@ -148,7 +148,7 @@ Visual the map as a simple 2D raster
 ```{r 2dVisu}
 
 height.ras=rast(height,extent=c(-3.5,.5,-.5,3.5),crs="+proj=latlon")
-height.ras=rast("east_narnia4x.tif")
+#height.ras=rast("east_narnia4x.tif")
 maxh=max(height.ras[],na.rm=T)
 col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
 
@@ -179,6 +179,7 @@ plot_3d(hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = .5, phi = 4
 
 ## Settlements position
 
+Given this new landscape we can now
 Generate sites in specific location (not on mountains, not in water) with exponentially distributed size and make a network out of it.  
 
 
