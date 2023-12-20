@@ -1,4 +1,4 @@
-# CollaborABM
+# archaeoriddle
 
 Copy the source code from this file, and paste it here https://markmap.js.org/repl \
 It is not linked, so any changes made in that url must then be committed here as well

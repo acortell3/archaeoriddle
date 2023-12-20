@@ -8,7 +8,7 @@ output:
     config:
       toc:
         after: |
-          <li><a href="https://github.com/acortell3/collaborabm/">
+          <li><a href="https://github.com/acortell3/archaeoriddle/">
           source</a></li>
 
     nature:
@@ -16,7 +16,7 @@ output:
 documentclass: book
 biblio-style: apalike
 link-citations: yes
-github-repo: acortell3/collaborabm
+github-repo: acortell3/archaeoriddle
 description: "First draft of Rbookdown to describe how data have been generated"
 favicon: "favicon.ico"
 ---

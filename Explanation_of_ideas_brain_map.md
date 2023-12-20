@@ -4,7 +4,7 @@ author: "CDAL"
 date: "11/25/2021"
 output: html_document
 ---
-## Brain map collaborABM
+## Brain map archaeoriddle
 
 <img src="doc/brain_map_colabm.png" alt="drawing" width="600"/>
 
