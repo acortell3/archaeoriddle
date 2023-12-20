@@ -1,0 +1,10 @@
+^div$
+^\.git$
+^tex_files$
+^README\.md$
+^collaborabm\.Rproj$
+^\.Rproj\.user$
+^Explanation_of_ideas_brain_map\.md$
+^interactive_brain_map\.md$
+^pop_id\.Rmd$
+^doc$
