@@ -89,7 +89,7 @@ grViz("
     node [fontname = Helvetica, ## General node definition
           style = filled,
           color = MistyRose]
-          
+           
     ## Per node definition
     a [label = '@@1',
        fillcolor = orange]
@@ -206,7 +206,7 @@ In order to account for the chronological occupation of the site, a demographic 
 
 ```{r}
 library(printr)
-library(collaborabm)
+library(archaeoriddle)
 ```
 
 
@@ -216,14 +216,17 @@ knitr::spin('../../R/population.R', format='Rmd', comment=c("#'","#'"),
 fs::file_move('../../R/population.Rmd', '.')
 ```
 
-```{r child='population.Rmd'}
-```
+
 ```{r}
 ?Gpd
 ?death
 ?K_lim
 ?Pop_stoch
 ```
+
+```{r child='population.Rmd'}
+```
+
 
 
 ### Anthropogenic deposition $A$-protocol

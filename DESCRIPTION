@@ -1,10 +1,16 @@
-Package: collaborabm
-Title: What the Package Does (One Line, Title Case)
+Package: archaeoriddle
+Title: Helper package for Archaeoriddle
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("Simon", "Carrignon", , "sc2297@cam.ac.uk", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Alfredo", "Cortell-Nicolau", , "ac2320@cam.ac.uk", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-1982-6403"))
+    person("Ismael", "Rodriguez", , "ismael@palaeome.org", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-5313-9709"))
+Description: 
+  This packages contains functions that simulate the generation of the archaeological
+  record from simulated population dynamics in a generated environment.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8

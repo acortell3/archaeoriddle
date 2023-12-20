@@ -2,7 +2,7 @@
 ^\.git$
 ^tex_files$
 ^README\.md$
-^collaborabm\.Rproj$
+^archaeoriddle\.Rproj$
 ^\.Rproj\.user$
 ^Explanation_of_ideas_brain_map\.md$
 ^interactive_brain_map\.md$
