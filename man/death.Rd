@@ -19,7 +19,7 @@ The age-structured data frame is based on Gurven, Kaplan and Supa, 2007.
 It is extracted adapted after computation from their text (not graphs or tables)}
 }
 \value{
-A value (0,1) where 0 = person lives and 1 = person dies, based
+A value 0 or 1 where 0 = person lives and 1 = person dies, based
 on pd (the probability matrix)
 }
 \description{

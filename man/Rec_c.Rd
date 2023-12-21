@@ -9,7 +9,7 @@ Rec_c(x, area, ts, InitBP, persqm = FALSE, ...)
 \arguments{
 \item{x}{Vector with the number of samples per year. As produced as produced by iterating over A_rates.}
 
-\item{area}{Only if persqm = TRUE. In this case, the total area of the site
+\item{area}{Only if \code{persqm = TRUE}. In this case, the total area of the site
 must be provided}
 
 \item{ts}{Time-span, the number of years considered for the process}
@@ -19,7 +19,7 @@ must be provided}
 \item{persqm}{If TRUE, the total record is divided by the area of the site
 (in square meters), so that the output is per square meter. Default is FALSE}
 
-\item{...}{This function uses the functions \code{D_along()}. The additional
+\item{...}{This function uses the functions \code{\link[=D_along]{D_along()}}. The additional
 arguments can be added.}
 }
 \value{

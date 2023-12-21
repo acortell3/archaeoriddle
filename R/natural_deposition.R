@@ -64,13 +64,13 @@ D_along <- function(W_t, r, max_bone_thickness = c("m", 's', 'l', 'vl'),
 #' Generate archaeological deposition record over time and depth
 #' It iterates over D_along to spread the amount of samples produced at each time point over different profundities
 #' @param x Vector with the number of samples per year. As produced as produced by iterating over A_rates.
-#' @param area Only if persqm = TRUE. In this case, the total area of the site 
+#' @param area Only if `persqm = TRUE`. In this case, the total area of the site 
 #' must be provided
 #' @param ts Time-span, the number of years considered for the process
 #' @param InitBP Initial year considered for the process. In BP.
 #' @param persqm If TRUE, the total record is divided by the area of the site
 #' (in square meters), so that the output is per square meter. Default is FALSE
-#' @param ... This function uses the functions `D_along()`. The additional 
+#' @param ... This function uses the functions [D_along()]. The additional 
 #' arguments can be added.
 #' @return A square matrix of size ts. It contains the amount of samples deposited at each year (columns) and each depth (rows)
 #' @export

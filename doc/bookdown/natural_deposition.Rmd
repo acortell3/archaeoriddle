@@ -1,0 +1,89 @@
+
+```{r}
+## Function 6. Depth protocol deposition
+D_along <- function(W_t, r, max_bone_thickness = c("m", 's', 'l', 'vl'),
+                    prop_buried = .9999){
+  
+  # Define parameter r
+  if(r > 0.5) stop("values > 0.5 are not accepted for param 'r'")
+  r <- round(r, 1)
+  # Constraints for parameter Pb
+  if (prop_buried >= 1) stop("Pb must be lower than 1")
+  
+  # Define parameter Max_bone_thickness (L)
+  max_bone_thickness = match.arg(max_bone_thickness)
+  if (max_bone_thickness == 's'){
+    L <- 2.5
+  } else if (max_bone_thickness == 'm'){
+    L <- 5
+  } else if (max_bone_thickness == 'l'){
+    L <- 10
+  } else if (max_bone_thickness == 'vl'){
+    L <- 20
+  }
+  
+  # Define tmax
+  tm <- L/r
+  # Estimate lambda
+  l <- -log(1 - prop_buried) / tm
+  
+  ss <- rep(0, round(tm)) ## Vector to distribute samples over
+  tl <- 0 # Year where the sample is deposited
+  tu <- 1 # Year when it is covered
+  
+  for (i in 1:tm){
+    Wb <- W_t * (1 - exp(-l*(tu-tl))) # Apply formula for tu
+    Wbprev <- W_t * (1 - exp(-l*((tu-1)-tl))) # Calculate for previous to tu
+    ss[i] <- round(Wb - Wbprev) # Number of samples for each year
+    tu <- tu + 1
+  }
+  
+  return(ss)
+}
+
+## 7. Archaeological deposition record
+Rec_c <- function(x, area, ts, InitBP, persqm = FALSE,...){
+  
+  ## Whether sqm division must be included or not
+  if (persqm == TRUE){
+    x <- x / area
+  }
+  
+  ## Spread dates along different depths
+  matdim <- length(x)
+  mat <- matrix(nrow=matdim, ncol=matdim)
+  
+  for (i in 1:matdim){
+    new <- D_along(x[i], ...)
+    st <- i - 1
+    pos <- c(rep(0, st), new)
+    pos <- pos[1:matdim]
+    mat[, i] <- pos
+  }
+  mat[is.na(mat)] <- 0
+  
+  ## Names for columns (each year)
+  years <- seq(InitBP, InitBP-ts)
+  nyears <- c()
+  for (i in 1:matdim){
+    nyears[i] <- paste0(years[i], " BP")
+  }
+  colnames(mat) <- nyears
+  
+  ## Names for rows (each depth)
+  # Extract arguments as a list
+  extract_args <- function(x, ...){ 
+    extras <- list(...)
+    return(list(extras=extras)) 
+  }
+  
+  dr <- extract_args(D_along, ...)
+  dr <- dr$extras$r
+  
+  d <- rev(cumsum(rep(dr, nrow(mat)))) ## computes depths
+  rownames(mat) <- paste0("d = ", d, " cm")
+  
+  return(mat)
+}
+```
+

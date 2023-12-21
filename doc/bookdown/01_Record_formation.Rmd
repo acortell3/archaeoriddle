@@ -3,7 +3,14 @@ output:
   html_document: default
   pdf_document: default
   always_allow_html: true
+  code_folding: show
 ---
+
+```{r, echo=FALSE, message=FALSE}
+library(printr)
+library(knitr)
+```
+
 
 # Record formation
 
@@ -194,40 +201,64 @@ where $r$ is the natural deposition rates.
 
 This simulation for the creation of the archaeological record has been divided in three phases, or protocols. First, we populate the site, according to a stochastic demographic process, second we generate a sample for each time $t$ and, in the third and final step, we distribute the amount of waste for each $d$.
 
-In order to fully understand the process, first we will show the protocols and functions used.
+In order to fully understand the process, first we will show the protocols and functions used. To start with, let's load the package with the functions functions:
+
+```{r}
+library(archaeoriddle)
+```
+```{r, echo=FALSE}
+help.search(
+  '(Gpd)|(death)|(K_lim)|(Pop_stoch)|(A_rates)|(D_along)',
+  package = 'archaeoriddle')
+```
 
 ### Population $Pop$-protocol
 
-This protocol generates a stochastic demographic process with maximum population $\sim K$. It is based on three functions. The first function `Gpd()` is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
+This protocol generates a stochastic demographic process with maximum population $\sim K$. It is based on three functions. The first function, `Gpd()`, is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
+
+<br>
+
+```{r, echo=FALSE}
+?Gpd
+```
+<br>
 
 However, this function also relies on two the other functions: `death()` and `K_lim()`. `death()` is the process of people dying each year. It is based on an age-structured probability matrix, where infants and old people have more probabilities of deceasing. The matrix is provided, but the user can set its own. `K_lim()` limits the population when it reaches $K$. The user should specify the appropriate value for $K$ according to the size of the site, its type, the group economy, etc. Also, the user can change the probability that exceeding people dies with parameter `prob`. Default is 0.8.
 
-In order to account for the chronological occupation of the site, a demographic process must be produced, where the sample is generated accordingly. The function `Pop_stoch` consider this.
-
-```{r}
-library(printr)
-library(archaeoriddle)
-```
-
+<br>
 
 ```{r, echo=FALSE}
-knitr::spin('../../R/population.R', format='Rmd', comment=c("#'","#'"),
+?death
+```
+<br>
+
+```{r, echo=FALSE}
+?K_lim
+```
+<br>
+
+In order to account for the chronological occupation of the site, a demographic process must be produced, where the sample is generated accordingly. The function `Pop_stoch` consider this.
+
+<br>
+```{r, echo=FALSE}
+?Pop_stoch
+```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/population.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
 fs::file_move('../../R/population.Rmd', '.')
 ```
 
-
-```{r}
-?Gpd
-?death
-?K_lim
-?Pop_stoch
+If you want to delve into the code of the functions you can open it here:
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='population.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
 ```
-
-```{r child='population.Rmd'}
-```
-
-
+</details>
 
 ### Anthropogenic deposition $A$-protocol
 
@@ -262,18 +293,28 @@ $$W(t)=\mbox{Integer part of } \Bigg(\frac{1000 \times A(t)}{4} \Bigg) \tag{4}$$
 
 This protocol is captured in the following function:
 
+<br>
+
+```{r, echo=FALSE}
+?A_rates
+```
+<br>
+
 ```{r, echo=FALSE, message=FALSE}
-knitr::spin('../../R/anthropogenic_deposition.R', format='Rmd', comment=c("#'","#'"),
+a = knitr::spin('../../R/anthropogenic_deposition.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
 fs::file_move('../../R/anthropogenic_deposition.Rmd', '.')
 ```
 
-```{r child='anthropogenic_deposition.Rmd'}
-```
+You can inspect the `A_rates` code here:
+<details><summary>Show code</summary>
+**Code**
 
-```{r}
-?A_rates
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='anthropogenic_deposition.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
 ```
+</details>
 
 ### Depth $D$-protocol
 
@@ -320,30 +361,42 @@ $$\lambda=\frac{-log(1-\theta_e)}{t_{u_{max}}} \tag{9}$$
 
 Where $\theta_b<1$ is the proportion of buried samples in $t_{u_{max}}$, which is calculated in equation 6.
 
-The following function captures this process,
+The function `D_along` captures this process:
 
+<br>
 
-```{r}
+```{r, echo=FALSE}
 ?D_along
 ```
+<br>
 
 At the end, the function `Rec_c` runs `D_along` over a period of time, effectively producing an archaeological record. In the function `Rec_c` the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can use the modeled values (with the functions above) as an input to this function, or introduce them directly, for example, in the case that fix population rates per year were preferred.
-```{r}
+
+<br>
+
+```{r, echo=FALSE}
 ?Rec_c
 ```
-
+<br>
 
 ```{r, echo=FALSE, message=FALSE}
-knitr::spin('../../R/natural_deposition.R', format='Rmd', comment=c("#'","#'"),
+a = knitr::spin('../../R/natural_deposition.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
 fs::file_move('../../R/natural_deposition.Rmd', '.')
 ```
 
-```{r child='natural_deposition.Rmd'}
+As before, you can check the code here:
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='natural_deposition.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
 ```
+</details>
 
 
-### Example and simulation
+
+## Example and simulation
 
 With the above functions, the user can model (1) a generative demographic process, (2) how many samples would a group of people produce in a site, according to different constraints and (3) how those dates distribute along the depth of a site under the assumption that there has not been any kind of record loss or post-depositional process (this will be modelled in a second layer of modelling).
 

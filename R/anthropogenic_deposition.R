@@ -5,23 +5,23 @@
 #' Returns the Kilograms of bone produced per year in a site.
 #' @param x Integer (user provided), vector or data.frame. If integer, it is the number of 
 #' people inhabiting the site. If data.frame, the number of people is the number 
-#' of rows. If vector, it is the length of the vector. It is Pop(t) in equation 3
+#' of rows. If vector, it is the length of the vector. It is \eqn{Pop(t)} in equation 3
 #' @param kcalpers Quantity of kilocalories consumed per day per adult person.
-#' It corresponds to B(t) in the equation 3. But in the formula it is per year.
-#' Tt has a range of [1.5,2.5]. Default is 2.
+#' It corresponds to \eqn{B(t)} in the equation 3. But in the formula it is per year.
+#' Tt has a range of `[1.5,2.5]`. Default is 2.
 #' @param kcalmeat_eat Proportion of kilocalories extracted from meat. Range [0,1].
-#' Default is 0.45, based on Cordain et al (2000). It is M(t) in equation 3.
+#' Default is 0.45, based on Cordain et al (2000). It is \eqn{M(t)} in equation 3.
 #' @param kcalmeat_prod Quantity of kiocalories per meat kilogram. Range [1,2.5]
-#' Default is 1.5, considering goat meat. It is R(t) in euqation 3.
+#' Default is 1.5, considering goat meat. It is \eqn{R(t)} in euqation 3.
 #' @param in_camp_eat Proportion of food consumed within the camp. Range [0,1]. 
-#' Default is 0.55 based on Collette-Barbesque et al. (2016). S(t) in equation 3.
+#' Default is 0.55 based on Collette-Barbesque et al. (2016). \eqn{S(t)} in equation 3.
 #' @param in_camp_stay Proportion of time spent in a specific camp. Valid for 
 #' groups with high mobility. The proportion is computed within the function, but
 #' the user introduces the weeks of occupation of the camp, where the maximum is
 #' 52 (full year). Default is 13 (weeks, or 0.25 of the year, or three months a year).
-#' It corresponds to O(t) in equation 3.
+#' It corresponds to \eqn{O(t)} in equation 3.
 #' @param kg Bone proportion for each animal consumed. Default is 0.07
-#' based on Johnston et al. (2021). It corresponds to F(t) in equation 3.
+#' based on Johnston et al. (2021). It corresponds to \eqn{F(t)} in equation 3.
 #' @return The number of samples
 #' @export
 A_rates <- function(x,
