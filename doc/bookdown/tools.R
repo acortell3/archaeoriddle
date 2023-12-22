@@ -6,25 +6,24 @@ col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
 #' @title Gpd
 #' Returns a data.frame with two columns, where the number of rows is the number of
 #' people. The first column contains the ages and the second column contains the sex.
-#' @param x: Input data. A data frame or matrix with two columns and nrow = Initial
+#' @param x Input data. A data frame or matrix with two columns and nrow = Initial
 #' population. One row per individual. The first column is the age of the individual.
 #' The second column is the sex of the individual, and must be c("F","M").
-#' @param W_fer_age: Vector with two values. The first value is the youngest age
+#' @param W_fer_age Vector with two values. The first value is the youngest age
 #' at which is considered that women can have children for prehistoric societies.
 #'  The second value is the oldest age at which is considered that women can 
 #'  have children. Default is c(10,30).
-#' @param M_fer_age: Vector with two values. The first value is the youngest age
+#' @param M_fer_age Vector with two values. The first value is the youngest age
 #' at which is considered that men can have children for prehistoric societies.
 #' The second value is the oldest age at which is considered that men can have 
 #' children. Default is c(15,40)
-#' @param  P_o: Probability of a woman having a son per year. Default is 0.3.
-#' @param prob: Probability that an individual will die if total population
+#' @param P_o Probability of a woman having a son per year. Default is 0.3.
+#' @param prob Probability that an individual will die if total population
 #' exceeds K. Default is 0.8
-#' @param K: Carrying capacity.
-#' @param ...: This function uses the embedded function death(). 
+#' @param K Carrying capacity.
+#' @param ... This function uses the embedded function death(). 
 #' Their arguments can be added.
 #' @export
-
 Gpd <- function(x, W_fer_age = c(10,45), M_fer_age = c(15,55),
                 P_o = 0.3, prob = 0.8, K, ...){
   
@@ -62,6 +61,11 @@ Gpd <- function(x, W_fer_age = c(10,45), M_fer_age = c(15,55),
   
   return(x)
 }
+
+
+
+
+
 
 ## Function 2. Simulation of death process
 #' @title death

@@ -3,7 +3,14 @@ output:
   html_document: default
   pdf_document: default
   always_allow_html: true
+  code_folding: show
 ---
+
+```{r, echo=FALSE, message=FALSE}
+library(printr)
+library(knitr)
+```
+
 
 # Record formation
 
@@ -89,7 +96,7 @@ grViz("
     node [fontname = Helvetica, ## General node definition
           style = filled,
           color = MistyRose]
-          
+           
     ## Per node definition
     a [label = '@@1',
        fillcolor = orange]
@@ -194,130 +201,64 @@ where $r$ is the natural deposition rates.
 
 This simulation for the creation of the archaeological record has been divided in three phases, or protocols. First, we populate the site, according to a stochastic demographic process, second we generate a sample for each time $t$ and, in the third and final step, we distribute the amount of waste for each $d$.
 
-In order to fully understand the process, first we will show the protocols and functions used.
+In order to fully understand the process, first we will show the protocols and functions used. To start with, let's load the package with the functions functions:
+
+```{r}
+library(archaeoriddle)
+```
+```{r, echo=FALSE}
+help.search(
+  '(Gpd)|(death)|(K_lim)|(Pop_stoch)|(A_rates)|(D_along)',
+  package = 'archaeoriddle')
+```
 
 ### Population $Pop$-protocol
 
-This protocol generates a stochastic demographic process with maximum population $\sim K$. It is based on three functions. The first function `Gpd()` is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
+This protocol generates a stochastic demographic process with maximum population $\sim K$. It is based on three functions. The first function, `Gpd()`, is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
+
+<br>
+
+```{r, echo=FALSE}
+?Gpd
+```
+<br>
 
 However, this function also relies on two the other functions: `death()` and `K_lim()`. `death()` is the process of people dying each year. It is based on an age-structured probability matrix, where infants and old people have more probabilities of deceasing. The matrix is provided, but the user can set its own. `K_lim()` limits the population when it reaches $K$. The user should specify the appropriate value for $K$ according to the size of the site, its type, the group economy, etc. Also, the user can change the probability that exceeding people dies with parameter `prob`. Default is 0.8.
 
-```{r}
+<br>
 
-### Population protocol
-
-## Function 1.
-#' @title Generation of population dynamics
-#' Protocol to generate a stochastic demographic process
-#' @param x Input data with initial population matrix. A data frame or matrix
-#' with two columns and nrow = Initial population. One row per individual.
-#' The first column is the age of the individual.
-#' The second column is the sex of the individual, and must be c("F","M").
-#' The columns must be named Age and Sex respectively.
-#' @param K Carrying capacity.
-#' @param W_fert_age Vector with two values. The first value is the youngest age
-#' at which is considered that women can have children for prehistoric societies.
-#'  The second value is the oldest age at which is considered that women can 
-#'  have children. Default is c(10,30).
-#' @param M_fert_age Vector with two values. The first value is the youngest age
-#' at which is considered that men can have children for prehistoric societies.
-#' The second value is the oldest age at which is considered that men can have 
-#' children. Default is c(15,40)
-#' @param p_offspring: Probability of a woman having a son per year. Default is 0.3.
-#' @param prob Probability that an individual will die per year if total population
-#' exceeds K. Default is 0.8
-#' @param ... Arguments passed to [death()]. The mortality probability by age matrix. 
-#' Their arguments can be added.
-#' @return data.frame with two columns, where the number of rows is the number of
-#' people. The first column contains the ages and the second column contains the sex.
-#' @export
-Gpd <- function(x, K, W_fert_age = c(10, 45), M_fert_age = c(15, 55),
-                p_offspring = 0.3, prob = 0.8, ...){
-  
-  ### Process of having offspring
-  
-  # Female fertile population
-  W <- x[x[,2]=="F", ]
-  W_fert <- W[W$Age > W_fert_age[1] & W$Age < W_fert_age[2], ]
-  # Male fertile population
-  M <- x[x[,2]=="M", ]
-  M_fert <- M[M$Age > M_fert_age[1] & M$Age < M_fert_age[2], ]
-  
-  ## Probability of having descendance per woman
-  # Penalisation in case there are too few men
-  pen <- round(nrow(M_fert)*2 / nrow(W_fert), 2) ## Assumes one man can have two women
-  pen[pen>1] <- 1 ## The men penalisation can never multiply the birth rate per woman
-  
-  ## Probability of a woman having a son per year
-  p_offspring <- p_offspring*pen
-  
-  # Aging process. They get one year older
-  x$Age <- x$Age+1
-  
-  ### Births are new population that's added
-  n_offspring <- sum(rbinom(nrow(W_fert), 1, p_offspring))
-  new_pop <- data.frame(
-    "Age" = rep(0, n_offspring),
-    "Sex" = sample(c("M","F"), n_offspring, prob=c(0.5, 0.5), replace=TRUE))
-  x <- rbind(x, new_pop)
-  
-  ### Process of dying
-  vec_d <- apply(x, 1, death, ...)
-  x <- x[vec_d==0, ]
-  
-  ## Apply carrying capacty restrictions
-  x <- K_lim(x, K = K, prob = prob)
-  
-  return(x)
-}
-
-
-## Function 2. Simulation of death process
-#' @title Simulation of death process
-#' For a single individual, returns whether it lives (0) or dies (1)
-#' Meant to be used with apply on the population data.frame x
-#' @param x A vector or data.frame with a single row from the population matrix.
-#' It must contain two values or columns, Age and Sex
-#' @param pd The probability matrix for mortality by age
-#' The age-structured data frame is based on Gurven, Kaplan and Supa, 2007.
-#' It is extracted adapted after computation from their text (not graphs or tables)
-#' @return A value (0,1) where 0 = person lives and 1 = person dies, based
-#' on pd (the probability matrix)
-#' @export
-death <- function(x, pd=data.frame("Age" = c(0:99),
-                                   "P_d" = c(rep(0.14,1),
-                                             rep(0.16,4),
-                                             rep(0.05,5),
-                                             rep(0.01,24),
-                                             rep(0.03,14),
-                                             rep(0.1,10),
-                                             rep(0.3,42)))){
-  age <- as.numeric(x[1])
-  return(rbinom(1, 1, prob=pd[pd$Age==age, 2]))
-}
-
-## Function 3. Simulation of carrying capacity limitation
-#' @title Simulation of carrying capacity limitation
-#' If the population exceeds the carrying capacity, it eliminates oversize
-#' with prob probability per person exceeding.
-#' @param x Data frame or matrix. Population (number of people)
-#' @param K Integer. Carrying capacity. Provided by the user
-#' @param prob It is the probability of dying when surpassing carrying capacity
-#' @export
-
-K_lim <- function(x, K, prob=0.8){
-  p <- nrow(x)
-  if (p>K){
-    o <- rbinom(p-K, 1, prob)
-    o <- sum(o[o==1])
-    o[o==0] <- 1 ## Avoids problem eliminating all the df if remove == 0
-    x <- x[-sample(1:nrow(x), o, replace=FALSE), ]
-  }
-  return(x)
-}
-
-
+```{r, echo=FALSE}
+?death
 ```
+<br>
+
+```{r, echo=FALSE}
+?K_lim
+```
+<br>
+
+In order to account for the chronological occupation of the site, a demographic process must be produced, where the sample is generated accordingly. The function `Pop_stoch` consider this.
+
+<br>
+```{r, echo=FALSE}
+?Pop_stoch
+```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/population.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/population.Rmd', '.')
+```
+
+If you want to delve into the code of the functions you can open it here:
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='population.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
 
 ### Anthropogenic deposition $A$-protocol
 
@@ -352,88 +293,28 @@ $$W(t)=\mbox{Integer part of } \Bigg(\frac{1000 \times A(t)}{4} \Bigg) \tag{4}$$
 
 This protocol is captured in the following function:
 
-```{r}
-## Function 4. Anthropogenic deposition
-#' @title Simulate anthropogenic deposition
-#' Simulation of samples generated per year (anthropogenic deposition rates)
-#' Returns the Kilograms of bone produced per year in a site.
-#' @param x Integer (user provided), vector or data.frame. If inetger, it is the number of 
-#' people inhabiting the site. If data.frame, the number of people is the number 
-#' of rows. If vector, it is the length of the vector. It is Pop(t) in equation 3
-#' @param kcalpers Quantity of kilocalories consumed per day per adult person.
-#' It corresponds to B(t) in the equation 3. But in the formula it is per year.
-#' Tt has a range of [1.5,2.5]. Default is 2.
-#' @param kcalmeat_eat Proportion of kilocalories extracted from meat. Range [0,1].
-#' Default is 0.45, based on Cordain et al (2000). It is M(t) in equation 3.
-#' @param kcalmeat_prod Quantity of kiocalories per meat kilogram. Range [1,2.5]
-#' Default is 1.5, considering goat meat. It is R(t) in euqation 3.
-#' @param in_camp_eat Proportion of food consumed within the camp. Range [0,1]. 
-#' Default is 0.55 based on Collette-Barbesque et al. (2016). S(t) in equation 3.
-#' @param in_camp_stay Proportion of time spent in a specific camp. Valid for 
-#' groups with high mobility. The proportion is computed within the function, but
-#' the user introduces the weeks of occupation of the camp, where the maximum is
-#' 52 (full year). Default is 13 (weeks, or 0.25 of the year, or three months a year).
-#' It corresponds to O(t) in equation 3.
-#' @param kg Bone proportion for each animal consumed. Default is 0.07
-#' based on Johnston et al. (2021). It corresponds to F(t) in equation 3. 
-#' @export
+<br>
 
-A_rates <- function(x,
-                    kcalpers = 2,
-                    kcalmeat_eat = 0.45,
-                    kcalmeat_prod = 1.5,
-                    in_camp_eat = 0.55,
-                    in_camp_stay = 13,
-                    kg = 0.07){
-  
-  
-  if (is.data.frame(x) == TRUE){
-    P <- nrow(x)
-  } else if (length(x) == 1){
-    P <- x
-  } else {
-    P <- length(x)
-  }
-  
-  # Check variable values are within the defined ranges
-  if (1.5 <= kcalpers & kcalpers <= 2.5){
-    B <- kcalpers*365
-  } else {
-    stop('kcalpers must be within [1.5, 2.5]')
-  }
-  
-  if (0 <= kcalmeat_eat & kcalmeat_eat <= 1) {
-    M <- kcalmeat_eat
-  } else {
-    stop('kcalmeat_eat must be within [0, 1]')
-  }
-  
-  if (1 <= kcalmeat_prod & kcalmeat_prod < 2.5) {
-    R <- kcalmeat_prod
-  } else {
-    stop('kcalmeat_prod must be within [1, 25]')
-  }
-  
-  if (0 <= in_camp_eat & in_camp_eat <= 1){
-    S <- in_camp_eat
-  } else {
-    stop('in_camp_eat must be within [0, 1]')
-  }
-  
-  if (in_camp_stay <= 52){
-    O <- round(in_camp_stay/52,2)
-  } else {
-    stop('A year cannot have more than 52 weeks')
-  }
-
-  C <- B*M
-  G <- (C * S) / R ## Quantity (in kg) of animal consumed per person in camp during year t
-  A <- P * O * kg * G ## kilograms of meat consumed within a camp by the group
-  W <- round((1000 * A) / 4) ## samples extracted from that meat
-  
-  return(W)
-}
+```{r, echo=FALSE}
+?A_rates
 ```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/anthropogenic_deposition.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/anthropogenic_deposition.Rmd', '.')
+```
+
+You can inspect the `A_rates` code here:
+<details><summary>Show code</summary>
+**Code**
+
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='anthropogenic_deposition.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
 
 ### Depth $D$-protocol
 
@@ -480,178 +361,50 @@ $$\lambda=\frac{-log(1-\theta_e)}{t_{u_{max}}} \tag{9}$$
 
 Where $\theta_b<1$ is the proportion of buried samples in $t_{u_{max}}$, which is calculated in equation 6.
 
-The following function captures this process,
+The function `D_along` captures this process:
 
-```{r}
+<br>
 
-## Function 5. Depth protocol deposition
-#' @title Depth protocol deposition
-#' It distributes the samples produced in one specific year along the depth of the
-#' site, without any kind of post-depositional alteration, and according to 
-#' pre-established post-deposition rates. Returns a vector with the samples exponentially
-#' distributed. The vector is as long as L/r and the error (prop_buried, \eqn{\theta_{\epsilon}}) is considered.
-#' @param W_t Integer (user provided), vector or data.frame. It is the number samples
-#' produced at a specific 't'.
-#' @param r Is the natural deposition rates. At this moment. Values greater than 0.5 are not accepted.
-#' If values with two or more decimals are provided, the function will automatically round 
-#' the value to one decimal.
-#' @param max_bone_thickness Maximum thickness of bones within the assemblage. Four
-#' values are possible: `'s'` (small) = 2.5 cm; `'m'` (medium) = 5 cm; `'l'` (large) = 10 cm
-#' and `'vl'` (very large) = 20 cm. Default is `'m'`.
-#' @param prop_buried Proportion of samples buried sample at tmax, considering error. Pb 
-#' needs to be smaller than 1. Default is 0.9999, which stands for 99.99%.
-#' This is \eqn{\theta_{\epsilon}} in equation 9
-#' @return A vector of samples buried at times from tl to tm
-#' @export
+```{r, echo=FALSE}
+?D_along
+```
+<br>
 
-D_along <- function(W_t, r, max_bone_thickness = c("m", 's', 'l', 'vl'),
-                    prop_buried = .9999){
-  
-  # Define parameter r
-  if(r > 0.5) stop("values > 0.5 are not accepted for param 'r'")
-  r <- round(r, 1)
-  # Constraints for parameter Pb
-  if (prop_buried >= 1) stop("Pb must be lower than 1")
-  
-  # Define parameter Max_bone_thickness (L)
-  max_bone_thickness = match.arg(max_bone_thickness)
-  if (max_bone_thickness == 's'){
-    L <- 2.5
-  } else if (max_bone_thickness == 'm'){
-    L <- 5
-  } else if (max_bone_thickness == 'l'){
-    L <- 10
-  } else if (max_bone_thickness == 'vl'){
-    L <- 20
-  }
-  
-  # Define tmax
-  tm <- L/r
-  # Estimate lambda
-  l <- -log(1 - prop_buried) / tm
-  
-  ss <- rep(0, round(tm)) ## Vector to distribute samples over
-  tl <- 0 # Year where the sample is deposited
-  tu <- 1 # Year when it is covered
-  
-  for (i in 1:tm){
-    Wb <- W_t * (1 - exp(-l*(tu-tl))) # Apply formula for tu
-    Wbprev <- W_t * (1 - exp(-l*((tu-1)-tl))) # Calculate for previous to tu
-    ss[i] <- round(Wb - Wbprev) # Number of samples for each year
-    tu <- tu + 1
-  }
-  
-  return(ss)
-}
+At the end, the function `Rec_c` runs `D_along` over a period of time, effectively producing an archaeological record. In the function `Rec_c` the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can use the modeled values (with the functions above) as an input to this function, or introduce them directly, for example, in the case that fix population rates per year were preferred.
 
+<br>
+
+```{r, echo=FALSE}
+?Rec_c
+```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/natural_deposition.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/natural_deposition.Rmd', '.')
 ```
 
-### Example and simulation
+As before, you can check the code here:
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='natural_deposition.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
+
+
+
+## Example and simulation
 
 With the above functions, the user can model (1) a generative demographic process, (2) how many samples would a group of people produce in a site, according to different constraints and (3) how those dates distribute along the depth of a site under the assumption that there has not been any kind of record loss or post-depositional process (this will be modelled in a second layer of modelling).
 
-However, in order to account for the chronological occupation of the site, a demographic process must be produced, where the sample is generated accordingly. The following functions consider this.
-
-In the function `Rec_c` the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can used the modeled values (with the functions above) as an input to this function, or introduce them directly, for example, in the case that fix population rates per year were preferred.
-
-```{r}
-## Function 6. Stochastic population generation
-#' @title Stochastic population generation
-#' It reproduces the population stochastic process. The result is a vector with the 
-#' number of individuals for each year.
-#' @param pop_size Integer, the initial population
-#' @param K Only if model_pop = TRUE. In this case, it is the carrying capacity
-#' @param ts Time-span, the number of years considered for the process
-#' @param prob Probability that an individual will die if total population
-#' exceeds K. Default is 0.8
-#' @param ... Additional arguments passed to [Gpd()], and in turn to [death()]
-#' @return A vector with the population size for each year from 1 to ts
-#' @export
-Pop_stoch <- function(pop_size, K, ts, prob = 0.8, ...){
-  
-  ## Create initial population
-  pop_matrix <- data.frame(
-    "Age" = sample(10:30, pop_size, 10:30, replace = TRUE),
-    "Sex" = sample(c("M","F"), pop_size, prob = c(0.5,0.5), replace = TRUE)
-  )
-  
-  # Initialize vector with population size for each year  
-  pop <- vector(length=ts)
-  pop[0] <- nrow(pop_matrix)
-  ## Run stochastic process  
-  for (i in 1:ts){
-    pop_matrix <- Gpd(pop_matrix, K=K, prob=prob, ...)
-    pop[i] <- nrow(pop_matrix)
-  }
-  
-  return(pop)
-}
-
-## Function 7. Generate archaeological deposition record over time and depth
-#' @title Generate archaeological deposition record over time and depth
-#' It iterates over D_along to spread the amount of samples produced at each time point over different profundities
-#' @param x Vector with the number of samples per year. As produced as produced by iterating over A_rates.
-#' @param area Only if persqm = TRUE. In this case, the total area of the site 
-#' must be provided
-#' @param ts Time-span, the number of years considered for the process
-#' @param InitBP Initial year considered for the process. In BP.
-#' @param persqm If TRUE, the total record is divided by the area of the site
-#' (in square meters), so that the output is per square meter. Default is FALSE
-#' @param ... This function uses the functions `D_along()`. The additional 
-#' arguments can be added.
-#' @return A square matrix of size ts. It contains the amount of samples deposited at each year (columns) and each depth (rows)
-#' @export
-Rec_c <- function(x, area, ts, InitBP, persqm = FALSE,...){
-  
-  ## Whether sqm division must be included or not
-  if (persqm == TRUE){
-    x <- x / area
-  }
-  
-  ## Spread dates along different depths
-  matdim <- length(x)
-  mat <- matrix(nrow=matdim, ncol=matdim)
-  
-  for (i in 1:matdim){
-    new <- D_along(x[i], ...)
-    st <- i - 1
-    pos <- c(rep(0, st), new)
-    pos <- pos[1:matdim]
-    mat[, i] <- pos
-  }
-  mat[is.na(mat)] <- 0
-  
-  ## Names for columns (each year)
-  years <- seq(InitBP, InitBP-ts)
-  nyears <- c()
-  for (i in 1:matdim){
-    nyears[i] <- paste0(years[i], " BP")
-  }
-  colnames(mat) <- nyears
-  
-  ## Names for rows (each depth)
-  # Extract arguments as a list
-  extract_args <- function(x, ...){ 
-    extras <- list(...)
-    return(list(extras=extras)) 
-  }
-
-  dr <- extract_args(D_along, ...)
-  dr <- dr$extras$r
-  
-  d <- rev(cumsum(rep(dr, nrow(mat)))) ## computes depths
-  rownames(mat) <- paste0("d = ", d, " cm")
-
-  return(mat)
-}
-
-```
-
-After this, we can start the simulation with the parameters seen below (or defaults in function definitions above). To sum up, these are the steps of the simulation:
+We can start the simulation with the parameters seen below (or defaults in function definitions above). To sum up, these are the steps of the simulation:
 
 1.  $Pop$-protocol. Using `Pop_stoch`, we generate a stochastic population dynamic that will give us the number of individuals for each year.
 2.  $A$-protocol. Knowing the population size per year, we apply `A_rates` to each of them and generate the anthropogenic deposition, and get the number of samples per year.
-3.  $D$-protocol. Knowing how many samples are generates each year, using Rec_c, we distribute them along the depth record.
+3.  $D$-protocol. Knowing how many samples are generates each year, using `Rec_c`, we distribute them along the depth record.
 
 ```{r}
 set.seed(1234)
