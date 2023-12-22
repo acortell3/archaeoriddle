@@ -13,7 +13,7 @@ do
   git --work-tree=$TARGET --git-dir=$GIT_DIR checkout -f $BRANCH
   cd $TARGET/doc/bookdown
   rm _main.Rmd
-  Rscript -e 'bookdown::render_book("index.Rmd",output_dir="/var/www/html/archaeoroddle")'
+  Rscript -e 'bookdown::render_book("index.Rmd",output_dir="/var/www/html/archaeoriddle")'
   exit $?
  else
  # perform more tasks like migrate and run test, the output of these commands will be shown on the push screen
