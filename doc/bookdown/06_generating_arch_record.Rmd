@@ -1,4 +1,4 @@
-# Generate Archaeological remaind and squares
+# Generate Archaeological remain and squares
 
 
 ## Using sites size to generate deposite
@@ -21,7 +21,8 @@ height.poly=as.polygons(height.groups)
 viable=makeValid(height.poly[2,])
 expname="data_original/general_results_selected_simu/buffattack300_K110_PSU065_3"
 onesimu=readRDS(paste0(expname,"_all.RDS"))
-sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))
+sites=readRDS(paste0(expname,"_sitesRast.RDS"))
+if(class(sites)[1]=="PackedSpatVector") sites=vect(sites)
 Nts=onesimu$Nts
 #alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[1:i,s],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = "m"))
 #allShortLoss=lapply(1:10,function(ind){Rec=alldeposit[[ind]];print(paste0("settlement #",ind));apply(Rec,2,short_loss,.6)})
@@ -91,7 +92,8 @@ height.wat[height.wat>mean(height.wat[])]=NA
 
 Nts=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
 ress=rast("data_original/resources.tiff")
-allsites=vect(readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
+allsites=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS")
+if(class(allsites)[1]=="PackedSpatVector") sites=vect(allsites)
 plotMap(height.ras,height.wat)
 plot(allsites,add=T)
 plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60)
