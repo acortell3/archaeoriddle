@@ -93,7 +93,7 @@ height.wat[height.wat>mean(height.wat[])]=NA
 Nts=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
 ress=rast("data_original/resources.tiff")
 allsites=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS")
-if(class(allsites)[1]=="PackedSpatVector") sites=vect(allsites)
+if(class(allsites)[1]=="PackedSpatVector") allsites=vect(allsites)
 plotMap(height.ras,height.wat)
 plot(allsites,add=T)
 plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60)
