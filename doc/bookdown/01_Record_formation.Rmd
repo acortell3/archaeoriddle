@@ -248,6 +248,7 @@ If you want to delve into the code of the functions you can open it here:
 ```{r, echo=FALSE, results='asis'}
 res = knitr::knit_child(input='population.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('population.Rmd')
 ```
 </details>
 
@@ -303,6 +304,7 @@ You can inspect the `A_rates` code here:
 
 ```{r, echo=FALSE, results='asis'}
 res = knitr::knit_child(input='anthropogenic_deposition.Rmd', quiet=TRUE)
+fs::file_delete('anthropogenic_deposition.Rmd')
 cat(res, sep = '\n')
 ```
 </details>
@@ -382,6 +384,7 @@ As before, you can check the code here:
 ```{r, echo=FALSE, results='asis'}
 res = knitr::knit_child(input='natural_deposition.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('natural_deposition.Rmd')
 ```
 </details>
 
