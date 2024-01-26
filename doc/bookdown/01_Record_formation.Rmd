@@ -7,7 +7,6 @@ output:
 ---
 
 ```{r, echo=FALSE, message=FALSE}
-library(printr)
 library(knitr)
 ```
 
@@ -203,14 +202,6 @@ This simulation for the creation of the archaeological record has been divided i
 
 In order to fully understand the process, first we will show the protocols and functions used. To start with, let's load the package with the functions functions:
 
-```{r}
-library(archaeoriddle)
-```
-```{r, echo=FALSE}
-help.search(
-  '(Gpd)|(death)|(K_lim)|(Pop_stoch)|(A_rates)|(D_along)',
-  package = 'archaeoriddle')
-```
 
 ### Population $Pop$-protocol
 

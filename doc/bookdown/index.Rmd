@@ -40,13 +40,14 @@ bookdown::render_book(".")
 List of packages to install
 
 ```{r packages}
-needed=c("DiagrammeR","viridis","terra","sf","igraph",'bookdown')
+needed=c("DiagrammeR","viridis","terra","sf","igraph",'bookdown',"knitr")
 success=sapply(needed,require,character.only=T)
-sapply(needed[!success],install.packages)
+inst=sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
+stopifnot(all(success))
 ```
 
 
 ```{r write-bib, include=FALSE}
-knitr::write_bib(c(.packages(), 'bookdown'), 'packages.bib')
+knitr::write_bib(.packages(), 'packages.bib')
 ```
