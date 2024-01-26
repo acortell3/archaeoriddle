@@ -211,7 +211,7 @@ plot(coastline, col=NA, bgc=adjustcolor("cyan", .1), add=T)
 
 ```
 
-In order to produce file to be given to people we need a couple of line of code that should be run online when a satisfying environment has been found:
+In order to produce file to be given to people we need a couple of line of code that should be run only when a satisfying environment has been found:
 
 ```{r, eval=F}
 # st_write(dsn="coastline2.shp",coastline)
