@@ -28,10 +28,6 @@ library(magrittr)
 knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE)
 ```
 
-```{r write-bib, include=FALSE}
-knitr::write_bib(c(.packages(), 'bookdown','tidyverse'), 'packages.bib')
-```
-
 This is a very first draft to setup a github hook that compile a bookdown in a private space
 
 To compile the book:
@@ -44,11 +40,13 @@ bookdown::render_book(".")
 List of packages to install
 
 ```{r packages}
-needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader")
+needed=c("DiagrammeR","viridis","terra","sf","igraph",'bookdown')
 success=sapply(needed,require,character.only=T)
 sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
 ```
 
 
-
+```{r write-bib, include=FALSE}
+knitr::write_bib(c(.packages(), 'bookdown'), 'packages.bib')
+```
