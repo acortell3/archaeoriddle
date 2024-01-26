@@ -25,6 +25,7 @@ favicon: "favicon.ico"
 ```{r setup, include=FALSE}
 library(magrittr)
 
+library(archaeoriddle)
 knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE)
 ```
 
@@ -40,7 +41,7 @@ bookdown::render_book(".")
 List of packages to install
 
 ```{r packages}
-needed=c("DiagrammeR","viridis","terra","sf","igraph",'bookdown',"knitr")
+needed=c("DiagrammeR","viridis","terra","sf","igraph",'bookdown',"knitr","printr")
 success=sapply(needed,require,character.only=T)
 inst=sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
