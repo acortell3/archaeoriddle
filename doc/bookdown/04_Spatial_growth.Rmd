@@ -376,10 +376,7 @@ Step by step to allow interaction between sites:
 ```{r,eval=T,messages=F}
 ## Run stochastic process  
 
-
-#par(mfrow=c(2,1))
-i=ncol(Nts)
-plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
+plot(1,1,type="n",xlim=c(0,nrow(Nts)),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
 lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
 
 ```
