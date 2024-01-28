@@ -13,17 +13,19 @@ with a logistic function.
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/logistic_decay.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/logistic_decay.Rmd', 'spin_functions/')
+fs::file_move('../../R/logistic_decay.Rmd', '.')
 ```
 
 Here's the code for the generation of resources under logistic decay 
 <details><summary>Show code</summary>
 **Code**
 ```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='spin_functions/logistic_decay.Rmd', quiet=TRUE)
+res = knitr::knit_child(input='logistic_decay.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('logistic_decay.Rmd')
 ```
 </details>
+
 <br>
 
 ```{r}
@@ -108,7 +110,7 @@ Nts <- initlistsites(Ips, ts=ts)
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/init_simulation.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/init_simulation.Rmd', 'spin_functions/')
+fs::file_move('../../R/init_simulation.Rmd', '.')
 ```
 
 You can see the code of `initKs`, `initpopstruct` and `initlistsites` functions here:
@@ -116,8 +118,9 @@ You can see the code of `initKs`, `initpopstruct` and `initlistsites` functions 
 **Code**
 
 ```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='spin_functions/init_simulation.Rmd', quiet=TRUE)
+res = knitr::knit_child(input='init_simulation.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('init_simulation.Rmd')
 ```
 </details>
 
@@ -251,15 +254,16 @@ onesimu <- run_simulation(
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/run_simulation.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/run_simulation.Rmd', 'spin_functions/')
+fs::file_move('../../R/run_simulation.Rmd', '.')
 ```
 
 Check the code of the simulation functions here:
 <details><summary>Show code</summary>
 **Code**
 ```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='spin_functions/run_simulation.Rmd', quiet=TRUE)
+res = knitr::knit_child(input='run_simulation.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('run_simulation.Rmd')
 ```
 </details>
 

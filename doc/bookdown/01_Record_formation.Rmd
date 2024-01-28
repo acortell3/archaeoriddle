@@ -248,17 +248,21 @@ In order to account for the chronological occupation of the site, a demographic 
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/population.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/population.Rmd', 'spin_functions/')
+fs::file_move('../../R/population.Rmd', '.')
 ```
 
 If you want to delve into the code of the functions you can open it here:
 <details><summary>Show code</summary>
 **Code**
 ```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='spin_functions/population.Rmd', quiet=TRUE)
+res = knitr::knit_child(input='population.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('population.Rmd')
 ```
 </details>
+
+
+
 
 ### Anthropogenic deposition $A$-protocol
 
@@ -303,7 +307,7 @@ This protocol is captured in the following function:
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/anthropogenic_deposition.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/anthropogenic_deposition.Rmd', 'spin_functions/')
+fs::file_move('../../R/anthropogenic_deposition.Rmd', '.')
 ```
 
 You can inspect the `A_rates` code here:
@@ -311,8 +315,9 @@ You can inspect the `A_rates` code here:
 **Code**
 
 ```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='spin_functions/anthropogenic_deposition.Rmd', quiet=TRUE)
+res = knitr::knit_child(input='anthropogenic_deposition.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('anthropogenic_deposition.Rmd')
 ```
 </details>
 
@@ -382,15 +387,16 @@ At the end, the function `Rec_c` runs `D_along` over a period of time, effective
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/natural_deposition.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/natural_deposition.Rmd', 'spin_functions/')
+fs::file_move('../../R/natural_deposition.Rmd', '.')
 ```
 
 As before, you can check the code here:
 <details><summary>Show code</summary>
 **Code**
 ```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='spin_functions/natural_deposition.Rmd', quiet=TRUE)
+res = knitr::knit_child(input='natural_deposition.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('natural_deposition.Rmd')
 ```
 </details>
 

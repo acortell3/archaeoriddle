@@ -196,17 +196,19 @@ This layer of the model is less complex than the previous one. In this case, we 
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/record_loss.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/record_loss.Rmd', 'spin_functions/')
+fs::file_move('../../R/record_loss.Rmd', '.')
 ```
 
 You can check the code for the short and long-term loss functions here:
 <details><summary>Show code</summary>
 **Code**
 ```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='spin_functions/record_loss.Rmd', quiet=TRUE)
+res = knitr::knit_child(input='record_loss.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
+fs::file_delete('record_loss.Rmd')
 ```
 </details>
+
 <br>
 
 Once this is done, it is fairly easy to recompute the remaining record, and show it in the same terms as before. In this case, we have computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can heck how the model work and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). 
