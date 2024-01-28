@@ -1,0 +1,39 @@
+
+```{r}
+## Function 14. Initial carrying capacity
+initKs <- function(Kbase=c("HG"=30,"F"=120), sites, ressources,
+                   sizeexp=NULL, rate=.5){
+  Ks <- round(Kbase[sites$culture] + rnorm(length(sites), 0, 10))
+  while(any(Ks<1)){
+    Ks <- round( Kbase[sites$culture] + rnorm(length(sites), 0, 10) )
+  }
+  #Ks[sites$culture=="F"]=Ks[sites$culture=="F"]*runif(sum(sites$culture=="F"),1,1)
+  tmp <- Ks * (1 + extract(ressources, sites)[, 2])
+  if(!is.null(sizeexp)){
+    tmp[sites$culture==sizeexp] <- (
+      (Ks[sites$culture==sizeexp]) *
+        (1 + rexp(sum(sites$culture==sizeexp), rate=rate) * extract(ressources, sites[sites$culture==sizeexp])[,2])
+    )
+  }
+  tmp
+}
+
+
+ 
+## Function 15. Create population matrix
+initpopstruc <- function(n=100, ages=10:30, p_sex=c(0.5, 0.5)){
+  initpop = data.frame(
+    "Age" = sample(ages, n, ages, replace = TRUE),
+    "Sex" = sample(c("M", "F"), n, prob = p_sex, replace = TRUE))   
+  return(initpop)
+}
+
+
+## Function 16. Initialize initial list of sites
+initlistsites <- function(list_sites, ts=200){
+  Nts <- matrix(0, nrow=ts+1, ncol=length(list_sites))
+  Nts[1,] <- sapply(list_sites, nrow)
+  return(Nts)
+}
+```
+

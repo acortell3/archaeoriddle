@@ -1,250 +1,18 @@
 ---
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
   always_allow_html: true
 ---
 
-```{r, echo = FALSE}
-# We need to load again the functions and get the simulation results from chapter 1
-# to be able to use them again in this chapter
 
-# Function 1.
-Gpd <- function(x, K, W_fert_age = c(10, 45), M_fert_age = c(15, 55),
-                p_offspring = 0.3, prob = 0.8, ...){
-  
-  ### Process of having offspring
-  
-  # Female fertile population
-  W <- x[x[,2]=="F", ]
-  W_fert <- W[W$Age > W_fert_age[1] & W$Age < W_fert_age[2], ]
-  # Male fertile population
-  M <- x[x[,2]=="M", ]
-  M_fert <- M[M$Age > M_fert_age[1] & M$Age < M_fert_age[2], ]
-  
-  ## Probability of having descendance per woman
-  # Penalisation in case there are too few men
-  pen <- round(nrow(M_fert)*2 / nrow(W_fert), 2) ## Assumes one man can have two women
-  pen[pen>1] <- 1 ## The men penalisation can never multiply the birth rate per woman
-  
-  ## Probability of a woman having a son per year
-  p_offspring <- p_offspring*pen
-  
-  # Aging process. They get one year older
-  x$Age <- x$Age+1
-  
-  ### Births are new population that's added
-  n_offspring <- sum(rbinom(nrow(W_fert), 1, p_offspring))
-  new_pop <- data.frame(
-    "Age" = rep(0, n_offspring),
-    "Sex" = sample(c("M","F"), n_offspring, prob=c(0.5, 0.5), replace=TRUE))
-  x <- rbind(x, new_pop)
-  
-  ### Process of dying
-  vec_d <- apply(x, 1, death, ...)
-  x <- x[vec_d==0, ]
-  
-  ## Apply carrying capacty restrictions
-  x <- K_lim(x, K = K, prob = prob)
-  
-  return(x)
-}
+```{r, echo=FALSE, message=FALSE}
+library(archaeoriddle)
+library(printr)
+library(knitr)
+```
 
-
-# Function 2.
-death <- function(x, pd=data.frame("Age" = c(0:99),
-                                   "P_d" = c(rep(0.14,1),
-                                             rep(0.16,4),
-                                             rep(0.05,5),
-                                             rep(0.01,24),
-                                             rep(0.03,14),
-                                             rep(0.1,10),
-                                             rep(0.3,42)))){
-  age <- as.numeric(x[1])
-  return(rbinom(1, 1, prob=pd[pd$Age==age, 2]))
-}
-
-
-# Function 3.
-K_lim <- function(x, K, prob=0.8){
-  p <- nrow(x)
-  if (p>K){
-    o <- rbinom(p-K, 1, prob)
-    o <- sum(o[o==1])
-    o[o==0] <- 1 ## Avoids problem eliminating all the df if remove == 0
-    x <- x[-sample(1:nrow(x), o, replace=FALSE), ]
-  }
-  return(x)
-}
-
-
-# Function 4.
-A_rates <- function(x,
-                    kcalpers = 2,
-                    kcalmeat_eat = 0.45,
-                    kcalmeat_prod = 1.5,
-                    in_camp_eat = 0.55,
-                    in_camp_stay = 13,
-                    kg = 0.07){
-  
-  
-  if (is.data.frame(x) == TRUE){
-    P <- nrow(x)
-  } else if (length(x) == 1){
-    P <- x
-  } else {
-    P <- length(x)
-  }
-  
-  # Check variable values are within the defined ranges
-  if (1.5 <= kcalpers & kcalpers <= 2.5){
-    B <- kcalpers*365
-  } else {
-    stop('kcalpers must be within [1.5, 2.5]')
-  }
-  
-  if (0 <= kcalmeat_eat & kcalmeat_eat <= 1) {
-    M <- kcalmeat_eat
-  } else {
-    stop('kcalmeat_eat must be within [0, 1]')
-  }
-  
-  if (1 <= kcalmeat_prod & kcalmeat_prod < 2.5) {
-    R <- kcalmeat_prod
-  } else {
-    stop('kcalmeat_prod must be within [1, 25]')
-  }
-  
-  if (0 <= in_camp_eat & in_camp_eat <= 1){
-    S <- in_camp_eat
-  } else {
-    stop('in_camp_eat must be within [0, 1]')
-  }
-  
-  if (in_camp_stay <= 52){
-    O <- round(in_camp_stay/52,2)
-  } else {
-    stop('A year cannot have more than 52 weeks')
-  }
-
-  C <- B*M
-  G <- (C * S) / R ## Quantity (in kg) of animal consumed per person in camp during year t
-  A <- P * O * kg * G ## kilograms of meat consumed within a camp by the group
-  W <- round((1000 * A) / 4) ## samples extracted from that meat
-  
-  return(W)
-}
-
-
-# Function 5.
-D_along <- function(W_t, r, max_bone_thickness = c("m", 's', 'l', 'vl'),
-                    prop_buried = .9999){
-  
-  # Define parameter r
-  if(r > 0.5) stop("values > 0.5 are not accepted for param 'r'")
-  r <- round(r, 1)
-  # Constraints for parameter Pb
-  if (prop_buried >= 1) stop("Pb must be lower than 1")
-  
-  # Define parameter Max_bone_thickness (L)
-  max_bone_thickness = match.arg(max_bone_thickness)
-  if (max_bone_thickness == 's'){
-    L <- 2.5
-  } else if (max_bone_thickness == 'm'){
-    L <- 5
-  } else if (max_bone_thickness == 'l'){
-    L <- 10
-  } else if (max_bone_thickness == 'vl'){
-    L <- 20
-  }
-  
-  # Define tmax
-  tm <- L/r
-  # Estimate lambda
-  l <- -log(1 - prop_buried) / tm
-  
-  ss <- rep(0, round(tm)) ## Vector to distribute samples over
-  tl <- 0 # Year where the sample is deposited
-  tu <- 1 # Year when it is covered
-  
-  for (i in 1:tm){
-    Wb <- W_t * (1 - exp(-l*(tu-tl))) # Apply formula for tu
-    Wbprev <- W_t * (1 - exp(-l*((tu-1)-tl))) # Calculate for previous to tu
-    ss[i] <- round(Wb - Wbprev) # Number of samples for each year
-    tu <- tu + 1
-  }
-  
-  return(ss)
-}
-
-
-# Function 6.
-Pop_stoch <- function(pop_size, K, prob = 0.8, ts, ...){
-  
-  ## Create initial population
-  pop_matrix <- data.frame(
-    "Age" = sample(10:30, pop_size, 10:30, replace = TRUE),
-    "Sex" = sample(c("M","F"), pop_size, prob = c(0.5,0.5), replace = TRUE)
-  )
-  
-  # Initialize vector with population size for each year  
-  pop <- vector(length=ts)
-  pop[0] <- nrow(pop_matrix)
-  ## Run stochastic process  
-  for (i in 1:ts){
-    pop_matrix <- Gpd(pop_matrix, K=K, prob=prob, ...)
-    pop[i] <- nrow(pop_matrix)
-  }
-  
-  return(pop)
-}
-
-
-## Function 7.
-Rec_c <- function(x, persqm = FALSE, area, ts, InitBP, ...){
-  
-  ## Whether sqm division must be included or not
-  if (persqm == TRUE){
-    x <- x / area
-  }
-  
-  ## Spread dates along different depths
-  matdim <- length(x)
-  mat <- matrix(nrow=matdim, ncol=matdim)
-  
-  for (i in 1:matdim){
-    new <- D_along(x[i], ...)
-    st <- i - 1
-    pos <- c(rep(0, st), new)
-    pos <- pos[1:matdim]
-    mat[, i] <- pos
-  }
-  mat[is.na(mat)] <- 0
-  
-  ## Names for columns (each year)
-  years <- seq(InitBP, InitBP-ts)
-  nyears <- c()
-  for (i in 1:matdim){
-    nyears[i] <- paste0(years[i], " BP")
-  }
-  colnames(mat) <- nyears
-  
-  ## Names for rows (each depth)
-  # Extract arguments as a list
-  extract_args <- function(x, ...){ 
-    extras <- list(...)
-    return(list(extras=extras)) 
-  }
-
-  dr <- extract_args(D_along, ...)
-  dr <- dr$extras$r
-  
-  d <- rev(cumsum(rep(dr, nrow(mat)))) ## computes depths
-  rownames(mat) <- paste0("d = ", d, " cm")
-
-  return(mat)
-}
-
+```{r, echo=FALSE}
 
 set.seed(1234)
 # 1. Pop-protocol
@@ -409,53 +177,37 @@ cor.test(Ss,Th_ss)
 
 ```
 
+
 ## Implementation
-This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are as follows
+This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are used as follows.
 
-```{r}
+<br>
 
-## Function 8. Short term taphonomic loss
-#' @title Short-term taphonomic loss
-#' Returns a data frame in the same form that the inserted data frame with 
-#' reduced values for short-term taphonomic loss process
-#' @param x: A vector with the amount of samples per depth, at a specific years.
-#' If used for many years, use with apply function, where the rows of the data
-#' frame are the depths and the columns the years.
-#' @param theta_s: Probability of the record surviving after the first year after deposition
-#' @export
-short_loss <- function(x, theta_s){
-  res <- c()
-  for (i in 1:length(x)){
-    res[i] <- rbinom(1, x[i], theta_s)
-  }
-  return(res)
-}
+```{r, echo=FALSE}
+?short_loss
+```
+<br>
 
-## Function 9. Long term taphonomic loss
-#' @title Long-term taphonomic loss
-#' Returns a data frame in the same form that the inserted data frame with 
-#' reduced values for short-term taphonomic loss process
-#' @param x: A vector with the amount of sample per depth. If used for many years, use
-#' with apply function, where the rows of the data frame are the depths and the columns 
-#' the years.
-#' @param theta_l: Probability of the record surviving after the first year after deposition
-#' @param it: Initial time. Initial year of occupation in BP.
-#' @export
-long_loss <- function(x, theta_l, it){
-  t <- it+1950
-  for (i in 1:ncol(x)){
-    prob <- theta_l^(t-i)
-    s <- x[, i]
-      for (k in 1:length(s)){
-        s[k] <- rbinom(1, s[k], prob)
-               
-      }
-    x[, i] <- s  
-  }
-  return(x)
-}
+```{r, echo=FALSE}
+?long_loss
+```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/record_loss.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/record_loss.Rmd', 'spin_functions/')
 ```
 
+You can check the code for the short and long-term loss functions here:
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='spin_functions/record_loss.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
+<br>
 
 Once this is done, it is fairly easy to recompute the remaining record, and show it in the same terms as before. In this case, we have computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can heck how the model work and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). 
 
@@ -466,7 +218,7 @@ tlRec <- t(lRec)
 ```
 
 
-```{r, echo = FALSE}
+```{r, message=FALSE}
 library(viridis)
 barplot(tlRec[c(1:4,77:79),], col = viridis(10), legend = colnames(Rec)[c(1:4,77:79)],
         xlab = "Depth", ylab = "nsamples", main = "Distribution of specific years along depth with population")

@@ -1,0 +1,10 @@
+
+```{r}
+## Fucntion 13. Logistic decay for resource generation
+logisticdecay <- function(pt, rast, L=1, k=0.0001, x0=60000){
+  ds <- distance(rast, pt)
+  logdec = L-L/(1+exp(-k*(ds-x0)))
+  return(logdec)
+}
+```
+

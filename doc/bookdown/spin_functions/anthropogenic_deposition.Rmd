@@ -1,0 +1,60 @@
+
+```{r}
+## Function 5. Simulate anthropogenic deposition
+A_rates <- function(x,
+                    kcalpers = 2,
+                    kcalmeat_eat = 0.45,
+                    kcalmeat_prod = 1.5,
+                    in_camp_eat = 0.55,
+                    in_camp_stay = 13,
+                    kg = 0.07){
+  
+  
+  if (is.data.frame(x) == TRUE){
+    P <- nrow(x)
+  } else if (length(x) == 1){
+    P <- x
+  } else {
+    P <- length(x)
+  }
+  
+  # Check variable values are within the defined ranges
+  if (1.5 <= kcalpers & kcalpers <= 2.5){
+    B <- kcalpers*365
+  } else {
+    stop('kcalpers must be within [1.5, 2.5]')
+  }
+  
+  if (0 <= kcalmeat_eat & kcalmeat_eat <= 1) {
+    M <- kcalmeat_eat
+  } else {
+    stop('kcalmeat_eat must be within [0, 1]')
+  }
+  
+  if (1 <= kcalmeat_prod & kcalmeat_prod < 2.5) {
+    R <- kcalmeat_prod
+  } else {
+    stop('kcalmeat_prod must be within [1, 25]')
+  }
+  
+  if (0 <= in_camp_eat & in_camp_eat <= 1){
+    S <- in_camp_eat
+  } else {
+    stop('in_camp_eat must be within [0, 1]')
+  }
+  
+  if (in_camp_stay <= 52){
+    O <- round(in_camp_stay/52,2)
+  } else {
+    stop('A year cannot have more than 52 weeks')
+  }
+  
+  C <- B*M
+  G <- (C * S) / R ## Quantity (in kg) of animal consumed per person in camp during year t
+  A <- P * O * kg * G ## kilograms of meat consumed within a camp by the group
+  W <- round((1000 * A) / 4) ## samples extracted from that meat
+  
+  return(W)
+}
+```
+

@@ -25,8 +25,11 @@ favicon: "favicon.ico"
 ```{r setup, include=FALSE}
 library(magrittr)
 
-library(archaeoriddle)
 knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE)
+```
+
+```{r write-bib, include=FALSE}
+knitr::write_bib(c(.packages(), 'bookdown','tidyverse'), 'packages.bib')
 ```
 
 This is a very first draft to setup a github hook that compile a bookdown in a private space
@@ -41,14 +44,11 @@ bookdown::render_book(".")
 List of packages to install
 
 ```{r packages}
-needed=c("DiagrammeR","viridis","terra","sf","igraph",'bookdown',"knitr","printr")
+needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader")
 success=sapply(needed,require,character.only=T)
-inst=sapply(needed[!success],install.packages)
+sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
-stopifnot(all(success))
 ```
 
 
-```{r write-bib, include=FALSE}
-knitr::write_bib(.packages(), 'packages.bib')
-```
+

@@ -99,7 +99,7 @@ warcasualties=onesimu$warcasualties
 Plot the sites at the beginning 
 
 ```{r plotinitialcondition,cache=F}
-source("tools.R")
+# source("tools.R")
 
 #expname="general_results_selected_simu/buffattack300_K110_PSU065_3"
 #sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))

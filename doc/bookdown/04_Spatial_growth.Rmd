@@ -1,281 +1,126 @@
-# Populatin grow on multiple sites
+# Population growth on multiple sites
 
-All the function below are mere illustration, the exact functions, used for the final simulations are in `tools.R`
+## Environmental resources
+We generate zones of high resources, that will attract settlements and support higher K.
+The resources will be located at given hotspots with an area around in which they decay
+with a logistic function.
 
-```{r,eval=F}
-## Function 11. Logistic decay
-#' @title Logistic decay
-#' @param pt a vector point around witch decay is computed
-#' @param rast a raster to compute distances
-#' @param L starting point of decay
-logisticdecay <- function(pt, rast, L = 1, k = 0.0001, x0 = 60000){
-  ds <- distance(rast, pt)
-  decay <- L-L/(1+exp(-k*(ds-x0)))
-  return(decay)
-}
-
-## Function 12. Create population matrix
-#' @title Create initial population matrix
-#' @param n number of individuals
-#' @param ages initial ages
-#' @param p_sex proportion of the different sex
-#' @return a dataframe with age and sex of every individual of the population
-initpopstruc <- function(n=100, ages=10:30, p_sex=c(0.5,0.5)){
-  data.frame("Age" = sample(ages, n, ages, replace = TRUE),
-             "Sex" = sample(c("M", "F"), n, prob=p_sex, replace=TRUE))
-}
-
-## Function 13. Create initial list of sites
-#' @title Create initial list of sites
-#' @param list_sites a list of population for all initial sites of the simulation
-#' @param ts length of simulation
-initlistsites <- function(list_sites, ts = 200){
-  Nts <- matrix(0, nrow=ts + 1, ncol=length(list_sites))
-  Nts[1,] <- sapply(list_sites, nrow)
-  return(Nts)
-}
-
-
-#
-# This should be change by a funciton that allow to:
-# sample the existing pop and kill some, swapp between two pop
-
-## Function 14. Samples through an existing population
-#' @title Sample through an existing population
-#'
-#' @param loosingPop population matrix that will loose members
-#' @param winingPop population matrix that will gain members (optional)
-#' @param size size of moving/killed population
-#' @param new 
-#' @param method 
-#' @param probs Density function to generate probabilities of dying
-#' according to age. Default is dnorm with age as quantiles 
-#' @param prob.option List with elements `mean` and `sd` to use in the `prob` function
-#' @return Updated loosing and winning populations
-#' @export
-#'
-#' @examples
-changePopSize <- function(
-  loosingPop, winingPop = NULL, size, new = F, method = "random",
-  probs = dnorm, prob.option = list("sd"=10, "mean"=22)
-  ) {
-  #print(dim(loosingPop))
-  #if(!is.null(winingPop))
-  #    print(dim(winingPop))
-  #if(length(size)==0 || size==0)return(data.frame(Age=numeric(),Sex=character()))
-  if(nrow(loosingPop)==0){ 
-    kill <- 0
-  } else if(method=="random"){
-    kill <- sample(
-      x=1:nrow(loosingPop), size=size,
-      prob=probs(
-        loosingPop$Age, mean=prob.option$mean, sd=prob.option$sd))
-  }
-  #print(paste("diff",nrow(popdistrib)-size,"new",size))
-  if(!is.null(winingPop)){
-    winingPop <- rbind(winingPop, loosingPop[kill, ])
-  }
-  loosingPop=loosingPop[-kill, ]
-  if(!is.null(winingPop)) {
-    return(list(loosingPop, winingPop))
-  } else {
-    return(loosingPop)
-  }
-}
-
-# ## Function 15. Initial carrying capacity
-# #' @param Kbase baseline carrying capacity or different culturesj
-# #' @param sites raster with site and culture
-# #' @param resources a raster type for fall sites
-# initKs <- function(Kbase = c("HG"=30, "F"=120), sites, resources, sizeexp=NULL){
-#   Ks <- round( Kbase[sites$culture] + rnorm(length(sites), 0, 10) )
-#   while(any(Ks<1)) {
-#     Ks <- round( Kbase[sites$culture] + rnorm(length(sites), 0, 10) )
-#   }
-#   #Ks[sites$culture=="F"]=Ks[sites$culture=="F"]*runif(sum(sites$culture=="F"),1,1)
-#   tmp <- Ks*( 1 + extract(resources, sites)[,2] )
-#   if(!is.null(sizeexp)){
-#     tmp[sites$culture==sizeexp] <- (
-#       Ks[sites$culture==sizeexp] *
-#         (1 + rexp(sum(sites$culture==sizeexp), rate=.3) *
-#           extract(resources, sites[sites$culture==sizeexp])[, 2])
-#     )
-#   }
-#   return(tmp)
-# }
-
-
-initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources,sizeexp=NULL){
-    Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
-    while(any(Ks<1)) Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
-    #Ks[sites$culture=="F"]=Ks[sites$culture=="F"]*runif(sum(sites$culture=="F"),1,1)
-    tmp=Ks*(1+extract(ressources,sites)[,2])
-    if(!is.null(sizeexp))tmp[sites$culture==sizeexp]=Ks[sites$culture==sizeexp]*(1+rexp(sum(sites$culture==sizeexp),rate=.3)*extract(ressources,sites[sites$culture==sizeexp])[,2])
-    tmp
-}
-
-
-
-plotMap <- function(height, water, maintitle=""){
-  plot(height^1.9, col=col_ramp(50), legend=F, reset=F, main=maintitle)
-  plot(water, col="lightblue", add=T, legend=F)
-}
-
-
-#' @title Check who is touching a given site
-#' @param i index of the site checked
-#' @param sites raster with site coordinates,  cultures and karying capacityes
-#' @param homophily if true, return all sites that touch (even same culture)
-#' @param Ne population size of all sites (could be remove if Ne was stored in the raster)
-#' @return A list of sites touching site i
-#' @export
-whotouch <- function(i, sites, homophily=F, buffersize=200, Ne){
-  touch <- st_intersects(
-    st_make_valid(st_as_sf(buffer(sites[i], Ne[i]*buffersize))),
-    st_make_valid(st_as_sf(buffer(sites, Ne*buffersize))))
-  # If there are 1 or more sites touching i
-  if(length(touch)>0){
-    enemies <- unlist(touch)
-    if(homophily) {
-      enemies <- enemies[enemies!=i]
-    } else {
-      enemies <- enemies[sites$culture[enemies]!=sites$culture[i]]
-    }
-  }
-  else {
-    enemies <- NA
-  }
-  return(enemies)
-}
-
-#' @tile A simple fight between sites
-#' A function to compute lost during a fighting.
-#' Who's the winner and looser depend on population size
-#' Decrease in population size is simply calculated with a binomial and a prob
-#' of individual survival for the winner and the looser
-#' @param Ne list of population size for the fighting settlement
-#' @param a indice of the first settlement
-#' @param b indice of the second settlement
-#' @return the updated population size of both settlements engaged in the fight
-simplefight <- function(Ne, a, b){
-  # Compute who wins randomly, but based on population sizes
-  if(runif(1)<Ne[a]/(Ne[a]+Ne[b])){
-    v <- a
-    l <- b
-  }
-  else{
-    v <- b
-    l <- a
-  }
-  one <- Ne
-  Ne[v] <- rbinom(n=1, prob=.9, size=Ne[v])
-  Ne[l] <- rbinom(n=1, prob=.4, size=Ne[l])
-  print(
-    paste(
-      "victory", v, "(", one[v], "-", Ne[v], ") over",
-      l,"(", one[l], "-", Ne[l], "), total of:",
-      (one[v]-Ne[v]) + (one[l]-Ne[l]), "people"))
-  return(Ne)
-}   
-
-
-#' @tile A simple fight between sites
-#' A function to compute lost during a fighting.
-#' Who's the winner and looser depend on population size.
-#' Decrease in population size is simply calculated with a binomial and a prob
-#' of individual survival for the winner and the looser. The probabilities depend
-#' on the the relative population size of each size.
-#' @param Ne list of population size for the fighting settlement
-#' @param a indice of the first settlement
-#' @param b indice of the second settlement
-#' @return the updated population size of both settlements engaged in the fight
-fightbetterloss <- function(Ne,a,b){
-  if (runif(1)<Ne[a]/(Ne[a]+Ne[b])) {
-    v=a
-    l=b
-  }
-  else{
-    v=b
-    l=a
-  }
-  one <- Ne
-  Ne[v] <- rbinom(n=1, prob=1-Ne[l]/(Ne[v] + Ne[l]), size=Ne[v])
-  Ne[l] <- rbinom(n=1, prob=1-Ne[v]/(Ne[v] + Ne[l]), size=Ne[l])
-  print(
-    paste(
-      "victory", v, "(", one[v], "-", Ne[v], ") over",
-      l, "(", one[l], "-", Ne[l], "), total of:",
-      (one[v]-Ne[v]) + (one[l]-Ne[l]), "people"))
-  return(Ne)
-}   
-
-
-##draw a war symbole where two clans are fighting
-warpoints <- function(sites, a, b, Ne, buffersize=300, plot=T, sizewar=2) {
-    meetpoints <- crop(
-      buffer(sites[a], 1+Ne[a]*buffersize),
-      buffer(sites[b], 1+Ne[b]*buffersize)
-    )
-    if (length(meetpoints)>0) {
-      p <- spatSample(meetpoints,1)
-      if (plot & length(p)>0) {
-        plot(p, add=T, bg="red", pch="🔥", cex=sizewar,
-             col=adjustcolor("yellow", 0.1))
-        
-        plot(p, add=T, bg="yellow", pch="⚔️",cex=sizewar)
-      }
-      return(p)
-    } else NULL
-}
-
-
-
-
+```{r, echo=FALSE}
+?logisticdecay
 ```
 
 
-## Environmental resources
-We generate zone of hight resource, that will attract settlements and support higher K
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/logistic_decay.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/logistic_decay.Rmd', 'spin_functions/')
+```
+
+Here's the code for the generation of resources under logistic decay 
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='spin_functions/logistic_decay.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
+<br>
 
 ```{r}
 
-source("tools.R")
 ##ressource geolocalisation set manually
-goodresources=vect(
-                    cbind(
-                     x=c(-0.2300711,-3.1455282,-0.5086485,-1.9639755,-0.4077843,0.019688,-3.116710),
-                     y=c(3.6423000,-0.2551019,-0.7440748,1.1303214,1.0248567,0.2194895,2.0267718)
-                     )
-                    )
+goodresources <- vect(
+  cbind(
+    x=c(-0.2300711, -3.1455282, -0.5086485, -1.9639755,
+        -0.4077843, 0.019688, -3.116710),
+    y=c(3.6423000, -0.2551019, -0.7440748, 1.1303214,
+        1.0248567, 0.2194895, 2.0267718)
+  )
+)
 #spread of resources
-areas=4*c(100,2000,200,300,100,200,400)
+areas <- 4 * c(100, 2000, 200, 300, 100, 200, 400)
 #speed of ressource decay:
-ks=c(0.0002,0.0001000,0.0001600,0.0001800,0.00040,.0002,0.0002)/4
+ks <- c(0.0002, 0.0001000, 0.0001600, 0.0001800, 0.00040, .0002, 0.0002)/4
 
-crs(goodresources)=crs(height.ras)
+crs(goodresources) <- crs(height.ras)
 
-allres=lapply(seq_along(goodresources),function(i)logisticdecay(goodresources[i],mask(height.ras,viable),x=areas[i],k=ks[i]))
+allres <- lapply(
+  seq_along(goodresources),
+  function(i){
+    logisticdecay(goodresources[i], mask(height.ras, viable),
+                  x=areas[i], k=ks[i]
+    )
+  }
+)
 
-allna=sapply(allres,function(i)any(is.na(values(i))))
-allres=allres[!allna]
+allna <- sapply(allres, function(i)any(is.na(values(i))))
+allres <- allres[!allna]
 
-ress=allres[[1]]
+ress <- allres[[1]]
 for(i in 2:length(allres))
-    ress=ress+allres[[i]]
-ress=mask(ress,viable)
+    ress <- ress + allres[[i]]
+ress <- mask(ress,viable)
 plot(ress)
 ```
+
 ## Initial sites and size:
+We initialize the sites of 2 cultires, `HG` and `F`.
+
+<br>
+
+```{r, echo=FALSE}
+?initKs
+```
+<br>
+
+```{r, echo=FALSE}
+?initpopstruc
+```
+<br>
+
+```{r, echo=FALSE}
+?initlistsites
+```
+<br>
 
 ```{r,eval=T}
+ts <- 250
 #a manual way to set cultures given general geography
-cultures=rep("HG",length(sites))
+cultures <- rep("HG",length(sites))
 cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
-sites$culture=cultures
-Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
-sites$Ks=initKs(Kbase,sites,ress,sizeexp="F")
-#saveRDS(file="data_original/sitesinitialposition/",sites)
+sites$culture <- cultures
+Kbase <- c("HG"=45,"F"=120) #difference in K for the two cultures
+# The initial Ks depends on the resources in the area
+sites$Ks <- initKs(Kbase, sites, ress, sizeexp="F")
+#saveRDS(file="data_original/sitesinitialposition/", sites)
+
+# Optionally we can intialize here our list of sites and population structures
+# Otherwise, they are initialized within the run_simulation function
+# Population size at initialisation, a number close to Ks
+INs <- round(runif(length(sites), 0.85, 0.95)*sites$Ks)
+# initialise population structure for all sites
+Ips <- lapply(INs, initpopstruc)
+# Not we put the population structure across the years in a list
+Nts <- initlistsites(Ips, ts=ts)
+
 ```
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/init_simulation.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/init_simulation.Rmd', 'spin_functions/')
+```
+
+You can see the code of `initKs`, `initpopstruct` and `initlistsites` functions here:
+<details><summary>Show code</summary>
+**Code**
+
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='spin_functions/init_simulation.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
+
 
 Now we have sites with two cultures, initialise the parameters we will use:
 
@@ -287,73 +132,137 @@ Now we have sites with two cultures, initialise the parameters we will use:
 
 #initialisation
 
-ts=250
-Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
-cul_ext=c("HG"=7,"F"=6) #spatial penality to extent: lower, bigger penality
-penal_cul=c("HG"=4,"F"=5) #penality of occupational area: low, other sites can cam close
-prob_birth=c("HG"=0.3,"F"=0.5) #proba to give birth every year
-prob_survive=c("HG"=0.8,"F"=0.6) #proba to die when pop > K
-prob_split=c("HG"=.2,"F"=.6) #proba to create new settlement when Ne > K
-minimals=c("HG"=.14,"F"=.20) #how big the group of migrant should be to create a new city vs migrate to a existing one 
-prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
+ts <- 250
+# Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
 
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-height.groups=height.ras
-maxh=max(height.ras[],na.rm=T)
-height.groups[height.groups<mean(height.groups[])]=NA
-height.groups[height.groups<(maxh*.7)]=1
-height.groups[height.groups>(maxh*.7)]=200
-height.groups[is.na(height.groups)]=-1
-height.poly=as.polygons(height.groups)
-viable=makeValid(height.poly[2,])
-plotMap(height.ras,height.wat,paste0("year ",0))
-plot(sites,pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+# spatial penality to extent: lower, bigger penality
+cul_ext <- c("HG"=7, "F"=6)
+# penality of occupational area: low, other sites can come close
+penal_cul <- c("HG"=4, "F"=5)
+# proba to give birth every year
+prob_birth <- c("HG"=0.3, "F"=0.5)
+# proba to die when pop > K
+prob_survive <- c("HG"=0.8, "F"=0.6)
+# proba to create new settlement when Ne > K
+prob_split <- c("HG"=0.2, "F"=0.6)
+# how big the group of migrant should be to create a new city vs
+# migrate to a existing one
+minimals <- c("HG"=0.14, "F"=0.20)
+# prob to migrate to existing settlement when Ne > K
+prob_move <- c("HG"=0.2,"F"=0.1)
+```
+
+Let's create again our raster map from the `height.ras` from the previous chapter
+```{r}
+height.wat <- height.ras
+height.wat[height.wat>mean(height.wat[])] <- NA
+height.groups <- height.ras
+maxh <- max(height.ras[],na.rm=T)
+height.groups[height.groups<mean(height.groups[])] <- NA
+height.groups[height.groups<(maxh*.7)] <- 1
+height.groups[height.groups>(maxh*.7)] <- 200
+height.groups[is.na(height.groups)] <- -1
+height.poly <- as.polygons(height.groups)
+viable <- makeValid(height.poly[2,])
+plotMap(height.ras,height.wat,paste0("year ", 0))
+plot(sites, pch=21, add=T, bg=rainbow(2, alpha=0.6)[as.factor(sites$culture)])
 text(sites)
 ```
 
-We can run a simple simulations using this:
+The `run_simulation` function will take the raster data and parameters for the
+different populations and run for the specified number of years.
 
+<br>
+
+```{r, echo=FALSE}
+?run_simulation
+```
+<br>
+
+It uses a number of other functions to model contacts between sites, the outcomes of fights and migrations
+
+<br>
+
+```{r, echo=FALSE}
+?whotouch
+```
+<br>
+
+<br>
+
+```{r, echo=FALSE}
+?fightbetterloss
+```
+<br>
+
+<br>
+
+```{r, echo=FALSE}
+?changePopSize
+```
+<br>
+
+<br>
+
+```{r, echo=FALSE}
+?warpoints
+```
+<br>
+
+Or we can run a simple simulations using the saved elevation data.
 
 ```{r,eval=T}
 
-
-height.ras=rast("data_original/east_narnia4x.tif")
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-height.groups=height.ras
-maxh=max(height.ras[],na.rm=T)
-height.groups[height.groups<mean(height.groups[])]=NA
-height.groups[height.groups<(maxh*.7)]=1
-height.groups[height.groups>(maxh*.7)]=200
-height.groups[is.na(height.groups)]=-1
-height.poly=as.polygons(height.groups)
-viable=makeValid(height.poly[2,])
-sites=vect("data_original/sitesinitialposition/")
-ts=10
+height.ras <- rast("data_original/east_narnia4x.tif")
+height.wat <- height.ras
+height.wat[height.wat>mean(height.wat[])] <- NA
+height.groups <- height.ras
+maxh <- max(height.ras[],na.rm=T)
+height.groups[height.groups<mean(height.groups[])] <- NA
+height.groups[height.groups<(maxh*.7)] <- 1
+height.groups[height.groups>(maxh*.7)] <- 200
+height.groups[is.na(height.groups)] <- -1
+height.poly <- as.polygons(height.groups)
+viable <- makeValid(height.poly[2,])
+sites <- vect("data_original/sitesinitialposition/")
+ts <- 10
 
 print(paste0("Starting simulation ","nan"))
 
-onesimu=run_simulation (
-                           sites=sites,
-                           viable=viable,
-                           dem=height.ras,
-                           ressources=rast("data_original/resources.tiff"),
-                           water=height.wat,
-                           foldervid="nan",
-                           visu=F,visumin=F,
-                           ts=ts,#length of simulation in year
-                           Kbase=c("HG"=35,"F"=110),#difference in K for the two cultures
-                           cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
-                           penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
-                           prob_birth=c("HG"=0.3,"F"=0.5),#proba to give birth every year
-                           prob_survive=c("HG"=0.8,"F"=0.65),#proba to die when pop > K
-                           prob_split=c("HG"=.5,"F"=.6),#proba to create new settlement when Ne > K
-                           minimals=c("HG"=.14,"F"=.20),#how big the group of migrant should be to create a new city vs migrate to a existing one 
-                           bufferatack=300,#distance max around which settlement can fight
-                           prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
-                           )
+onesimu <- run_simulation(
+  sites=sites, viable=viable, dem=height.ras,
+  ressources=rast("data_original/resources.tiff"),
+  water=height.wat,
+  foldervid="nan",
+  visu=F, visumin=F,
+  ts=ts, #length of simulation in year
+  Kbase=c("HG"=35, "F"=110), #difference in K for the two cultures
+  cul_ext=c("HG"=7, "F"=6), #spatial penality to extent: lower, bigger penality
+  penal_cul=c("HG"=4, "F"=5), #penality of occupational area: low, other sites can cam close
+  prob_birth=c("HG"=0.3, "F"=0.5), #proba of giving birth every year
+  prob_survive=c("HG"=0.8, "F"=0.65), #proba of dying when pop > K
+  prob_split=c("HG"=0.5, "F"=0.6), #proba of creating a new settlement when Ne > K
+  minimals=c("HG"=0.14,"F"=0.20), #how big the group of migrant should be to create a new city vs migrate to a existing one 
+  bufferatack=300, #distance max around which settlement can fight
+  prob_move=c("HG"=0.2, "F"=0.1) #proba of migrating to existing settlement when Ne > K
+)
 ```
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/run_simulation.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/run_simulation.Rmd', 'spin_functions/')
+```
+
+Check the code of the simulation functions here:
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='spin_functions/run_simulation.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
+
 
 The list `onesimu`  contains a few interesting info:
 
@@ -366,7 +275,7 @@ warcasualties <- onesimu$warcasualties #death by war at each time step
 
 Use ressource to adjust the Ks:
 ```{r,eval=T}
-plot(sites,cex=(1+Nts[1,]/100),pch=21,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(sites$culture)])
 ```
 
 
@@ -376,69 +285,79 @@ Step by step to allow interaction between sites:
 ```{r,eval=T,messages=F}
 ## Run stochastic process  
 
-plot(1,1,type="n",xlim=c(0,nrow(Nts)),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-lapply(1:ncol(Nts),function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]]))
+
+#par(mfrow=c(2,1))
+i <- ncol(Nts)
+plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
+lapply(1:ncol(Nts),
+       function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]])
+)
 
 ```
 
 Visualise, Record deposit and  loss. for the 5 first sites
 ```{r,out.width="25%"}
-alldeposit=lapply(1:5,function(i)Rec_c(sapply(Nts[,i],A_rates), InitBP = 15000,ts=ts,r = 0.2, Max_bone_thickness = "m"))
-maxy=max(sapply(alldeposit,function(i)max(apply(i,2,sum))))
+alldeposit <- lapply(
+  1:5,
+  function(i){
+    Rec_c(sapply(Nts[,i], A_rates), InitBP = 15000, ts=ts, r=0.2, max_bone_thickness="m")
+  }
+)
+maxy <- max(sapply(alldeposit, function(i)max(apply(i,2,sum))))
 
-nill=lapply(alldeposit,function(depo)barplot(t(depo),col=viridis(ts+1),ylim=c(0,maxy)))
+nill <- lapply(alldeposit, function(depo)barplot(t(depo), col=viridis(ts+1), ylim=c(0,maxy)))
 ```
 
 Population by time and culture
 
 ```{r,eval=T}
 par(mfrow=c(2,1))
-plot(1,1,type="n",xlim=c(0,i),ylim=c(0,max(Nts)),xlab="time",ylab="popsize")
-lapply(1:ncol(Nts),function(i)lines(Nts[,i],col=rainbow(2)[as.factor(sites$culture)[i]]))
-plot(apply(Nts,1,sum)[1:i],xlab="time",ylab="popsize")
+plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)),
+     xlab="time", ylab="popsize")
+lapply(1:ncol(Nts),
+       function(i)lines(Nts[,i], col=rainbow(2)[as.factor(sites$culture)[i]]))
+plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
 
 ```
 
 
 Below some usefull code to manually select the ressource origins on the map (by clicking on the screen) and explore different decay around them
 
-```{r,eval=F}
-plotMap(height.ras,height.wat,paste0("year ",0))
-new_site=vect(as.data.frame(locator()),geom=c("x","y"))  # select point on the sscreep
-crs(new_site)=crs(height.ras)
-d2=logisticdecay(new_site,height.ras,x=20000) # generate a logistic decay around the point
+```{r, eval=F}
+plotMap(height.ras, height.wat, paste0("year ", 0))
+new_site <- vect(as.data.frame(locator()), geom=c("x", "y"))  # select point on the sscreep
+crs(new_site) <- crs(height.ras)
+d2 <- logisticdecay(new_site, height.ras, x=20000) # generate a logistic decay around the point
 
 plot(d2)
-w=(.7*d2+.3*ress)/(.7*minmax(d2)[2] + .3*minmax(ress)[2])
+w <- (0.7*d2 + 0.3*ress) / (0.7*minmax(d2)[2] + 0.3*minmax(ress)[2])
 plot(w)
-plot(mask(w*logisticdecay(new_site,height.ras,k=0.00002,x=1),territory))
-multisamp=sapply(1:1000,function(i)spatSample(x=w,size=1,method="weights",xy=T)[1:2])
+plot(mask(w*logisticdecay(new_site, height.ras, k=0.00002, x=1), territory))
+multisamp <- sapply(
+  1:1000,
+  function(i){
+    spatSample(x=w, size=1, method="weights", xy=T)[1:2]
+  }
+)
 
 
 ```
 
 Exploring some trajectories of the simulations
 
-```{r,eval=T}
-i=nrow(Nts)
-plot(apply(Nts[1:i,sites$culture=="F"],1,sum),col="red",type="l",lwd=2,ylim=c(0,max(apply(Nts,1,sum))))
- points(apply(Nts[1:i,sites$culture=="HG"],1,sum),col="blue",lwd=2,type="l")
-plot(warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="")
+```{r, eval=T}
+i <- nrow(Nts)
+plot(apply(Nts[1:i, sites$culture=="F"], 1, sum), col="red", type="l",
+     lwd=2, ylim=c(0, max(apply(Nts, 1, sum))))
+points(apply(Nts[1:i, sites$culture=="HG"], 1, sum),
+       col="blue", lwd=2, type="l")
+plot(warcasualties[1:(i-1)], lwd=2, col="green", type="h", yaxt="n", ylab="")
 axis(4)
 par(new=T)
-growF=apply(Nts[1:(i-1),sites$culture=="F"],1,sum)
-growHG=apply(Nts[1:(i-1),sites$culture=="HG"],1,sum)
-plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)))
- points(growHG,col="blue",lwd=2,type="l")
+growF <- apply(Nts[1:(i-1), sites$culture=="F"], 1, sum)
+growHG <- apply(Nts[1:(i-1), sites$culture=="HG"], 1, sum)
+plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))
+points(growHG, col="blue", lwd=2, type="l")
 ```
-
-Population density:
-
-overal: .7 
-
-or: >1 and 1.2 for Farmers
-or: <1  for Hunter Gather
-
-HG: 0.08 - 0.16
 
 

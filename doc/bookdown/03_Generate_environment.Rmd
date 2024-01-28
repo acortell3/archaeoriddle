@@ -1,128 +1,98 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 # Landscape, climate & Environment
+
+```{r, echo=FALSE, message=FALSE}
+library(printr)
+library(knitr)
+library(archaeoriddle)
+
+```
 
 ## Temperature and climate
 
-An important part of the simulation is to generate a landscape and an environment. Doing so often rely on
-Let's Create a fake environment
+An important part of the simulation is to generate a landscape and an environment.
+Doing so often rely on
+Let's Create a fake environment. We use the `environment` function, which in turns
+uses `TK95` to generate a power law noise.
 
-```{r function_autocorel}
-## Function 10. Noise from Kimmer and Koening
-#' @title Noise from Kimmer and Koening
-#' From tuneR package (implemented in the file Waveforms.R in tuneR source)
-#'
-#' Based on Timmer and Koening 1995: https://ui.adsabs.harvard.edu/abs/1995A\%26A...300..707T/abstract
-#'
-#' @param alpha: the slope of the power distribution (called omega in whitehead)
-#' @param N: the length of the timeserie to generate
-#' @export
-TK95 <- function(N, alpha = 1){ 
-    f <- seq(from=0, to=pi, length.out=(N/2+1))[-c(1,(N/2+1))] # Fourier frequencies
-    f_ <- 1 / f^alpha # Power law
-    RW <- sqrt(0.5*f_) * rnorm(N/2-1) # for the real part
-    IW <- sqrt(0.5*f_) * rnorm(N/2-1) # for the imaginary part
-    fR <- complex(real=c(rnorm(1), RW, rnorm(1), RW[(N/2-1):1]), 
-                  imaginary=c(0, IW, 0, -IW[(N/2-1):1]),
-                  length.out=N)
-    # Those complex numbers that are to be back transformed for
-    # Fourier Frequencies 0, 2pi/N, 2*2pi/N, ..., pi, ..., 2pi-1/N 
-    # Choose in a way that frequencies are complex-conjugated and symmetric around pi 
-    # 0 and pi do not need an imaginary part
-    reihe <- fft(fR, inverse=TRUE) # go back into time domain
-    return(Re(reihe)) # imaginary part is 0
-}
+<br>
 
-## Function 11. Environment generator
-#' @title Environment generator
-#' Return a list of opitmum as a "1/f-noise" of N steps with sd = delta and
-#' the slope of it's spectrum decompoistion = -omega + possibility to increase
-#' the mean of the environment at a rate vt (in wich case the slop may not be -omega)
-#' @param omega the slope of the power distribution (called omega in whitehead)
-#' @param delta the standard deviation of the global environmental fluctuation 
-#' @param N the length of the timeserie to generate
-#' @param vt if not NULL, the  mean of the optimum increase at a rate vt  
-#' @return a list of N optima theta
-#' @export
-environment <- function(N, omega, delta, vt=NULL){
-    ts <- TK95(N, omega)
-    ts <- delta * ts/sd(ts)
-    if(!is.null(vt)) {
-      ts = ts + vt*1:N
-    }
-    return(ts)
-}
-
+```{r, echo=FALSE}
+?TK95
 ```
+<br>
+
+```{r, echo=FALSE}
+?environment
+```
+<br>
 
 To generate a fake climate with various properties:
 
-
 ```{r generateFakeClimate}
 tstep <- 1000
-faketemp <- environment(tstep,omega=3,delta=1.5)+1.5
+faketemp <- environment(tstep, omega=3, delta=1.5) + 1.5
 plot(faketemp, type="l", ylab="temperature change", xlab="time")   
 ```
 
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/climate.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/climate.Rmd', 'spin_functions/')
+```
+
+You can inspect the code of `environment` and `TK95` functions here:
+<details><summary>Show code</summary>
+**Code**
+
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='spin_functions/climate.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
+
 ## Slope and Elevation
 
-This autocorelate time series can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorellation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise)
+This autocorelate time series can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorellation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise). This is the usage of the function:
 
-```{r perlinnoise}
+<br>
+
+```{r perlinnoise, echo=FALSE}
+?perlin_noise
+```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/perlin_noise.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/perlin_noise.Rmd', 'spin_functions/')
+```
+
+And you can see the code here:
+<details><summary>Show code</summary>
+**Code**
+
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='spin_functions/perlin_noise.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+```
+</details>
+
+
+Different parameters for the perlin noise will give us a higher a lower definition for our future DEM raster. Here we choose a trade off between an environment detailed enough for on a relatively wide area but small enough to be handled easily in memory.
+
+```{r perlin_noise}
 require(terra)
 require(sf)
 
-perlin_noise <- function( 
-  n = 5,   m = 7,    # Size of the grid for the vector field
-  N = 100, M = 100   # Dimension of the image
-  ) {
-  # For each point on this n*m grid, choose a unit 1 vector
-  vector_field <- apply(
-    array( rnorm( 2 * n * m ), dim = c(2,n,m) ),
-    2:3,
-    function(u) u / sqrt(sum(u^2))
-  )
-  f <- function(x, y) {
-    # Find the grid cell in which the point (x,y) is
-    i <- floor(x)
-    j <- floor(y)
-    stopifnot( i >= 1 || j >= 1 || i < n || j < m )
-    # The 4 vectors, from the vector field, at the vertices of the square
-    v1 <- vector_field[, i, j]
-    v2 <- vector_field[, i+1, j]
-    v3 <- vector_field[, i, j+1]
-    v4 <- vector_field[, i+1, j+1]
-    # Vectors from the point to the vertices
-    u1 <- c(x,y) - c(i, j)
-    u2 <- c(x,y) - c(i+1, j)
-    u3 <- c(x,y) - c(i, j+1)
-    u4 <- c(x,y) - c(i+1, j+1)
-    # Scalar products
-    a1 <- sum( v1 * u1 )
-    a2 <- sum( v2 * u2 )
-    a3 <- sum( v3 * u3 )
-    a4 <- sum( v4 * u4 )
-    # Weighted average of the scalar products
-    s <- function(p) 3 * p^2 - 2 * p^3
-    p <- s( x - i )
-    q <- s( y - j )
-    b1 <- (1-p)*a1 + p*a2
-    b2 <- (1-p)*a3 + p*a4
-    (1-q) * b1 + q * b2
-  }
-  xs <- seq(from = 1, to = n, length = N+1)[-(N+1)]
-  ys <- seq(from = 1, to = m, length = M+1)[-(M+1)]
-  return(outer( xs, ys, Vectorize(f) ))
-}
-
-```
-
-
-Different parameters for the perlin noise will give us a higher a lower definition for our future DEM raster. Here we choose a tradeoff between an environment detailled enough for on a relatively wide area but small enough to be handled easily in memory.
-
-```{r}
-a <- .6
+a <- 0.6
 k <- 8
 m <- perlin_noise(2, 2, 2^k, 2^k)
-for( i in 2:k )
+for ( i in 2:k )
   m <- m + a^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
 plot(rast(m))
 object.size(m)
@@ -145,7 +115,7 @@ Visual the map as a simple 2D raster
 
 ```{r 2dVisu}
 
-# height.ras <- rast(height, extent=c(-3.5,.5,-.5,3.5), crs="+proj=latlon")
+# height.ras <- rast(height, extent=c(-3.5, 0.5, -0.5, 3.5), crs="+proj=latlon")
 height.ras <- rast("data_original/east_narnia4x.tif")
 maxh <- max(height.ras[], na.rm=T)
 col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
@@ -159,9 +129,9 @@ plot(height.wat, col="lightblue", add=T, legend=F)
 
 If you really want to feel like being in a video game, you can play with rayshader, but its slow, tricky and you will probably loose a lot of time `¯\_(ツ)_/¯`
 
-```{r threedim,eval=F}
+```{r threedim, eval=F}
 require(rayshader)
-height_map = raster_to_matrix(raster::raster(height)) 
+height_map <- raster_to_matrix(raster::raster(height)) 
 
 hm_shade <- sphere_shade(height_map, texture = "imhof1", zscale=5) 
 hm_ray <- add_shadow(hm_shade, ray_shade(height_map, zscale = 19), 0.8) 
@@ -181,8 +151,7 @@ plot_3d(
 
 ## Settlements position
 
-Given this new landscape we can now
-Generate sites in specific location (not on mountains, not in water) with exponentially distributed size and make a network out of it.  
+Given this new landscape we can now generate sites in specific location (not on mountains, not in water) with exponentially distributed size and make a network out of it.  
 
 
 
@@ -198,20 +167,20 @@ height.groups[is.na(height.groups)] <- -1
 height.poly <- as.polygons(height.groups)
 viable <- makeValid(height.poly[2,])
 
-sites <- spatSample(viable,n)
+sites <- spatSample(viable, n)
 
 plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
 plot(height.wat, col="lightblue", add=T, legend=F)
 plot(sites, cex=2, pch=21, add=T, bg=rainbow(length(sites), alpha=.6))
 
 # get only the non submerged actual land and plot it
-above_level = height.ras > mean(height.ras[])
+above_level <- height.ras > mean(height.ras[])
 coastline <- st_as_sf(as.polygons(above_level))[2,]
-plot(coastline, col=NA, bgc=adjustcolor("cyan", .1), add=T)
+plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
 
 ```
 
-In order to produce file to be given to people we need a couple of line of code that should be run only when a satisfying environment has been found:
+In order to produce file to be given to people we need a couple of line of code that should be run online when a satisfying environment has been found:
 
 ```{r, eval=F}
 # st_write(dsn="coastline2.shp",coastline)

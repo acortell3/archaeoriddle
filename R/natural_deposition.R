@@ -74,7 +74,7 @@ D_along <- function(W_t, r, max_bone_thickness = c("m", 's', 'l', 'vl'),
 #' arguments can be added.
 #' @return A square matrix of size ts. It contains the amount of samples deposited at each year (columns) and each depth (rows)
 #' @export
-Rec_c <- function(x, area, ts, InitBP, persqm = FALSE,...){
+Rec_c <- function(x, area, ts, InitBP, persqm = FALSE, ...){
   
   ## Whether sqm division must be included or not
   if (persqm == TRUE){

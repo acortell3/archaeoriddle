@@ -1,422 +1,47 @@
 #'
 col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
-#'
 
 
-## Function 8. Short term taphonomic loss
-#' @title short_loss
-#' Returns a data frame in the same form that the inserted data frame with 
-#' reduced values for short-term taphonomic loss process
-#' @param x: A vector with the amount of sample per depth. If used for many years, use
-#' with apply function, where the rows of the data frame are the depths and the columns 
-#' the years.
-#' @param theta_s: Probability of the record surviving after the first year after deposition
-#' @export
 
-short_loss <- function(x,theta_s){
-  res <- c()
-  for (i in 1:length(x)){
-    res[i] <- rbinom(1,x[i],theta_s)
-  }
-  return(res)
-}
-
-## Function 9. Long term taphonomic loss
-#' @title long_loss
-#' Returns a data frame in the same form that the inserted data frame with 
-#' reduced values for short-term taphonomic loss process
-#' @param x: A vector with the amount of sample per depth. If used for many years, use
-#' with apply function, where the rows of the data frame are the depths and the columns 
-#' the years.
-#' @param theta_l: Probability of the record surviving after the first year after deposition
-#' @param it: Initial time. Initial year of occupation in BP.
-#' @export
-
-long_loss <- function(x, theta_l, it){
-  t <- it+1950
-  
-  for (i in 1:ncol(x)){
-    prob <- theta_l^(t-i)
-    s <- x[,i]
-    for (k in 1:length(s)){
-      s[k] <- rbinom(1,s[k],prob)
-      
-    }
-    x[,i] <- s  
-  }
-  return(x)
-}
-
-
+#' @title Extract dates
+#' @description
+#' Extract the dates from an archaeological record
+#' 
 #' @param record a full archaeological record (each line some depth, column represent year)
 #' @param years better not to use, but if used should  be equal to \code{ncol(record)}
 #' @param n final amount of sample needed
-extractDates <- function(record,years=NULL,n){
-  if(n==0) return(NULL)
+#' @export
+extractDates <- function(record, years=NULL, n){
+  if(n==0) {
+    return(NULL)
+  }
   if(is.null(years)){
-    if(is.null(colnames(record))) years=seq_along(record)
-    else years=colnames(record)
-  }
-  peryear=apply(record,2,sum) #get the total amount of datable fragement per year
-  probs=peryear/sum(peryear) #distributions years
-  probs[is.na(probs)]=0
-  return(sample(x=years,size=n,prob=probs,replace=T))
-}
-
-
-#' @param pt a vector point around witch decvay is computed
-#' @param rast a raster to compute distances
-#' @param L sstarting point of decay
-logisticdecay <- function(pt,rast,L=1,k=0.0001,x0=60000){
-  ds=distance(rast,pt)
-  (L-L/(1+exp(-k*(ds-x0))))
-}
-
-#' @param n number of individuals
-#' @param ages initial ages
-#' @param p_sex proportion of the different sex
-#' return a dataframe with age and sex of every individual of the population
-initpopstruc <- function(n=100,ages=10:30,p_sex=c(0.5,0.5)) data.frame("Age" = sample(ages,n,ages, replace = TRUE), "Sex" = sample(c("M","F"), n, prob = p_sex, replace = TRUE))   
-
-#' @param list_sites a list of population for all initial sites of the simulation
-#' @param ts length of simulation
-initlistsites <- function(list_sites,ts=200){
-  Nts=matrix(0,nrow=ts+1,ncol=length(list_sites))
-  Nts[1,]=sapply(list_sites,nrow)
-  Nts
-}
-
-
-#sample through an existing population
-#This should be change by a funciton that allow to: sample the existing pop and kill some, swapp between two pop
-#@param size size of moving/killed population
-changePopSize <- function(loosingPop,winingPop=NULL,size,new=F,method="random",probs=dnorm,prob.option=list("sd"=10,"mean"=22)) {
-  #print(dim(loosingPop))
-  #if(!is.null(winingPop))
-  #    print(dim(winingPop))
-  #if(length(size)==0 || size==0)return(data.frame(Age=numeric(),Sex=character()))
-  if(nrow(loosingPop)==0)kill=0
-  else if(method=="random")kill=tryCatch(sample(x=1:nrow(loosingPop),size=size,prob=probs(loosingPop$Age,mean=prob.option$mean,sd=prob.option$sd)),error=function(e){print(paste0("problem with population replacement for settlement of size:",nrow(loosingPop)," need to loose ",size));0})
-  #print(paste("diff",nrow(popdistrib)-size,"new",size))
-  if(!is.null(winingPop)){winingPop=rbind(winingPop,loosingPop[kill,])}
-  loosingPop=loosingPop[-kill,]
-  if(!is.null(winingPop))
-    return(list(loosingPop,winingPop))
-  else
-    return(loosingPop)
-  
-}
-
-
-#' @param Kbase baseline carrying capacity or different culturesj
-#' @param sites raster with site and culture
-#' @param ressources a raster type for fall sites
-#' @param rate, adjust proba of big cities (lower the higher) 
-initKs <- function(Kbase=c("HG"=30,"F"=120),sites,ressources,sizeexp=NULL,rate=.5){
-  Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
-  while(any(Ks<1)) Ks=round(Kbase[sites$culture]+rnorm(length(sites),0,10))
-  #Ks[sites$culture=="F"]=Ks[sites$culture=="F"]*runif(sum(sites$culture=="F"),1,1)
-  tmp=Ks*(1+extract(ressources,sites)[,2])
-  if(!is.null(sizeexp))tmp[sites$culture==sizeexp]=Ks[sites$culture==sizeexp]*(1+rexp(sum(sites$culture==sizeexp),rate=rate)*extract(ressources,sites[sites$culture==sizeexp])[,2])
-  tmp
-}
-
-plotMap <- function(height,water,maintitle=""){
-  plot(height^0.36,col=col_ramp(255),legend=F,reset=F,main=maintitle )
-  plot(water,col="lightblue",add=T,legend=F)
-}
-
-
-#' check who's touchin site i
-#' @param i indice of the site checked
-#' @param sites raster with site coordinates,  cultures and karying capacityes
-#' @param homophily if true, return all sites that touch (even same culture)
-#' @param Ne population size of all sites (could be remove if Ne was stored in the raster)
-whotouch <- function(i,sites,homophily=F,buffersize=200,Ne){
-  touch=st_intersects(st_make_valid(st_as_sf(buffer(sites[i],Ne[i]*buffersize))),st_make_valid(st_as_sf(buffer(sites,Ne*buffersize))))
-  if(length(touch)>0){
-    enemies=unlist(touch)
-    if(homophily) enemies=enemies[enemies!=i]
-    else enemies=enemies[sites$culture[enemies]!=sites$culture[i]]
-  }
-  else enemies=NA
-  enemies
-}
-
-#' @tile simplefight
-#' A function to compute lost during a fighting
-#' return the updated population size of both settlements engaged in the fight
-#' @param Ne list of population size for the fighting settlement
-#' @param a indice of the first settlement
-#' @param b indice of the second settlement
-simplefight <- function(Ne,a,b){
-  if(runif(1)<Ne[a]/(Ne[a]+Ne[b])){
-    v=a
-    l=b
-  }
-  else{
-    v=b
-    l=a
-  }
-  one=Ne
-  Ne[v]=rbinom(n=1,prob=.9,size=Ne[v])
-  Ne[l]=rbinom(n=1,prob=.4,size=Ne[l])
-  print(paste("victory",v,"(",one[v],"-", Ne[v],") over",l,"(",one[l],"-",Ne[l],"), total of:",(one[v]-Ne[v])+(one[l]-Ne[l]),"people"))
-  return(Ne)
-}   
-
-#' @tile fightbetterloss
-#' A function to compute lost during a fighting
-#' return the updated population size of both settlements engaged in the fight
-#' @param Ne list of population size for the fighting settlement
-#' @param a indice of the first settlement
-#' @param b indice of the second settlement
-fightbetterloss <- function(Ne,a,b){
-  if(runif(1)<Ne[a]/(Ne[a]+Ne[b])){
-    v=a
-    l=b
-  }
-  else{
-    v=b
-    l=a
-  }
-  one=Ne
-  Ne[v]=rbinom(n=1,prob=1-Ne[l]/(Ne[v] + Ne[l]),size=Ne[v])
-  Ne[l]=rbinom(n=1,prob=1-Ne[v]/(Ne[v] + Ne[l]),size=Ne[l])
-  print(paste0("victory ",v,"(",one[v],"-", Ne[v],") over ",l," (",one[l],"-",Ne[l],"), tot:",(one[v]-Ne[v])+(one[l]-Ne[l]),"losses"))
-  return(Ne)
-}   
-
-
-##draw a war symbole where two clans are fighting
-warpoints <- function(sites,a,b,Ne,buffersize=300,plot=T,sizewar=2){
-  meetpoints=crop(buffer(sites[a],1+Ne[a]*buffersize),buffer(sites[b],1+Ne[b]*buffersize))
-  if(length(meetpoints)>0){
-    p=spatSample(meetpoints,1)
-    if(plot & length(p)>0){
-      plot(p,add=T,bg="red",pch="🔥",cex=sizewar,col=adjustcolor("yellow",.1))
-      plot(p,add=T,bg="yellow",pch="⚔️",cex=sizewar)
+    if(is.null(colnames(record))){
+      years <- seq_along(record)
     }
-    p
+    else {
+      years <- colnames(record)
+    }
   }
-  else NULL
+  peryear <- apply(record,2,sum) #get the total amount of datable fragement per year
+  probs <- peryear/sum(peryear) #distributions years
+  probs[is.na(probs)] <- 0
+  return(sample(x=years, size=n, prob=probs, replace=T))
 }
 
 
-run_simulation <- function(cultures=NULL,
-                           viable=viable,
-                           sites=sites,
-                           dem=height.ras,
-                           ressources=ress,
-                           water=height.wat,
-                           foldervid="pathtofinal",
-                           visu=F,visumin=TRUE,
-                           ts=20000,#length of simulation in year
-                           Kbase=c("HG"=35,"F"=120),#difference in K for the two cultures
-                           cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
-                           penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
-                           prob_birth=c("HG"=0.3,"F"=0.5),#proba to give birth every year
-                           prob_survive=c("HG"=0.8,"F"=0.6),#proba to die when pop > K
-                           prob_split=c("HG"=.2,"F"=.6),#proba to create new settlement when Ne > K
-                           minimals=c("HG"=.14,"F"=.20),#how big the group of migrant should be to create a new city vs migrate to a existing one 
-                           bufferatack=400,#distance max around which settlement can fight
-                           buffersettl=2000,#distance min around which settlement cannnot settle
-                           Nts=NULL,
-                           Ips=NULL,
-                           prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
-){
-  ## Run stochastic process  
-  
-  Ks=sites$Ks
-  cultures=sites$culture
-  if(is.null(Nts)){ 
-    INs=round(runif(length(sites),.85,.95)*sites$Ks) #Population size at initialisation
-    Ips <- lapply(INs,initpopstruc ) #initialise population structure for all sites
-    Nts=initlistsites(Ips,ts=ts)
-    frame=0
-    mint=2
-  }
-  else{##should check and test howto start back a simulation
-    mint=nrow(Nts) 
-    frame=nrow(Nts) 
-  }
-  
-  ### visualisation =====
-  if(!dir.exists(foldervid))dir.create(foldervid)
-  ###
-  
-  warcasualties=vector("integer",ts)
-  
-  for (i in 2:(ts+1)){
-    countcult=table(sites$culture[Nts[i-1,]>0])
-    if(length(countcult)!=2) return(list(Nts=Nts[,1:i],warcasualties=warcasualties[1:i],Ips=Ips,sites=sites))
-    print(paste("year",i,"total",sum(sapply(Ips,nrow)),"with",length(sites),"sites (",paste0(paste(names(countcult),countcult,sep=":"),collapse=","),")"))
-    if(visumin){
-      ### visualisation =====
-      frame=frame+1
-      filename=sprintf("map_%06d.png", frame)
-      png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
-      plotMap(dem,water,paste0("year ",i))
-      ########
-    }
-    inactives=(Nts[i-1,]==0)
-    for(s in sample(seq_along(sites)[!inactives])){
-      
-      if(visu){
-        ### visualisation =====
-        frame=frame+1
-        filename=sprintf("map_%08d.png", frame)
-        png(file.path(foldervid,filename),width=800,height=800,pointsize=20)
-        plotMap(dem,water,paste0("year ",i))
-        ########
-      }
-      
-      city=NULL
-      Ips[[s]] <- Gpd(Ips[[s]], K = Ks[[s]], P_o=prob_birth[sites$culture[s]],prob = prob_survive[sites$culture[s]] ) #compute new population for the sites
-      newN=nrow(Ips[[s]]) #count population size
-      
-      if(newN>=(Ks[[s]])){ #if new population is more than carrying capacity: migration scenario
-        migrants=newN-round(Ks[[s]]*0.9)
-        ##Creation of new city
-        new_site=NULL
-        #if(sites$culture[s]=="F")print(paste("possib",migrants, (minimals[sites$culture[s]]*sites$Ks[s])))
-        tmp=Nts[i-1,]
-        tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
-        #tmp=tmp+sqrt(sites$Ks)
-        havemoved=F
-        
-        if(migrants>= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){ #if supropulation > 10 people, 10% chance of creation of a new city
-          
-          #print(paste("look for new spot for ",migrants, "from site",s,"culture",sites$culture[s]))
-          #mean of area of influence
-          infarea=(sqrt(tmp)+penal_cul[cultures])*buffersettl
-          buffersize=rnorm(length(infarea),infarea,infarea*.1)
-          buffersize[tmp==0]=0
-          territory=erase(viable,buffer(sites,buffersize))
-          
-          if(length(territory)>0){
-            #print(paste("found new spot",migrants))
-            
-            ##select a new site given its distance to the old one and the ressourcesource available in ressources
-            d2=logisticdecay(sites[s],dem,x=20000*cul_ext[sites$culture[s]])
-            w=(.7*d2+.3*ressources)/(.7*minmax(d2)[2] + .3*minmax(ressources)[2])
-            new_site=spatSample(x=mask(w*logisticdecay(sites[s],dem,k=0.00002,x=20000*cul_ext[sites$culture[s]]),territory),size=1,method="weights",xy=T)[1:2]
-            new_site=vect(new_site,geom=c("x","y"))
-            
-            if(length(new_site)>0 & all(!is.na(crds(new_site)))){
-              ##add new site to site listes
-              ##initialise population struc of new site
-              #print(paste("total sites:",length(Ips)))
-              #print(paste("dim Nts:",dim(Nts)[2]))
-              #print(paste("site sf Nts:",length(sites)))
-              
-              Ips[[length(Ips)+1]]=initpopstruc(n=migrants) #initialise a fake populaition, will be updated by real migrants later
-              new_site$culture=sites$culture[s]
-              new_site$Ks=round(initKs(Kbase,sites=new_site,ressources,sizeex="F",rate=.45))
-              print(paste0("new settlement (",sites$culture[s],") of K ",new_site$Ks, " and pop ",migrants))
-              
-              sites=rbind(sites,new_site)
-              
-              Ks[length(Ks)+1]=new_site$Ks
-              city=(length(Ips))
-              Nts=cbind(Nts,rep(0,ts+1))
-              Nts[i,city]=migrants
-              cultures=c(cultures,cultures[s])
-              #print(paste("new site sf Nts:",length(sites)))
-              #print(paste("new dim Nts:",dim(Nts)[2]))
-              #print(paste("new total sites:",length(Ips)))
-              havemoved=T
-            }
-          }
-        }
-        ## if no creation of new city happen, there is a certain probability that people will move
-        if(length(new_site)==0 && runif(1)<prob_move[sites$culture[s]] ){
-          
-          #getj
-          att=extract(ressources,sites)[,2]
-          space=sites$Ks-(Nts[i-1,]+migrants)
-          dis=extract(logisticdecay(sites[s],dem,k=0.00002,x=1),sites)[,2]
-          attractivity=att*space*dis
-          #attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
-          attractivity[s]=min(attractivity)-1
-          attractivity=exp(attractivity)/sum(exp(attractivity))
-          attractivity[Nts[i-1,]<10]=0 
-          attractivity[sites$culture!=sites$culture[s]]=0 
-          if(any(is.na(attractivity))){
-            print(attractivity)
-            attractivity[is.na(attractivity)]=0
-          }
-          
-          city=sample(size=1,x=seq_along(sites),prob=attractivity)
-          Nts[i,city]=Nts[i-1,city]+migrants
-          print(paste(migrants,"migrant from",sites$culture[s],"to",sites$culture[city]))
-          havemoved=T
-        }
-        if(havemoved){
-          
-          #print(paste("old spot",migrants," for ",nrow(Ips[[s]])))
-          #print(paste("old new spot",migrants," for ",nrow(Ips[[city]])))
-          
-          #if(city>length(Ips))print(paste("problem, migrants:",migrants))
-          #print(paste("the other:",city))
-          Ips[c(s,city)]=changePopSize(loosingPop=Ips[[s]],winingPop=Ips[[city]],size=migrants)
-          newN=newN-migrants
-          #print(paste("loosing ",newN," vs ",nrow(Ips[[s]])))
-          #print(paste("wining ",newN," vs ",nrow(Ips[[city]])))
-        }
-        
-      }
-      Nts[i,s]=newN
-      
-      
-      if(visu){
-        ###visualisation=========
-        sitescols=rep(1,length(sites))
-        siteslwd=rep(1,length(sites))
-        ii=NULL
-        if(!is.null(city)){
-          sitescols[s]="yellow"
-          sitescols[city]="red"
-          siteslwd[s]=3
-          siteslwd[city]=3
-          ii=st_cast(st_combine(st_as_sf(sites[c(s,city)])),"LINESTRING")
-        }
-        if(!is.null(ii))plot(ii,add=T)
-        tmp=Nts[i-1,]
-        tmp[Nts[i,]>0]=Nts[i,Nts[i,]>0]
-        plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)],lwd=siteslwd,col=sitescols)
-        dev.off()
-        ###=======================
-      }
-    }
-    if(visumin){
-      plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
-    }
-    potentialfighters=which(sites$culture=="F" & Nts[i,]>50)
-    for(s in sample(x=potentialfighters,size=round(length(potentialfighters)*.1))){
-      buff=bufferatack
-      potentialvictims=which(sites$culture !=sites$culture[s] & Nts[i,]>0) 
-      clash=whotouch(s,sites ,Ne=Nts[i,],buffersize=buff)
-      if(length(clash)>0 && !is.na(clash)){
-        if(length(clash)==1)attack=clash
-        else attack=sample(clash,1)
-        newns=fightbetterloss(Ne=Nts[i,],a=s,b=attack)
-        casualties=sum(Nts[i,c(s,attack)]-newns[c(s,attack)])
-        warcasualties[i]=casualties
-        sizew=casualties^2/4000
-        warpoints(sites,s,attack,Ne=Nts[i,],buffersize=buff,sizewar=sizew+.5)
-        
-        #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
-        Ips[[s]]=changePopSize(loosingPop=Ips[[s]],size=(Nts[i,s]-newns[s]))
-        Ips[[attack]]=changePopSize(loosingPop=Ips[[attack]],size=(Nts[i,attack]-newns[attack]))
-        Nts[i,]=newns
-        print(paste0("fight : #", s," (",cultures[s],") left with ",Nts[i,s]," (bef:",Nts[i-1,s],") ind., attacked: #",attack," (",cultures[attack],") left with ",Nts[i,attack]," (bef:",Nts[i-1,attack],") ind., #death=",casualties))
-      }
-    }
-    if(visumin)dev.off()
-  }
-  return(list(Nts=Nts,warcasualties=warcasualties,Ips=Ips,sites=sites))
+#' @title Plot the elevation and water map of the simulation
+#' @param height Elevation raster
+#' @param water Water 
+#' @param maintitle Title of the plot
+#' @importFrom terra plot
+#' @export
+plotMap <- function(height, water, maintitle=""){
+  terra::plot(height^0.36, col=col_ramp(255), legend=F, reset=F, main=maintitle)
+  terra::plot(water, col="lightblue", add=T, legend=F)
 }
+
+
 
 
 
