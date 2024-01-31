@@ -16,7 +16,7 @@ library(archaeoriddle)
 
 An important part of the simulation is to generate a landscape and an environment.
 Doing so often rely on
-Let's Create a fake environment. We use the `envrnment` function, which in turns
+Let's Create a fake environment. We use the `environment` function, which in turns
 uses `TK95` to generate a power law noise.
 
 <br>
@@ -27,7 +27,7 @@ uses `TK95` to generate a power law noise.
 <br>
 
 ```{r, echo=FALSE}
-?envrnment
+?environment
 ```
 <br>
 
@@ -35,7 +35,7 @@ To generate a fake climate with various properties:
 
 ```{r generateFakeClimate}
 tstep <- 1000
-faketemp <- envrnment(tstep, omega=3, delta=1.5) + 1.5
+faketemp <- environment(tstep, omega=3, delta=1.5) + 1.5
 plot(faketemp, type="l", ylab="temperature change", xlab="time")   
 ```
 
@@ -45,7 +45,7 @@ a = knitr::spin('../../R/climate.R', format='Rmd', comment=c("#'","#'"),
 fs::file_move('../../R/climate.Rmd', '.')
 ```
 
-You can inspect the code of `envrnment` and `TK95` functions here:
+You can inspect the code of `environment` and `TK95` functions here:
 <details><summary>Show code</summary>
 **Code**
 
