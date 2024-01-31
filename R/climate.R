@@ -35,7 +35,7 @@ TK95 <- function(N, alpha = 1){
 #' @param vt if not NULL, the  mean of the optimum increase at a rate vt  
 #' @return a list of N optima theta
 #' @export
-envrment <- function(N, omega, delta, vt=NULL){
+environment <- function(N, omega, delta, vt=NULL){
   ts <- TK95(N, omega)
   ts <- delta * ts/sd(ts)
   if(!is.null(vt)) {
