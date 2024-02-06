@@ -28,7 +28,7 @@ Nts=onesimu$Nts
 #allShortLoss=lapply(allShortLoss,function(Rec)long_loss(Rec,.9997,7500))
 ```
 
-Using `Rec_c` , `short_loss` and `long_loss` we generate deposit. The overal things can take long time but  it's basically done like this:
+Using `Rec_c` , `short_loss` and `long_loss` we generate deposit. Generating everything can take long time but  it's basically done like this:
 
 
 ```{r doloss,eval=F}
@@ -76,12 +76,12 @@ saveRDS(allRemainingDates,file=paste0(expname,"_dates.RDS"))
 
 ```
 
-From this we have, for every sites, a list of date
+From this we have, for every site, a list of date(s)
 
-This has been done using the script `exploreDate.R` but will be explain here:
+This has been done using the script `exploreDate.R` but will be explained here:
 
 
-Loading simulation results, green are the sites who survived,dots are all the site that existed.
+Loading simulation results, green are the sites who survived, dots are all the site that existed.
 
 ```{r getfakeresults,cache=F}
 height.ras=rast("data_original/east_narnia4x.tif")

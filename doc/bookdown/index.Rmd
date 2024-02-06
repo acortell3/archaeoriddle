@@ -40,15 +40,23 @@ To compile the book:
 bookdown::render_book(".")
 ```
 
-
 List of packages to install
 
-```{r packages}
-needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader","printr") ## printr for bookdown compilation
+```{r packages, message=FALSE}
+needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader","printr") 
+## printr for bookdown compilation
 success=sapply(needed,require,character.only=T)
 sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
 ```
 
+To go through the bookdown you will also need the archaeoriddle package. With `devtools` installed, you can do
 
+```{r}
+devtools::install_github("acortell3/archaeoriddle")
+library(archaeoriddle)
+```
+
+
+The book can also be found already compiled [here](https://cdal.arch.cam.ac.uk/archaeoriddle/).
 

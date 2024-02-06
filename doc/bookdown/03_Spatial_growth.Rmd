@@ -66,7 +66,7 @@ plot(ress)
 ```
 
 ## Initial sites and size:
-We initialize the sites of 2 cultires, `HG` and `F`.
+We initialize the sites of 2 groups, `HG` and `F`.
 
 <br>
 
@@ -299,7 +299,7 @@ lapply(1:ncol(Nts),
 
 ```
 
-Visualise, Record deposit and  loss. for the 5 first sites
+Visualise, Record deposit and  loss. for the 5 first sites (see next chapters for `A_rates`).
 ```{r,out.width="25%"}
 alldeposit <- lapply(
   1:5,
@@ -325,7 +325,7 @@ plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
 ```
 
 
-Below some usefull code to manually select the ressource origins on the map (by clicking on the screen) and explore different decay around them
+Below some useful code to manually select the resource origins on the map (by clicking on the screen) and explore different decays around them
 
 ```{r, eval=F}
 plotMap(height.ras, height.wat, paste0("year ", 0))

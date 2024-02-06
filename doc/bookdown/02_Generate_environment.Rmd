@@ -15,7 +15,7 @@ library(archaeoriddle)
 ## Temperature and climate
 
 An important part of the simulation is to generate a landscape and an environment.
-Doing so often rely on
+Doing so often relies on
 Let's Create a fake environment. We use the `environment` function, which in turns
 uses `TK95` to generate a power law noise.
 
@@ -58,7 +58,7 @@ fs::file_delete('climate.Rmd')
 
 ## Slope and Elevation
 
-This autocorelate time series can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorellation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise). This is the usage of the function:
+This autocorrelates time series that can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorrelation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise). This is the usage of the function:
 
 <br>
 
@@ -100,7 +100,7 @@ plot(rast(m))
 object.size(m)
 ```
 
-To make it slightly more realistic we tweaked a bit the extreme, to create seas and mountains a bit closer to what a _real_ DEM would look like.
+To make it slightly more realistic we tweaked a bit the extremes, to create seas and mountains a bit closer to what a _real_ DEM would look like.
 
 
 ```{r padjuperlin}
@@ -153,7 +153,7 @@ plot_3d(
 
 ## Settlements position
 
-Given this new landscape we can now generate sites in specific location (not on mountains, not in water) with exponentially distributed size and make a network out of it.  
+Given this new landscape we can now generate sites in specific locations (not on mountains, nor in water) with exponentially distributed size and make a network out of it.  
 
 
 
@@ -182,7 +182,7 @@ plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
 
 ```
 
-In order to produce file to be given to people we need a couple of line of code that should be run online when a satisfying environment has been found:
+In order to produce files to be given to people we needed a couple of lines of code that should be run online when a satisfying environment has been found:
 
 ```{r, eval=F}
 # st_write(dsn="coastline2.shp",coastline)

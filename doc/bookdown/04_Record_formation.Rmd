@@ -201,10 +201,10 @@ where $r$ is the natural deposition rates.
 
 This simulation for the creation of the archaeological record has been divided in three phases, or protocols. First, we populate the site, according to a stochastic demographic process, second we generate a sample for each time $t$ and, in the third and final step, we distribute the amount of waste for each $d$.
 
-In order to fully understand the process, first we will show the protocols and functions used. To start with, let's load the package with the functions functions:
+In order to fully understand the process, first we will show the protocols and functions used. To start with, let's inspect the package with the functions functions:
 
 ```{r}
-library(archaeoriddle)
+## See some of the archaeoriddle functions
 ```
 ```{r, echo=FALSE}
 help.search(
