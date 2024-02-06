@@ -53,7 +53,7 @@ success=sapply(needed,require,character.only=T)
 To go through the bookdown you will also need the archaeoriddle package. With `devtools` installed, you can do
 
 ```{r}
-devtools::install_github("acortell3/archaeoriddle")
+#devtools::install_github("acortell3/archaeoriddle")
 library(archaeoriddle)
 ```
 
