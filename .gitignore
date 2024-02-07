@@ -1,0 +1,9 @@
+*.log
+*.sw?
+*.aux
+*.pdf
+\.Rhistory
+.Rproj.user
+doc/bookdown/_book*
+doc/bookdown/_main*
+doc/bookdown/packages.bib

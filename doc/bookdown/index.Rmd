@@ -1,0 +1,62 @@
+--- 
+title: "Methods Riddles, the ultimate revelations"
+author: "CDAL"
+date:  "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output:
+  bookdown::gitbook: 
+    config:
+      toc:
+        after: |
+          <li><a href="https://github.com/acortell3/archaeoriddle/">
+          source</a></li>
+
+    nature:
+      beforeInit: "https://platform.twitter.com/widgets.js"
+documentclass: book
+biblio-style: apalike
+link-citations: yes
+github-repo: acortell3/archaeoriddle
+description: "First draft of Rbookdown to describe how data have been generated"
+favicon: "favicon.ico"
+---
+# Preface{-}
+
+```{r setup, include=FALSE}
+library(magrittr)
+
+knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE)
+```
+
+```{r write-bib, include=FALSE}
+knitr::write_bib(c(.packages(), 'bookdown','tidyverse'), 'packages.bib')
+```
+
+This is a very first draft to setup a github hook that compile a bookdown in a private space
+
+To compile the book:
+
+```{r,eval=F}
+bookdown::render_book(".")
+```
+
+List of packages to install
+
+```{r packages, message=FALSE}
+needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader","printr") 
+## printr for bookdown compilation
+success=sapply(needed,require,character.only=T)
+sapply(needed[!success],install.packages)
+success=sapply(needed,require,character.only=T)
+```
+
+To go through the bookdown you will also need the archaeoriddle package. With `devtools` installed, you can do
+
+```{r}
+#devtools::install_github("acortell3/archaeoriddle")
+library(archaeoriddle)
+```
+
+
+The book can also be found already compiled [here](https://cdal.arch.cam.ac.uk/archaeoriddle/).
+

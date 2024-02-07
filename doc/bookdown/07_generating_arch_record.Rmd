@@ -1,0 +1,313 @@
+# Generate Archaeological remaind and squares
+
+
+## Using sites size to generate deposite
+
+This has been done using file `dateGeneration.R`, we will describe it here now.
+
+First we get the result of a simulation.
+
+```{r getRaster,eval=T,cache=F}
+height.ras=rast("data_original/east_narnia4x.tif")
+height.wat=height.ras
+height.wat[height.wat>mean(height.wat[])]=NA
+height.groups=height.ras
+maxh=max(height.ras[],na.rm=T)
+height.groups[height.groups<mean(height.groups[])]=NA
+height.groups[height.groups<(maxh*.7)]=1
+height.groups[height.groups>(maxh*.7)]=200
+height.groups[is.na(height.groups)]=-1
+height.poly=as.polygons(height.groups)
+viable=makeValid(height.poly[2,])
+expname="data_original/general_results_selected_simu/buffattack300_K110_PSU065_3"
+onesimu=readRDS(paste0(expname,"_all.RDS"))
+sites=readRDS(paste0(expname,"_sitesRast.RDS"))
+if(class(sites)[1] == "PackedSpatVector")
+    sites=terra::vect(sites)
+Nts=onesimu$Nts
+#alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[1:i,s],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = "m"))
+#allShortLoss=lapply(1:10,function(ind){Rec=alldeposit[[ind]];print(paste0("settlement #",ind));apply(Rec,2,short_loss,.6)})
+#allShortLoss=lapply(allShortLoss,function(Rec)long_loss(Rec,.9997,7500))
+```
+
+Using `Rec_c` , `short_loss` and `long_loss` we generate deposit. Generating everything can take long time but  it's basically done like this:
+
+
+```{r doloss,eval=F}
+
+#All in one:
+alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[,s],A_rates), InitBP = 7500,ts=ncol(Nts),r = 0.2, Max_bone_thickness = "m"))
+allLosses=lapply(1:length(alldeposit),function(ind){
+                 st=Sys.time()
+                    print(paste0("settlement #",ind));
+                    Rec=alldeposit[[ind]];                    
+                    Rec=apply(Rec,2,short_loss,.6)  #apply short loss
+                    Rec=long_loss(Rec,.9997,7500) #apply long loss
+                    print(Sys.time()-st)
+                    return(Rec)
+})
+rm(alldeposit)
+```
+
+Remove where to small
+
+```{r removesmall, eval=F}
+
+
+maxSites=max(sapply(allLosses,sum))
+nsample=round(sapply(allLosses,sum)*30/maxSites)
+allRemainingDates=lapply(seq_along(allLosses),function(r)extractDates(allLosses[[r]],n=nsample[r]))
+rm(allLosses) #object are big, need to free memory
+
+```
+
+
+
+```{r getadates,eval=F}
+
+#pdf(paste0(expname,"_mapFound.pdf"))
+#plotMap(height.ras,height.wat,paste0("final after losses"))
+#plot(sites[1:10,],cex=3*(lengths(allRemainingDates)-1)/(29),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture[1:10])])
+#dev.off()
+
+dates=unique(unlist(allRemainingDates))
+dates=rev(sort(dates[!is.na(dates)]))
+plot(table(unlist(allRemainingDates)))
+totallDatesRemains=sapply(allRemainingDates,function(i)table(factor(i,levels=dates)))
+saveRDS(allRemainingDates,file=paste0(expname,"_dates.RDS"))
+
+```
+
+From this we have, for every site, a list of date(s)
+
+This has been done using the script `exploreDate.R` but will be explained here:
+
+
+Loading simulation results, green are the sites who survived, dots are all the site that existed.
+
+```{r getfakeresults,cache=F}
+height.ras=rast("data_original/east_narnia4x.tif")
+height.wat=height.ras
+height.wat[height.wat>mean(height.wat[])]=NA
+
+
+Nts=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
+ress=rast("data_original/resources.tiff")
+allsites=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS")
+if(class(allsites)[1] == "PackedSpatVector")
+    allsites=terra::vect(allsites)
+plotMap(height.ras,height.wat)
+plot(allsites,add=T)
+plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60)
+```
+
+Loading dates:
+
+```{r getfakedates,cache=F}
+dates=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
+```
+
+Keep sites with foundable dates
+
+```{r extractdates,cache=F}
+
+foundsites=allsites[lengths(dates)>0,]
+foundsites$numdates=unlist(lengths(dates[lengths(dates)>0]))
+founddates=dates[lengths(dates)>0]
+```
+
+Remove BP to the dates, add some random variation
+
+```{r addstdev,cache=F}
+stdpool=c(20,30,40,50,60,80,100,120)
+founddates=lapply(founddates,sort)
+founddates=lapply(founddates,gsub,pattern=" BP",replacement="")
+founddates=lapply(founddates,rev)
+founddates=lapply(founddates,function(i)paste0(i," ± ",sample(stdpool,length(i),replace=T,prob=c(3,3,3,3,2,2,1,1))," BP"))
+foundsites$dates=sapply(founddates,paste0,collapse=" | ")
+plotMap(height.ras,height.wat)
+plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
+```
+
+## Split environment in a grid
+
+Split the environment in grids and extract date for each grid
+
+```{r plotallfoundiste,cache=F}
+
+leftdates=dates[lengths(dates)>0]
+plotMap(height.ras,height.wat)
+plot(foundsites,cex=foundsites$numdates/20+.1,pch=21,bg=1,add=T)
+squares=st_make_grid(height.ras,.5)
+plot(squares,add=T,col=adjustcolor(rainbow(length(squares)),.35))
+text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
+text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
+```
+
+Public selection
+
+```{r getpublicsele,cache=F}
+plotMap(height.ras,height.wat)
+plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
+selection=c(14,30,45,65,66)
+plot(squares[selection],add=T,col=adjustcolor("blue",.3))
+inter=st_intersection(st_as_sf(foundsites),squares[selection])
+plotMap(height.ras,height.wat)
+plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
+```
+
+Giving name to the publicly available data
+The names have bee ngenerated via: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php)
+
+```{r namesites,cache=F}
+
+site_dist=st_distance(inter)
+#min(site_dist[as.numeric(site_dist)>units(0)])
+
+sitesnames=1:nrow(inter)
+
+sitesnames[c(1:4, 20)]=c("Farwallow" ,"Bearcall" ,"Dustscar" ,"Clearreach" ,"Rabbithole")
+
+fr=c("Épibéliard" ,"Cololuçon" ,"Pulogne" ,"Haguemasse" ,"Auriteaux" ,"Bourville" ,"Banau" ,"Montnesse" ,"Bannet" ,"Alenlon", "Roullac" ,"Genneville" ,"Vinlès" ,"Antonnet" ,"Courtou" ,"Beaulogne" ,"Coloville" ,"Sarsart" ,"Soilon" ,"Cololimar")
+sitesnames[5:19]=fr[1:(19-4)]
+spain=c("Zava" ,"Catadrid" ,"Tegon" ,"Alicia" ,"Mulid" ,"Zararbella" ,"Malid" ,"Cásca" ,"Granalejos" ,"Segorez" ,"Terteixo" ,"Astumanca" ,"Galle" ,"Talona" ,"Girovega" ,"Albanada" ,"Nadoba" ,"Senca" ,"Vallanca" ,"Taville")
+
+sitesnames[21:length(sitesnames)]=spain[1:(length(sitesnames)-20)]
+inter=cbind(inter,sitesnames)
+plotMap(height.ras,height.wat)
+plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
+text(st_coordinates(inter),inter$sitesnames,cex=.8)
+```
+
+Export csv and data for each public square
+
+```{r exportpublic,eval=F}
+
+
+inter$sitesnames=sitesnames
+for(g in selection){
+curr=inter[inter$ID==g,]
+coords=st_coordinates(curr)
+    write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
+}
+
+```
+
+Export csv and data for all ever square
+
+```{r exportprivate,eval=F}
+
+allsites=st_intersection(st_as_sf(foundsites),squares[-selection])
+
+for(g in (1:length(squares))[-selection]){
+curr=allsites[allsites$ID==g,]
+coords=st_coordinates(curr)
+    write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
+}
+
+ld=strsplit(inter$dates," \\| ")
+ld=lapply(ld,function(i)gsub(" ± .*","",i))
+inter$start=sapply(ld,max)
+inter$end=sapply(ld,min)
+
+```
+
+
+Some maps we use and did for fake papers and social media etc... 
+
+
+```{r randommaps}
+
+## plotting oldschool map
+
+
+plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
+plot(st_geometry(inter),pch=4,add=T,lwd=.3)
+plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=.8,col=as.factor(inter$culture),alpha=.8)
+box()
+
+old=inter[inter$start>7180,]
+ne=inter[inter$start>6800 & inter$end<6900,]
+
+plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
+plot(st_geometry(old),pch=4,add=T,lwd=.5,cex=3)
+plot(st_geometry(old),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(old$culture),alpha=.8)
+box()
+
+
+plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
+plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
+plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
+box()
+
+
+plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
+plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
+plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
+box()
+
+plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
+plot(st_geometry(ne),pch=4,add=T,lwd=.5,cex=3)
+plot(st_geometry(ne),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(ne$culture),alpha=.8)
+box()
+```
+
+More maps for twitter:
+
+```{r randommaps2}
+plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
+plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
+plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
+box()
+sel=inter[c(20,2,15,36),]
+text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
+text(x = -1, y = .7, labels = "❤️", adj = c(0, 0), cex = 3, col = "black", font = 1)
+text(x = -1, y = 1.2, labels = "🔥 ", adj = c(0, 0), cex = 3, col = "black", font = 1)
+text(x = -1, y = 1.2, labels = "⚔️ ", adj = c(0, 0), cex = 3, col = "black", font = 1)
+text(x = -1.2, y = 1.8/2, labels = "???? ", adj=c(0,0), cex = 3, col = "black", font = 1)
+```
+More maps!! (the coolest)
+
+
+```{r randommaps3}
+ col_ramp <- colorRampPalette(c("light blue",terrain.colors(10)[6], "#54843f","grey","white"))
+plotMap(height.ras,height.wat)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
+plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
+plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
+coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
+plot(coastline,add=T,lwd=1.1,col="black")
+box()
+sel=inter[c(20,2,15,36),]
+text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
+
+```
+
+
+```{r}
+
+ col_ramp <- colorRampPalette(c("light blue",terrain.colors(10)[6], "#54843f","grey","white"))
+plotMap(height.ras,height.wat)
+contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
+plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
+plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
+coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
+plot(coastline,add=T,lwd=1.1,col="black")
+box()
+sel=inter[c(20,2,15,36),]
+text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
+#text(x = -1, y = .7, labels = "🍻", adj = c(0, 0), cex = 3, col = "black", font = 1)
+text(x = -3.4, y = .7, labels = "🍻 ", adj = c(0, 0), cex = 10, col = "black", font = 1)
+text(x = -1.8, y = .7, labels = "👍 ", adj = c(0, 0), cex = 8, col = "black", font = 1)
+text(x = -.5, y = .7, labels = "🍔 ", adj = c(0, 0), cex = 6, col = "black", font = 1)
+#text(x = -1, y = 1.2, labels = "⚔️ ", adj = c(0, 0), cex = 3, col = "black", font = 1)
+#text(x = -1.2, y = 1.8/2, labels = "???? ", adj=c(0,0), cex = 3, col = "black", font = 1)
+
+
+```

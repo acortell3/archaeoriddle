@@ -1,0 +1,54 @@
+---
+title: "Population_idea"
+author: "Alfredo_Cortell"
+date: "2/21/2022"
+output: html_document
+---
+
+# Burn-in period (HG reaches K)
+
+Copy the source code from this file, and paste it here https://markmap.js.org/repl \
+It is not linked, so any changes made in that url must then be committed here as well
+
+
+## HG sites
+
+### Mobility
+
+- Logistic
+- Residential
+
+### Fission point
+
+- Rockshelter
+- Cave
+- Open-air site
+
+
+## F sites
+
+### Fission point
+#### Cave
+- Pen
+- Habitat
+#### Rockshelter
+#### Open-air
+- Size
+
+## Land quality
+
+### For hunting
+- 0 (if used for farming = 0)
+- 1
+- 2
+- 3
+
+### For farming
+- 0
+- 1
+- 2
+- 3
+
+
+
+

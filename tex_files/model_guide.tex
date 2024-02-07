@@ -1,0 +1,132 @@
+\documentclass{article}
+
+% Useful packages
+\usepackage[english]{babel}
+\usepackage{framed}
+\usepackage{graphicx}
+\usepackage{algorithm, algorithmic, multicol}
+
+
+
+\title{Rules for the model}
+\author{CDAL}
+
+\begin{document}
+\maketitle
+
+\section{Initial situation}
+\subsection{Map}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=16cm]{01_map.png}
+    \caption{Map of the world to work with.}
+    \label{fig:map}
+\end{figure}
+
+\subsection{Population variables}
+
+\subsubsection{hunter-gatherers}
+\begin{itemize}
+    \item $Pop_{hg}(t)$ is the total hunter-gatherer population
+    \item $K_{hg}(t)$ is the total hunter-gatherer carrying capacity
+    \item $Pop_{hgs}(t)$ is the hunter-gatherer population for each site
+    \item $K_{hgf}(t)$ is the hunter-gatherer fission point for each site
+    \item $G_{hg}(t)$ is the hunter-gatherer growth rate, extracted from a stochastic process (already designed).
+
+\subsubsection{farmers}    
+    \item $Pop_{f}(t)$ is the total farmer population
+    \item $K_{f}(t)$ is the total farmer carrying capacity
+    \item $Pop_{fs}(t)$ is the farmer population for each site
+    \item $K_{ff}(t)$ is the farmer fission point for each site
+    \item $G_{f}(t)$ is the farmer growth rate, extracted from a stochastic process (already designed).
+\end{itemize}
+
+\subsection{Movement}
+for each $t$
+
+Each group moves to different points in the map, and they stay in them, according to a double exponential distribution, with probability.
+
+$$S_{hg} \sim L(\mu_{hg}, \lambda_{hg})$$
+$$S_{f} \sim L(\mu_{f}, \lambda_{f})$$
+
+Where $\mu$ is the mean distance that we consider feasible (to agree) and we could understand $\lambda$ as the variance, or how much do we accept that they settle out of that mean distance (to agree).
+
+\subsection{Record generation and loss}
+Already designed... too long to write in here, I'll explain it to you in person! :-)
+
+\subsection{Initial conditions}
+
+At $t(0)$ 
+\begin{itemize}
+    \item $Pop_{hg}(t_{0}) \approx K_{hg}(t_{0})$
+    \item $Pop_{f}(t_{0}) << K_{f}(t_{0})$
+    \item $G_{f}(t_{0}) > G_{hg}(t_{0})$
+\end{itemize}
+
+\section{Action}
+For each $t$, \textbf{independently}
+
+\begin{algorithm}[h]
+  \begin{multicols}{2}
+    \begin{algorithmic}
+      \scriptsize
+      \begin{flushleft}
+      \textbf{Hunter-gatherers}\break
+      1. Demographic growth (according to $G_{hg}(t)$\break
+      
+      2. Move (residential) \break 
+      2.1 Stay with $P(y|S_{hg}$) \break
+      
+      3.\IF{$ Pop_{hgs}(t) > K_{hgf}(t) $}
+        \STATE Exceeding people form (or go to) new site
+        \ENDIF \break
+      
+      4. new sites increase chance of survival according to the density of their backing network (index, to think of)
+        
+      
+      \end{flushleft}
+    \end{algorithmic}
+    \columnbreak
+    \begin{algorithmic}
+      \scriptsize
+      \begin{flushleft}
+      \textbf{Farmers}\break
+      1. Demographic growth (according to $G_{f}(t)$\break
+      
+      2. Move (residential) \break 
+      2.1 Stay with $P(y|S_{f}$) \break
+      
+      3.\IF{$ Pop_{fs}(t) > K_{ff}(t) $}
+        \STATE Exceeding people form (or go to) new site
+        \ENDIF \break
+      
+      4. new sites increase chance of survival according to the density of their backing network (index, to think of)
+        
+      \end{flushleft}
+    \end{algorithmic}
+  \end{multicols}
+\end{algorithm}
+
+\noindent For each $t$, \textbf{common action}
+
+Decide if we want good or bad relationship between hunter-gatherers and farmers. For each time hunter-gatherers and farmers meet at the same spatial spot, if we want
+
+\textbf{Good relationship}
+Then, hunter-gatherers switch to farming according to
+
+$$C \sim Bi(\theta, Pop_{hgs}(t))$$
+
+And there is no additional population loss for any
+
+\textbf{Bad relationship}
+Then, hunter-gatherers and farmers' population decrease, at that spot, with
+
+$$D_{hgs}(t) \sim Bi(\theta,Pop_{hgs}(t))$$
+$$D_{fs}(t) \sim Bi(\theta,Pop_{fs}(t))$$
+
+\section{RQ}
+
+What is the impact of the hunter-gatherer attitude (bad relationship/good relationship) regarding the farmers' growth rate?
+
+\end{document}

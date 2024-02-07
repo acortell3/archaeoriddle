@@ -1,0 +1,271 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+# Landscape, climate & Environment
+
+```{r, echo=FALSE, message=FALSE}
+library(printr)
+library(knitr)
+library(archaeoriddle)
+
+```
+
+## Temperature and climate
+
+An important part of the simulation is to generate a landscape and an environment.
+Doing so often relies on
+Let's Create a fake environment. We use the `environment` function, which in turns
+uses `TK95` to generate a power law noise.
+
+<br>
+
+```{r, echo=FALSE}
+?TK95
+```
+<br>
+
+```{r, echo=FALSE}
+?environment
+```
+<br>
+
+To generate a fake climate with various properties:
+
+```{r generateFakeClimate}
+tstep <- 1000
+faketemp <- environment(tstep, omega=3, delta=1.5) + 1.5
+plot(faketemp, type="l", ylab="temperature change", xlab="time")   
+```
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/climate.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/climate.Rmd', '.')
+```
+
+You can inspect the code of `environment` and `TK95` functions here:
+<details><summary>Show code</summary>
+**Code**
+
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='climate.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+fs::file_delete('climate.Rmd')
+```
+</details>
+
+## Slope and Elevation
+
+This autocorrelates time series that can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorrelation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise). This is the usage of the function:
+
+<br>
+
+```{r perlinnoise, echo=FALSE}
+?perlin_noise
+```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/perlin_noise.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/perlin_noise.Rmd', '.')
+```
+
+And you can see the code here:
+<details><summary>Show code</summary>
+**Code**
+
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='perlin_noise.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+fs::file_delete('perlin_noise.Rmd')
+```
+</details>
+
+
+Different parameters for the perlin noise will give us a higher a lower definition for our future DEM raster. Here we choose a trade off between an environment detailed enough for on a relatively wide area but small enough to be handled easily in memory.
+
+```{r perlin_noise}
+require(terra)
+require(sf)
+
+a <- 0.6
+k <- 8
+m <- perlin_noise(2, 2, 2^k, 2^k)
+for ( i in 2:k )
+  m <- m + a^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
+plot(rast(m))
+object.size(m)
+```
+
+To make it slightly more realistic we tweaked a bit the extremes, to create seas and mountains a bit closer to what a _real_ DEM would look like.
+
+
+```{r padjuperlin}
+height <- (m[,])*20
+#height[height<50]=0
+height <- height^3
+height <- height+abs(mean(height))
+height[height<min(height)*.25] <- min(height)*.25
+```
+
+
+Visual the map as a simple 2D raster
+
+
+```{r 2dVisu}
+
+# height.ras <- rast(height, extent=c(-3.5, 0.5, -0.5, 3.5), crs="+proj=latlon")
+height.ras <- rast("data_original/east_narnia4x.tif")
+maxh <- max(height.ras[], na.rm=T)
+col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
+
+plot(height.ras^1.9, col=col_ramp(20), legend=F, reset=F)
+height.wat <- height.ras
+height.wat[height.wat>mean(height.wat[])] <- NA
+plot(height.wat, col="lightblue", add=T, legend=F)
+
+```
+
+If you really want to feel like being in a video game, you can play with rayshader, but its slow, tricky and you will probably loose a lot of time `¯\_(ツ)_/¯`
+
+```{r threedim, eval=F}
+require(rayshader)
+height_map <- raster_to_matrix(raster::raster(height)) 
+
+hm_shade <- sphere_shade(height_map, texture = "imhof1", zscale=5) 
+hm_ray <- add_shadow(hm_shade, ray_shade(height_map, zscale = 19), 0.8) 
+hm_ambiant <- add_shadow(hm_ray, ambient_shade(height_map), 0,5) 
+hm_lamb <- add_shadow(hm_ambiant, lamb_shade(height_map), 0) 
+plot_3d(
+  hm_lamb,height_map, zscale = 10, fov = 0, theta = 20, zoom = .5, phi = 45,
+  windowsize = c(1000, 800),water = TRUE, waterdepth = 0,
+  wateralpha = 1, watercolor = "lightblue", waterlinecolor = "lightblue",
+  waterlinealpha = .7, baseshape="hex")
+
+#HQ render, very slow
+#render_highquality( samples=256, clear = TRUE,light=TRUE)
+
+```
+
+
+## Settlements position
+
+Given this new landscape we can now generate sites in specific locations (not on mountains, nor in water) with exponentially distributed size and make a network out of it.  
+
+
+
+```{r splitArea}
+n <- 20
+size <- rexp(n)
+
+height.groups <- height.ras
+height.groups[height.groups<mean(height.groups[])] <- NA
+height.groups[height.groups<(maxh*.7)] <- 1
+height.groups[height.groups>(maxh*.7)] <- 200
+height.groups[is.na(height.groups)] <- -1
+height.poly <- as.polygons(height.groups)
+viable <- makeValid(height.poly[2,])
+
+sites <- spatSample(viable, n)
+
+plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
+plot(height.wat, col="lightblue", add=T, legend=F)
+plot(sites, cex=2, pch=21, add=T, bg=rainbow(length(sites), alpha=.6))
+
+# get only the non submerged actual land and plot it
+above_level <- height.ras > mean(height.ras[])
+coastline <- st_as_sf(as.polygons(above_level))[2,]
+plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
+
+```
+
+In order to produce files to be given to people we needed a couple of lines of code that should be run online when a satisfying environment has been found:
+
+```{r, eval=F}
+# st_write(dsn="coastline2.shp",coastline)
+# writeRaster(filename="data_original/east_narnia4x.tif",height.ras,overwrite=T)
+```
+
+## Network, Site Size And Climate -- DEPRECATED
+
+The following steps where designed but never used.
+
+Use sites to create a network
+
+```{r sitesnetwork, eval=F}
+
+library(igraph)
+crs(sites) <- "+proj=lonlat"
+sites <- sites[sample(nrow(sites), 20), ]
+ig <- graph_from_adjacency_matrix(
+  as.matrix(distance(sites)), weighted=T, mode="undirected")
+ig <- set_graph_attr(ig, "layout", crds(sites))
+
+V(ig)$label <- ""
+V(ig)$size <- (size+1)*5
+V(ig)$frame.color <- "black"
+V(ig)$frame.width <- .5
+E(ig)$weight <- 1/(E(ig)$weight^2)
+E(ig)$width <- exp(E(ig)$weight)+.6
+
+allcomu <- cluster_louvain(ig)$memberships[1,]
+V(ig)$color <- allcomu
+E(ig)$color <- allcomu[head_of(ig,E(ig))]
+
+plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
+plot(height.wat, col="lightblue", add=T, legend=F)
+plot(ig, add=T, rescale=F, alpha=.2)
+```
+
+Visualise sites on the 3D plot
+
+```{r 3Dnetwork, eval=F}
+
+plot_3d(
+  hm_lamb,height_map, zscale=20, fov=0, theta=20, zoom=1, phi=45,
+  windowsize=c(1000, 800), water=TRUE, waterdepth=mean(height),
+  wateralpha=1, watercolor="lightblue", waterlinecolor="lightblue",
+  waterlinealpha=.7
+)
+
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=2.13828, long=-1.685547, altitude=extract(height.ras,sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
+
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=crds(sites)[,"y"], long=crds(sites)[,"x"], altitude=extract(height.ras, sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
+       
+render_highquality(point_radius=5, samples=256, clear=TRUE, light=TRUE)
+
+```
+
+let's say the climate modulate site size in a naive way:
+
+
+```{r, animation.hook="gifski", interval=0.2, cache=TRUE, eval=F}
+for(i in seq(1, tstep, length.out=100)){
+	layout(matrix(1:2, nrow=2, ncol=1), heights=c(.8, .2))
+	par(mar=c(1, 2, 2, 1))
+	image(m, ann=F, axes=F, main=i)
+	mtext(round(i), 3, 1)
+	nsize <- size*faketemp[i] + size + 1
+	points(crds(sites), bg="green", pch=21, cex=nsize)
+	par(mar=c(2, 2, 0, 1))
+	plot(
+	  1:tstep, faketemp, type="l", ylab="temp", xlab="time", ylim=range(faketemp),
+	  ann=F, frame.plot=F)
+	points(i, faketemp[i], col="red", pch=20)
+}
+```
+
+

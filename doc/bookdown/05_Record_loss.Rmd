@@ -1,0 +1,239 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+  always_allow_html: true
+---
+
+
+```{r, echo=FALSE, message=FALSE}
+library(archaeoriddle)
+library(printr)
+library(knitr)
+```
+
+```{r, echo=FALSE}
+
+set.seed(1234)
+# 1. Pop-protocol
+Ps <- Pop_stoch(pop_size=100, ts=100, K=150)
+# 2. A-protocol
+samp <- unlist(lapply(Ps, A_rates)) ## Extract sample per time steps
+# 3. D-protocol
+Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, max_bone_thickness = "m")
+tRec <- t(Rec)
+
+```
+
+
+# Record loss
+
+## Theoretical model
+
+### General purpose
+
+Our main interest is showing and testing the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
+
+However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W(t)$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be taken into account both if the user wants to introduce the values for $W(t)$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always bearing in mind that the model will work over the variable $W(t)$ (*waste produced*), and can be computed to be expressed by $m^2$.
+
+### Model layers
+Although in the future we will introduce additional layers which account for how the record moves vertically along the sequence, at this point, we are only considering the processes of record loss.
+
+#### Loss of the record
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term process affecting the record for every $t$ from the moment of its depositions to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.
+
+```{r, echo = FALSE,cache=FALSE}
+library(DiagrammeR)
+
+grViz("
+digraph record_formation {
+
+graph [layout = dot, ## Set title and layout
+       label = 'Record loss process',
+       labelloc = 't'
+       fontname = Helvetica,
+       fontsize = 30]
+
+# node definitions with substituted label text
+node [fontname = Helvetica, ## General node definition
+      style = filled,
+      color = MistyRose]
+      
+## Per node definition
+a [label = '@@1',
+   fillcolor = orange]
+b [label = '@@2',
+   fillcolor = orange]
+c [label = '@@3',
+   fillcolor = cadetblue,
+   fixedsize = shape,
+   width = 8.5,
+   height = 1.5,
+   fontsize = 30]
+
+## General edge definition
+edge [color = grey,
+       arrowhead = vee,
+       arrowtail = vee]
+
+## Specific edges
+a -> {c}
+b -> {c}
+}
+
+## Label definition
+[1]: 'Low impact - long term action'
+[2]: 'High impact - short term action'
+[3]: 'Remaining archaeological waste'
+
+")
+```
+
+These variables are modelled as follows:
+
+* **Long-term loss** ($V_l(t)$: Attending to the proxy we are considering (bones), we understand this variable as the processes which on the short term have little to none impact on bone preservation, but which can have severe consequences in the long term. These can refer, for example to the pH of the soil of the site, temperature and humidity changes, etc, and must be considered by the researcher or the user. We can subsume this information as a single probability $\theta_l$ within a binomial distribution. Then, the number of archaeological samples currently surviving from all the $W(t)$ generated at a time $t$ follows the distribution
+
+$$V_l(t) \sim Bi(W(t), \theta_l) \tag{1}$$
+Although mathematically this computation is straightforward, it can be quite expensive computationally. Therefore, because we can assume independence of the effect altering the sample for each $t$, and for computational efficiency, we compute $\theta_l$ as
+
+$$\theta_l = \theta^{t+1950} \tag{2}$$
+
+Where $\theta_l$ is the considered probability, $t$ is the time period before present where the sample was deposited and 1950 is the year that is conventionally treated as *the present* in radiocarbon dating.
+
+* **Short-term loss** ($V_s(t+1)$): Most of the short-term, high-impact destruction of the archaeological record happens during the first year after deposition. Therefore, for this variable, we have considered the effect acting only once on the archaeological record, with an action, in any case, more agressive than the previous variable. Again, we can consider this a binomial distribution, where
+
+$$V_s(t+1)\sim Bi(W(t),\theta_s)$$
+
+where $\theta_s$ is the probability that the record survives. Again, this probability must be estimated according to previous information such as, for exemple, whether there has been human reoccupation or animal action at the site at $t +1$. In this case, one good way to measure this is considering that for $\theta_s = 0.5$, half the record would be lost after this first year.
+
+All in all, if we put together these variables, then the remaining record for a site could be defined as
+
+$$V(t)=V_l(t)+V_s(t+1)$$
+There have been other quantitative approaches to the survival of the archaeological record, such as Surovell's (2007, 2009) approaches. These are rather focused on the loss of complete sites, and not that much on the loss of specific records. And, as the authors acknowledge, they refer to specific geographic locations. However, with specific parameter combinations of our loss probabilities, we can obtain correlations higher than 0.98 with Surovell's loss curves. In the case shown, for example, we have considered $\theta_s=0.9$ and $\theta_l=0.9997$
+
+```{r, echo = FALSE, message=FALSE, results=FALSE}
+
+
+### COMPARISON OF SUROVELL AGAINST BINOMIAL
+
+Ns <- 10000 ## Number of sites (proxies)
+t <- 40000 ## Time span
+
+## Surovell proposal
+# Constants
+a <- 5.726442e06  
+b <- 2176.4
+c <- -1.3925309
+# Surovell's sites
+Ss <- rep(Ns, t)
+for (i in 2:t){
+  tm <- a*((c(0,i)+b)^c)
+  tm <- round((tm[2]/tm[1])*Ns)
+  Ss[i] <- tm
+}
+
+
+## 1 - Binomial proposal
+th_l = 0.9997
+Bs <- rep(Ns, t)
+for (i in 2:t){
+  Ns <- rbinom(1, Ns, th_l)
+  Bs[i] <- Ns 
+}
+cor.test(Ss, Bs)
+summary(lm(Ss ~ Bs))
+
+
+## 2- binomials proposal
+#  1 for short term, followed by long term
+# th_l <- 0.9995
+# th_l <- 0.99964
+th_s <- 0.9
+
+# Initial short term loss
+Ls <- rbinom(1, Ns, th_s)
+# Initialize time-series:
+# t0 <- Initial # of sites
+# t1 <- After short term-loss 
+# We add a placeholder for the rest, that will be calculated
+# using the long-term loss
+Th_ss <- c(Ns, Ls, rep(1, t-2))
+
+for (i in 3:t){
+  Ls <- rbinom(1, Ls, th_l)
+  Th_ss[i] <- Ls
+}
+cor.test(Th_ss, Bs)
+summary(lm(Th_ss ~ Bs))
+
+plot(Ss, type = "l", lwd = 2, col = "darkred", main = "Different proposals of record loss",
+    ylab = "Nsamples", xlab = "t")
+lines(Bs, lwd = 1.5, col = "darkgreen")
+lines(Th_ss, lwd = 2, col = "darkblue")
+legend("topright", legend = c("Surovell", "1 Binomial", "2 Binomial"),
+       lty = c(1,1,1), col = c("darkred", "darkgreen", "darkblue"))
+
+cor.test(Ss,Th_ss)
+
+```
+
+
+## Implementation
+This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are used as follows.
+
+<br>
+
+```{r, echo=FALSE}
+?short_loss
+```
+<br>
+
+```{r, echo=FALSE}
+?long_loss
+```
+<br>
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/record_loss.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/record_loss.Rmd', '.')
+```
+
+You can check the code for the short and long-term loss functions here:
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='record_loss.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+fs::file_delete('record_loss.Rmd')
+```
+</details>
+
+<br>
+
+Once this is done, it is fairly easy to recompute the remaining record, and show it in the same terms as before. In this case, we have computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can heck how the model work and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). 
+
+```{r}
+tlRec <- apply(Rec, 2, short_loss, th_s)
+lRec <- long_loss(tlRec, th_l, 7500)
+tlRec <- t(lRec)
+```
+
+
+```{r, message=FALSE}
+library(viridis)
+barplot(tlRec[c(1:4,77:79),], col = viridis(10), legend = colnames(Rec)[c(1:4,77:79)],
+        xlab = "Depth", ylab = "nsamples", main = "Distribution of specific years along depth with population")
+lines(Ps*300, col = "darkred", lwd = 1.5)
+
+colnames(tlRec) <- colnames(tRec)
+rownames(tlRec) <- rownames(tRec)
+
+barplot(tRec, col = viridis(ncol(tRec)), #legend = colnames(Rec),
+        xlab = "Depth", ylab = "nsamples", main = "Distribution of samples for specific years")
+
+barplot(tlRec, col = viridis(ncol(tlRec)), #legend = colnames(Rec),
+        xlab = "Depth", ylab = "nsamples", main = "Distribution of samples for specific years after loss")
+
+```
+
