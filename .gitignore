@@ -4,6 +4,7 @@
 *.pdf
 \.Rhistory
 .Rproj.user
+.RData
 doc/bookdown/_book*
 doc/bookdown/_main*
 doc/bookdown/packages.bib
