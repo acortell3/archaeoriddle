@@ -1,7 +1,7 @@
 --- 
 title: "Methods Riddles, the ultimate revelations"
 author: "CDAL"
-date:  "`r Sys.Date()`"
+date:  "`r Sys.time()`"
 site: bookdown::bookdown_site
 output:
   bookdown::gitbook: 
