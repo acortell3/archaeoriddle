@@ -28,6 +28,6 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: _book
+          FOLDER: doc/bookdown/_book
           CLEAN: true
 
