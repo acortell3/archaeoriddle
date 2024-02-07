@@ -13,8 +13,8 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v2
       - name: Install rmarkdown
         run: Rscript -e 'install.packages(c("rmarkdown", "bookdown"))'
-      - name: Install missing packages 
-		run: sudo apt-get install -y bglpk-dev gdal-bin proj-bin libgdal-dev libproj-dev libudunits2-dev
+      - name: missing packages 
+        run: sudo apt-get install -y bglpk-dev gdal-bin proj-bin libgdal-dev libproj-dev libudunits2-dev
       - name: Install Archaeoriddle
         run: Rscript -e 'install.packages(".", repos=NULL, type="source")'
       - name: Render Book
