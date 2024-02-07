@@ -22,7 +22,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         with:
           name: _book
-          path: _book/
+          path: doc/bookdown/_book/
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
