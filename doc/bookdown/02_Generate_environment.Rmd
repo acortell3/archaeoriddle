@@ -14,10 +14,10 @@ library(archaeoriddle)
 
 ## Temperature and climate
 
+If we are going to simulate the interaction between two groups, we are going to need an environment in which they can interact in. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.
 An important part of the simulation is to generate a landscape and an environment.
-Doing so often relies on
-Let's Create a fake environment. We use the `environment` function, which in turns
-uses `TK95` to generate a power law noise.
+
+We use the `environment` function, which in turns uses `TK95` to generate a power law noise.
 
 <br>
 
