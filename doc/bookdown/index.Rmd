@@ -40,7 +40,7 @@ To compile the book:
 bookdown::render_book(".")
 ```
 
-List of packages to install
+For this to be successfull you will need a few aditional packages to install:
 
 ```{r packages, message=FALSE}
 needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader","printr") 
@@ -50,10 +50,17 @@ sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
 ```
 
-To go through the bookdown you will also need the archaeoriddle package. With `devtools` installed, you can do
+These package will very likely need other package that will depend on your operating system, so check the error message from the previous commands!
+
+If you want to use the function and methods described in the bookdown you will need to install the archaeoriddle package. With `devtools` installed, you can do:
+
+```{r,eval=F}
+devtools::install_github("acortell3/archaeoriddle")
+```
+
+Once this is done:
 
 ```{r}
-#devtools::install_github("acortell3/archaeoriddle")
 library(archaeoriddle)
 ```
 
