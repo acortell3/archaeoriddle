@@ -210,15 +210,15 @@ source</a></li>
 <div id="theoretical-model" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Theoretical model<a href="record-formation.html#theoretical-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have produced a computational model, replicating the process of formation of the archaeological record in a specific site, accounting for different variables. In order to consider the possible relation between those variables, we have decided to express them as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretical directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by <span class="math inline">\(m^2\)</span>).</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-68435b7ce9b515a77aa0" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-68435b7ce9b515a77aa0">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Site function\",\n       fillcolor = cadetblue1]\n    c [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    d [label = \"Site type\",\n       fillcolor = cadetblue1]\n    e [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    f [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n    c -> {f}\n    d -> {e}\n    e -> {f}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-dafacdcc2ae41881127c" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-dafacdcc2ae41881127c">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Site function\",\n       fillcolor = cadetblue1]\n    c [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    d [label = \"Site type\",\n       fillcolor = cadetblue1]\n    e [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    f [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n    c -> {f}\n    d -> {e}\n    e -> {f}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>The above graph depicts a very schematic way to represent the formation of the archaeological record (<span class="math inline">\(W/m^2\)</span>). In this case, we are interested in radiocarbon dating, focusing on bone samples; that is the number (and range) of potential 14C dates produced in a site, and this is key to understand the way in which we produced the model. We are aware that generating a specific archaeological palimpsest depends on a large quantity of variables, some of which may be controlled by field archaeologists and some of which may not (or are not). Therefore, the graph above must be read as follows. Asides from the outcome variable, the exposure variables, <em>Pop (group size)</em>, <em>Anthropogenic deposition rates</em> and <em>Natural deposition rates</em> (depicted in orange), are designed in a way that they can be activated for the model to infer them, they can be provided by the archaeologist, or they can be simply ignored. In the most elementary case, the archaeologist could introduce directly the outcome variable (<span class="math inline">\(W/m^2\)</span>) without taking into account anything else, if she/he is confident to provide an accurate value.</p>
 <p>However, in most cases, this information will not be known to the field researcher, and in this situation, these variables can be modeled to different extents of complexity. While, for example, in the case of the most simple simulation, the field archaeologist could ignore deposition rates. In this case, and because we are only considering 14C dates, then the quantity of the sample becomes broadly proportional to the number of people present in a site, and thus it could be modeled like this.</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-690aefc1aa91ba92bca8" style="width:50%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-690aefc1aa91ba92bca8">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n           \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {b}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-ad713d27a72e627f01dc" style="width:50%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-ad713d27a72e627f01dc">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n           \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {b}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>However, deposition rates are difficult to ignore if we want to account for the formation process of the archaeological record. If these are known to the archaeologists that developed fieldwork, then this would be the behaviour of the model for creating <span class="math inline">\(W/m^2\)</span>.</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-1584bc197526165e01df" style="width:60%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-1584bc197526165e01df">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    b [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    c [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-0f7dd361b45a5de2ac2c" style="width:60%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-0f7dd361b45a5de2ac2c">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    b [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    c [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Finally, if these are not known to the archaeologist, but they want to model them, then we would go back to the first DAG. In this case, keep reading for the specificities of the model.</p>
 <p>This is how each variable works specifically:</p>
 <ul>
@@ -245,7 +245,7 @@ source</a></li>
 <h2><span class="header-section-number">4.2</span> Implementation<a href="record-formation.html#implementation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This simulation for the creation of the archaeological record has been divided in three phases, or protocols. First, we populate the site, according to a stochastic demographic process, second we generate a sample for each time <span class="math inline">\(t\)</span> and, in the third and final step, we distribute the amount of waste for each <span class="math inline">\(d\)</span>.</p>
 <p>In order to fully understand the process, first we will show the protocols and functions used. To start with, let’s inspect the package with the functions functions:</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="record-formation.html#cb37-1" tabindex="-1"></a><span class="do">## See some of the archaeoriddle functions</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="record-formation.html#cb38-1" tabindex="-1"></a><span class="do">## See some of the archaeoriddle functions</span></span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -534,92 +534,92 @@ If you want to delve into the code of the functions you can open it here:
 Show code
 </summary>
 <p><strong>Code</strong></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="record-formation.html#cb38-1" tabindex="-1"></a><span class="do">## Function 1. Generation of population dynamics</span></span>
-<span id="cb38-2"><a href="record-formation.html#cb38-2" tabindex="-1"></a>Gpd <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">W_fert_age =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">45</span>), <span class="at">M_fert_age =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">55</span>),</span>
-<span id="cb38-3"><a href="record-formation.html#cb38-3" tabindex="-1"></a>                <span class="at">p_offspring =</span> <span class="fl">0.3</span>, <span class="at">prob =</span> <span class="fl">0.8</span>, ...){</span>
-<span id="cb38-4"><a href="record-formation.html#cb38-4" tabindex="-1"></a>  </span>
-<span id="cb38-5"><a href="record-formation.html#cb38-5" tabindex="-1"></a>  <span class="do">## Process of having offspring</span></span>
-<span id="cb38-6"><a href="record-formation.html#cb38-6" tabindex="-1"></a>  <span class="co"># Female fertile population</span></span>
-<span id="cb38-7"><a href="record-formation.html#cb38-7" tabindex="-1"></a>  W <span class="ot">&lt;-</span> x[x[,<span class="dv">2</span>]<span class="sc">==</span><span class="st">&quot;F&quot;</span>, ]</span>
-<span id="cb38-8"><a href="record-formation.html#cb38-8" tabindex="-1"></a>  W_fert <span class="ot">&lt;-</span> W[W<span class="sc">$</span>Age <span class="sc">&gt;</span> W_fert_age[<span class="dv">1</span>] <span class="sc">&amp;</span> W<span class="sc">$</span>Age <span class="sc">&lt;</span> W_fert_age[<span class="dv">2</span>], ]</span>
-<span id="cb38-9"><a href="record-formation.html#cb38-9" tabindex="-1"></a>  <span class="co"># Male fertile population</span></span>
-<span id="cb38-10"><a href="record-formation.html#cb38-10" tabindex="-1"></a>  M <span class="ot">&lt;-</span> x[x[,<span class="dv">2</span>]<span class="sc">==</span><span class="st">&quot;M&quot;</span>, ]</span>
-<span id="cb38-11"><a href="record-formation.html#cb38-11" tabindex="-1"></a>  M_fert <span class="ot">&lt;-</span> M[M<span class="sc">$</span>Age <span class="sc">&gt;</span> M_fert_age[<span class="dv">1</span>] <span class="sc">&amp;</span> M<span class="sc">$</span>Age <span class="sc">&lt;</span> M_fert_age[<span class="dv">2</span>], ]</span>
-<span id="cb38-12"><a href="record-formation.html#cb38-12" tabindex="-1"></a>  </span>
-<span id="cb38-13"><a href="record-formation.html#cb38-13" tabindex="-1"></a>  <span class="do">## Probability of having descendance per woman</span></span>
-<span id="cb38-14"><a href="record-formation.html#cb38-14" tabindex="-1"></a>  <span class="co"># Penalisation in case there are too few men</span></span>
-<span id="cb38-15"><a href="record-formation.html#cb38-15" tabindex="-1"></a>  pen <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">nrow</span>(M_fert)<span class="sc">*</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">nrow</span>(W_fert), <span class="dv">2</span>) <span class="co"># Assumes one man can have two women</span></span>
-<span id="cb38-16"><a href="record-formation.html#cb38-16" tabindex="-1"></a>  pen[pen<span class="sc">&gt;</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="do">## The men penalisation can never multiply the birth rate per woman</span></span>
-<span id="cb38-17"><a href="record-formation.html#cb38-17" tabindex="-1"></a>  <span class="co"># Probability of a woman having a son per year</span></span>
-<span id="cb38-18"><a href="record-formation.html#cb38-18" tabindex="-1"></a>  p_offspring <span class="ot">&lt;-</span> p_offspring<span class="sc">*</span>pen</span>
-<span id="cb38-19"><a href="record-formation.html#cb38-19" tabindex="-1"></a>  </span>
-<span id="cb38-20"><a href="record-formation.html#cb38-20" tabindex="-1"></a>  <span class="do">## Aging process. They get one year older</span></span>
-<span id="cb38-21"><a href="record-formation.html#cb38-21" tabindex="-1"></a>  x<span class="sc">$</span>Age <span class="ot">&lt;-</span> x<span class="sc">$</span>Age<span class="sc">+</span><span class="dv">1</span></span>
-<span id="cb38-22"><a href="record-formation.html#cb38-22" tabindex="-1"></a>  </span>
-<span id="cb38-23"><a href="record-formation.html#cb38-23" tabindex="-1"></a>  <span class="do">## Births are new population that&#39;s added</span></span>
-<span id="cb38-24"><a href="record-formation.html#cb38-24" tabindex="-1"></a>  n_offspring <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">rbinom</span>(<span class="fu">nrow</span>(W_fert), <span class="dv">1</span>, p_offspring))</span>
-<span id="cb38-25"><a href="record-formation.html#cb38-25" tabindex="-1"></a>  new_pop <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb38-26"><a href="record-formation.html#cb38-26" tabindex="-1"></a>    <span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">0</span>, n_offspring),</span>
-<span id="cb38-27"><a href="record-formation.html#cb38-27" tabindex="-1"></a>    <span class="st">&quot;Sex&quot;</span> <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>), n_offspring, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">replace=</span><span class="cn">TRUE</span>))</span>
-<span id="cb38-28"><a href="record-formation.html#cb38-28" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbind</span>(x, new_pop)</span>
-<span id="cb38-29"><a href="record-formation.html#cb38-29" tabindex="-1"></a>  </span>
-<span id="cb38-30"><a href="record-formation.html#cb38-30" tabindex="-1"></a>  <span class="do">## Process of dying</span></span>
-<span id="cb38-31"><a href="record-formation.html#cb38-31" tabindex="-1"></a>  vec_d <span class="ot">&lt;-</span> <span class="fu">apply</span>(x, <span class="dv">1</span>, death, ...)</span>
-<span id="cb38-32"><a href="record-formation.html#cb38-32" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[vec_d<span class="sc">==</span><span class="dv">0</span>, ]</span>
-<span id="cb38-33"><a href="record-formation.html#cb38-33" tabindex="-1"></a>  </span>
-<span id="cb38-34"><a href="record-formation.html#cb38-34" tabindex="-1"></a>  <span class="do">## Apply carrying capacty restrictions</span></span>
-<span id="cb38-35"><a href="record-formation.html#cb38-35" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">K_lim</span>(x, <span class="at">K =</span> K, <span class="at">prob =</span> prob)</span>
-<span id="cb38-36"><a href="record-formation.html#cb38-36" tabindex="-1"></a>  </span>
-<span id="cb38-37"><a href="record-formation.html#cb38-37" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
-<span id="cb38-38"><a href="record-formation.html#cb38-38" tabindex="-1"></a>}</span>
-<span id="cb38-39"><a href="record-formation.html#cb38-39" tabindex="-1"></a></span>
-<span id="cb38-40"><a href="record-formation.html#cb38-40" tabindex="-1"></a></span>
-<span id="cb38-41"><a href="record-formation.html#cb38-41" tabindex="-1"></a><span class="do">## Function 2. Simulation of death process</span></span>
-<span id="cb38-42"><a href="record-formation.html#cb38-42" tabindex="-1"></a>death <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">pd=</span><span class="fu">data.frame</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">99</span>),</span>
-<span id="cb38-43"><a href="record-formation.html#cb38-43" tabindex="-1"></a>                                   <span class="st">&quot;P_d&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="fl">0.14</span>,<span class="dv">1</span>),</span>
-<span id="cb38-44"><a href="record-formation.html#cb38-44" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.16</span>,<span class="dv">4</span>),</span>
-<span id="cb38-45"><a href="record-formation.html#cb38-45" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.05</span>,<span class="dv">5</span>),</span>
-<span id="cb38-46"><a href="record-formation.html#cb38-46" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.01</span>,<span class="dv">24</span>),</span>
-<span id="cb38-47"><a href="record-formation.html#cb38-47" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.03</span>,<span class="dv">14</span>),</span>
-<span id="cb38-48"><a href="record-formation.html#cb38-48" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.1</span>,<span class="dv">10</span>),</span>
-<span id="cb38-49"><a href="record-formation.html#cb38-49" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.3</span>,<span class="dv">42</span>)))){</span>
-<span id="cb38-50"><a href="record-formation.html#cb38-50" tabindex="-1"></a>  age <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="dv">1</span>])</span>
-<span id="cb38-51"><a href="record-formation.html#cb38-51" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">prob=</span>pd[pd<span class="sc">$</span>Age<span class="sc">==</span>age, <span class="dv">2</span>]))</span>
-<span id="cb38-52"><a href="record-formation.html#cb38-52" tabindex="-1"></a>}</span>
-<span id="cb38-53"><a href="record-formation.html#cb38-53" tabindex="-1"></a></span>
-<span id="cb38-54"><a href="record-formation.html#cb38-54" tabindex="-1"></a><span class="do">## Function 3. Simulation of carrying capacity limitation</span></span>
-<span id="cb38-55"><a href="record-formation.html#cb38-55" tabindex="-1"></a>K_lim <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">prob=</span><span class="fl">0.8</span>){</span>
-<span id="cb38-56"><a href="record-formation.html#cb38-56" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
-<span id="cb38-57"><a href="record-formation.html#cb38-57" tabindex="-1"></a>  <span class="cf">if</span> (p<span class="sc">&gt;</span>K){</span>
-<span id="cb38-58"><a href="record-formation.html#cb38-58" tabindex="-1"></a>    o <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(p<span class="sc">-</span>K, <span class="dv">1</span>, prob)</span>
-<span id="cb38-59"><a href="record-formation.html#cb38-59" tabindex="-1"></a>    o <span class="ot">&lt;-</span> <span class="fu">sum</span>(o[o<span class="sc">==</span><span class="dv">1</span>])</span>
-<span id="cb38-60"><a href="record-formation.html#cb38-60" tabindex="-1"></a>    o[o<span class="sc">==</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># Avoids problem eliminating all the df if remove == 0</span></span>
-<span id="cb38-61"><a href="record-formation.html#cb38-61" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x[<span class="sc">-</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(x), o, <span class="at">replace=</span><span class="cn">FALSE</span>), ]</span>
-<span id="cb38-62"><a href="record-formation.html#cb38-62" tabindex="-1"></a>  }</span>
-<span id="cb38-63"><a href="record-formation.html#cb38-63" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
-<span id="cb38-64"><a href="record-formation.html#cb38-64" tabindex="-1"></a>}</span>
-<span id="cb38-65"><a href="record-formation.html#cb38-65" tabindex="-1"></a></span>
-<span id="cb38-66"><a href="record-formation.html#cb38-66" tabindex="-1"></a></span>
-<span id="cb38-67"><a href="record-formation.html#cb38-67" tabindex="-1"></a><span class="do">## Function 4. Stochastic population generation</span></span>
-<span id="cb38-68"><a href="record-formation.html#cb38-68" tabindex="-1"></a>Pop_stoch <span class="ot">&lt;-</span> <span class="cf">function</span>(pop_size, K, ts, <span class="at">prob =</span> <span class="fl">0.8</span>, ...){</span>
-<span id="cb38-69"><a href="record-formation.html#cb38-69" tabindex="-1"></a>  </span>
-<span id="cb38-70"><a href="record-formation.html#cb38-70" tabindex="-1"></a>  <span class="do">## Create initial population</span></span>
-<span id="cb38-71"><a href="record-formation.html#cb38-71" tabindex="-1"></a>  pop_matrix <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb38-72"><a href="record-formation.html#cb38-72" tabindex="-1"></a>    <span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="fu">sample</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">30</span>, pop_size, <span class="dv">10</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb38-73"><a href="record-formation.html#cb38-73" tabindex="-1"></a>    <span class="st">&quot;Sex&quot;</span> <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>), pop_size, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb38-74"><a href="record-formation.html#cb38-74" tabindex="-1"></a>  )</span>
-<span id="cb38-75"><a href="record-formation.html#cb38-75" tabindex="-1"></a>  </span>
-<span id="cb38-76"><a href="record-formation.html#cb38-76" tabindex="-1"></a>  <span class="do">## Initialize vector with population size for each year  </span></span>
-<span id="cb38-77"><a href="record-formation.html#cb38-77" tabindex="-1"></a>  pop <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">length=</span>ts)</span>
-<span id="cb38-78"><a href="record-formation.html#cb38-78" tabindex="-1"></a>  pop[<span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(pop_matrix)</span>
-<span id="cb38-79"><a href="record-formation.html#cb38-79" tabindex="-1"></a>  <span class="do">## Run stochastic process  </span></span>
-<span id="cb38-80"><a href="record-formation.html#cb38-80" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ts){</span>
-<span id="cb38-81"><a href="record-formation.html#cb38-81" tabindex="-1"></a>    pop_matrix <span class="ot">&lt;-</span> <span class="fu">Gpd</span>(pop_matrix, <span class="at">K=</span>K, <span class="at">prob=</span>prob, ...)</span>
-<span id="cb38-82"><a href="record-formation.html#cb38-82" tabindex="-1"></a>    pop[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(pop_matrix)</span>
-<span id="cb38-83"><a href="record-formation.html#cb38-83" tabindex="-1"></a>  }</span>
-<span id="cb38-84"><a href="record-formation.html#cb38-84" tabindex="-1"></a>  </span>
-<span id="cb38-85"><a href="record-formation.html#cb38-85" tabindex="-1"></a>  <span class="fu">return</span>(pop)</span>
-<span id="cb38-86"><a href="record-formation.html#cb38-86" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="record-formation.html#cb39-1" tabindex="-1"></a><span class="do">## Function 1. Generation of population dynamics</span></span>
+<span id="cb39-2"><a href="record-formation.html#cb39-2" tabindex="-1"></a>Gpd <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">W_fert_age =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">45</span>), <span class="at">M_fert_age =</span> <span class="fu">c</span>(<span class="dv">15</span>, <span class="dv">55</span>),</span>
+<span id="cb39-3"><a href="record-formation.html#cb39-3" tabindex="-1"></a>                <span class="at">p_offspring =</span> <span class="fl">0.3</span>, <span class="at">prob =</span> <span class="fl">0.8</span>, ...){</span>
+<span id="cb39-4"><a href="record-formation.html#cb39-4" tabindex="-1"></a>  </span>
+<span id="cb39-5"><a href="record-formation.html#cb39-5" tabindex="-1"></a>  <span class="do">## Process of having offspring</span></span>
+<span id="cb39-6"><a href="record-formation.html#cb39-6" tabindex="-1"></a>  <span class="co"># Female fertile population</span></span>
+<span id="cb39-7"><a href="record-formation.html#cb39-7" tabindex="-1"></a>  W <span class="ot">&lt;-</span> x[x[,<span class="dv">2</span>]<span class="sc">==</span><span class="st">&quot;F&quot;</span>, ]</span>
+<span id="cb39-8"><a href="record-formation.html#cb39-8" tabindex="-1"></a>  W_fert <span class="ot">&lt;-</span> W[W<span class="sc">$</span>Age <span class="sc">&gt;</span> W_fert_age[<span class="dv">1</span>] <span class="sc">&amp;</span> W<span class="sc">$</span>Age <span class="sc">&lt;</span> W_fert_age[<span class="dv">2</span>], ]</span>
+<span id="cb39-9"><a href="record-formation.html#cb39-9" tabindex="-1"></a>  <span class="co"># Male fertile population</span></span>
+<span id="cb39-10"><a href="record-formation.html#cb39-10" tabindex="-1"></a>  M <span class="ot">&lt;-</span> x[x[,<span class="dv">2</span>]<span class="sc">==</span><span class="st">&quot;M&quot;</span>, ]</span>
+<span id="cb39-11"><a href="record-formation.html#cb39-11" tabindex="-1"></a>  M_fert <span class="ot">&lt;-</span> M[M<span class="sc">$</span>Age <span class="sc">&gt;</span> M_fert_age[<span class="dv">1</span>] <span class="sc">&amp;</span> M<span class="sc">$</span>Age <span class="sc">&lt;</span> M_fert_age[<span class="dv">2</span>], ]</span>
+<span id="cb39-12"><a href="record-formation.html#cb39-12" tabindex="-1"></a>  </span>
+<span id="cb39-13"><a href="record-formation.html#cb39-13" tabindex="-1"></a>  <span class="do">## Probability of having descendance per woman</span></span>
+<span id="cb39-14"><a href="record-formation.html#cb39-14" tabindex="-1"></a>  <span class="co"># Penalisation in case there are too few men</span></span>
+<span id="cb39-15"><a href="record-formation.html#cb39-15" tabindex="-1"></a>  pen <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">nrow</span>(M_fert)<span class="sc">*</span><span class="dv">2</span> <span class="sc">/</span> <span class="fu">nrow</span>(W_fert), <span class="dv">2</span>) <span class="co"># Assumes one man can have two women</span></span>
+<span id="cb39-16"><a href="record-formation.html#cb39-16" tabindex="-1"></a>  pen[pen<span class="sc">&gt;</span><span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="do">## The men penalisation can never multiply the birth rate per woman</span></span>
+<span id="cb39-17"><a href="record-formation.html#cb39-17" tabindex="-1"></a>  <span class="co"># Probability of a woman having a son per year</span></span>
+<span id="cb39-18"><a href="record-formation.html#cb39-18" tabindex="-1"></a>  p_offspring <span class="ot">&lt;-</span> p_offspring<span class="sc">*</span>pen</span>
+<span id="cb39-19"><a href="record-formation.html#cb39-19" tabindex="-1"></a>  </span>
+<span id="cb39-20"><a href="record-formation.html#cb39-20" tabindex="-1"></a>  <span class="do">## Aging process. They get one year older</span></span>
+<span id="cb39-21"><a href="record-formation.html#cb39-21" tabindex="-1"></a>  x<span class="sc">$</span>Age <span class="ot">&lt;-</span> x<span class="sc">$</span>Age<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb39-22"><a href="record-formation.html#cb39-22" tabindex="-1"></a>  </span>
+<span id="cb39-23"><a href="record-formation.html#cb39-23" tabindex="-1"></a>  <span class="do">## Births are new population that&#39;s added</span></span>
+<span id="cb39-24"><a href="record-formation.html#cb39-24" tabindex="-1"></a>  n_offspring <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">rbinom</span>(<span class="fu">nrow</span>(W_fert), <span class="dv">1</span>, p_offspring))</span>
+<span id="cb39-25"><a href="record-formation.html#cb39-25" tabindex="-1"></a>  new_pop <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-26"><a href="record-formation.html#cb39-26" tabindex="-1"></a>    <span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="fu">rep</span>(<span class="dv">0</span>, n_offspring),</span>
+<span id="cb39-27"><a href="record-formation.html#cb39-27" tabindex="-1"></a>    <span class="st">&quot;Sex&quot;</span> <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>), n_offspring, <span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="at">replace=</span><span class="cn">TRUE</span>))</span>
+<span id="cb39-28"><a href="record-formation.html#cb39-28" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rbind</span>(x, new_pop)</span>
+<span id="cb39-29"><a href="record-formation.html#cb39-29" tabindex="-1"></a>  </span>
+<span id="cb39-30"><a href="record-formation.html#cb39-30" tabindex="-1"></a>  <span class="do">## Process of dying</span></span>
+<span id="cb39-31"><a href="record-formation.html#cb39-31" tabindex="-1"></a>  vec_d <span class="ot">&lt;-</span> <span class="fu">apply</span>(x, <span class="dv">1</span>, death, ...)</span>
+<span id="cb39-32"><a href="record-formation.html#cb39-32" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x[vec_d<span class="sc">==</span><span class="dv">0</span>, ]</span>
+<span id="cb39-33"><a href="record-formation.html#cb39-33" tabindex="-1"></a>  </span>
+<span id="cb39-34"><a href="record-formation.html#cb39-34" tabindex="-1"></a>  <span class="do">## Apply carrying capacty restrictions</span></span>
+<span id="cb39-35"><a href="record-formation.html#cb39-35" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">K_lim</span>(x, <span class="at">K =</span> K, <span class="at">prob =</span> prob)</span>
+<span id="cb39-36"><a href="record-formation.html#cb39-36" tabindex="-1"></a>  </span>
+<span id="cb39-37"><a href="record-formation.html#cb39-37" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb39-38"><a href="record-formation.html#cb39-38" tabindex="-1"></a>}</span>
+<span id="cb39-39"><a href="record-formation.html#cb39-39" tabindex="-1"></a></span>
+<span id="cb39-40"><a href="record-formation.html#cb39-40" tabindex="-1"></a></span>
+<span id="cb39-41"><a href="record-formation.html#cb39-41" tabindex="-1"></a><span class="do">## Function 2. Simulation of death process</span></span>
+<span id="cb39-42"><a href="record-formation.html#cb39-42" tabindex="-1"></a>death <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">pd=</span><span class="fu">data.frame</span>(<span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">99</span>),</span>
+<span id="cb39-43"><a href="record-formation.html#cb39-43" tabindex="-1"></a>                                   <span class="st">&quot;P_d&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="fl">0.14</span>,<span class="dv">1</span>),</span>
+<span id="cb39-44"><a href="record-formation.html#cb39-44" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.16</span>,<span class="dv">4</span>),</span>
+<span id="cb39-45"><a href="record-formation.html#cb39-45" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.05</span>,<span class="dv">5</span>),</span>
+<span id="cb39-46"><a href="record-formation.html#cb39-46" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.01</span>,<span class="dv">24</span>),</span>
+<span id="cb39-47"><a href="record-formation.html#cb39-47" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.03</span>,<span class="dv">14</span>),</span>
+<span id="cb39-48"><a href="record-formation.html#cb39-48" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.1</span>,<span class="dv">10</span>),</span>
+<span id="cb39-49"><a href="record-formation.html#cb39-49" tabindex="-1"></a>                                             <span class="fu">rep</span>(<span class="fl">0.3</span>,<span class="dv">42</span>)))){</span>
+<span id="cb39-50"><a href="record-formation.html#cb39-50" tabindex="-1"></a>  age <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(x[<span class="dv">1</span>])</span>
+<span id="cb39-51"><a href="record-formation.html#cb39-51" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">rbinom</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">prob=</span>pd[pd<span class="sc">$</span>Age<span class="sc">==</span>age, <span class="dv">2</span>]))</span>
+<span id="cb39-52"><a href="record-formation.html#cb39-52" tabindex="-1"></a>}</span>
+<span id="cb39-53"><a href="record-formation.html#cb39-53" tabindex="-1"></a></span>
+<span id="cb39-54"><a href="record-formation.html#cb39-54" tabindex="-1"></a><span class="do">## Function 3. Simulation of carrying capacity limitation</span></span>
+<span id="cb39-55"><a href="record-formation.html#cb39-55" tabindex="-1"></a>K_lim <span class="ot">&lt;-</span> <span class="cf">function</span>(x, K, <span class="at">prob=</span><span class="fl">0.8</span>){</span>
+<span id="cb39-56"><a href="record-formation.html#cb39-56" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
+<span id="cb39-57"><a href="record-formation.html#cb39-57" tabindex="-1"></a>  <span class="cf">if</span> (p<span class="sc">&gt;</span>K){</span>
+<span id="cb39-58"><a href="record-formation.html#cb39-58" tabindex="-1"></a>    o <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(p<span class="sc">-</span>K, <span class="dv">1</span>, prob)</span>
+<span id="cb39-59"><a href="record-formation.html#cb39-59" tabindex="-1"></a>    o <span class="ot">&lt;-</span> <span class="fu">sum</span>(o[o<span class="sc">==</span><span class="dv">1</span>])</span>
+<span id="cb39-60"><a href="record-formation.html#cb39-60" tabindex="-1"></a>    o[o<span class="sc">==</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># Avoids problem eliminating all the df if remove == 0</span></span>
+<span id="cb39-61"><a href="record-formation.html#cb39-61" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x[<span class="sc">-</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(x), o, <span class="at">replace=</span><span class="cn">FALSE</span>), ]</span>
+<span id="cb39-62"><a href="record-formation.html#cb39-62" tabindex="-1"></a>  }</span>
+<span id="cb39-63"><a href="record-formation.html#cb39-63" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb39-64"><a href="record-formation.html#cb39-64" tabindex="-1"></a>}</span>
+<span id="cb39-65"><a href="record-formation.html#cb39-65" tabindex="-1"></a></span>
+<span id="cb39-66"><a href="record-formation.html#cb39-66" tabindex="-1"></a></span>
+<span id="cb39-67"><a href="record-formation.html#cb39-67" tabindex="-1"></a><span class="do">## Function 4. Stochastic population generation</span></span>
+<span id="cb39-68"><a href="record-formation.html#cb39-68" tabindex="-1"></a>Pop_stoch <span class="ot">&lt;-</span> <span class="cf">function</span>(pop_size, K, ts, <span class="at">prob =</span> <span class="fl">0.8</span>, ...){</span>
+<span id="cb39-69"><a href="record-formation.html#cb39-69" tabindex="-1"></a>  </span>
+<span id="cb39-70"><a href="record-formation.html#cb39-70" tabindex="-1"></a>  <span class="do">## Create initial population</span></span>
+<span id="cb39-71"><a href="record-formation.html#cb39-71" tabindex="-1"></a>  pop_matrix <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb39-72"><a href="record-formation.html#cb39-72" tabindex="-1"></a>    <span class="st">&quot;Age&quot;</span> <span class="ot">=</span> <span class="fu">sample</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">30</span>, pop_size, <span class="dv">10</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb39-73"><a href="record-formation.html#cb39-73" tabindex="-1"></a>    <span class="st">&quot;Sex&quot;</span> <span class="ot">=</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>), pop_size, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>), <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb39-74"><a href="record-formation.html#cb39-74" tabindex="-1"></a>  )</span>
+<span id="cb39-75"><a href="record-formation.html#cb39-75" tabindex="-1"></a>  </span>
+<span id="cb39-76"><a href="record-formation.html#cb39-76" tabindex="-1"></a>  <span class="do">## Initialize vector with population size for each year  </span></span>
+<span id="cb39-77"><a href="record-formation.html#cb39-77" tabindex="-1"></a>  pop <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">length=</span>ts)</span>
+<span id="cb39-78"><a href="record-formation.html#cb39-78" tabindex="-1"></a>  pop[<span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(pop_matrix)</span>
+<span id="cb39-79"><a href="record-formation.html#cb39-79" tabindex="-1"></a>  <span class="do">## Run stochastic process  </span></span>
+<span id="cb39-80"><a href="record-formation.html#cb39-80" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ts){</span>
+<span id="cb39-81"><a href="record-formation.html#cb39-81" tabindex="-1"></a>    pop_matrix <span class="ot">&lt;-</span> <span class="fu">Gpd</span>(pop_matrix, <span class="at">K=</span>K, <span class="at">prob=</span>prob, ...)</span>
+<span id="cb39-82"><a href="record-formation.html#cb39-82" tabindex="-1"></a>    pop[i] <span class="ot">&lt;-</span> <span class="fu">nrow</span>(pop_matrix)</span>
+<span id="cb39-83"><a href="record-formation.html#cb39-83" tabindex="-1"></a>  }</span>
+<span id="cb39-84"><a href="record-formation.html#cb39-84" tabindex="-1"></a>  </span>
+<span id="cb39-85"><a href="record-formation.html#cb39-85" tabindex="-1"></a>  <span class="fu">return</span>(pop)</span>
+<span id="cb39-86"><a href="record-formation.html#cb39-86" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 </div>
 <div id="anthropogenic-deposition-a-protocol" class="section level3 hasAnchor" number="4.2.2">
@@ -736,62 +736,62 @@ You can inspect the <code>A_rates</code> code here:
 Show code
 </summary>
 <p><strong>Code</strong></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="record-formation.html#cb39-1" tabindex="-1"></a><span class="do">## Function 5. Simulate anthropogenic deposition</span></span>
-<span id="cb39-2"><a href="record-formation.html#cb39-2" tabindex="-1"></a>A_rates <span class="ot">&lt;-</span> <span class="cf">function</span>(x,</span>
-<span id="cb39-3"><a href="record-formation.html#cb39-3" tabindex="-1"></a>                    <span class="at">kcalpers =</span> <span class="dv">2</span>,</span>
-<span id="cb39-4"><a href="record-formation.html#cb39-4" tabindex="-1"></a>                    <span class="at">kcalmeat_eat =</span> <span class="fl">0.45</span>,</span>
-<span id="cb39-5"><a href="record-formation.html#cb39-5" tabindex="-1"></a>                    <span class="at">kcalmeat_prod =</span> <span class="fl">1.5</span>,</span>
-<span id="cb39-6"><a href="record-formation.html#cb39-6" tabindex="-1"></a>                    <span class="at">in_camp_eat =</span> <span class="fl">0.55</span>,</span>
-<span id="cb39-7"><a href="record-formation.html#cb39-7" tabindex="-1"></a>                    <span class="at">in_camp_stay =</span> <span class="dv">13</span>,</span>
-<span id="cb39-8"><a href="record-formation.html#cb39-8" tabindex="-1"></a>                    <span class="at">kg =</span> <span class="fl">0.07</span>){</span>
-<span id="cb39-9"><a href="record-formation.html#cb39-9" tabindex="-1"></a>  </span>
-<span id="cb39-10"><a href="record-formation.html#cb39-10" tabindex="-1"></a>  </span>
-<span id="cb39-11"><a href="record-formation.html#cb39-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.data.frame</span>(x) <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
-<span id="cb39-12"><a href="record-formation.html#cb39-12" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
-<span id="cb39-13"><a href="record-formation.html#cb39-13" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">1</span>){</span>
-<span id="cb39-14"><a href="record-formation.html#cb39-14" tabindex="-1"></a>    P <span class="ot">&lt;-</span> x</span>
-<span id="cb39-15"><a href="record-formation.html#cb39-15" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-16"><a href="record-formation.html#cb39-16" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb39-17"><a href="record-formation.html#cb39-17" tabindex="-1"></a>  }</span>
-<span id="cb39-18"><a href="record-formation.html#cb39-18" tabindex="-1"></a>  </span>
-<span id="cb39-19"><a href="record-formation.html#cb39-19" tabindex="-1"></a>  <span class="co"># Check variable values are within the defined ranges</span></span>
-<span id="cb39-20"><a href="record-formation.html#cb39-20" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fl">1.5</span> <span class="sc">&lt;=</span> kcalpers <span class="sc">&amp;</span> kcalpers <span class="sc">&lt;=</span> <span class="fl">2.5</span>){</span>
-<span id="cb39-21"><a href="record-formation.html#cb39-21" tabindex="-1"></a>    B <span class="ot">&lt;-</span> kcalpers<span class="sc">*</span><span class="dv">365</span></span>
-<span id="cb39-22"><a href="record-formation.html#cb39-22" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-23"><a href="record-formation.html#cb39-23" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalpers must be within [1.5, 2.5]&#39;</span>)</span>
-<span id="cb39-24"><a href="record-formation.html#cb39-24" tabindex="-1"></a>  }</span>
-<span id="cb39-25"><a href="record-formation.html#cb39-25" tabindex="-1"></a>  </span>
-<span id="cb39-26"><a href="record-formation.html#cb39-26" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> kcalmeat_eat <span class="sc">&amp;</span> kcalmeat_eat <span class="sc">&lt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb39-27"><a href="record-formation.html#cb39-27" tabindex="-1"></a>    M <span class="ot">&lt;-</span> kcalmeat_eat</span>
-<span id="cb39-28"><a href="record-formation.html#cb39-28" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-29"><a href="record-formation.html#cb39-29" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_eat must be within [0, 1]&#39;</span>)</span>
-<span id="cb39-30"><a href="record-formation.html#cb39-30" tabindex="-1"></a>  }</span>
-<span id="cb39-31"><a href="record-formation.html#cb39-31" tabindex="-1"></a>  </span>
-<span id="cb39-32"><a href="record-formation.html#cb39-32" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">1</span> <span class="sc">&lt;=</span> kcalmeat_prod <span class="sc">&amp;</span> kcalmeat_prod <span class="sc">&lt;</span> <span class="fl">2.5</span>) {</span>
-<span id="cb39-33"><a href="record-formation.html#cb39-33" tabindex="-1"></a>    R <span class="ot">&lt;-</span> kcalmeat_prod</span>
-<span id="cb39-34"><a href="record-formation.html#cb39-34" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-35"><a href="record-formation.html#cb39-35" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_prod must be within [1, 25]&#39;</span>)</span>
-<span id="cb39-36"><a href="record-formation.html#cb39-36" tabindex="-1"></a>  }</span>
-<span id="cb39-37"><a href="record-formation.html#cb39-37" tabindex="-1"></a>  </span>
-<span id="cb39-38"><a href="record-formation.html#cb39-38" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> in_camp_eat <span class="sc">&amp;</span> in_camp_eat <span class="sc">&lt;=</span> <span class="dv">1</span>){</span>
-<span id="cb39-39"><a href="record-formation.html#cb39-39" tabindex="-1"></a>    S <span class="ot">&lt;-</span> in_camp_eat</span>
-<span id="cb39-40"><a href="record-formation.html#cb39-40" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-41"><a href="record-formation.html#cb39-41" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;in_camp_eat must be within [0, 1]&#39;</span>)</span>
-<span id="cb39-42"><a href="record-formation.html#cb39-42" tabindex="-1"></a>  }</span>
-<span id="cb39-43"><a href="record-formation.html#cb39-43" tabindex="-1"></a>  </span>
-<span id="cb39-44"><a href="record-formation.html#cb39-44" tabindex="-1"></a>  <span class="cf">if</span> (in_camp_stay <span class="sc">&lt;=</span> <span class="dv">52</span>){</span>
-<span id="cb39-45"><a href="record-formation.html#cb39-45" tabindex="-1"></a>    O <span class="ot">&lt;-</span> <span class="fu">round</span>(in_camp_stay<span class="sc">/</span><span class="dv">52</span>,<span class="dv">2</span>)</span>
-<span id="cb39-46"><a href="record-formation.html#cb39-46" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-47"><a href="record-formation.html#cb39-47" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;A year cannot have more than 52 weeks&#39;</span>)</span>
-<span id="cb39-48"><a href="record-formation.html#cb39-48" tabindex="-1"></a>  }</span>
-<span id="cb39-49"><a href="record-formation.html#cb39-49" tabindex="-1"></a>  </span>
-<span id="cb39-50"><a href="record-formation.html#cb39-50" tabindex="-1"></a>  C <span class="ot">&lt;-</span> B<span class="sc">*</span>M</span>
-<span id="cb39-51"><a href="record-formation.html#cb39-51" tabindex="-1"></a>  G <span class="ot">&lt;-</span> (C <span class="sc">*</span> S) <span class="sc">/</span> R <span class="do">## Quantity (in kg) of animal consumed per person in camp during year t</span></span>
-<span id="cb39-52"><a href="record-formation.html#cb39-52" tabindex="-1"></a>  A <span class="ot">&lt;-</span> P <span class="sc">*</span> O <span class="sc">*</span> kg <span class="sc">*</span> G <span class="do">## kilograms of meat consumed within a camp by the group</span></span>
-<span id="cb39-53"><a href="record-formation.html#cb39-53" tabindex="-1"></a>  W <span class="ot">&lt;-</span> <span class="fu">round</span>((<span class="dv">1000</span> <span class="sc">*</span> A) <span class="sc">/</span> <span class="dv">4</span>) <span class="do">## samples extracted from that meat</span></span>
-<span id="cb39-54"><a href="record-formation.html#cb39-54" tabindex="-1"></a>  </span>
-<span id="cb39-55"><a href="record-formation.html#cb39-55" tabindex="-1"></a>  <span class="fu">return</span>(W)</span>
-<span id="cb39-56"><a href="record-formation.html#cb39-56" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="record-formation.html#cb40-1" tabindex="-1"></a><span class="do">## Function 5. Simulate anthropogenic deposition</span></span>
+<span id="cb40-2"><a href="record-formation.html#cb40-2" tabindex="-1"></a>A_rates <span class="ot">&lt;-</span> <span class="cf">function</span>(x,</span>
+<span id="cb40-3"><a href="record-formation.html#cb40-3" tabindex="-1"></a>                    <span class="at">kcalpers =</span> <span class="dv">2</span>,</span>
+<span id="cb40-4"><a href="record-formation.html#cb40-4" tabindex="-1"></a>                    <span class="at">kcalmeat_eat =</span> <span class="fl">0.45</span>,</span>
+<span id="cb40-5"><a href="record-formation.html#cb40-5" tabindex="-1"></a>                    <span class="at">kcalmeat_prod =</span> <span class="fl">1.5</span>,</span>
+<span id="cb40-6"><a href="record-formation.html#cb40-6" tabindex="-1"></a>                    <span class="at">in_camp_eat =</span> <span class="fl">0.55</span>,</span>
+<span id="cb40-7"><a href="record-formation.html#cb40-7" tabindex="-1"></a>                    <span class="at">in_camp_stay =</span> <span class="dv">13</span>,</span>
+<span id="cb40-8"><a href="record-formation.html#cb40-8" tabindex="-1"></a>                    <span class="at">kg =</span> <span class="fl">0.07</span>){</span>
+<span id="cb40-9"><a href="record-formation.html#cb40-9" tabindex="-1"></a>  </span>
+<span id="cb40-10"><a href="record-formation.html#cb40-10" tabindex="-1"></a>  </span>
+<span id="cb40-11"><a href="record-formation.html#cb40-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.data.frame</span>(x) <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
+<span id="cb40-12"><a href="record-formation.html#cb40-12" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
+<span id="cb40-13"><a href="record-formation.html#cb40-13" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb40-14"><a href="record-formation.html#cb40-14" tabindex="-1"></a>    P <span class="ot">&lt;-</span> x</span>
+<span id="cb40-15"><a href="record-formation.html#cb40-15" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-16"><a href="record-formation.html#cb40-16" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb40-17"><a href="record-formation.html#cb40-17" tabindex="-1"></a>  }</span>
+<span id="cb40-18"><a href="record-formation.html#cb40-18" tabindex="-1"></a>  </span>
+<span id="cb40-19"><a href="record-formation.html#cb40-19" tabindex="-1"></a>  <span class="co"># Check variable values are within the defined ranges</span></span>
+<span id="cb40-20"><a href="record-formation.html#cb40-20" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fl">1.5</span> <span class="sc">&lt;=</span> kcalpers <span class="sc">&amp;</span> kcalpers <span class="sc">&lt;=</span> <span class="fl">2.5</span>){</span>
+<span id="cb40-21"><a href="record-formation.html#cb40-21" tabindex="-1"></a>    B <span class="ot">&lt;-</span> kcalpers<span class="sc">*</span><span class="dv">365</span></span>
+<span id="cb40-22"><a href="record-formation.html#cb40-22" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-23"><a href="record-formation.html#cb40-23" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalpers must be within [1.5, 2.5]&#39;</span>)</span>
+<span id="cb40-24"><a href="record-formation.html#cb40-24" tabindex="-1"></a>  }</span>
+<span id="cb40-25"><a href="record-formation.html#cb40-25" tabindex="-1"></a>  </span>
+<span id="cb40-26"><a href="record-formation.html#cb40-26" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> kcalmeat_eat <span class="sc">&amp;</span> kcalmeat_eat <span class="sc">&lt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb40-27"><a href="record-formation.html#cb40-27" tabindex="-1"></a>    M <span class="ot">&lt;-</span> kcalmeat_eat</span>
+<span id="cb40-28"><a href="record-formation.html#cb40-28" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-29"><a href="record-formation.html#cb40-29" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_eat must be within [0, 1]&#39;</span>)</span>
+<span id="cb40-30"><a href="record-formation.html#cb40-30" tabindex="-1"></a>  }</span>
+<span id="cb40-31"><a href="record-formation.html#cb40-31" tabindex="-1"></a>  </span>
+<span id="cb40-32"><a href="record-formation.html#cb40-32" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">1</span> <span class="sc">&lt;=</span> kcalmeat_prod <span class="sc">&amp;</span> kcalmeat_prod <span class="sc">&lt;</span> <span class="fl">2.5</span>) {</span>
+<span id="cb40-33"><a href="record-formation.html#cb40-33" tabindex="-1"></a>    R <span class="ot">&lt;-</span> kcalmeat_prod</span>
+<span id="cb40-34"><a href="record-formation.html#cb40-34" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-35"><a href="record-formation.html#cb40-35" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_prod must be within [1, 25]&#39;</span>)</span>
+<span id="cb40-36"><a href="record-formation.html#cb40-36" tabindex="-1"></a>  }</span>
+<span id="cb40-37"><a href="record-formation.html#cb40-37" tabindex="-1"></a>  </span>
+<span id="cb40-38"><a href="record-formation.html#cb40-38" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> in_camp_eat <span class="sc">&amp;</span> in_camp_eat <span class="sc">&lt;=</span> <span class="dv">1</span>){</span>
+<span id="cb40-39"><a href="record-formation.html#cb40-39" tabindex="-1"></a>    S <span class="ot">&lt;-</span> in_camp_eat</span>
+<span id="cb40-40"><a href="record-formation.html#cb40-40" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-41"><a href="record-formation.html#cb40-41" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;in_camp_eat must be within [0, 1]&#39;</span>)</span>
+<span id="cb40-42"><a href="record-formation.html#cb40-42" tabindex="-1"></a>  }</span>
+<span id="cb40-43"><a href="record-formation.html#cb40-43" tabindex="-1"></a>  </span>
+<span id="cb40-44"><a href="record-formation.html#cb40-44" tabindex="-1"></a>  <span class="cf">if</span> (in_camp_stay <span class="sc">&lt;=</span> <span class="dv">52</span>){</span>
+<span id="cb40-45"><a href="record-formation.html#cb40-45" tabindex="-1"></a>    O <span class="ot">&lt;-</span> <span class="fu">round</span>(in_camp_stay<span class="sc">/</span><span class="dv">52</span>,<span class="dv">2</span>)</span>
+<span id="cb40-46"><a href="record-formation.html#cb40-46" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-47"><a href="record-formation.html#cb40-47" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;A year cannot have more than 52 weeks&#39;</span>)</span>
+<span id="cb40-48"><a href="record-formation.html#cb40-48" tabindex="-1"></a>  }</span>
+<span id="cb40-49"><a href="record-formation.html#cb40-49" tabindex="-1"></a>  </span>
+<span id="cb40-50"><a href="record-formation.html#cb40-50" tabindex="-1"></a>  C <span class="ot">&lt;-</span> B<span class="sc">*</span>M</span>
+<span id="cb40-51"><a href="record-formation.html#cb40-51" tabindex="-1"></a>  G <span class="ot">&lt;-</span> (C <span class="sc">*</span> S) <span class="sc">/</span> R <span class="do">## Quantity (in kg) of animal consumed per person in camp during year t</span></span>
+<span id="cb40-52"><a href="record-formation.html#cb40-52" tabindex="-1"></a>  A <span class="ot">&lt;-</span> P <span class="sc">*</span> O <span class="sc">*</span> kg <span class="sc">*</span> G <span class="do">## kilograms of meat consumed within a camp by the group</span></span>
+<span id="cb40-53"><a href="record-formation.html#cb40-53" tabindex="-1"></a>  W <span class="ot">&lt;-</span> <span class="fu">round</span>((<span class="dv">1000</span> <span class="sc">*</span> A) <span class="sc">/</span> <span class="dv">4</span>) <span class="do">## samples extracted from that meat</span></span>
+<span id="cb40-54"><a href="record-formation.html#cb40-54" tabindex="-1"></a>  </span>
+<span id="cb40-55"><a href="record-formation.html#cb40-55" tabindex="-1"></a>  <span class="fu">return</span>(W)</span>
+<span id="cb40-56"><a href="record-formation.html#cb40-56" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 </div>
 <div id="depth-d-protocol" class="section level3 hasAnchor" number="4.2.3">
@@ -959,91 +959,91 @@ As before, you can check the code here:
 Show code
 </summary>
 <p><strong>Code</strong></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="record-formation.html#cb40-1" tabindex="-1"></a><span class="do">## Function 6. Depth protocol deposition</span></span>
-<span id="cb40-2"><a href="record-formation.html#cb40-2" tabindex="-1"></a>D_along <span class="ot">&lt;-</span> <span class="cf">function</span>(W_t, r, <span class="at">max_bone_thickness =</span> <span class="fu">c</span>(<span class="st">&quot;m&quot;</span>, <span class="st">&#39;s&#39;</span>, <span class="st">&#39;l&#39;</span>, <span class="st">&#39;vl&#39;</span>),</span>
-<span id="cb40-3"><a href="record-formation.html#cb40-3" tabindex="-1"></a>                    <span class="at">prop_buried =</span> .<span class="dv">9999</span>){</span>
-<span id="cb40-4"><a href="record-formation.html#cb40-4" tabindex="-1"></a>  </span>
-<span id="cb40-5"><a href="record-formation.html#cb40-5" tabindex="-1"></a>  <span class="co"># Define parameter r</span></span>
-<span id="cb40-6"><a href="record-formation.html#cb40-6" tabindex="-1"></a>  <span class="cf">if</span>(r <span class="sc">&gt;</span> <span class="fl">0.5</span>) <span class="fu">stop</span>(<span class="st">&quot;values &gt; 0.5 are not accepted for param &#39;r&#39;&quot;</span>)</span>
-<span id="cb40-7"><a href="record-formation.html#cb40-7" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">round</span>(r, <span class="dv">1</span>)</span>
-<span id="cb40-8"><a href="record-formation.html#cb40-8" tabindex="-1"></a>  <span class="co"># Constraints for parameter Pb</span></span>
-<span id="cb40-9"><a href="record-formation.html#cb40-9" tabindex="-1"></a>  <span class="cf">if</span> (prop_buried <span class="sc">&gt;=</span> <span class="dv">1</span>) <span class="fu">stop</span>(<span class="st">&quot;Pb must be lower than 1&quot;</span>)</span>
-<span id="cb40-10"><a href="record-formation.html#cb40-10" tabindex="-1"></a>  </span>
-<span id="cb40-11"><a href="record-formation.html#cb40-11" tabindex="-1"></a>  <span class="co"># Define parameter Max_bone_thickness (L)</span></span>
-<span id="cb40-12"><a href="record-formation.html#cb40-12" tabindex="-1"></a>  max_bone_thickness <span class="ot">=</span> <span class="fu">match.arg</span>(max_bone_thickness)</span>
-<span id="cb40-13"><a href="record-formation.html#cb40-13" tabindex="-1"></a>  <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;s&#39;</span>){</span>
-<span id="cb40-14"><a href="record-formation.html#cb40-14" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="fl">2.5</span></span>
-<span id="cb40-15"><a href="record-formation.html#cb40-15" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;m&#39;</span>){</span>
-<span id="cb40-16"><a href="record-formation.html#cb40-16" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb40-17"><a href="record-formation.html#cb40-17" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;l&#39;</span>){</span>
-<span id="cb40-18"><a href="record-formation.html#cb40-18" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb40-19"><a href="record-formation.html#cb40-19" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;vl&#39;</span>){</span>
-<span id="cb40-20"><a href="record-formation.html#cb40-20" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb40-21"><a href="record-formation.html#cb40-21" tabindex="-1"></a>  }</span>
-<span id="cb40-22"><a href="record-formation.html#cb40-22" tabindex="-1"></a>  </span>
-<span id="cb40-23"><a href="record-formation.html#cb40-23" tabindex="-1"></a>  <span class="co"># Define tmax</span></span>
-<span id="cb40-24"><a href="record-formation.html#cb40-24" tabindex="-1"></a>  tm <span class="ot">&lt;-</span> L<span class="sc">/</span>r</span>
-<span id="cb40-25"><a href="record-formation.html#cb40-25" tabindex="-1"></a>  <span class="co"># Estimate lambda</span></span>
-<span id="cb40-26"><a href="record-formation.html#cb40-26" tabindex="-1"></a>  l <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> prop_buried) <span class="sc">/</span> tm</span>
-<span id="cb40-27"><a href="record-formation.html#cb40-27" tabindex="-1"></a>  </span>
-<span id="cb40-28"><a href="record-formation.html#cb40-28" tabindex="-1"></a>  ss <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">round</span>(tm)) <span class="do">## Vector to distribute samples over</span></span>
-<span id="cb40-29"><a href="record-formation.html#cb40-29" tabindex="-1"></a>  tl <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># Year where the sample is deposited</span></span>
-<span id="cb40-30"><a href="record-formation.html#cb40-30" tabindex="-1"></a>  tu <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># Year when it is covered</span></span>
-<span id="cb40-31"><a href="record-formation.html#cb40-31" tabindex="-1"></a>  </span>
-<span id="cb40-32"><a href="record-formation.html#cb40-32" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>tm){</span>
-<span id="cb40-33"><a href="record-formation.html#cb40-33" tabindex="-1"></a>    Wb <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>(tu<span class="sc">-</span>tl))) <span class="co"># Apply formula for tu</span></span>
-<span id="cb40-34"><a href="record-formation.html#cb40-34" tabindex="-1"></a>    Wbprev <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>((tu<span class="dv">-1</span>)<span class="sc">-</span>tl))) <span class="co"># Calculate for previous to tu</span></span>
-<span id="cb40-35"><a href="record-formation.html#cb40-35" tabindex="-1"></a>    ss[i] <span class="ot">&lt;-</span> <span class="fu">round</span>(Wb <span class="sc">-</span> Wbprev) <span class="co"># Number of samples for each year</span></span>
-<span id="cb40-36"><a href="record-formation.html#cb40-36" tabindex="-1"></a>    tu <span class="ot">&lt;-</span> tu <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb40-37"><a href="record-formation.html#cb40-37" tabindex="-1"></a>  }</span>
-<span id="cb40-38"><a href="record-formation.html#cb40-38" tabindex="-1"></a>  </span>
-<span id="cb40-39"><a href="record-formation.html#cb40-39" tabindex="-1"></a>  <span class="fu">return</span>(ss)</span>
-<span id="cb40-40"><a href="record-formation.html#cb40-40" tabindex="-1"></a>}</span>
-<span id="cb40-41"><a href="record-formation.html#cb40-41" tabindex="-1"></a></span>
-<span id="cb40-42"><a href="record-formation.html#cb40-42" tabindex="-1"></a><span class="do">## 7. Archaeological deposition record</span></span>
-<span id="cb40-43"><a href="record-formation.html#cb40-43" tabindex="-1"></a>Rec_c <span class="ot">&lt;-</span> <span class="cf">function</span>(x, area, ts, InitBP, <span class="at">persqm =</span> <span class="cn">FALSE</span>, ...){</span>
-<span id="cb40-44"><a href="record-formation.html#cb40-44" tabindex="-1"></a>  </span>
-<span id="cb40-45"><a href="record-formation.html#cb40-45" tabindex="-1"></a>  <span class="do">## Whether sqm division must be included or not</span></span>
-<span id="cb40-46"><a href="record-formation.html#cb40-46" tabindex="-1"></a>  <span class="cf">if</span> (persqm <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
-<span id="cb40-47"><a href="record-formation.html#cb40-47" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">/</span> area</span>
-<span id="cb40-48"><a href="record-formation.html#cb40-48" tabindex="-1"></a>  }</span>
-<span id="cb40-49"><a href="record-formation.html#cb40-49" tabindex="-1"></a>  </span>
-<span id="cb40-50"><a href="record-formation.html#cb40-50" tabindex="-1"></a>  <span class="do">## Spread dates along different depths</span></span>
-<span id="cb40-51"><a href="record-formation.html#cb40-51" tabindex="-1"></a>  matdim <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb40-52"><a href="record-formation.html#cb40-52" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span>matdim, <span class="at">ncol=</span>matdim)</span>
-<span id="cb40-53"><a href="record-formation.html#cb40-53" tabindex="-1"></a>  </span>
-<span id="cb40-54"><a href="record-formation.html#cb40-54" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>matdim){</span>
-<span id="cb40-55"><a href="record-formation.html#cb40-55" tabindex="-1"></a>    new <span class="ot">&lt;-</span> <span class="fu">D_along</span>(x[i], ...)</span>
-<span id="cb40-56"><a href="record-formation.html#cb40-56" tabindex="-1"></a>    st <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb40-57"><a href="record-formation.html#cb40-57" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, st), new)</span>
-<span id="cb40-58"><a href="record-formation.html#cb40-58" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> pos[<span class="dv">1</span><span class="sc">:</span>matdim]</span>
-<span id="cb40-59"><a href="record-formation.html#cb40-59" tabindex="-1"></a>    mat[, i] <span class="ot">&lt;-</span> pos</span>
-<span id="cb40-60"><a href="record-formation.html#cb40-60" tabindex="-1"></a>  }</span>
-<span id="cb40-61"><a href="record-formation.html#cb40-61" tabindex="-1"></a>  mat[<span class="fu">is.na</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb40-62"><a href="record-formation.html#cb40-62" tabindex="-1"></a>  </span>
-<span id="cb40-63"><a href="record-formation.html#cb40-63" tabindex="-1"></a>  <span class="do">## Names for columns (each year)</span></span>
-<span id="cb40-64"><a href="record-formation.html#cb40-64" tabindex="-1"></a>  years <span class="ot">&lt;-</span> <span class="fu">seq</span>(InitBP, InitBP<span class="sc">-</span>ts)</span>
-<span id="cb40-65"><a href="record-formation.html#cb40-65" tabindex="-1"></a>  nyears <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb40-66"><a href="record-formation.html#cb40-66" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>matdim){</span>
-<span id="cb40-67"><a href="record-formation.html#cb40-67" tabindex="-1"></a>    nyears[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(years[i], <span class="st">&quot; BP&quot;</span>)</span>
-<span id="cb40-68"><a href="record-formation.html#cb40-68" tabindex="-1"></a>  }</span>
-<span id="cb40-69"><a href="record-formation.html#cb40-69" tabindex="-1"></a>  <span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> nyears</span>
-<span id="cb40-70"><a href="record-formation.html#cb40-70" tabindex="-1"></a>  </span>
-<span id="cb40-71"><a href="record-formation.html#cb40-71" tabindex="-1"></a>  <span class="do">## Names for rows (each depth)</span></span>
-<span id="cb40-72"><a href="record-formation.html#cb40-72" tabindex="-1"></a>  <span class="co"># Extract arguments as a list</span></span>
-<span id="cb40-73"><a href="record-formation.html#cb40-73" tabindex="-1"></a>  extract_args <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...){ </span>
-<span id="cb40-74"><a href="record-formation.html#cb40-74" tabindex="-1"></a>    extras <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
-<span id="cb40-75"><a href="record-formation.html#cb40-75" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">extras=</span>extras)) </span>
-<span id="cb40-76"><a href="record-formation.html#cb40-76" tabindex="-1"></a>  }</span>
-<span id="cb40-77"><a href="record-formation.html#cb40-77" tabindex="-1"></a>  </span>
-<span id="cb40-78"><a href="record-formation.html#cb40-78" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> <span class="fu">extract_args</span>(D_along, ...)</span>
-<span id="cb40-79"><a href="record-formation.html#cb40-79" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> dr<span class="sc">$</span>extras<span class="sc">$</span>r</span>
-<span id="cb40-80"><a href="record-formation.html#cb40-80" tabindex="-1"></a>  </span>
-<span id="cb40-81"><a href="record-formation.html#cb40-81" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">cumsum</span>(<span class="fu">rep</span>(dr, <span class="fu">nrow</span>(mat)))) <span class="do">## computes depths</span></span>
-<span id="cb40-82"><a href="record-formation.html#cb40-82" tabindex="-1"></a>  <span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;d = &quot;</span>, d, <span class="st">&quot; cm&quot;</span>)</span>
-<span id="cb40-83"><a href="record-formation.html#cb40-83" tabindex="-1"></a>  </span>
-<span id="cb40-84"><a href="record-formation.html#cb40-84" tabindex="-1"></a>  <span class="fu">return</span>(mat)</span>
-<span id="cb40-85"><a href="record-formation.html#cb40-85" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="record-formation.html#cb41-1" tabindex="-1"></a><span class="do">## Function 6. Depth protocol deposition</span></span>
+<span id="cb41-2"><a href="record-formation.html#cb41-2" tabindex="-1"></a>D_along <span class="ot">&lt;-</span> <span class="cf">function</span>(W_t, r, <span class="at">max_bone_thickness =</span> <span class="fu">c</span>(<span class="st">&quot;m&quot;</span>, <span class="st">&#39;s&#39;</span>, <span class="st">&#39;l&#39;</span>, <span class="st">&#39;vl&#39;</span>),</span>
+<span id="cb41-3"><a href="record-formation.html#cb41-3" tabindex="-1"></a>                    <span class="at">prop_buried =</span> .<span class="dv">9999</span>){</span>
+<span id="cb41-4"><a href="record-formation.html#cb41-4" tabindex="-1"></a>  </span>
+<span id="cb41-5"><a href="record-formation.html#cb41-5" tabindex="-1"></a>  <span class="co"># Define parameter r</span></span>
+<span id="cb41-6"><a href="record-formation.html#cb41-6" tabindex="-1"></a>  <span class="cf">if</span>(r <span class="sc">&gt;</span> <span class="fl">0.5</span>) <span class="fu">stop</span>(<span class="st">&quot;values &gt; 0.5 are not accepted for param &#39;r&#39;&quot;</span>)</span>
+<span id="cb41-7"><a href="record-formation.html#cb41-7" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">round</span>(r, <span class="dv">1</span>)</span>
+<span id="cb41-8"><a href="record-formation.html#cb41-8" tabindex="-1"></a>  <span class="co"># Constraints for parameter Pb</span></span>
+<span id="cb41-9"><a href="record-formation.html#cb41-9" tabindex="-1"></a>  <span class="cf">if</span> (prop_buried <span class="sc">&gt;=</span> <span class="dv">1</span>) <span class="fu">stop</span>(<span class="st">&quot;Pb must be lower than 1&quot;</span>)</span>
+<span id="cb41-10"><a href="record-formation.html#cb41-10" tabindex="-1"></a>  </span>
+<span id="cb41-11"><a href="record-formation.html#cb41-11" tabindex="-1"></a>  <span class="co"># Define parameter Max_bone_thickness (L)</span></span>
+<span id="cb41-12"><a href="record-formation.html#cb41-12" tabindex="-1"></a>  max_bone_thickness <span class="ot">=</span> <span class="fu">match.arg</span>(max_bone_thickness)</span>
+<span id="cb41-13"><a href="record-formation.html#cb41-13" tabindex="-1"></a>  <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;s&#39;</span>){</span>
+<span id="cb41-14"><a href="record-formation.html#cb41-14" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="fl">2.5</span></span>
+<span id="cb41-15"><a href="record-formation.html#cb41-15" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;m&#39;</span>){</span>
+<span id="cb41-16"><a href="record-formation.html#cb41-16" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb41-17"><a href="record-formation.html#cb41-17" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;l&#39;</span>){</span>
+<span id="cb41-18"><a href="record-formation.html#cb41-18" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb41-19"><a href="record-formation.html#cb41-19" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;vl&#39;</span>){</span>
+<span id="cb41-20"><a href="record-formation.html#cb41-20" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb41-21"><a href="record-formation.html#cb41-21" tabindex="-1"></a>  }</span>
+<span id="cb41-22"><a href="record-formation.html#cb41-22" tabindex="-1"></a>  </span>
+<span id="cb41-23"><a href="record-formation.html#cb41-23" tabindex="-1"></a>  <span class="co"># Define tmax</span></span>
+<span id="cb41-24"><a href="record-formation.html#cb41-24" tabindex="-1"></a>  tm <span class="ot">&lt;-</span> L<span class="sc">/</span>r</span>
+<span id="cb41-25"><a href="record-formation.html#cb41-25" tabindex="-1"></a>  <span class="co"># Estimate lambda</span></span>
+<span id="cb41-26"><a href="record-formation.html#cb41-26" tabindex="-1"></a>  l <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> prop_buried) <span class="sc">/</span> tm</span>
+<span id="cb41-27"><a href="record-formation.html#cb41-27" tabindex="-1"></a>  </span>
+<span id="cb41-28"><a href="record-formation.html#cb41-28" tabindex="-1"></a>  ss <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">round</span>(tm)) <span class="do">## Vector to distribute samples over</span></span>
+<span id="cb41-29"><a href="record-formation.html#cb41-29" tabindex="-1"></a>  tl <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># Year where the sample is deposited</span></span>
+<span id="cb41-30"><a href="record-formation.html#cb41-30" tabindex="-1"></a>  tu <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># Year when it is covered</span></span>
+<span id="cb41-31"><a href="record-formation.html#cb41-31" tabindex="-1"></a>  </span>
+<span id="cb41-32"><a href="record-formation.html#cb41-32" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>tm){</span>
+<span id="cb41-33"><a href="record-formation.html#cb41-33" tabindex="-1"></a>    Wb <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>(tu<span class="sc">-</span>tl))) <span class="co"># Apply formula for tu</span></span>
+<span id="cb41-34"><a href="record-formation.html#cb41-34" tabindex="-1"></a>    Wbprev <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>((tu<span class="dv">-1</span>)<span class="sc">-</span>tl))) <span class="co"># Calculate for previous to tu</span></span>
+<span id="cb41-35"><a href="record-formation.html#cb41-35" tabindex="-1"></a>    ss[i] <span class="ot">&lt;-</span> <span class="fu">round</span>(Wb <span class="sc">-</span> Wbprev) <span class="co"># Number of samples for each year</span></span>
+<span id="cb41-36"><a href="record-formation.html#cb41-36" tabindex="-1"></a>    tu <span class="ot">&lt;-</span> tu <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb41-37"><a href="record-formation.html#cb41-37" tabindex="-1"></a>  }</span>
+<span id="cb41-38"><a href="record-formation.html#cb41-38" tabindex="-1"></a>  </span>
+<span id="cb41-39"><a href="record-formation.html#cb41-39" tabindex="-1"></a>  <span class="fu">return</span>(ss)</span>
+<span id="cb41-40"><a href="record-formation.html#cb41-40" tabindex="-1"></a>}</span>
+<span id="cb41-41"><a href="record-formation.html#cb41-41" tabindex="-1"></a></span>
+<span id="cb41-42"><a href="record-formation.html#cb41-42" tabindex="-1"></a><span class="do">## 7. Archaeological deposition record</span></span>
+<span id="cb41-43"><a href="record-formation.html#cb41-43" tabindex="-1"></a>Rec_c <span class="ot">&lt;-</span> <span class="cf">function</span>(x, area, ts, InitBP, <span class="at">persqm =</span> <span class="cn">FALSE</span>, ...){</span>
+<span id="cb41-44"><a href="record-formation.html#cb41-44" tabindex="-1"></a>  </span>
+<span id="cb41-45"><a href="record-formation.html#cb41-45" tabindex="-1"></a>  <span class="do">## Whether sqm division must be included or not</span></span>
+<span id="cb41-46"><a href="record-formation.html#cb41-46" tabindex="-1"></a>  <span class="cf">if</span> (persqm <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
+<span id="cb41-47"><a href="record-formation.html#cb41-47" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">/</span> area</span>
+<span id="cb41-48"><a href="record-formation.html#cb41-48" tabindex="-1"></a>  }</span>
+<span id="cb41-49"><a href="record-formation.html#cb41-49" tabindex="-1"></a>  </span>
+<span id="cb41-50"><a href="record-formation.html#cb41-50" tabindex="-1"></a>  <span class="do">## Spread dates along different depths</span></span>
+<span id="cb41-51"><a href="record-formation.html#cb41-51" tabindex="-1"></a>  matdim <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb41-52"><a href="record-formation.html#cb41-52" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span>matdim, <span class="at">ncol=</span>matdim)</span>
+<span id="cb41-53"><a href="record-formation.html#cb41-53" tabindex="-1"></a>  </span>
+<span id="cb41-54"><a href="record-formation.html#cb41-54" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>matdim){</span>
+<span id="cb41-55"><a href="record-formation.html#cb41-55" tabindex="-1"></a>    new <span class="ot">&lt;-</span> <span class="fu">D_along</span>(x[i], ...)</span>
+<span id="cb41-56"><a href="record-formation.html#cb41-56" tabindex="-1"></a>    st <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb41-57"><a href="record-formation.html#cb41-57" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, st), new)</span>
+<span id="cb41-58"><a href="record-formation.html#cb41-58" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> pos[<span class="dv">1</span><span class="sc">:</span>matdim]</span>
+<span id="cb41-59"><a href="record-formation.html#cb41-59" tabindex="-1"></a>    mat[, i] <span class="ot">&lt;-</span> pos</span>
+<span id="cb41-60"><a href="record-formation.html#cb41-60" tabindex="-1"></a>  }</span>
+<span id="cb41-61"><a href="record-formation.html#cb41-61" tabindex="-1"></a>  mat[<span class="fu">is.na</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb41-62"><a href="record-formation.html#cb41-62" tabindex="-1"></a>  </span>
+<span id="cb41-63"><a href="record-formation.html#cb41-63" tabindex="-1"></a>  <span class="do">## Names for columns (each year)</span></span>
+<span id="cb41-64"><a href="record-formation.html#cb41-64" tabindex="-1"></a>  years <span class="ot">&lt;-</span> <span class="fu">seq</span>(InitBP, InitBP<span class="sc">-</span>ts)</span>
+<span id="cb41-65"><a href="record-formation.html#cb41-65" tabindex="-1"></a>  nyears <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb41-66"><a href="record-formation.html#cb41-66" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>matdim){</span>
+<span id="cb41-67"><a href="record-formation.html#cb41-67" tabindex="-1"></a>    nyears[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(years[i], <span class="st">&quot; BP&quot;</span>)</span>
+<span id="cb41-68"><a href="record-formation.html#cb41-68" tabindex="-1"></a>  }</span>
+<span id="cb41-69"><a href="record-formation.html#cb41-69" tabindex="-1"></a>  <span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> nyears</span>
+<span id="cb41-70"><a href="record-formation.html#cb41-70" tabindex="-1"></a>  </span>
+<span id="cb41-71"><a href="record-formation.html#cb41-71" tabindex="-1"></a>  <span class="do">## Names for rows (each depth)</span></span>
+<span id="cb41-72"><a href="record-formation.html#cb41-72" tabindex="-1"></a>  <span class="co"># Extract arguments as a list</span></span>
+<span id="cb41-73"><a href="record-formation.html#cb41-73" tabindex="-1"></a>  extract_args <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...){ </span>
+<span id="cb41-74"><a href="record-formation.html#cb41-74" tabindex="-1"></a>    extras <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb41-75"><a href="record-formation.html#cb41-75" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">extras=</span>extras)) </span>
+<span id="cb41-76"><a href="record-formation.html#cb41-76" tabindex="-1"></a>  }</span>
+<span id="cb41-77"><a href="record-formation.html#cb41-77" tabindex="-1"></a>  </span>
+<span id="cb41-78"><a href="record-formation.html#cb41-78" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> <span class="fu">extract_args</span>(D_along, ...)</span>
+<span id="cb41-79"><a href="record-formation.html#cb41-79" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> dr<span class="sc">$</span>extras<span class="sc">$</span>r</span>
+<span id="cb41-80"><a href="record-formation.html#cb41-80" tabindex="-1"></a>  </span>
+<span id="cb41-81"><a href="record-formation.html#cb41-81" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">cumsum</span>(<span class="fu">rep</span>(dr, <span class="fu">nrow</span>(mat)))) <span class="do">## computes depths</span></span>
+<span id="cb41-82"><a href="record-formation.html#cb41-82" tabindex="-1"></a>  <span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;d = &quot;</span>, d, <span class="st">&quot; cm&quot;</span>)</span>
+<span id="cb41-83"><a href="record-formation.html#cb41-83" tabindex="-1"></a>  </span>
+<span id="cb41-84"><a href="record-formation.html#cb41-84" tabindex="-1"></a>  <span class="fu">return</span>(mat)</span>
+<span id="cb41-85"><a href="record-formation.html#cb41-85" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 </div>
 </div>
@@ -1056,15 +1056,15 @@ Show code
 <li><span class="math inline">\(A\)</span>-protocol. Knowing the population size per year, we apply <code>A_rates</code> to each of them and generate the anthropogenic deposition, and get the number of samples per year.</li>
 <li><span class="math inline">\(D\)</span>-protocol. Knowing how many samples are generates each year, using <code>Rec_c</code>, we distribute them along the depth record.</li>
 </ol>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="record-formation.html#cb41-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb41-2"><a href="record-formation.html#cb41-2" tabindex="-1"></a><span class="co"># 1. Pop-protocol</span></span>
-<span id="cb41-3"><a href="record-formation.html#cb41-3" tabindex="-1"></a>Ps <span class="ot">&lt;-</span> <span class="fu">Pop_stoch</span>(<span class="at">pop_size=</span><span class="dv">100</span>, <span class="at">ts=</span><span class="dv">100</span>, <span class="at">K=</span><span class="dv">150</span>)</span>
-<span id="cb41-4"><a href="record-formation.html#cb41-4" tabindex="-1"></a><span class="co"># 2. A-protocol</span></span>
-<span id="cb41-5"><a href="record-formation.html#cb41-5" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(Ps, A_rates)) <span class="do">## Extract sample per time steps</span></span>
-<span id="cb41-6"><a href="record-formation.html#cb41-6" tabindex="-1"></a><span class="co"># 3. D-protocol</span></span>
-<span id="cb41-7"><a href="record-formation.html#cb41-7" tabindex="-1"></a>Rec <span class="ot">&lt;-</span> <span class="fu">Rec_c</span>(samp, <span class="at">InitBP =</span> <span class="dv">7500</span>, <span class="at">ts =</span> <span class="dv">100</span>, <span class="at">r =</span> <span class="fl">0.2</span>, <span class="at">max_bone_thickness =</span> <span class="st">&quot;m&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="record-formation.html#cb42-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb42-2"><a href="record-formation.html#cb42-2" tabindex="-1"></a><span class="co"># 1. Pop-protocol</span></span>
+<span id="cb42-3"><a href="record-formation.html#cb42-3" tabindex="-1"></a>Ps <span class="ot">&lt;-</span> <span class="fu">Pop_stoch</span>(<span class="at">pop_size=</span><span class="dv">100</span>, <span class="at">ts=</span><span class="dv">100</span>, <span class="at">K=</span><span class="dv">150</span>)</span>
+<span id="cb42-4"><a href="record-formation.html#cb42-4" tabindex="-1"></a><span class="co"># 2. A-protocol</span></span>
+<span id="cb42-5"><a href="record-formation.html#cb42-5" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(Ps, A_rates)) <span class="do">## Extract sample per time steps</span></span>
+<span id="cb42-6"><a href="record-formation.html#cb42-6" tabindex="-1"></a><span class="co"># 3. D-protocol</span></span>
+<span id="cb42-7"><a href="record-formation.html#cb42-7" tabindex="-1"></a>Rec <span class="ot">&lt;-</span> <span class="fu">Rec_c</span>(samp, <span class="at">InitBP =</span> <span class="dv">7500</span>, <span class="at">ts =</span> <span class="dv">100</span>, <span class="at">r =</span> <span class="fl">0.2</span>, <span class="at">max_bone_thickness =</span> <span class="st">&quot;m&quot;</span>)</span></code></pre></div>
 <p>With this we obtain, among other things, the distribution of the samples deposited for each date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example. The user can also check how the model works and its results <a href="https://acortell3.shinyapps.io/archaeo_record_model">here</a>. <em>The total number of population has been adapted for visualisation</em></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-59-1.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-59-2.png" width="672" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-60-1.png" width="672" /><img src="_main_files/figure-html/unnamed-chunk-60-2.png" width="672" /></p>
 <p>Notice the exponential decay in the amount of samples per depth layer for the same year.</p>
 
 </div>
