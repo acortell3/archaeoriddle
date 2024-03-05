@@ -158,19 +158,29 @@ Given this new landscape we can now generate sites in specific locations (not on
 
 
 ```{r splitArea}
-n <- 20
-size <- rexp(n)
+n <- 20 # we will create  20 sites
+size <- rexp(n) #assign a size for each site following an exponential distribution 
 
-height.groups <- height.ras
-height.groups[height.groups<mean(height.groups[])] <- NA
-height.groups[height.groups<(maxh*.7)] <- 1
-height.groups[height.groups>(maxh*.7)] <- 200
-height.groups[is.na(height.groups)] <- -1
-height.poly <- as.polygons(height.groups)
-viable <- makeValid(height.poly[2,])
+height.groups <- height.ras # taking back the raster created before
+height.groups[height.groups<mean(height.groups[])] <- NA #replace values that are below mean level (under waer)
+height.groups[height.groups<(maxh*.7)] <- 1 # values below 70% of the maximum height are set as 1
+height.groups[height.groups>(maxh*.7)] <- 200 # value above at 200 (high mountains)
+height.groups[is.na(height.groups)] <- -1 #  NA values (below waters) are set to -1
+height.poly <- as.polygons(height.groups) # convert height.groups as polygons that will be of three type: -1 => under water, 1, viable, and 200, high mountaines
+viable <- makeValid(height.poly[2,]) # select polygon with '1' and make it a valid polygon as it may have some loop and problems
+```
 
-sites <- spatSample(viable, n)
+The area where sites can potentially be generate looks like the green area on the map below
 
+```{r,viablearea}
+plot(viable,col=adjustcolor("chartreuse",.8))
+```
+
+We can now use `spatSample` from package `terra` to randomly select 20 points on this viable polygon.
+
+
+```{r, samplesites}
+sites <- spatSample(viable, n) # generate n random points within the viable polygon and assign to variable sites
 plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
 plot(height.wat, col="lightblue", add=T, legend=F)
 plot(sites, cex=2, pch=21, add=T, bg=rainbow(length(sites), alpha=.6))
@@ -182,18 +192,21 @@ plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
 
 ```
 
-In order to produce files to be given to people we needed a couple of lines of code that should be run online when a satisfying environment has been found:
+In the ontext of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/) files that describe this newly generated environment and the sites sampled on top of it needs to be produced. This can be done as:
 
 ```{r, eval=F}
-# st_write(dsn="coastline2.shp",coastline)
-# writeRaster(filename="data_original/east_narnia4x.tif",height.ras,overwrite=T)
+st_write(dsn="coastline2.shp", coastline) # Write the coastline as a shapefile
+
+writeRaster(filename="data_original/east_narnia4x.tif", height.ras, overwrite=T) #write the DEM as a raster
 ```
 
 ## Network, Site Size And Climate -- DEPRECATED
 
-The following steps where designed but never used.
+The following steps were designed but never used.
 
-Use sites to create a network
+----
+
+Create a network between sites 
 
 ```{r sitesnetwork, eval=F}
 
