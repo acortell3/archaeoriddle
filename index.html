@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Methods Riddles, the ultimate revelations</title>
   <meta name="description" content="First draft of Rbookdown to describe how data have been generated" />
-  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Methods Riddles, the ultimate revelations" />
   <meta property="og:type" content="book" />
@@ -59,7 +59,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -208,28 +208,28 @@ source</a></li>
 <div id="header">
 <h1 class="title">Methods Riddles, the ultimate revelations</h1>
 <p class="author"><em>CDAL</em></p>
-<p class="date"><em>2024-02-13 12:43:36.418279</em></p>
+<p class="date"><em>2024-03-05 12:13:54.485853</em></p>
 </div>
 <div id="preface" class="section level1 unnumbered hasAnchor">
 <h1>Preface<a href="index.html#preface" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This is a very first draft to setup a github hook that compile a bookdown in a private space</p>
 <p>To compile the book:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a>bookdown<span class="sc">::</span><span class="fu">render_book</span>(<span class="st">&quot;.&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a>bookdown<span class="sc">::</span><span class="fu">render_book</span>(<span class="st">&quot;.&quot;</span>)</span></code></pre></div>
 <p>List of packages to install</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" aria-hidden="true" tabindex="-1"></a>needed<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;DiagrammeR&quot;</span>,<span class="st">&quot;viridis&quot;</span>,<span class="st">&quot;terra&quot;</span>,<span class="st">&quot;sf&quot;</span>,<span class="st">&quot;igraph&quot;</span>,<span class="st">&quot;rayshader&quot;</span>,<span class="st">&quot;printr&quot;</span>) </span>
-<span id="cb2-2"><a href="index.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## printr for bookdown compilation</span></span>
-<span id="cb2-3"><a href="index.html#cb2-3" aria-hidden="true" tabindex="-1"></a>success<span class="ot">=</span><span class="fu">sapply</span>(needed,require,<span class="at">character.only=</span>T)</span>
-<span id="cb2-4"><a href="index.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(needed[<span class="sc">!</span>success],install.packages)</span>
-<span id="cb2-5"><a href="index.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">## named list()</span></span>
-<span id="cb2-6"><a href="index.html#cb2-6" aria-hidden="true" tabindex="-1"></a>success<span class="ot">=</span><span class="fu">sapply</span>(needed,require,<span class="at">character.only=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a>needed<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;DiagrammeR&quot;</span>,<span class="st">&quot;viridis&quot;</span>,<span class="st">&quot;terra&quot;</span>,<span class="st">&quot;sf&quot;</span>,<span class="st">&quot;igraph&quot;</span>,<span class="st">&quot;rayshader&quot;</span>,<span class="st">&quot;printr&quot;</span>) </span>
+<span id="cb2-2"><a href="index.html#cb2-2" tabindex="-1"></a><span class="do">## printr for bookdown compilation</span></span>
+<span id="cb2-3"><a href="index.html#cb2-3" tabindex="-1"></a>success<span class="ot">=</span><span class="fu">sapply</span>(needed,require,<span class="at">character.only=</span>T)</span>
+<span id="cb2-4"><a href="index.html#cb2-4" tabindex="-1"></a><span class="fu">sapply</span>(needed[<span class="sc">!</span>success],install.packages)</span>
+<span id="cb2-5"><a href="index.html#cb2-5" tabindex="-1"></a><span class="do">## named list()</span></span>
+<span id="cb2-6"><a href="index.html#cb2-6" tabindex="-1"></a>success<span class="ot">=</span><span class="fu">sapply</span>(needed,require,<span class="at">character.only=</span>T)</span></code></pre></div>
 <p>To go through the bookdown you will also need the archaeoriddle package. With <code>devtools</code> installed, you can do</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;acortell3/archaeoriddle&quot;)</span></span>
-<span id="cb3-2"><a href="index.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(archaeoriddle)</span>
-<span id="cb3-3"><a href="index.html#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb3-4"><a href="index.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Attaching package: &#39;archaeoriddle&#39;</span></span>
-<span id="cb3-5"><a href="index.html#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## The following object is masked from &#39;package:base&#39;:</span></span>
-<span id="cb3-6"><a href="index.html#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb3-7"><a href="index.html#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">##     environment</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="index.html#cb3-1" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;acortell3/archaeoriddle&quot;)</span></span>
+<span id="cb3-2"><a href="index.html#cb3-2" tabindex="-1"></a><span class="fu">library</span>(archaeoriddle)</span>
+<span id="cb3-3"><a href="index.html#cb3-3" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-4"><a href="index.html#cb3-4" tabindex="-1"></a><span class="do">## Attaching package: &#39;archaeoriddle&#39;</span></span>
+<span id="cb3-5"><a href="index.html#cb3-5" tabindex="-1"></a><span class="do">## The following object is masked from &#39;package:base&#39;:</span></span>
+<span id="cb3-6"><a href="index.html#cb3-6" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb3-7"><a href="index.html#cb3-7" tabindex="-1"></a><span class="do">##     environment</span></span></code></pre></div>
 <p>The book can also be found already compiled <a href="https://cdal.arch.cam.ac.uk/archaeoriddle/">here</a>.</p>
 
 </div>
