@@ -18,19 +18,7 @@ An important part of the simulation is to generate a landscape and an environmen
 
 An interesting way to generate such auto-correlated variable is to use [coloured noise](https://en.wikipedia.org/wiki/Colors_of_noise). This use specific distribution to define the relation between frequencies found in your signal with the power of these frequencies. In [pink noise](https://en.wikipedia.org/wiki/Pink_noise) (or $\frac{1}{f}$-noise) for example, the power of each frequencis will be invertly proportional to the frequencies (_ie_ you will have, low frequencies with high power, high frequencies with low ones).  We defined an `environment` function, which in turns uses `TK95` to generate a power law noise.
 
-<br>
-
-```{r, echo=FALSE}
-?TK95
-```
-<br>
-
-```{r, echo=FALSE}
-?environment
-```
-<br>
-
-To generate a fake climate with various properties:
+To generate a single auto-correlated variable (like temperature), who's spectrum decomposition ( power wrt frequency) has a slope of -3 and a standard deviation of 1.5:
 
 ```{r generateFakeClimate}
 tstep <- 1000
@@ -38,17 +26,14 @@ faketemp <- environment(tstep, omega=3, delta=1.5) + 1.5
 plot(faketemp, type="l", ylab="temperature change", xlab="time")   
 ```
 
-```{r, echo=FALSE, message=FALSE}
-a = knitr::spin('../../R/climate.R', format='Rmd', comment=c("#'","#'"),
-            precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/climate.Rmd', '.')
-```
-
 You can inspect the code of `environment` and `TK95` functions here:
 <details><summary>Show code</summary>
 **Code**
 
 ```{r, echo=FALSE, results='asis'}
+a = knitr::spin('../../R/climate.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/climate.Rmd', '.')
 res = knitr::knit_child(input='climate.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
 fs::file_delete('climate.Rmd')
@@ -57,26 +42,18 @@ fs::file_delete('climate.Rmd')
 
 ## Slope and Elevation
 
-This generates autocorrelated time series that can be used to define temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. To generate 2D autocorrelation we used a slightly methods known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) ; using the implementation found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise). This is the usage of the function:
+This generates autocorrelated time series that can be used to define temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. To generate 2D autocorrelation we used a slightly methods known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) ; using the implementation found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise).
 
 <br>
-
-```{r perlinnoise, echo=FALSE}
-?perlin_noise
-```
-<br>
-
-```{r, echo=FALSE, message=FALSE}
-a = knitr::spin('../../R/perlin_noise.R', format='Rmd', comment=c("#'","#'"),
-            precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/perlin_noise.Rmd', '.')
-```
 
 And you can see the code here:
 <details><summary>Show code</summary>
 **Code**
 
 ```{r, echo=FALSE, results='asis'}
+a = knitr::spin('../../R/perlin_noise.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/perlin_noise.Rmd', '.')
 res = knitr::knit_child(input='perlin_noise.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
 fs::file_delete('perlin_noise.Rmd')
@@ -84,7 +61,7 @@ fs::file_delete('perlin_noise.Rmd')
 </details>
 
 
-Different parameters for the perlin noise will give us a higher a lower definition for our future DEM raster. Here we choose a trade off between an environment detailed enough for on a relatively wide area but small enough to be handled easily in memory.
+Various parameters for the Perlin noise will result in either a higher or lower level of definition for our future DEM raster. Our aim is to find a balance between having the environment sufficiently detailed across a relatively wide area, while also ensuring it remains manageable in terms of memory usage.
 
 ```{r perlin_noise}
 require(terra)
