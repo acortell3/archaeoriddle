@@ -72,11 +72,25 @@ k <- 8
 m <- perlin_noise(2, 2, 2^k, 2^k)
 for ( i in 2:k )
   m <- m + a^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
-plot(rast(m))
-object.size(m)
 ```
 
-To make it slightly more realistic we tweaked a bit the extremes, to create seas and mountains a bit closer to what a _real_ DEM would look like.
+If we change k (that dictates the total resolution of the DEM), the size of the raster grow explonentially and would be quickly hard to manage.
+
+
+```{r}
+
+allsizes <- sapply(1:8,function(k)
+{
+    print(k)
+    m <- perlin_noise(2, 2, 2^k, 2^k)
+    for ( i in 2:k ) m <- m + 0.6^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
+    object.size(m)  
+})
+plot(2^(1:8),allsizes/1000,type="b",pch=20,col="red",cex=2,ylab="size of raster (kb)", xlab="resolution")
+
+```
+
+To enhance realism, slight adjustments were made to the extremes in order to create seas and mountains that more closely resemble those found in an _real_ DEM.
 
 
 ```{r padjuperlin}
