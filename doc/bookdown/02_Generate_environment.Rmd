@@ -102,15 +102,14 @@ height[height<min(height)*.25] <- min(height)*.25
 ```
 
 
-Visual the map as a simple 2D raster
+We can then visualise the result as a 2D raster. We setup the total extent of the raster to define exactly where it is on our GIS using a latlon projection.
 
+We also defin the mean high as the water level, all the thing below are then considered under water.
 
 ```{r 2dVisu}
-
-# height.ras <- rast(height, extent=c(-3.5, 0.5, -0.5, 3.5), crs="+proj=latlon")
-height.ras <- rast("data_original/east_narnia4x.tif")
+height.ras <- rast(height, extent=c(-3.5, 0.5, -0.5, 3.5), crs="+proj=latlon")
 maxh <- max(height.ras[], na.rm=T)
-col_ramp <- colorRampPalette(c("#54843f", "grey", "white"))
+col_ramp <- colorRampPalette(c("#54843f", "grey", "white")) #define color ramp for visualisation
 
 plot(height.ras^1.9, col=col_ramp(20), legend=F, reset=F)
 height.wat <- height.ras
@@ -118,8 +117,25 @@ height.wat[height.wat>mean(height.wat[])] <- NA
 plot(height.wat, col="lightblue", add=T, legend=F)
 
 ```
+This has been put in a function  plotMap
 
-If you really want to feel like being in a video game, you can play with rayshader, but its slow, tricky and you will probably loose a lot of time `¯\_(ツ)_/¯`
+```{r}
+plotMap(height.ras,height.wat)
+```
+
+
+The actual raster used for the original _archaeoriddle_ is available in `data_original/east_narnia4x.tif` and looks like
+
+```{r originalArchaeoriddle}
+original.ras <- rast("data_original/east_narnia4x.tif")
+plot(original.ras^1.9, col=col_ramp(20), legend=F, reset=F)
+original.wat <- original.ras
+original.wat[original.wat>mean(original.wat[])] <- NA
+plot(original.wat, col="lightblue", add=T, legend=F)
+plotMap(original.ras,original.wat)
+```
+
+If you really want to feel like being in a video game, you can play with rayshader, but getting the right parameters to have a nice rendering is tricky, slow, and it's not unlikely you'll loose a lot of time `¯\_(ツ)_/¯`
 
 ```{r threedim, eval=F}
 require(rayshader)
@@ -143,8 +159,7 @@ plot_3d(
 
 ## Settlements position
 
-Given this new landscape we can now generate sites in specific locations (not on mountains, nor in water) with exponentially distributed size and make a network out of it.  
-
+Given this new landscape we can now generate sites in specific locations. We first need to define _where_ the sites _can_ appear (not in water nor too high in the mountains)
 
 
 ```{r splitArea}
@@ -152,7 +167,7 @@ n <- 20 # we will create  20 sites
 size <- rexp(n) #assign a size for each site following an exponential distribution 
 
 height.groups <- height.ras # taking back the raster created before
-height.groups[height.groups<mean(height.groups[])] <- NA #replace values that are below mean level (under waer)
+height.groups[height.groups<mean(height.groups[])] <- NA #replace values that are below mean level (under water)
 height.groups[height.groups<(maxh*.7)] <- 1 # values below 70% of the maximum height are set as 1
 height.groups[height.groups>(maxh*.7)] <- 200 # value above at 200 (high mountains)
 height.groups[is.na(height.groups)] <- -1 #  NA values (below waters) are set to -1
@@ -160,13 +175,14 @@ height.poly <- as.polygons(height.groups) # convert height.groups as polygons th
 viable <- makeValid(height.poly[2,]) # select polygon with '1' and make it a valid polygon as it may have some loop and problems
 ```
 
-The area where sites can potentially be generate looks like the green area on the map below
+We now have a polygon `viable` representing the space where sites can be create.
+This space is representing by the green area on the map below.
 
 ```{r,viablearea}
 plot(viable,col=adjustcolor("chartreuse",.8))
 ```
 
-We can now use `spatSample` from package `terra` to randomly select 20 points on this viable polygon.
+We can now use simply and directly use `spatSample` from package `terra` to randomly select `n` points  (`r n` for this simulation) on this viable polygon.
 
 
 ```{r, samplesites}
@@ -179,26 +195,28 @@ plot(sites, cex=2, pch=21, add=T, bg=rainbow(length(sites), alpha=.6))
 above_level <- height.ras > mean(height.ras[])
 coastline <- st_as_sf(as.polygons(above_level))[2,]
 plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
-
 ```
 
-In the ontext of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/) files that describe this newly generated environment and the sites sampled on top of it needs to be produced. This can be done as:
+In the context of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/), files that describe this newly generated environment and the sites sampled on top of it needs to be produced and given to the participant. This can be done as:
 
-```{r, eval=F}
-st_write(dsn="coastline2.shp", coastline) # Write the coastline as a shapefile
-
-writeRaster(filename="data_original/east_narnia4x.tif", height.ras, overwrite=T) #write the DEM as a raster
+```{r}
+foldname="data_toshare" #We will store all data that can/will be shared with participant in data_toshare
+if(!file.exists(foldname))dir.create(foldname)
+st_write(dsn=file.path(foldname,"coastline.shp"), coastline,append=F) # Write the coastline as a shapefile
+writeRaster(filename=file.path(foldname,"dem_raster.tiff"), height.ras, overwrite=T) #write the DEM as a raster
 ```
+
+The original data, saved and shared for the _archaeoriddle_ are stored in `data_original/`
 
 ## Network, Site Size And Climate -- DEPRECATED
 
-The following steps were designed but never used.
+The following steps were designed but never used ; they can be quite fun and useful.
 
 ----
 
-Create a network between sites 
+Create a network between sites  (requires `igraph`)
 
-```{r sitesnetwork, eval=F}
+```{r sitesnetwork, eval=T}
 
 library(igraph)
 crs(sites) <- "+proj=lonlat"
