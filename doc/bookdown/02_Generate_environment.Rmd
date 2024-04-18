@@ -6,18 +6,17 @@ output:
 # Landscape, climate & Environment
 
 ```{r, echo=FALSE, message=FALSE}
-library(printr)
-library(knitr)
+library(printr) ## To print the helps. Do we need helps
+library(knitr) ## 
 library(archaeoriddle)
-
 ```
 
 ## Temperature and climate
 
-If we are going to simulate the interaction between two groups, we are going to need an environment in which they can interact in. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.
-An important part of the simulation is to generate a landscape and an environment.
+To simulate the interaction between two groups, we need an environment in which they can interact in. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.
+An important part of the simulation is to generate a landscape and an environment. Environmental variable are often autocorrelated. The temperature at a given time is never _extremly_  different to the temperature slightly before and slightly after this time. Same is true with the slope, or the elevation of a place. 
 
-We use the `environment` function, which in turns uses `TK95` to generate a power law noise.
+An interesting way to generate such auto-correlated variable is to use [coloured noise](https://en.wikipedia.org/wiki/Colors_of_noise). This use specific distribution to define the relation between frequencies found in your signal with the power of these frequencies. In [pink noise](https://en.wikipedia.org/wiki/Pink_noise) (or $\frac{1}{f}$-noise) for example, the power of each frequencis will be invertly proportional to the frequencies (_ie_ you will have, low frequencies with high power, high frequencies with low ones).  We defined an `environment` function, which in turns uses `TK95` to generate a power law noise.
 
 <br>
 
@@ -58,7 +57,7 @@ fs::file_delete('climate.Rmd')
 
 ## Slope and Elevation
 
-This autocorrelates time series that can be used to adjust temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorrelation. We use here an implementation of what is known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise). This is the usage of the function:
+This generates autocorrelated time series that can be used to define temporal change in climate (rain, temperature, etc....). But we also need a way to generate elevation and slope. To generate 2D autocorrelation we used a slightly methods known as [perlin noise](https://en.wikipedia.org/wiki/Perlin_noise) ; using the implementation found on [this stackoverflow.com post](https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise). This is the usage of the function:
 
 <br>
 
