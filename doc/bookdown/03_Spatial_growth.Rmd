@@ -1,9 +1,12 @@
 # Population growth on multiple sites
 
+Population will then grow, for years, and years. This implies multiple things: they need ressources, and we need to define a way for them to grow.
+
 ## Environmental resources
-We generate zones of high resources, that will attract settlements and support higher K.
+
+We will generate zones of high resources, that will attract settlements and support higher K.
 The resources will be located at given hotspots with an area around in which they decay
-with a logistic function.
+with a logistic function. We provide a very basic function `logisticdecay` which allow to define multiple source with different decay array around them.
 
 ```{r, echo=FALSE}
 ?logisticdecay
@@ -28,8 +31,9 @@ fs::file_delete('logistic_decay.Rmd')
 
 <br>
 
-```{r}
+For the _archaeoriddle_, thes hotspots and there radius were manually selected given the topography. These manual setups are given below:
 
+```{r}
 ##ressource geolocalisation set manually
 goodresources <- vect(
   cbind(
@@ -44,7 +48,15 @@ areas <- 4 * c(100, 2000, 200, 300, 100, 200, 400)
 #speed of ressource decay:
 ks <- c(0.0002, 0.0001000, 0.0001600, 0.0001800, 0.00040, .0002, 0.0002)/4
 
-crs(goodresources) <- crs(height.ras)
+
+crs(goodresources) <- crs(original.ras)
+```
+
+The function `logisticdecay` generates individual rasters for all the identified hotspots, which are then merged to create an aggregate raster referred to as 'resources'.
+
+When considering the selection of hotspots, one may choose to retain the one utilized for the _archaeoriddle_, although its center may be positioned in water based on the preceding generation outcome. Choosing them manual remains the best option, one can use `locator()` to find the coordinates of the hotspot by click on the raster.
+
+```{r}
 
 allres <- lapply(
   seq_along(goodresources),
@@ -65,59 +77,80 @@ ress <- mask(ress,viable)
 plot(ress)
 ```
 
+This is also something that will be share with participants and thus will be saved in the folder with the DEM and the coastline.
+
+```{r saveResources}
+writeRaster(filename=file.path(foldname,"resources.tiff"), ress, overwrite=T) #write the resources as a raster
+```
+
+
+
 ## Initial sites and size:
-We initialize the sites of 2 groups, `HG` and `F`.
 
-<br>
+We now have an environment with ressources that we can use to define the size of each sites.
+We will assign a groups, `HG` and `F` for each sites.
 
-```{r, echo=FALSE}
-?initKs
-```
-<br>
-
-```{r, echo=FALSE}
-?initpopstruc
-```
-<br>
-
-```{r, echo=FALSE}
-?initlistsites
-```
-<br>
+We first define all sites has hunter gatherer, except the mosts south west one. Note that this made sence in the archaeoriddle as we had a piece of land south west ; you may want to manually choose the site.
 
 ```{r,eval=T}
-ts <- 250
-#a manual way to set cultures given general geography
 cultures <- rep("HG",length(sites))
-cultures[(crds(sites)[,"x"] < -1 & crds(sites)[,"y"] < 1)]="F"
+sw <- which.min(sqrt((crds(sites)[,"x"] - min(crds(sites)[,"x"]))^2 + (crds(sites)[,"y"] - min(crds(sites)[,"y"]))^2))
+cultures[sw]="F"
 sites$culture <- cultures
-Kbase <- c("HG"=45,"F"=120) #difference in K for the two cultures
-# The initial Ks depends on the resources in the area
-sites$Ks <- initKs(Kbase, sites, ress, sizeexp="F")
-#saveRDS(file="data_original/sitesinitialposition/", sites)
 
+plotMap(height.ras,height.wat)
+points(crds(sites),bg=as.factor(cultures),pch=21,cex=1.3)
+```
+
+
+The each site will then be assigned a carrying capacity (how many people can leave on the site), defined using the ressource raster and the culture. 
+
+```{r computeK}
+
+Kbase <- c("HG"=45,"F"=120) #difference in base-K for the two cultures
+
+# The base Ks  are then modulated given the ressource raster
+sites$Ks <- initKs(Kbase, sites, ress, sizeexp="F")
+```
+
+Using these carrying capacities, we then set initial number of people, and the population structure for each sites:
+
+```{r computeIN}
 # Optionally we can intialize here our list of sites and population structures
 # Otherwise, they are initialized within the run_simulation function
 # Population size at initialisation, a number close to Ks
 INs <- round(runif(length(sites), 0.85, 0.95)*sites$Ks)
+
 # initialise population structure for all sites
 Ips <- lapply(INs, initpopstruc)
-# Not we put the population structure across the years in a list
-Nts <- initlistsites(Ips, ts=ts)
+
+# Not we put the population structure across the years in a matrix: each row will represent a time step of the simulation ; each column a sites
+Nts <- initlistsites(Ips, ts=250)
 
 ```
 
-```{r, echo=FALSE, message=FALSE}
-a = knitr::spin('../../R/init_simulation.R', format='Rmd', comment=c("#'","#'"),
-            precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/init_simulation.Rmd', '.')
+We can look at the population structure of the biggest sites:
+
+```{r agestruc,out.width="40%",fig.show="hold"}
+biggest <- which.max(INs)
+pop.biggest <- Ips[[biggest]]
+poplist=sapply(c(F="F",M="M"),function(s)table(cut(pop.biggest[pop.biggest[,2]==s,1],breaks=seq(0,40,4))))
+par(mar=c(1,10,1,1))
+barplot(-poplist[,1],beside=T,horiz=T,col=c("blue"),axes=F,las=1)
+par(mar=c(1,1,1,10))
+barplot(unname(poplist[,1]),beside=T,horiz=T,col=c("red"),axes=F)
 ```
+
 
 You can see the code of `initKs`, `initpopstruct` and `initlistsites` functions here:
 <details><summary>Show code</summary>
 **Code**
 
 ```{r, echo=FALSE, results='asis'}
+a = knitr::spin('../../R/init_simulation.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/init_simulation.Rmd', '.')
+
 res = knitr::knit_child(input='init_simulation.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
 fs::file_delete('init_simulation.Rmd')
@@ -125,7 +158,7 @@ fs::file_delete('init_simulation.Rmd')
 </details>
 
 
-Now we have sites with two cultures, initialise the parameters we will use:
+We now have sites with two cultures. The grow of the sites will depend on a lot of paparemeters; which are all a bit different depending on the two cultures. The list of parameters used is deined below: 
 
 ```{r}
 
@@ -135,12 +168,14 @@ Now we have sites with two cultures, initialise the parameters we will use:
 
 #initialisation
 
-ts <- 250
-# Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
+ts <- 250  # length of populaton
 
-# spatial penality to extent: lower, bigger penality
+Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures use and defined before ; will be use in simulation to define new site
+
+# spatial penality for cultural extentions, ie for population to move out of initial site : lower, bigger penality
 cul_ext <- c("HG"=7, "F"=6)
-# penality of occupational area: low, other sites can come close
+
+# penality of occupational area ie how hard it is to come close to your site ; if low, other sites can come close
 penal_cul <- c("HG"=4, "F"=5)
 # proba to give birth every year
 prob_birth <- c("HG"=0.3, "F"=0.5)
@@ -155,25 +190,14 @@ minimals <- c("HG"=0.14, "F"=0.20)
 prob_move <- c("HG"=0.2,"F"=0.1)
 ```
 
-Let's create again our raster map from the `height.ras` from the previous chapter
+Let's see our raster map again, and put the sites on top, with their ids and showing there initial population size:
 ```{r}
-height.wat <- height.ras
-height.wat[height.wat>mean(height.wat[])] <- NA
-height.groups <- height.ras
-maxh <- max(height.ras[],na.rm=T)
-height.groups[height.groups<mean(height.groups[])] <- NA
-height.groups[height.groups<(maxh*.7)] <- 1
-height.groups[height.groups>(maxh*.7)] <- 200
-height.groups[is.na(height.groups)] <- -1
-height.poly <- as.polygons(height.groups)
-viable <- makeValid(height.poly[2,])
 plotMap(height.ras,height.wat,paste0("year ", 0))
-plot(sites, pch=21, add=T, bg=rainbow(2, alpha=0.6)[as.factor(sites$culture)])
+plot(sites, pch=21, add=T, bg=rainbow(2, alpha=0.6)[as.factor(sites$culture)],cex=(1+Nts[1,]/100))
 text(sites)
 ```
 
-The `run_simulation` function will take the raster data and parameters for the
-different populations and run for the specified number of years.
+The `run_simulation` function will take the raster data and parameters for defined before for the two different cultures and run for the specified number of years `ts` (`r ts`).
 
 <br>
 
@@ -212,42 +236,26 @@ It uses a number of other functions to model contacts between sites, the outcome
 ```
 <br>
 
-Or we can run a simple simulations using the saved elevation data.
 
 ```{r,eval=T}
 
-height.ras <- rast("data_original/east_narnia4x.tif")
-height.wat <- height.ras
-height.wat[height.wat>mean(height.wat[])] <- NA
-height.groups <- height.ras
-maxh <- max(height.ras[],na.rm=T)
-height.groups[height.groups<mean(height.groups[])] <- NA
-height.groups[height.groups<(maxh*.7)] <- 1
-height.groups[height.groups>(maxh*.7)] <- 200
-height.groups[is.na(height.groups)] <- -1
-height.poly <- as.polygons(height.groups)
-viable <- makeValid(height.poly[2,])
-sites <- vect("data_original/sitesinitialposition/")
-ts <- 10
-
-print(paste0("Starting simulation ","nan"))
 
 onesimu <- run_simulation(
   sites=sites, viable=viable, dem=height.ras,
-  ressources=rast("data_original/resources.tiff"),
+  ressources=ress,
   water=height.wat,
   foldervid="nan",
-  visu=F, visumin=F,
-  ts=ts, #length of simulation in year
+  visu=T, visumin=T,
+  ts=10, #length of simulation in year
   Kbase=c("HG"=35, "F"=110), #difference in K for the two cultures
   cul_ext=c("HG"=7, "F"=6), #spatial penality to extent: lower, bigger penality
   penal_cul=c("HG"=4, "F"=5), #penality of occupational area: low, other sites can cam close
-  prob_birth=c("HG"=0.3, "F"=0.5), #proba of giving birth every year
-  prob_survive=c("HG"=0.8, "F"=0.65), #proba of dying when pop > K
-  prob_split=c("HG"=0.5, "F"=0.6), #proba of creating a new settlement when Ne > K
-  minimals=c("HG"=0.14,"F"=0.20), #how big the group of migrant should be to create a new city vs migrate to a existing one 
-  bufferatack=300, #distance max around which settlement can fight
-  prob_move=c("HG"=0.2, "F"=0.1) #proba of migrating to existing settlement when Ne > K
+  rob_birth=c("HG"=0.3, "F"=0.5), #proba of giving birth every year
+  rob_survive=c("HG"=0.8, "F"=0.65), #proba of dying when pop > K
+  rob_split=c("HG"=0.5, "F"=0.6), #proba of creating a new settlement when Ne > K
+  inimals=c("HG"=0.14,"F"=0.20), #how big the group of migrant should be to create a new city vs migrate to a existing one 
+  ufferatack=300, #distance max around which settlement can fight
+  rob_move=c("HG"=0.2, "F"=0.1) #proba of migrating to existing settlement when Ne > K
 )
 ```
 
@@ -350,18 +358,18 @@ multisamp <- sapply(
 Exploring some trajectories of the simulations
 
 ```{r, eval=T}
-i <- nrow(Nts)
+i <- nrow(Nts)  # Get the number of rows in Nts
 plot(apply(Nts[1:i, sites$culture=="F"], 1, sum), col="red", type="l",
-     lwd=2, ylim=c(0, max(apply(Nts, 1, sum))))
+     lwd=2, ylim=c(0, max(apply(Nts, 1, sum))))  # Plot sum of 'F' culture values
 points(apply(Nts[1:i, sites$culture=="HG"], 1, sum),
-       col="blue", lwd=2, type="l")
-plot(warcasualties[1:(i-1)], lwd=2, col="green", type="h", yaxt="n", ylab="")
-axis(4)
-par(new=T)
-growF <- apply(Nts[1:(i-1), sites$culture=="F"], 1, sum)
-growHG <- apply(Nts[1:(i-1), sites$culture=="HG"], 1, sum)
-plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))
-points(growHG, col="blue", lwd=2, type="l")
+       col="blue", lwd=2, type="l")  # Add points for 'HG' culture values
+plot(warcasualties[1:(i-1)], lwd=2, col="green", type="h", yaxt="n", ylab="")  # Plot war casualties
+axis(4)  # Add an axis on the right side
+par(new=T)  # Allow a new plot to be drawn on the existing plot
+growF <- apply(Nts[1:(i-1), sites$culture=="F"], 1, sum)  # Sum of 'F' culture values excluding last row
+growHG <- apply(Nts[1:(i-1), sites$culture=="HG"], 1, sum)  # Sum of 'HG' culture values excluding last row
+plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot growth of 'F' culture
+points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
 ```
 
 
