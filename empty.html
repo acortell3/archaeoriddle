@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Introduction | Methods Riddles, the ultimate revelations</title>
+  <title>8 Empty | Methods Riddles, the ultimate revelations</title>
   <meta name="description" content="First draft of Rbookdown to describe how data have been generated" />
   <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Introduction | Methods Riddles, the ultimate revelations" />
+  <meta property="og:title" content="8 Empty | Methods Riddles, the ultimate revelations" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="First draft of Rbookdown to describe how data have been generated" />
   <meta name="github-repo" content="acortell3/archaeoriddle" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Introduction | Methods Riddles, the ultimate revelations" />
+  <meta name="twitter:title" content="8 Empty | Methods Riddles, the ultimate revelations" />
   
   <meta name="twitter:description" content="First draft of Rbookdown to describe how data have been generated" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-<link rel="prev" href="index.html"/>
-<link rel="next" href="landscape-climate-environment.html"/>
+<link rel="prev" href="generate-archaeological-remaind-and-squares.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -207,41 +207,18 @@ source</a></li>
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">1</span> Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="what-is-archaeoriddle" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> What is archaeoriddle?<a href="introduction.html#what-is-archaeoriddle" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Archaeoriddle is a collaborative project at the Computational and Digital Archaeology Laboratory (CDAL) from the Department of Archaeology, University of Cambridge. The project started with an idea to develop an ABM to simulate an interaction process in the imaginary world of <em>Rabbithole</em> between two fictitious groups: the hunter-gatherers called <em>rabbitskinners</em> and the farmers called <em>poppychewers</em>. Through this world, the project could explore archaeological use of data and methods in a controlled environment to learn more about the act of research. The project has also produced a large amount of media content for dissemination and engagement, most of which can be found on the various social accounts linked to the project (<a href="https://twitter.com/archaeoriddle/">here</a> or <a href="https://fediscience.org/@archaeoriddle">here</a>).</p>
-<p>There, you will also find all of the information related to the project (or most of it anyway). In brief, the idea was to create a virtual world were <em>we</em>, as developers, know the full extent of what happened in the archaeological past, but those outside the project would be limited to a partial view of the data, reflecting real life where the archaeological record is incomplete. Given this limited dataset, interested participants were given questions to answer with their own chosen methods. We created a map with 100 grids of which only 5 are shared commonly, and each participant has the right to request 5 more of their own preference. All these data has additionally gone through processes of creation and loss emulating the archaeological record. The idea is that each researcher tries to understand what happened so that the results of the different methodologies proposed can be compared.</p>
-<p>There you will also find all of the information related to the project (or most of it anyway), but in brief, the idea behind it is to create a virtual world where <em>we</em>, as developers, know what happened, but where only partial data are available to the public. With this, there are then some questions which interested participants have to answer with their own methods. In particular, we have created a map with 100 grid squares, of which only five were shared commonly, and each participant had the right to request five more squares of their own preference. Additionally, all data had gone through processes of creation and loss, emulating the archaeological record. The aim was that each researcher tried to understand what happened so that the results of the different proposed methodologies could be compared.</p>
-<p>The project has been a great success, and the team presented at several conferences (dedicated presentations at <a href="https://uk.caa-international.org/">CAA</a> conferences 2022 and 2023, as well as several others), culminating with a thought-provoking discussion at the dedicated workshop in the European Association of Archaeologists conference in Belfast (2023) where interested participants presented their proposals. The full project is explained in more detail at the website referred to above. We are continuing to produce more documentation, which will explain even more, but this general picture is what you need to know to use this bookdown document.</p>
-</div>
-<div id="what-will-you-find-in-this-bookdown" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> What will you find in this bookdown?<a href="introduction.html#what-will-you-find-in-this-bookdown" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This bookdown document provides an explanation of the model used in the creation of the project. Everything has been developed using R. By downloading the package “archaeoriddle” from GitHub, you can reproduce the world of the <em>Rabbithole</em> or adapt it to create your own using the code provided in this bookdown document. This might be useful not only to create a virtual world from scratch while attending to different archaeological constraints, but also provides an excellent exercise to practice making R-based ABMs. Finally, all the data, this includes the data that we produceed (including what’s on the website) or the one that you produce from this is free, and you are free modify to suit your differing needs. We have structured the following chapters as follows:</p>
-<ul>
-<li><p>Landscape, climate, and environment: functions and methods to create ‘realistic’ artificial environments.</p></li>
-<li><p>Population growth on multiple sites: functions and methods to design population that grows, dies, moves, and fights.</p></li>
-<li><p>Record formation: functions and methods to generate archaeological record given the population of each site.</p></li>
-<li><p>Record loss: functions and methods to simulate loss of the record through time.</p></li>
-<li><p>Final choice and simulation: functions and methods that explore different patterns of population growth.</p></li>
-<li><p>Generate archaeological remains and squares: functions and methods to create, organise, and share the data.</p></li>
-</ul>
-</div>
-<div id="what-can-you-do-with-this" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> What can you do with this?<a href="introduction.html#what-can-you-do-with-this" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Well, many things! We have mentioned the data already generated (which can be freely downloaded) can be used for your own research purposes or as an educational tool. We encourage you to use the code in this bookdown to generate your own <em>Rabbithole</em> and pose your own research questions with synthetic data. Additionally, this book is also a good document for the development of ABMs in R.</p>
-<p>All in all, our purpose is not only to bring awareness to the strengths and weaknesses of archaeological methodology, but also to provide material (e.g. methods, theory, and code) for interested researchers so that they can reproduce their own virtual worlds and do their own experiments. Thus, we are proposing a tool that can be used for research, but which is also an excellent testing ground for educational and training purposes. Download things and toy around! Don’t worry, you won’t break anything!!</p>
+<div id="empty" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Empty<a href="empty.html#empty" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><em>eee</em></p>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="landscape-climate-environment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="generate-archaeological-remaind-and-squares.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

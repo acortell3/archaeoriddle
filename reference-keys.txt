@@ -27,3 +27,4 @@ final-choice-and-simulation
 generate-archaeological-remaind-and-squares
 using-sites-size-to-generate-deposite
 split-environment-in-a-grid
+empty
