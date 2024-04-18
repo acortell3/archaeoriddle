@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Landscape, climate &amp; Environment | Methods Riddles, the ultimate revelations</title>
   <meta name="description" content="First draft of Rbookdown to describe how data have been generated" />
-  <meta name="generator" content="bookdown 0.38 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Landscape, climate &amp; Environment | Methods Riddles, the ultimate revelations" />
   <meta property="og:type" content="book" />
@@ -51,6 +51,7 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <script src="libs/viz-1.8.2/viz.js"></script>
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
@@ -209,9 +210,9 @@ source</a></li>
 <h1><span class="header-section-number">2</span> Landscape, climate &amp; Environment<a href="landscape-climate-environment.html#landscape-climate-environment" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="temperature-and-climate" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Temperature and climate<a href="landscape-climate-environment.html#temperature-and-climate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>If we are going to simulate the interaction between two groups, we are going to need an environment in which they can interact in. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.
-An important part of the simulation is to generate a landscape and an environment.</p>
-<p>We use the <code>environment</code> function, which in turns uses <code>TK95</code> to generate a power law noise.</p>
+<p>To simulate the interaction between two groups, we need an environment in which they can interact in. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.
+An important part of the simulation is to generate a landscape and an environment. Environmental variable are often autocorrelated. The temperature at a given time is never <em>extremly</em> different to the temperature slightly before and slightly after this time. Same is true with the slope, or the elevation of a place.</p>
+<p>An interesting way to generate such auto-correlated variable is to use <a href="https://en.wikipedia.org/wiki/Colors_of_noise">coloured noise</a>. This use specific distribution to define the relation between frequencies found in your signal with the power of these frequencies. In <a href="https://en.wikipedia.org/wiki/Pink_noise">pink noise</a> (or <span class="math inline">\(\frac{1}{f}\)</span>-noise) for example, the power of each frequencis will be invertly proportional to the frequencies (<em>ie</em> you will have, low frequencies with high power, high frequencies with low ones). We defined an <code>environment</code> function, which in turns uses <code>TK95</code> to generate a power law noise.</p>
 <p><br></p>
 <div class="r-help-page"><div class="container">
 
@@ -296,7 +297,7 @@ Show code
 </div>
 <div id="slope-and-elevation" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Slope and Elevation<a href="landscape-climate-environment.html#slope-and-elevation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This autocorrelates time series that can be used to adjust temporal change in climate (rain, temperature, etc….). But we also need a way to generate elevation and slope. We can use similar methods to generate 2D autocorrelation. We use here an implementation of what is known as <a href="https://en.wikipedia.org/wiki/Perlin_noise">perlin noise</a> found on <a href="https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise">this stackoverflow.com post</a>. This is the usage of the function:</p>
+<p>This generates autocorrelated time series that can be used to define temporal change in climate (rain, temperature, etc….). But we also need a way to generate elevation and slope. To generate 2D autocorrelation we used a slightly methods known as <a href="https://en.wikipedia.org/wiki/Perlin_noise">perlin noise</a> ; using the implementation found on <a href="https://stackoverflow.com/questions/15387328/realistic-simulated-elevation-data-in-r-perlin-noise">this stackoverflow.com post</a>. This is the usage of the function:</p>
 <p><br></p>
 <div class="r-help-page"><div class="container">
 
