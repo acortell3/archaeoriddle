@@ -231,11 +231,11 @@ warpoints <- function(sites, a, b, Ne, buffersize=300, plot=T, sizewar=2){
 #' @export
 #'
 run_simulation <- function(cultures=NULL,
-                           viable=viable,
-                           sites=sites,
-                           dem=height.ras,
-                           ressources=ress,
-                           water=height.wat,
+                           viable=NULL,
+                           sites=NULL,
+                           dem=NULL,
+                           ressources=NULL,
+                           water=NULL,
                            foldervid="pathtofinal",
                            visu=FALSE,
                            visumin=TRUE,
