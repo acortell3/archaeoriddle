@@ -23,7 +23,7 @@ To generate a single auto-correlated variable (like temperature), who's spectrum
 ```{r generateFakeClimate}
 tstep <- 1000
 faketemp <- environment(tstep, omega=3, delta=1.5) + 1.5
-plot(faketemp, type="l", ylab="temperature change", xlab="time")   
+plot(faketemp, type="l", ylab="temperature change", xlab="time",lwd=3)   
 ```
 
 You can inspect the code of `environment` and `TK95` functions here:
@@ -219,11 +219,12 @@ Create a network between sites  (requires `igraph`)
 ```{r sitesnetwork, eval=T}
 
 library(igraph)
-crs(sites) <- "+proj=lonlat"
-sites <- sites[sample(nrow(sites), 20), ]
+subsites  <- sites
+crs(subsites) <- "+proj=lonlat"
+subsites <- sites[sample(nrow(sites), 20), ]
 ig <- graph_from_adjacency_matrix(
-  as.matrix(distance(sites)), weighted=T, mode="undirected")
-ig <- set_graph_attr(ig, "layout", crds(sites))
+  as.matrix(distance(subsites)), weighted=T, mode="undirected")
+ig <- set_graph_attr(ig, "layout", crds(subsites))
 
 V(ig)$label <- ""
 V(ig)$size <- (size+1)*5
