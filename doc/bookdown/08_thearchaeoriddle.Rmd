@@ -1,0 +1,193 @@
+# Archaoriddle: the original
+
+This summarise all the previous steps but using the original map and sites.
+
+The original raster:
+
+```{r}
+
+original.ras <- rast("data_original/east_narnia4x.tif")
+plot(original.ras, col=col_ramp(20), legend=F, reset=F)
+original.wat <- original.ras
+original.wat[original.wat>mean(original.wat[])] <- NA
+plot(original.wat, col="lightblue", add=T, legend=F)
+
+original.groups <- original.ras # taking back the raster created before
+original.groups[original.groups<mean(original.groups[])] <- NA #replace values that are below mean level (under water)
+original.groups[original.groups<(maxh*.7)] <- 1 # values below 70% of the maximum original are set as 1
+original.groups[original.groups>(maxh*.7)] <- 200 # value above at 200 (high mountains)
+original.groups[is.na(original.groups)] <- -1 #  NA values (below waters) are set to -1
+original.poly <- as.polygons(original.groups) # convert original.groups as polygons that will be of three type: -1 => under water, 1, viable, and 200, high mountaines
+original.viable <- makeValid(original.poly[2,]) # select polygon with '1' and make it a valid polygon as it may have some loop and problems
+# get only the non submerged actual land and plot it
+above_level <- original.ras > mean(original.ras[])
+coastline <- st_as_sf(as.polygons(above_level))[2,]
+plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
+```
+
+Adding ressource
+
+```{r}
+##ressource geolocalisation set manually
+goodresources <- vect(
+  cbind(
+    x=c(-0.2300711, -3.1455282, -0.5086485, -1.9639755,
+        -0.4077843, 0.019688, -3.116710),
+    y=c(3.6423000, -0.2551019, -0.7440748, 1.1303214,
+        1.0248567, 0.2194895, 2.0267718)
+  )
+)
+#spread of resources
+areas <- 4 * c(100, 2000, 200, 300, 100, 200, 400)
+#speed of ressource decay:
+ks <- c(0.0002, 0.0001000, 0.0001600, 0.0001800, 0.00040, .0002, 0.0002)/4
+
+crs(goodresources) <- crs(original.ras)
+
+original.allres <- lapply(
+  seq_along(goodresources),
+  function(i){
+    logisticdecay(goodresources[i], mask(original.ras, original.viable),
+                  x=areas[i], k=ks[i]
+    )
+  }
+)
+
+allna <- sapply(original.allres, function(i)any(is.na(values(i))))
+original.allres <- original.allres[!allna]
+original.ress <- original.allres[[1]]
+for(i in 2:length(original.allres))
+    original.ress <- original.ress + original.allres[[i]]
+original.ress <- mask(original.ress,original.viable)
+plot(original.ress)
+```
+
+This, should be exactly what is stored in `data_original/resources.tiff`
+
+```{r comptiff,out.width="45%" }
+plot(original.ress)
+plot(rast("data_original/resources.tiff"))
+```
+
+We then take back the sites position defined for the original archaeoriddle:
+
+```{r}
+original.sites=vect("data_original/sitesinitialposition/")
+
+
+Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
+
+# spatial penality to extent: lower, bigger penality
+cul_ext <- c("HG"=7, "F"=6)
+# penality of occupational area: low, other sites can come close
+penal_cul <- c("HG"=4, "F"=5)
+# proba to give birth every year
+prob_birth <- c("HG"=0.3, "F"=0.5)
+# proba to die when pop > K
+prob_survive <- c("HG"=0.8, "F"=0.6)
+# proba to create new settlement when Ne > K
+prob_split <- c("HG"=0.2, "F"=0.6)
+# how big the group of migrant should be to create a new city vs
+# migrate to a existing one
+minimals <- c("HG"=0.14, "F"=0.20)
+# prob to migrate to existing settlement when Ne > K
+prob_move <- c("HG"=0.2,"F"=0.1)
+```
+
+Let's check again our raster and the sites and there cutlures etc...
+```{r}
+plotMap(original.ras,original.wat,paste0("year ", 0))
+points(crds(original.sites), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(original.sites$culture)],col=1)
+text(original.sites,pos=3)
+```
+
+
+Let's run one simple simulation on the archaeoriddle:
+
+```{r,eval=T}
+
+ts <- 100
+
+print(paste0("Starting simulation ","nan"))
+
+onesimu <- run_simulation(
+  sites=original.sites, viable=original.viable, dem=original.ras,
+  ressources=original.ress,
+  water=original.wat,
+  foldervid="nan",
+  visu=F, visumin=F,
+  ts=ts, #length of simulation in year
+  Kbase=c("HG"=35, "F"=110), #difference in K for the two cultures
+  cul_ext=c("HG"=7, "F"=6), #spatial penality to extent: lower, bigger penality
+  penal_cul=c("HG"=4, "F"=5), #penality of occupational area: low, other sites can cam close
+  prob_birth=c("HG"=0.3, "F"=0.5), #proba of giving birth every year
+  prob_survive=c("HG"=0.8, "F"=0.65), #proba of dying when pop > K
+  prob_split=c("HG"=0.5, "F"=0.6), #proba of creating a new settlement when Ne > K
+  minimals=c("HG"=0.14,"F"=0.20), #how big the group of migrant should be to create a new city vs migrate to a existing one 
+  bufferatack=300, #distance max around which settlement can fight
+  prob_move=c("HG"=0.2, "F"=0.1) #proba of migrating to existing settlement when Ne > K
+)
+```
+
+```{r,cache=F}
+Nts <- onesimu$Nts # population at each timestep
+warcasualties <- onesimu$warcasualties #death by war at each time step
+plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(original.sites$culture)])
+```
+
+
+
+```{r,eval=T,messages=F}
+
+i <- nrow(Nts)
+plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
+lapply(1:ncol(Nts),
+       function(j)lines(Nts[,j],col=rainbow(2)[as.factor(original.sites$culture)[j]])
+)
+
+```
+
+Visualise, Record deposit and  loss. for the 5 first sites (see next chapters for `A_rates`).
+```{r,out.width="25%"}
+alldeposit <- lapply(
+  1:5,
+  function(i){
+    Rec_c(sapply(Nts[,i], A_rates), InitBP = 15000, ts=ts, r=0.2, max_bone_thickness="m")
+  }
+)
+maxy <- max(sapply(alldeposit, function(i)max(apply(i,2,sum))))
+
+nill <- lapply(alldeposit, function(depo)barplot(t(depo), col=viridis(ts+1), ylim=c(0,maxy)))
+```
+
+Population by time and culture
+
+```{r,eval=T}
+plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)),
+     xlab="time", ylab="popsize")
+lapply(1:ncol(Nts),
+       function(i)lines(Nts[,i], col=rainbow(2)[as.factor(original.sites$culture)[i]]))
+plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
+
+```
+
+
+Exploring some trajectories of the simulations
+
+```{r, eval=T}
+i <- nrow(Nts)  # Get the number of rows in Nts
+plot(apply(Nts[1:i, original.sites$culture=="F"], 1, sum), col="red", type="l",
+     lwd=2, ylim=c(0, max(apply(Nts, 1, sum))))  # Plot sum of 'F' culture values
+points(apply(Nts[1:i, original.sites$culture=="HG"], 1, sum),
+       col="blue", lwd=2, type="l")  # Add points for 'HG' culture values
+plot(warcasualties[1:(i-1)], lwd=2, col="green", type="h", yaxt="n", ylab="")  # Plot war casualties
+axis(4)  # Add an axis on the right side
+par(new=T)  # Allow a new plot to be drawn on the existing plot
+growF <- apply(Nts[1:(i-1), original.sites$culture=="F"], 1, sum)  # Sum of 'F' culture values excluding last row
+growHG <- apply(Nts[1:(i-1), original.sites$culture=="HG"], 1, sum)  # Sum of 'HG' culture values excluding last row
+plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot growth of 'F' culture
+points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
+```
+
+
+
