@@ -242,7 +242,7 @@ onesimu <- run_simulation(
   ressources=ress,
   water=height.wat,
   foldervid="nan",
-  visu=F, visumin=T,
+  visu=F, visumin=F,
   ts=ts, #length of simulation in year
   Kbase=c("HG"=35, "F"=110), #difference in K for the two cultures
   cul_ext=c("HG"=7, "F"=6), #spatial penality to extent: lower, bigger penality
