@@ -1,16 +1,12 @@
-# Population growth on multiple sites
+# Population growth, conflicts and migrations
 
-Population will then grow, for years, and years. This implies multiple things: they need ressources, and we need to define a way for them to grow.
+Population will then grow, for years, and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.
 
 ## Environmental resources
 
 We will generate zones of high resources, that will attract settlements and support higher K.
 The resources will be located at given hotspots with an area around in which they decay
 with a logistic function. We provide a very basic function `logisticdecay` which allow to define multiple source with different decay array around them.
-
-```{r, echo=FALSE}
-?logisticdecay
-```
 
 
 ```{r, echo=FALSE, message=FALSE}
@@ -31,7 +27,7 @@ fs::file_delete('logistic_decay.Rmd')
 
 <br>
 
-For the _archaeoriddle_, thes hotspots and there radius were manually selected given the topography. These manual setups are given below:
+For the original _archaeoriddle_, these hotspots and their radius were manually selected given the topography of Rabbit Hole. These manual setups are given below:
 
 ```{r setresource}
 ##resource geolocalisation set manually
@@ -54,7 +50,7 @@ crs(goodresources) <- crs(original.ras)
 
 The function `logisticdecay` generates individual rasters for all the identified hotspots, which are then merged to create an aggregate raster referred to as 'resources'.
 
-When considering the selection of hotspots, one may choose to retain the one utilized for the _archaeoriddle_, although its center may be positioned in water based on the preceding generation outcome. Choosing them manual remains the best option, one can use `locator()` to find the coordinates of the hotspot by click on the raster, an example of that is given at [the end of this chapter](#manual-selection)
+When considering the selection of hotspots, one may choose to retain the one utilized for the _archaeoriddle_. To adjust these resources center to your own topography ;  one can use `locator()` to find the coordinates of the hotspot by clicking on the map. An example of that is given in [this  section of the chapter](#manual-selection)
 
 ```{r groupresources}
 
@@ -77,7 +73,7 @@ ress <- mask(ress,viable)
 plot(ress)
 ```
 
-This is also something that will be share with participants and thus will be saved in the folder with the DEM and the coastline.
+This new raster `ress` is also something that will be shared with participants and thus will be saved in the folder with the DEM and the coastline.
 
 ```{r saveResources}
 writeRaster(filename=file.path(foldname,"resources.tiff"), ress, overwrite=T) #write the resources as a raster
@@ -103,7 +99,7 @@ points(crds(sites),bg=as.factor(cultures),pch=21,cex=1.3)
 ```
 
 
-The each site will then be assigned a carrying capacity (how many people can leave on the site), defined using the ressource raster and the culture. 
+Each site will then be assigned a carrying capacity (how many people can leave on the site), probabilistically defined using the resource raster and the culture of the site.
 
 ```{r computeK}
 
@@ -116,8 +112,6 @@ sites$Ks <- initKs(Kbase, sites, ress, sizeexp="F")
 Using these carrying capacities, we then set initial number of people, and the population structure for each sites:
 
 ```{r computeIN}
-# Optionally we can intialize here our list of sites and population structures
-# Otherwise, they are initialized within the run_simulation function
 # Population size at initialisation, a number close to Ks
 INs <- round(runif(length(sites), 0.85, 0.95)*sites$Ks)
 
@@ -161,7 +155,48 @@ fs::file_delete('init_simulation.Rmd')
 </details>
 
 
-We now have sites with two cultures. The grow of the sites will depend on a lot of paparemeters; which are all a bit different depending on the two cultures. The list of parameters used is deined below: 
+
+
+## Manually Select Resources {#manual-selection}
+
+Below some useful code to manually select the resource origins on the map (by clicking on the screen) and explore different decays around them
+
+```{r, eval=F}
+plotMap(height.ras, height.wat, paste0("year ", 0))
+new_site <- vect(as.data.frame(locator()), geom=c("x", "y"))  # select point on the screen
+crs(new_site) <- crs(height.ras)
+d2 <- logisticdecay(new_site, height.ras, x=20000) # generate a logistic decay around the point
+
+plot(d2)
+w <- (0.7*d2 + 0.3*ress) / (0.7*minmax(d2)[2] + 0.3*minmax(ress)[2])
+plot(w)
+plot(mask(w*logisticdecay(new_site, height.ras, k=0.00002, x=1), territory))
+multisamp <- sapply(
+  1:1000,
+  function(i){
+    spatSample(x=w, size=1, method="weights", xy=T)[1:2]
+  }
+)
+
+```
+
+## Population Growth
+
+
+`changePopSize`: Change population size by moving population from one to another; or remove a group of people
+
+
+
+
+## Migration
+
+## Conflict and War
+`whotouch`
+
+
+## Run Simulation
+
+We now have sites with two cultures. The grow of the sites will depend on a lot of parameters; which are all a bit different depending on the two cultures. The list of parameters used is defined below: 
 
 ```{r}
 
@@ -233,10 +268,126 @@ It uses a number of other functions to model contacts between sites, the outcome
 ```
 <br>
 
+The general organisation of the algorithm is as follow:
+
+> initialisation
+> for all sites s:
+>     N_s <- growth(N_s)
+>     if(N_s>K_s):
+>         moving people:
+>         if( N_s - K-S > min_s * K_s and probsplit_s):
+>             create new city:
+>                 find the closest most attractive spot and move there
+>         else if(proba move ):
+>             migration
+>     war(s)
+
+
+```{r, echo=TRUE,eval=F}
+
+1. ** initialisation **
+  
+2. for (i in 2:(ts+1))
+    inactives <- (Nts[i-1,]==0)
+    for ( s in sample(seq_along(sites)[!inactives]) : #among all active site
+        N_s <- Gpd()
+        if $N_s> K_s$ :
+            migrants <- newN - round(Ks[[s]]*0.9)
+            if (migrants >= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){
+          #if subpopulation > 10 people, 10% chance of creation of a new city
+
+          infarea <- (sqrt(tmp)+penal_cul[cultures]) * buffersettl
+          buffersize <- rnorm(length(infarea), infarea, infarea * 0.1)
+          buffersize[tmp==0] <- 0
+          territory <- erase(viable, buffer(sites, buffersize))
+          
+          if( length(territory)>0 ){
+            ##select a new site given its distance to the old one and the ressourcesource available in ressources
+            d2 <- logisticdecay( sites[s], dem, x=20000*cul_ext[sites$culture[s]])
+            w <- (0.7 * d2 + 0.3*ressources) / (0.7*minmax(d2)[2] + 0.3*minmax(ressources)[2])
+            new_site <- spatSample(
+              x=mask(
+                w * logisticdecay(sites[s], dem, k=0.00002,
+                                  x=20000*cul_ext[sites$culture[s]]),
+                territory),
+              size=1, method="weights", xy=T)[1:2]
+            new_site <- vect(new_site, geom=c("x","y"))
+            
+            if ( length(new_site)>0 & all(!is.na(crds(new_site))) ){
+              ##add new site to site listes
+              Ips[[length(Ips)+1]] <- initpopstruc(n=migrants) #initialise a fake populaition, will be updated by real migrants later
+              new_site$culture <- sites$culture[s]
+              new_site$Ks <- round(initKs(
+                Kbase, sites=new_site, ressources,
+                sizeex="F", rate=0.45))
+              sites <- rbind(sites, new_site)
+              Ks[length(Ks)+1] <- new_site$Ks
+            }
+          }
+        }
+        ## if no creation of new city happen, there is a certain probability that people will move
+        if( length(new_site)==0 && runif(1) < prob_move[sites$culture[s]] ){
+           #migration to existing site
+          att <- extract(ressources,sites)[,2]
+          space <- sites$Ks - (Nts[i-1,] + migrants)
+          dis <- extract(logisticdecay(sites[s], dem, k=0.00002, x=1), sites)[,2]
+          attractivity <- att * space * dis
+          #attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
+          attractivity[s] <- min(attractivity)-1
+          attractivity <- exp(attractivity)/sum(exp(attractivity))
+          attractivity[Nts[i-1,]<10] <- 0 
+          attractivity[sites$culture!=sites$culture[s]] <- 0 
+          if(any(is.na(attractivity))){
+            print(attractivity)
+            attractivity[is.na(attractivity)] <- 0
+          }
+          
+          city <- sample(size=1, x=seq_along(sites), prob=attractivity)
+          Nts[i,city] <- Nts[i-1,city] + migrants
+        }
+        if( havemoved ){
+          Ips[c(s,city)] <- changePopSize( loosingPop=Ips[[s]], winingPop=Ips[[city]], size=migrants)
+          newN <- newN - migrants
+        }
+        
+      }
+      Nts[i,s] <- newN
+      
+    }
+    ## WAR =======================
+    potentialfighters <- which(sites$culture=="F" & Nts[i,]>50)
+    for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*0.1))){
+      buff <- bufferatack
+      potentialvictims <- which(sites$culture !=sites$culture[s] & Nts[i,]>0) 
+      clash <- whotouch(s, sites, Ne=Nts[i,], buffersize=buff)
+      if(length(clash)>0 && !is.na(clash)){
+        if(length(clash) == 1){
+          attack <- clash
+        } else {
+          attack <- sample(clash, 1)
+        }
+        newns <- fightbetterloss(Ne=Nts[i,], a=s, b=attack)
+        casualties <- sum(Nts[i, c(s,attack)] - newns[c(s,attack)])
+        warcasualties[i] <- casualties
+        sizew <- casualties^2/4000
+        warpoints(sites, s, attack, Ne=Nts[i,],
+                  buffersize=buff, sizewar=sizew+0.5)
+        
+        #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
+        Ips[[s]] <- changePopSize(loosingPop=Ips[[s]],
+                                  size=(Nts[i,s] - newns[s]))
+        Ips[[attack]] <- changePopSize(loosingPop=Ips[[attack]],
+                                       size=(Nts[i, attack] - newns[attack]))
+        Nts[i,] <- newns
+      }
+  }
+  return(list(Nts=Nts, warcasualties=warcasualties, Ips=Ips, sites=sites))
+}
+```
+
+
 
 ```{r,eval=T}
-
-
 onesimu <- run_simulation(
   sites=sites, viable=viable, dem=height.ras,
   ressources=ress,
@@ -255,6 +406,7 @@ onesimu <- run_simulation(
   prob_move=c("HG"=0.2, "F"=0.1) #proba of migrating to existing settlement when Ne > K
 )
 ```
+
 
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/run_simulation.R', format='Rmd', comment=c("#'","#'"),
@@ -342,29 +494,4 @@ growF <- apply(Nts[1:(i-1), sites$culture=="F",drop=F], 1, sum)  # Sum of 'F' cu
 growHG <- apply(Nts[1:(i-1), sites$culture=="HG",drop=F], 1, sum)  # Sum of 'HG' culture values excluding last row
 plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot growth of 'F' culture
 points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
-```
-
-
-## Manually Select Ressources {#manual-selection}
-
-Below some useful code to manually select the resource origins on the map (by clicking on the screen) and explore different decays around them
-
-```{r, eval=F}
-plotMap(height.ras, height.wat, paste0("year ", 0))
-new_site <- vect(as.data.frame(locator()), geom=c("x", "y"))  # select point on the sscreep
-crs(new_site) <- crs(height.ras)
-d2 <- logisticdecay(new_site, height.ras, x=20000) # generate a logistic decay around the point
-
-plot(d2)
-w <- (0.7*d2 + 0.3*ress) / (0.7*minmax(d2)[2] + 0.3*minmax(ress)[2])
-plot(w)
-plot(mask(w*logisticdecay(new_site, height.ras, k=0.00002, x=1), territory))
-multisamp <- sapply(
-  1:1000,
-  function(i){
-    spatSample(x=w, size=1, method="weights", xy=T)[1:2]
-  }
-)
-
-
 ```
