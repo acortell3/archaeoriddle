@@ -77,7 +77,7 @@ for ( i in 2:k )
 If we change k (that dictates the total resolution of the DEM), the size of the raster grow explonentially and would be quickly hard to manage.
 
 
-```{r}
+```{r explorePerlin}
 
 allsizes <- sapply(1:8,function(k)
 {
@@ -157,15 +157,75 @@ plot_3d(
 ```
 
 
-## Settlements position
+## Environmental resources
 
+We will generate zones of high resources, that will attract settlements and support higher K.
+The resources will be located at given hotspots with an area around in which they decay
+with a logistic function. We provide a very basic function `logisticdecay` which allow to define multiple source with different decay array around them.
+
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/logistic_decay.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/logistic_decay.Rmd', '.')
+```
+
+Here's the code for the generation of resources under logistic decay 
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='logistic_decay.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+fs::file_delete('logistic_decay.Rmd')
+```
+</details>
+
+<br>
+
+For the original _archaeoriddle_, these hotspots and their radius were manually selected given the topography of Rabbit Hole. These manual setups are given below:
+
+```{r setresource}
+##resource geolocalisation set manually
+goodresources <- vect(
+  cbind(
+    x=c(-0.2300711, -3.1455282, -0.5086485, -1.9639755,
+        -0.4077843, 0.019688, -3.116710),
+    y=c(3.6423000, -0.2551019, -0.7440748, 1.1303214,
+        1.0248567, 0.2194895, 2.0267718)
+  )
+)
+#spread of resources
+areas <- 4 * c(100, 2000, 200, 300, 100, 200, 400)
+#speed of ressource decay:
+ks <- c(0.0002, 0.0001000, 0.0001600, 0.0001800, 0.00040, .0002, 0.0002)/4
+
+
+crs(goodresources) <- crs(original.ras)
+```
+
+The function `logisticdecay` generates individual rasters for all the identified hotspots, which are then merged to create an aggregate raster referred to as 'resources'.
+
+When considering the selection of hotspots, one may choose to retain the one utilized for the _archaeoriddle_. To adjust these resources center to your own topography ;  one can use `locator()` to find the coordinates of the hotspot by clicking on the map. An example of that is given in [this  section of the chapter](#manual-selection)
+
+```{r groupresources}
+
+allres <- lapply(
+  seq_along(goodresources),
+  function(i){
+    logisticdecay(goodresources[i], mask(height.ras, viable),
+                  x=areas[i], k=ks[i]
+    )
+  }
+)
+
+allna <- sapply(allres, function(i)any(is.na(values(i))))
+allres <- allres[!allna]
+```
+
+These resource span along all the map but we want to restrict them to place where peoplewill be able to settle
 Given this new landscape we can now generate sites in specific locations. We first need to define _where_ the sites _can_ appear (not in water nor too high in the mountains)
 
-
-```{r splitArea}
-n <- 20 # we will create  20 sites
-size <- rexp(n) #assign a size for each site following an exponential distribution 
-
+```{r}
 height.groups <- height.ras # taking back the raster created before
 height.groups[height.groups<mean(height.groups[])] <- NA #replace values that are below mean level (under water)
 height.groups[height.groups<(maxh*.7)] <- 1 # values below 70% of the maximum height are set as 1
@@ -173,121 +233,43 @@ height.groups[height.groups>(maxh*.7)] <- 200 # value above at 200 (high mountai
 height.groups[is.na(height.groups)] <- -1 #  NA values (below waters) are set to -1
 height.poly <- as.polygons(height.groups) # convert height.groups as polygons that will be of three type: -1 => under water, 1, viable, and 200, high mountaines
 viable <- makeValid(height.poly[2,]) # select polygon with '1' and make it a valid polygon as it may have some loop and problems
-```
 
-We now have a polygon `viable` representing the space where sites can be create.
+ress <- allres[[1]]
+for(i in 2:length(allres))
+    ress <- ress + allres[[i]]
+ress <- mask(ress,viable)
+plot(ress)
+```
+We now have also have a polygon `viable` representing the space where sites can be create.
 This space is representing by the green area on the map below.
 
 ```{r,viablearea}
 plot(viable,col=adjustcolor("chartreuse",.8))
 ```
 
-We can now use simply and directly use `spatSample` from package `terra` to randomly select `n` points  (`r n` for this simulation) on this viable polygon.
 
 
-```{r, samplesites}
-sites <- spatSample(viable, n) # generate n random points within the viable polygon and assign to variable sites
-plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
-plot(height.wat, col="lightblue", add=T, legend=F)
-plot(sites, cex=2, pch=21, add=T, bg=rainbow(length(sites), alpha=.6))
 
-# get only the non submerged actual land and plot it
-above_level <- height.ras > mean(height.ras[])
-coastline <- st_as_sf(as.polygons(above_level))[2,]
-plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
-```
+## Manually Select Resources {#manual-selection}
 
-In the context of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/), files that describe this newly generated environment and the sites sampled on top of it needs to be produced and given to the participant. This can be done as:
+Below some useful code to manually select the resource origins on the map (by clicking on the screen) and explore different decays around them
 
-```{r}
-foldname="data_toshare" #We will store all data that can/will be shared with participant in data_toshare
-if(!file.exists(foldname))dir.create(foldname)
-st_write(dsn=file.path(foldname,"coastline.shp"), coastline,append=F) # Write the coastline as a shapefile
-writeRaster(filename=file.path(foldname,"dem_raster.tiff"), height.ras, overwrite=T) #write the DEM as a raster
-```
+```{r, eval=F}
+plotMap(height.ras, height.wat, paste0("year ", 0))
+new_site <- vect(as.data.frame(locator()), geom=c("x", "y"))  # select point on the screen
+crs(new_site) <- crs(height.ras)
+d2 <- logisticdecay(new_site, height.ras, x=20000) # generate a logistic decay around the point
 
-The original data, saved and shared for the _archaeoriddle_ are stored in `data_original/`
+plot(d2)
+w <- (0.7*d2 + 0.3*ress) / (0.7*minmax(d2)[2] + 0.3*minmax(ress)[2])
+plot(w)
+plot(mask(w*logisticdecay(new_site, height.ras, k=0.00002, x=1), territory))
 
-## Network, Site Size And Climate -- DEPRECATED
-
-The following steps were designed but never used ; they can be quite fun and useful.
-
-----
-
-Create a network between sites  (requires `igraph`)
-
-```{r sitesnetwork, eval=T}
-
-library(igraph)
-subsites  <- sites
-crs(subsites) <- "+proj=lonlat"
-subsites <- sites[sample(nrow(sites), 20), ]
-ig <- graph_from_adjacency_matrix(
-  as.matrix(distance(subsites)), weighted=T, mode="undirected")
-ig <- set_graph_attr(ig, "layout", crds(subsites))
-
-V(ig)$label <- ""
-V(ig)$size <- (size+1)*5
-V(ig)$frame.color <- "black"
-V(ig)$frame.width <- .5
-E(ig)$weight <- 1/(E(ig)$weight^2)
-E(ig)$width <- exp(E(ig)$weight)+.6
-
-allcomu <- cluster_louvain(ig)$memberships[1,]
-V(ig)$color <- allcomu
-E(ig)$color <- allcomu[head_of(ig,E(ig))]
-
-plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
-plot(height.wat, col="lightblue", add=T, legend=F)
-plot(ig, add=T, rescale=F, alpha=.2)
-```
-
-Visualise sites on the 3D plot
-
-```{r 3Dnetwork, eval=F}
-
-plot_3d(
-  hm_lamb,height_map, zscale=20, fov=0, theta=20, zoom=1, phi=45,
-  windowsize=c(1000, 800), water=TRUE, waterdepth=mean(height),
-  wateralpha=1, watercolor="lightblue", waterlinecolor="lightblue",
-  waterlinealpha=.7
+multisamp <- sapply(
+  1:1000,
+  function(i){
+    spatSample(x=w, size=1, method="weights", xy=T)[1:2]
+  }
 )
 
-render_points(
-  extent=raster::extent(raster::raster(height.ras)),
-  lat=2.13828, long=-1.685547, altitude=extract(height.ras,sites)[,1]+20,
-  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
-  clear_previous=TRUE
-)
-
-render_points(
-  extent=raster::extent(raster::raster(height.ras)),
-  lat=crds(sites)[,"y"], long=crds(sites)[,"x"], altitude=extract(height.ras, sites)[,1]+20,
-  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
-  clear_previous=TRUE
-)
-       
-render_highquality(point_radius=5, samples=256, clear=TRUE, light=TRUE)
-
 ```
-
-let's say the climate modulate site size in a naive way:
-
-
-```{r, animation.hook="gifski", interval=0.2, cache=TRUE, eval=F}
-for(i in seq(1, tstep, length.out=100)){
-	layout(matrix(1:2, nrow=2, ncol=1), heights=c(.8, .2))
-	par(mar=c(1, 2, 2, 1))
-	image(m, ann=F, axes=F, main=i)
-	mtext(round(i), 3, 1)
-	nsize <- size*faketemp[i] + size + 1
-	points(crds(sites), bg="green", pch=21, cex=nsize)
-	par(mar=c(2, 2, 0, 1))
-	plot(
-	  1:tstep, faketemp, type="l", ylab="temp", xlab="time", ylim=range(faketemp),
-	  ann=F, frame.plot=F)
-	points(i, faketemp[i], col="red", pch=20)
-}
-```
-
-
