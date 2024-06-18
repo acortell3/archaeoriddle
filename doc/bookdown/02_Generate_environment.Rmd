@@ -153,13 +153,12 @@ plot_3d(
 
 #HQ render, very slow
 #render_highquality( samples=256, clear = TRUE,light=TRUE)
-
 ```
 
 
 ## Environmental resources
 
-We will generate zones of high resources, that will attract settlements and support higher K.
+We will generate zones of higher resources/fitness that will attract settlements and support higher carrying capacity _ie_ population size.
 The resources will be located at given hotspots with an area around in which they decay
 with a logistic function. We provide a very basic function `logisticdecay` which allow to define multiple source with different decay array around them.
 
@@ -205,7 +204,29 @@ crs(goodresources) <- crs(original.ras)
 
 The function `logisticdecay` generates individual rasters for all the identified hotspots, which are then merged to create an aggregate raster referred to as 'resources'.
 
-When considering the selection of hotspots, one may choose to retain the one utilized for the _archaeoriddle_. To adjust these resources center to your own topography ;  one can use `locator()` to find the coordinates of the hotspot by clicking on the map. An example of that is given in [this  section of the chapter](#manual-selection)
+When considering the selection of hotspots, one may choose to retain the one utilized for the _archaeoriddle_ but to adjust these resources center to your own topography ;  one can use `locator()` to find the coordinates of the hotspot by clicking on the map. An example of that is given in [this  section of the chapter](#manual-selection)
+
+These resource span along all the map but we want to restrict them to place where peoplewill be able to settle
+Given this new landscape we can now generate sites in specific locations. We first need to define _where_ the sites _can_ appear (not in water nor too high in the mountains) ; so we first create a raster 'viable' which will give a binary maps where group of human can leave or not.
+
+```{r}
+height.groups <- height.ras # taking back the raster created before
+height.groups[height.groups<mean(height.groups[])] <- NA #replace values that are below mean level (under water)
+height.groups[height.groups<(maxh*.7)] <- 1 # values below 70% of the maximum height are set as 1
+height.groups[height.groups>(maxh*.7)] <- 200 # value above at 200 (high mountains)
+height.groups[is.na(height.groups)] <- -1 #  NA values (below waters) are set to -1
+height.poly <- as.polygons(height.groups) # convert height.groups as polygons that will be of three type: -1 => under water, 1, viable, and 200, high mountaines
+viable <- makeValid(height.poly[2,]) # select polygon with '1' and make it a valid polygon as it may have some loop and problems
+```
+
+We now have also have a polygon `viable` representing the space where sites can be create.
+This space is representing by the green area on the map below.
+
+```{r,viablearea}
+plot(viable,col=adjustcolor("chartreuse",.8))
+```
+
+We then loop over all center manually defined previously and apply the logicitc decay within the `viable` raster.
 
 ```{r groupresources}
 
@@ -222,30 +243,16 @@ allna <- sapply(allres, function(i)any(is.na(values(i))))
 allres <- allres[!allna]
 ```
 
-These resource span along all the map but we want to restrict them to place where peoplewill be able to settle
-Given this new landscape we can now generate sites in specific locations. We first need to define _where_ the sites _can_ appear (not in water nor too high in the mountains)
+And when the add all the ressource raster, which gives us a final `ress` raster as below:
 
-```{r}
-height.groups <- height.ras # taking back the raster created before
-height.groups[height.groups<mean(height.groups[])] <- NA #replace values that are below mean level (under water)
-height.groups[height.groups<(maxh*.7)] <- 1 # values below 70% of the maximum height are set as 1
-height.groups[height.groups>(maxh*.7)] <- 200 # value above at 200 (high mountains)
-height.groups[is.na(height.groups)] <- -1 #  NA values (below waters) are set to -1
-height.poly <- as.polygons(height.groups) # convert height.groups as polygons that will be of three type: -1 => under water, 1, viable, and 200, high mountaines
-viable <- makeValid(height.poly[2,]) # select polygon with '1' and make it a valid polygon as it may have some loop and problems
-
+```{r showresrouce}
 ress <- allres[[1]]
 for(i in 2:length(allres))
     ress <- ress + allres[[i]]
 ress <- mask(ress,viable)
 plot(ress)
 ```
-We now have also have a polygon `viable` representing the space where sites can be create.
-This space is representing by the green area on the map below.
 
-```{r,viablearea}
-plot(viable,col=adjustcolor("chartreuse",.8))
-```
 
 
 
