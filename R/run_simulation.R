@@ -68,8 +68,8 @@ changePopSize <- function(loosingPop, size, winingPop=NULL, new=F,
 #' @export
 whotouch <- function(i, sites, Ne, homophily=F, buffersize=200){
   touch <- st_intersects(
-    st_make_valid(st_as_sf(buffer(sites[i], Ne[i] * buffersize))),
-    st_make_valid(st_as_sf(buffer(sites, Ne * buffersize))))
+    st_make_valid(st_as_sf(buffer(sites[i], Ne[i] * buffersize+0.00001))),
+    st_make_valid(st_as_sf(buffer(sites, Ne * buffersize+0.00001))))
   if( length(touch) > 0 ){
     enemies <- unlist(touch)
     if(homophily){
@@ -80,6 +80,13 @@ whotouch <- function(i, sites, Ne, homophily=F, buffersize=200){
   } else {
     enemies <- NA
   }
+  #after adding a small number to zero, does that means that often some zero size group may be taken as fighter? checking below if this happen
+  if(sum(Ne[enemies]==0)>0){
+      print("some already dead enemies")
+      print(which(Ne[enemies]==0))
+      enemies=enemies[Ne[enemies]>0]
+  }
+
   return(enemies)
 }
 
