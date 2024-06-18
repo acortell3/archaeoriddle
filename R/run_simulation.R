@@ -335,7 +335,7 @@ run_simulation <- function(cultures=NULL,
           #mean of area of influence
           infarea <- (sqrt(tmp)+penal_cul[cultures]) * buffersettl
           buffersize <- rnorm(length(infarea), infarea, infarea * 0.1)
-          buffersize[tmp==0] <- 0
+          buffersize[tmp==0] <- 0.00001
           territory <- erase(viable, buffer(sites, buffersize))
           
           if( length(territory)>0 ){
