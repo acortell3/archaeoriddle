@@ -10,7 +10,7 @@ size <- rexp(n) #assign a size for each site following an exponential distributi
 
 ```
 
-Thanks to the previously use `spatSample` from package `terra` to randomly select `n` points  (`r n` for this simulation) on this viable polygon.
+Thanks to the previous chapter,  use `spatSample` from package `terra` to randomly select `n` points  (`r n` for this simulation) on this viable polygon.
 
 ```{r, samplesites}
 sites <- spatSample(viable, n) # generate n random points within the viable polygon and assign to variable sites
@@ -35,8 +35,6 @@ st_write(dsn=file.path(foldname,"coastline.shp"), coastline,append=F) # Write th
 writeRaster(filename=file.path(foldname,"dem_raster.tiff"), height.ras, overwrite=T) #write the DEM as a raster
 
 writeRaster(filename=file.path(foldname,"resources.tiff"), ress, overwrite=T) #write the resources as a raster
-```
-
 ```
 
 The original data, saved and shared for the _archaeoriddle_ are stored in `data_original/`
@@ -122,17 +120,14 @@ for(i in seq(1, tstep, length.out=100)){
 	points(i, faketemp[i], col="red", pch=20)
 }
 ```
-
-
-
-Population will then grow, for years, and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.
-
+Population will then grow, for years and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.We initialised the ressource layer in the previous chapter 
+in [the  section about ressources](#ressource). In the following sectinos we will use this ressource raster to initialise site size et define how ressource are used by the different culture.
 
 ## Initializing Site Size and Culture:
 
-We now have resources available to help us determine the size of each site. For each site, we will designate them as either belonging to the hunter-gather (HG) or farmer (F) culture .
+Each site is then assigned as either belonging to the hunter-gather (HG) or farmer (F) culture.
 
-Initially, all sites will be designated as hunter-gatherer sites, except for the one located in the most southwest position. Please note that this decision was based on specific shape of the initial archaeoriddle's challenge. If needed, you may manually select the site culture for this specific location.
+To generate a more realistic distribution, all sites are initially, designated as hunter-gatherer sites, except for the one located in the most southwest position. Please note that this decision was based on the specific shape of the initial archaeoriddle's challenge. If needed, you may want to manually select the site culture for this specific location.
 
 
 ```{r setcultures,eval=T}
