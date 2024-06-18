@@ -36,9 +36,9 @@ extractDates <- function(record, years=NULL, n){
 #' @param maintitle Title of the plot
 #' @importFrom terra plot
 #' @export
-plotMap <- function(height, water, maintitle=""){
-  terra::plot(height^1.9, col=col_ramp(255), legend=F, reset=F, main=maintitle)
-  terra::plot(water, col="lightblue", add=T, legend=F)
+plotMap <- function(height, water, maintitle="",...){
+  terra::plot(height^1.9, col=col_ramp(255), legend=F, reset=F, main=maintitle,...)
+  terra::plot(water, col="lightblue", add=T, legend=F,...)
 }
 
 
