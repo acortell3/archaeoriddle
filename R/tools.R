@@ -9,8 +9,6 @@ etopo <- read.csv(textConnection(
 "
 ), stringsAsFactors=FALSE)
 
-col_ramp <- colorRampPalette(c(etopo$colours[4:1],"grey","white"))
-
 col_ramp <- colorRampPalette(c("light blue",terrain.colors(10)[6], "#54843f","grey","white"))
 
 

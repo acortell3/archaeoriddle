@@ -108,7 +108,7 @@ We also define the mean high as the water level, all the thing below are then co
 ```{r 2dVisu}
 height.ras <- rast(height, extent=c(-3.5, 0.5, -0.5, 3.5), crs="+proj=latlon")
 maxh <- max(height.ras[], na.rm=T)
-plot(height.ras^1.9, col=col_ramp(20), legend=F, reset=F)
+plot(height.ras, col=col_ramp(20), legend=F, reset=F)
 height.wat <- height.ras
 height.wat[height.wat>mean(height.wat[])] <- NA
 plot(height.wat, col="lightblue", add=T, legend=F)

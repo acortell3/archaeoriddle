@@ -24,7 +24,7 @@ favicon: "favicon.ico"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE) 
-knitr::write_bib(c("DiagrammeR","terra","sf","igraph","rayshader","printr", 'bookdown','tidyverse'), 'packages.bib')
+knitr::write_bib(c("DiagrammeR","terra","sf","igraph","rayshader", 'bookdown'), 'packages.bib')
 ```
 
 This bookdown has two main objectives:
@@ -65,7 +65,7 @@ cd archaeoriddle
 
 Once done you can then load the package using the local source:
 
-```{r loadpack}
+```{r loadpack, eval=F}
 devtools::load_all()
 ```
 
@@ -73,7 +73,7 @@ And then install the specific packages to render the book.
 
 
 ```{r how-to-render,eval=F}
-compneeded=c("DiagrammeR","bookdown","igraph","printr") 
+compneeded=c("DiagrammeR","bookdown","igraph") 
 success=sapply(compneeded,require,character.only=T)
 sapply(needed[!success],install.packages)
 success=sapply(compneeded,require,character.only=T)

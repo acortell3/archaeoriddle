@@ -220,21 +220,21 @@ Use ressource to adjust the Ks:
 plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(sites$culture)])
 ```
 
-We look at the simulation step by stepk
-Step by step to allow interaction between sites:
+We look at the simulation step by step  interaction between sites:
 
 ```{r explore-ex1-trajpersite,eval=T,messages=F}
 ## visualise trajectories for each site
 i <- ts
 plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
-lapply(1:ncol(Nts),
+nill <- lapply(1:ncol(Nts),
        function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]])
 )
 
 ```
 
 Visualise, Record deposit and loss for the 5 first sites (see next chapters to learn about  `A_rates` and `Rec_c`).
-```{r,out.width="25%"}
+
+```{r,out.width="50%"}
 alldeposit <- lapply(
   1:5,
   function(i){
@@ -248,13 +248,13 @@ nill <- lapply(alldeposit, function(depo)barplot(t(depo), col=viridis(ts+1), yli
 
 Population by time and culture
 
-```{r,eval=T}
+```{r visu-onesime1,out.width="50%"}
 plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)),
      xlab="time", ylab="popsize")
-lapply(1:ncol(Nts),
+na=lapply(1:ncol(Nts),
        function(i)lines(Nts[,i], col=rainbow(2)[as.factor(sites$culture)[i]]))
+legend("topright",legend=c("F","HG"),col= rainbow(2),lwd=1,title="culture")
 plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
-
 ```
 
 Exploring some trajectories of the simulations

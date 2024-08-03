@@ -14,7 +14,7 @@ Following what we set up during the previous chapter, we can  use `spatSample` f
 
 ```{r samplesites}
 sites <- spatSample(viable, n) # generate n random points within the viable polygon and assign to variable sites
-plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
+plot(height.ras, col=col_ramp(20), legend=F, reset=F)
 plot(height.wat, col="lightblue", add=T, legend=F)
 plot(sites, cex=2, pch=21, add=T, bg=rainbow(length(sites), alpha=.6))
 
@@ -165,10 +165,11 @@ fs::file_delete('population.Rmd')
 </details>
 
 
+
+
+## Death and Migration
+
 `changePopSize`: Change population size by moving population from one to another; or remove a group of people
-
-
-## Migration
 
 ## Conflict and War
 `whotouch`
@@ -203,7 +204,7 @@ allcomu <- cluster_louvain(ig)$memberships[1,]
 V(ig)$color <- allcomu
 E(ig)$color <- allcomu[head_of(ig,E(ig))]
 
-plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
+plot(height.ras, col=col_ramp(20), legend=F, reset=F)
 plot(height.wat, col="lightblue", add=T, legend=F)
 plot(ig, add=T, rescale=F, alpha=.2)
 ```

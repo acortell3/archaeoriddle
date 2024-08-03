@@ -261,7 +261,8 @@ run_simulation <- function(cultures=NULL,
                            Ips=NULL
 ){
   ## Run stochastic process  
-  if(visumin || visu) wplot=F 
+  wplot <- F
+  if(visumin || visu) wplot <- T
   Ks <- sites$Ks
   cultures <- sites$culture
   if(is.null(Nts)){ 
