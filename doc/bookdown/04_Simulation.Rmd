@@ -1,5 +1,6 @@
-## Run Simulation
+# Main Simulation {#main-simu}
 
+## Initial Parameters
 We now have sites with two cultures, a environment and function to make population growth, migrate and engages into wars. Each function depends on a lot of paramaters, some have been reviewd before other are explain in the help of each function. Often the parameters can differs between the two cultures. He we gave a list of parameters, close to those used during the Archaeoriddle challenge: 
 
 ```{r}
@@ -44,6 +45,9 @@ It will then call the functions described above to model contacts between sites,
 ?changePopSize
 ?warpoints
 ```
+
+
+## Algorithm
 
 The general organisation of the algorithm is as follow:
 
@@ -162,25 +166,9 @@ The general organisation of the algorithm is as follow:
 }
 ```
 
-The full code of the function can be visualised here:
+We wrapped all this in a function, `run_simulation` that return a list of object. Let see one simple example:
 
-```{r, echo=FALSE, message=FALSE}
-a = knitr::spin('../../R/natural_deposition.R', format='Rmd', comment=c("#'","#'"),
-            precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/natural_deposition.Rmd', '.')
-```
-
-<details><summary>Show code</summary>
-**Code**
-```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='natural_deposition.Rmd', quiet=TRUE)
-cat(res, sep = '\n')
-fs::file_delete('natural_deposition.Rmd')
-```
-</details>
-
-
-```{r single-run-ex1,eval=T}
+```{r,eval=T}
 onesimu <- run_simulation(
   sites=sites, viable=viable, dem=height.ras,
   ressources=ress,
@@ -200,18 +188,15 @@ onesimu <- run_simulation(
 )
 ```
 
-
-```{r , echo=FALSE, message=FALSE}
-a = knitr::spin('../../R/run_simulation.R', format='Rmd', comment=c("#'","#'"),
-            precious=TRUE, knit=FALSE, report=FALSE)
-fs::file_move('../../R/run_simulation.Rmd', '.')
-```
 ### Source code {-}
 
 Check the code of the simulation functions here:
 <details><summary>Show code</summary>
 **Code**
 ```{r print-run_sim, echo=FALSE, results='asis'}
+a = knitr::spin('../../R/run_simulation.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/run_simulation.Rmd', '.')
 res = knitr::knit_child(input='run_simulation.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
 fs::file_delete('run_simulation.Rmd')
@@ -219,7 +204,7 @@ fs::file_delete('run_simulation.Rmd')
 </details>
 
 
-### Explore results:
+## Explore simulation:
 
 The list `onesimu`  contains a few interesting info:
 
