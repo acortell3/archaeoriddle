@@ -23,47 +23,67 @@ favicon: "favicon.ico"
 # Preface{-}
 
 ```{r setup, include=FALSE}
-library(magrittr)
-
-knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE)
+knitr::opts_chunk$set(echo = TRUE,cache=FALSE,collapse=TRUE) 
+knitr::write_bib(c("DiagrammeR","viridis","terra","sf","igraph","rayshader","printr", 'bookdown','tidyverse'), 'packages.bib')
 ```
 
-```{r write-bib, include=FALSE}
-knitr::write_bib(c(.packages(), 'bookdown','tidyverse'), 'packages.bib')
-```
+This bookdown has two main objectives:
+1. documents all the steps, models, functions and results done during the 
+2. generate your own fakeworld with specific parameters and generate a fake archaeological records
 
-This is a very first draft to setup a github hook that compile a bookdown in a private space
 
-To compile the book:
+To use this book you can follow it on the online version at [thearchaeoriddle.org](https://thearchaeoriddle.org) and copy paste the chunks on your local computer,  or you can clone the source at the git repository [here](https://github.com/acortell3/archaeoriddle/) and compile the bookdown on your local machine.
 
-```{r,eval=F}
-bookdown::render_book(".")
-```
+## Dependencies {-}
 
-For this to be successfull you will need a few aditional packages to install:
+If you want to for this to be successful, you will need to install a few additional packages. You can do this by running the following command, which will check if the packages are installed and install them if not, then load them.
 
-```{r packages, message=FALSE}
-needed=c("DiagrammeR","viridis","terra","sf","igraph","rayshader","printr") 
-## printr for bookdown compilation
+```{r packages-init, message=FALSE}
+needed=c("DiagrammeR","viridis","terra","sf","igraph","devtools") 
 success=sapply(needed,require,character.only=T)
 sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
 ```
 
-These package will very likely need other package that will depend on your operating system, so check the error message from the previous commands!
+These packages will very likely need other packages that will depend on your operating system, so check the error messages from the previous commands.
 
-If you want to use the function and methods described in the bookdown you will need to install the archaeoriddle package. With `devtools` installed, you can do:
+You will also need to install and load the package associated with the bookdown by doing
 
-```{r,eval=F}
+```{r instload,eval=F}
 devtools::install_github("acortell3/archaeoriddle")
-```
-
-Once this is done:
-
-```{r}
 library(archaeoriddle)
 ```
 
+## Compiling the book  {-}
 
-The book can also be found already compiled [here](https://cdal.arch.cam.ac.uk/archaeoriddle/).
+If you want to compile the book yourself, you will need `bookdown` and a few more packages used to render the book. But first, you will need to clone the repository:
+
+```
+git clone https://github.com/acortell3/archaeoriddle/
+cd archaeoriddle
+```
+
+Once done you can then load the package using the local source:
+
+```{r loadpack}
+devtools::load_all()
+```
+
+And then install the specific packages to render the book.
+
+
+```{r how-to-render,eval=F}
+compneeded=c("DiagrammeR","bookdown","igraph","printr") 
+success=sapply(compneeded,require,character.only=T)
+sapply(needed[!success],install.packages)
+success=sapply(compneeded,require,character.only=T)
+```
+
+Using load_all() instead of install will allow you to modify the source code and reload the package and thus make and integrated change to the core code of the package in order to try your own implementation.
+
+You can then render the book locally, note that this may take a long time as it generate full new world and single simulations
+
+```{r rendering,eval=F}
+bookdown::render_book(".")
+```
 
