@@ -7,7 +7,7 @@ output:
 ---
 
 
-# Record formation
+# Record formation {#recgen}
 
 ## Theoretical model
 
@@ -198,20 +198,11 @@ This simulation for the creation of the archaeological record has been divided i
 
 The first one has been described in the [previous chapter](#popgrowth), where we populated the site, according to a stochastic demographic process on top of which migration and war events occurred. Here we focus on how these populations generate waste, and how this waste will be stored in the archaeological record and where. This is done in two steps ; we first generate a sample of waste for each time $t$ and, in second step, we distribute the amount of waste for each depth $d$.
 
-In order to fully understand the process, first we will show the protocols and functions used. To start with, let's inspect the package with the functions functions:
-
-```{r}
-## See some of the archaeoriddle functions
-```
-```{r, echo=FALSE}
-help.search(
-  '(Gpd)|(death)|(K_lim)|(Pop_stoch)|(A_rates)|(D_along)',
-  package = 'archaeoriddle')
-```
+In order to fully understand the process, first we go through the protocols and functions used. 
 
 ### Population $Pop$-protocol
 
-In order to account for the chronological occupation of the site, a demographic process must be produced, where the sample is generated accordingly. This is described in the previous chapter, but we can use the function `Pop_stoch`  to generate a simple stochastic growth and apply our loss function to it.
+Before anything, in order to account for the chronological occupation of the site, a demographic process must be produced _ie_ sites need to be occupied. From these occupation a record sample is generated accordingly. This is what his done and described in the [previous chapter](#popgrowth), but here we will use the function `Pop_stoch`  to generate a simple stochastic growth and apply our loss function to it in order to describe and test the other protocols.
 
 ```{r, eval=FALSE}
 ?Pop_stoch

@@ -6,26 +6,6 @@ output:
 ---
 
 
-```{r, echo=FALSE, message=FALSE}
-library(archaeoriddle)
-library(printr)
-library(knitr)
-```
-
-```{r, echo=FALSE}
-
-set.seed(1234)
-# 1. Pop-protocol
-Ps <- Pop_stoch(pop_size=100, ts=100, K=150)
-# 2. A-protocol
-samp <- unlist(lapply(Ps, A_rates)) ## Extract sample per time steps
-# 3. D-protocol
-Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, max_bone_thickness = "m")
-tRec <- t(Rec)
-
-```
-
-
 # Record loss
 
 ## Theoretical model
@@ -211,6 +191,8 @@ fs::file_delete('record_loss.Rmd')
 ## Usage 
 
 With these functions, it is fairly easy to recompute the remaining record, and show it in the same format as before. Here we computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can play with these model and parameters using the online shiny app [here](https://acortell3.shinyapps.io/archaeo_record_model). 
+
+We use the Record generated in the [previous chapter](#recgen) to which we apply the loss functions
 
 ```{r loss-rec}
 tlRec <- apply(Rec, 2, short_loss, th_s)
