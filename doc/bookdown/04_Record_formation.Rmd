@@ -6,11 +6,6 @@ output:
   code_folding: show
 ---
 
-```{r, echo=FALSE, message=FALSE}
-library(printr)
-library(knitr)
-```
-
 
 # Record formation
 
@@ -19,7 +14,7 @@ library(knitr)
 We have produced a computational model, replicating the process of formation of the archaeological record in a specific site, accounting for different variables. In order to consider the possible relation between those variables, we have decided to express them as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretical directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by $m^2$).
 
 ```{r, echo = FALSE}
-library(DiagrammeR)
+require(DiagrammeR)
 
 grViz("
   digraph record_formation {
@@ -199,7 +194,9 @@ where $r$ is the natural deposition rates.
 
 ## Implementation
 
-This simulation for the creation of the archaeological record has been divided in three phases, or protocols. First, we populate the site, according to a stochastic demographic process, second we generate a sample for each time $t$ and, in the third and final step, we distribute the amount of waste for each $d$.
+This simulation for the creation of the archaeological record has been divided in three phases, or protocols.  
+
+The first one has been described in the [previous chapter](#popgrowth), where we populated the site, according to a stochastic demographic process on top of which migration and war events occurred. Here we focus on how these populations generate waste, and how this waste will be stored in the archaeological record and where. This is done in two steps ; we first generate a sample of waste for each time $t$ and, in second step, we distribute the amount of waste for each depth $d$.
 
 In order to fully understand the process, first we will show the protocols and functions used. To start with, let's inspect the package with the functions functions:
 
@@ -214,33 +211,9 @@ help.search(
 
 ### Population $Pop$-protocol
 
-This protocol generates a stochastic demographic process with maximum population $\sim K$. It is based on three functions. The first function, `Gpd()`, is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
+In order to account for the chronological occupation of the site, a demographic process must be produced, where the sample is generated accordingly. This is described in the previous chapter, but we can use the function `Pop_stoch`  to generate a simple stochastic growth and apply our loss function to it.
 
-<br>
-
-```{r, echo=FALSE}
-?Gpd
-```
-<br>
-
-However, this function also relies on two the other functions: `death()` and `K_lim()`. `death()` is the process of people dying each year. It is based on an age-structured probability matrix, where infants and old people have more probabilities of deceasing. The matrix is provided, but the user can set its own. `K_lim()` limits the population when it reaches $K$. The user should specify the appropriate value for $K$ according to the size of the site, its type, the group economy, etc. Also, the user can change the probability that exceeding people dies with parameter `prob`. Default is 0.8.
-
-<br>
-
-```{r, echo=FALSE}
-?death
-```
-<br>
-
-```{r, echo=FALSE}
-?K_lim
-```
-<br>
-
-In order to account for the chronological occupation of the site, a demographic process must be produced, where the sample is generated accordingly. The function `Pop_stoch` consider this.
-
-<br>
-```{r, echo=FALSE}
+```{r, eval=FALSE}
 ?Pop_stoch
 ```
 <br>
@@ -250,19 +223,6 @@ a = knitr::spin('../../R/population.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
 fs::file_move('../../R/population.Rmd', '.')
 ```
-
-If you want to delve into the code of the functions you can open it here:
-<details><summary>Show code</summary>
-**Code**
-```{r, echo=FALSE, results='asis'}
-res = knitr::knit_child(input='population.Rmd', quiet=TRUE)
-cat(res, sep = '\n')
-fs::file_delete('population.Rmd')
-```
-</details>
-
-
-
 
 ### Anthropogenic deposition $A$-protocol
 
@@ -295,14 +255,7 @@ Up to now, we have obtained the value for the variable $A$, which is the amount 
 
 $$W(t)=\mbox{Integer part of } \Bigg(\frac{1000 \times A(t)}{4} \Bigg) \tag{4}$$
 
-This protocol is captured in the following function:
-
-<br>
-
-```{r, echo=FALSE}
-?A_rates
-```
-<br>
+This protocol is captured in the function `A_rates`:
 
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/anthropogenic_deposition.R', format='Rmd', comment=c("#'","#'"),
@@ -366,20 +319,15 @@ $$\lambda=\frac{-log(1-\theta_e)}{t_{u_{max}}} \tag{9}$$
 
 Where $\theta_b<1$ is the proportion of buried samples in $t_{u_{max}}$, which is calculated in equation 6.
 
-The function `D_along` captures this process:
-
-<br>
-
-```{r, echo=FALSE}
-?D_along
-```
-<br>
 
 At the end, the function `Rec_c` runs `D_along` over a period of time, effectively producing an archaeological record. In the function `Rec_c` the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can use the modeled values (with the functions above) as an input to this function, or introduce them directly, for example, in the case that fix population rates per year were preferred.
 
-<br>
+The function `D_along` captures this process.
 
-```{r, echo=FALSE}
+As usual, you can learn all about the parameters of `D_rates` and `Rec_c`
+
+```{r, eval=FALSE}
+?D_along
 ?Rec_c
 ```
 <br>
@@ -402,17 +350,17 @@ fs::file_delete('natural_deposition.Rmd')
 
 
 
-## Example and simulation
+## Minimal example and simulation
 
-With the above functions, the user can model (1) a generative demographic process, (2) how many samples would a group of people produce in a site, according to different constraints and (3) how those dates distribute along the depth of a site under the assumption that there has not been any kind of record loss or post-depositional process (this will be modelled in a second layer of modelling).
+With the above functions, the user can apply to any generative demographic process: (1) how many samples would a group of people produce in a site, according to different constraints and (2) how those dates distribute along the depth of a site under the assumption that there has not been any kind of record loss or post-depositional process (this will be modelled in a second layer of modelling).
 
-We can start the simulation with the parameters seen below (or defaults in function definitions above). To sum up, these are the steps of the simulation:
+We can create a very basic and simple simulation to illustrate these processes following the parameters seen below (or defaults in function definitions above) following these steps:
 
 1.  $Pop$-protocol. Using `Pop_stoch`, we generate a stochastic population dynamic that will give us the number of individuals for each year.
 2.  $A$-protocol. Knowing the population size per year, we apply `A_rates` to each of them and generate the anthropogenic deposition, and get the number of samples per year.
 3.  $D$-protocol. Knowing how many samples are generates each year, using `Rec_c`, we distribute them along the depth record.
 
-```{r}
+```{r mini-simu}
 set.seed(1234)
 # 1. Pop-protocol
 Ps <- Pop_stoch(pop_size=100, ts=100, K=150)
@@ -424,10 +372,8 @@ Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, max_bone_thickness = "m")
 
 With this we obtain, among other things, the distribution of the samples deposited for each date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example. The user can also check how the model works and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). *The total number of population has been adapted for visualisation*
 
-```{r, echo = FALSE, message=FALSE}
+```{r visu-record, echo = FALSE, message=FALSE}
 
-## Some nice plots
-library(viridis)
 ## Plot dates
 sdate <- 1
 edate <- 5

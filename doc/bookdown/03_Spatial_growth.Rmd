@@ -1,4 +1,4 @@
-# Population growth, conflicts and migrations
+# Population growth, conflicts and migrations {#popgrowth}
 
 ## Settlements position
 
@@ -10,9 +10,9 @@ size <- rexp(n) #assign a size for each site following an exponential distributi
 
 ```
 
-Thanks to the previous chapter,  use `spatSample` from package `terra` to randomly select `n` points  (`r n` for this simulation) on this viable polygon.
+Following what we set up during the previous chapter, we can  use `spatSample` from package `terra` to randomly select `n` points  (`r n` for this simulation) on the viable polygon we created.
 
-```{r, samplesites}
+```{r samplesites}
 sites <- spatSample(viable, n) # generate n random points within the viable polygon and assign to variable sites
 plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
 plot(height.wat, col="lightblue", add=T, legend=F)
@@ -24,9 +24,7 @@ coastline <- st_as_sf(as.polygons(above_level))[2,]
 plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
 ```
 
-In the context of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/), files that describe this newly generated environment (the DEM and the coastline), the resources and the positions of the sites sampled needs to be produced and given to the participant. This can be done as:
-
-
+In the context of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/), the files that describe this newly generated environment (the DEM and the coastline) as well as the resources raster,  needs to be given to the participant. This can be done as:
 
 ```{r writeSharedRessources}
 foldname="data_toshare" #We will store all data that can/will be shared with participant in data_toshare
@@ -39,7 +37,7 @@ writeRaster(filename=file.path(foldname,"resources.tiff"), ress, overwrite=T) #w
 
 The original data, saved and shared for the _archaeoriddle_ are stored in `data_original/`
 
-## Network, Site Size And Climate -- DEPRECATED
+## ~~ Network, Site Size And Climate -- DEPRECATED ~~
 
 The following steps were designed but never used ; they can be quite fun and useful.
 
@@ -123,7 +121,7 @@ for(i in seq(1, tstep, length.out=100)){
 Population will then grow, for years and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.We initialised the ressource layer in the previous chapter 
 in [the  section about ressources](#ressource). In the following sectinos we will use this ressource raster to initialise site size et define how ressource are used by the different culture.
 
-## Initializing Site Size and Culture:
+## Initializing Site Population and Culture {#initsize}
 
 Each site is then assigned as either belonging to the hunter-gather (HG) or farmer (F) culture.
 
@@ -198,14 +196,60 @@ fs::file_delete('init_simulation.Rmd')
 
 
 
+## Base Population $Pop$-protocol {#base-pop-growth}
+
+This is a central aspect of the model, and defines several parameters to control how population growth and reach a maximum population $\sim K$. It is based on three functions: The first function, `Gpd()`, is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
+
+However, this function also relies on two the other functions: `death()` and `K_lim()`. `death()` is the process of people dying each year. It is based on an age-structured probability matrix, where infants and old people have more probabilities of deceasing. The matrix is provided, but the user can set its own. `K_lim()` limits the population when it reaches $K$. The user should specify the appropriate value for $K$ according to the size of the site, its type, the group economy, etc. Also, the user can change the probability that exceeding people dies with parameter `prob`. Default is 0.8.
 
 
-## Population Growth
+
+
+These base function will then be used in higher level functions to update the population size given the size and ages defined and described in the previous [section](#initsize). 
+
+A simple function  `Pop_stoch` implement a simple stochastic growth that uses these functions without the migrations and war mechanismes describe in this chapter. 
+
+
+We can then use it to check and see the type of growth are generate given the default parameters (prob define the probability of people dying when the population has reached carrying capacity)
+
+```{r test-popstoch,message=F}
+set.seed(1234)
+plot(1,1,ylim=c(0,180),xlim=c(0,50),type="n",xlab="time",ylab="pop size")
+na=replicate(10, lines(Pop_stoch(pop_size=50, ts=50, K=150, W_fert_age = c(10, 45), M_fert_age = c(15, 55), p_offspring = 0.3, prob = 0.8)))
+```
+
+
+To know more about these functions and how their parameters are used, you can look at the manual given in the package:
+
+```{r ,eval=F}
+?Gpd
+?death
+?K_lim
+?Pop_stoch
+```
+
+You can also use this [shiny app online]() to explore how these parameters interact to generate different growth curves.
+
+### Source {-} 
+
+If you want to delve into the code of the functions you can open it here:
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/population.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/population.Rmd', '.')
+```
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='population.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+fs::file_delete('population.Rmd')
+```
+</details>
 
 
 `changePopSize`: Change population size by moving population from one to another; or remove a group of people
-
-
 
 
 ## Migration
@@ -216,7 +260,7 @@ fs::file_delete('init_simulation.Rmd')
 
 ## Run Simulation
 
-We now have sites with two cultures. The grow of the sites will depend on a lot of parameters; which are all a bit different depending on the two cultures. The list of parameters used is defined below: 
+We now have sites with two cultures, a environment and function to make population growth, migrate and engages into wars. Each function depends on a lot of paramaters, some have been reviewd before other are explain in the help of each function. Often the parameters can differs between the two cultures. He we gave a list of parameters, close to those used during the Archaeoriddle challenge: 
 
 ```{r}
 
@@ -251,10 +295,9 @@ text(sites,pos=3)
 
 The `run_simulation` function will take the raster data and parameters for defined before for the two different cultures and run for the specified number of years `ts` (`r ts`).
 
-It uses a number of other functions to model contacts between sites, the outcomes of fights and migrations
+It will then call the functions described above to model contacts between sites, the outcomes of fights and migrations. If you want 
 
-
-```{r, echo=FALSE,eval=F}
+```{r, eval=F}
 ?run_simulation
 ?whotouch
 ?fightbetterloss
@@ -277,7 +320,7 @@ The general organisation of the algorithm is as follow:
 >     war(s)
 
 
-```{r, echo=TRUE,eval=F}
+```{r algo-general, echo=TRUE,eval=F}
 
 1. ** initialisation **
   
@@ -379,9 +422,25 @@ The general organisation of the algorithm is as follow:
 }
 ```
 
+The full code of the function can be visualised here:
+
+```{r, echo=FALSE, message=FALSE}
+a = knitr::spin('../../R/natural_deposition.R', format='Rmd', comment=c("#'","#'"),
+            precious=TRUE, knit=FALSE, report=FALSE)
+fs::file_move('../../R/natural_deposition.Rmd', '.')
+```
+
+<details><summary>Show code</summary>
+**Code**
+```{r, echo=FALSE, results='asis'}
+res = knitr::knit_child(input='natural_deposition.Rmd', quiet=TRUE)
+cat(res, sep = '\n')
+fs::file_delete('natural_deposition.Rmd')
+```
+</details>
 
 
-```{r,eval=T}
+```{r single-run-ex1,eval=T}
 onesimu <- run_simulation(
   sites=sites, viable=viable, dem=height.ras,
   ressources=ress,
@@ -402,16 +461,17 @@ onesimu <- run_simulation(
 ```
 
 
-```{r, echo=FALSE, message=FALSE}
+```{r , echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/run_simulation.R', format='Rmd', comment=c("#'","#'"),
             precious=TRUE, knit=FALSE, report=FALSE)
 fs::file_move('../../R/run_simulation.Rmd', '.')
 ```
+### Source code {-}
 
 Check the code of the simulation functions here:
 <details><summary>Show code</summary>
 **Code**
-```{r, echo=FALSE, results='asis'}
+```{r print-run_sim, echo=FALSE, results='asis'}
 res = knitr::knit_child(input='run_simulation.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
 fs::file_delete('run_simulation.Rmd')
@@ -419,27 +479,27 @@ fs::file_delete('run_simulation.Rmd')
 </details>
 
 
+### Explore results:
+
 The list `onesimu`  contains a few interesting info:
 
 
-```{r,cache=F}
+```{r explore-ex1-1,cache=F}
 Nts <- onesimu$Nts # population at each timestep
 warcasualties <- onesimu$warcasualties #death by war at each time step
 ```
 
 
 Use ressource to adjust the Ks:
-```{r,eval=T}
+```{r explore-ex1-b,eval=T}
 plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(sites$culture)])
 ```
-
 
 We look at the simulation step by stepk
 Step by step to allow interaction between sites:
 
-```{r trajpersite,eval=T,messages=F}
+```{r explore-ex1-trajpersite,eval=T,messages=F}
 ## visualise trajectories for each site
-
 i <- ts
 plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
 lapply(1:ncol(Nts),
@@ -448,7 +508,7 @@ lapply(1:ncol(Nts),
 
 ```
 
-Visualise, Record deposit and  loss. for the 5 first sites (see next chapters for `A_rates`).
+Visualise, Record deposit and loss for the 5 first sites (see next chapters to learn about  `A_rates` and `Rec_c`).
 ```{r,out.width="25%"}
 alldeposit <- lapply(
   1:5,
@@ -471,7 +531,6 @@ lapply(1:ncol(Nts),
 plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
 
 ```
-
 
 Exploring some trajectories of the simulations
 
