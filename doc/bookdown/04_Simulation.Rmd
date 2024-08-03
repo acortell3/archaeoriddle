@@ -168,7 +168,7 @@ The general organisation of the algorithm is as follow:
 
 We wrapped all this in a function, `run_simulation` that return a list of object. Let see one simple example:
 
-```{r,eval=T}
+```{r single-run-ex1,eval=T}
 onesimu <- run_simulation(
   sites=sites, viable=viable, dem=height.ras,
   ressources=ress,
