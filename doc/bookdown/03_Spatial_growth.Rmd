@@ -37,90 +37,6 @@ writeRaster(filename=file.path(foldname,"resources.tiff"), ress, overwrite=T) #w
 
 The original data, saved and shared for the _archaeoriddle_ are stored in `data_original/`
 
-## ~~ Network, Site Size And Climate -- DEPRECATED ~~
-
-The following steps were designed but never used ; they can be quite fun and useful.
-
-----
-
-Create a network between sites  (requires `igraph`)
-
-```{r sitesnetwork, eval=T}
-
-library(igraph)
-subsites  <- sites
-crs(subsites) <- "+proj=lonlat"
-subsites <- sites[sample(nrow(sites), 20), ]
-ig <- graph_from_adjacency_matrix(
-  as.matrix(distance(subsites)), weighted=T, mode="undirected")
-ig <- set_graph_attr(ig, "layout", crds(subsites))
-
-V(ig)$label <- ""
-V(ig)$size <- (size+1)*5
-V(ig)$frame.color <- "black"
-V(ig)$frame.width <- .5
-E(ig)$weight <- 1/(E(ig)$weight^2)
-E(ig)$width <- exp(E(ig)$weight)+.6
-
-allcomu <- cluster_louvain(ig)$memberships[1,]
-V(ig)$color <- allcomu
-E(ig)$color <- allcomu[head_of(ig,E(ig))]
-
-plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
-plot(height.wat, col="lightblue", add=T, legend=F)
-plot(ig, add=T, rescale=F, alpha=.2)
-```
-
-Visualise sites on the 3D plot
-
-```{r 3Dnetwork, eval=F}
-
-plot_3d(
-  hm_lamb,height_map, zscale=20, fov=0, theta=20, zoom=1, phi=45,
-  windowsize=c(1000, 800), water=TRUE, waterdepth=mean(height),
-  wateralpha=1, watercolor="lightblue", waterlinecolor="lightblue",
-  waterlinealpha=.7
-)
-
-render_points(
-  extent=raster::extent(raster::raster(height.ras)),
-  lat=2.13828, long=-1.685547, altitude=extract(height.ras,sites)[,1]+20,
-  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
-  clear_previous=TRUE
-)
-
-render_points(
-  extent=raster::extent(raster::raster(height.ras)),
-  lat=crds(sites)[,"y"], long=crds(sites)[,"x"], altitude=extract(height.ras, sites)[,1]+20,
-  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
-  clear_previous=TRUE
-)
-       
-render_highquality(point_radius=5, samples=256, clear=TRUE, light=TRUE)
-
-```
-
-let's say the climate modulate site size in a naive way:
-
-
-```{r, animation.hook="gifski", interval=0.2, cache=TRUE, eval=F}
-for(i in seq(1, tstep, length.out=100)){
-	layout(matrix(1:2, nrow=2, ncol=1), heights=c(.8, .2))
-	par(mar=c(1, 2, 2, 1))
-	image(m, ann=F, axes=F, main=i)
-	mtext(round(i), 3, 1)
-	nsize <- size*faketemp[i] + size + 1
-	points(crds(sites), bg="green", pch=21, cex=nsize)
-	par(mar=c(2, 2, 0, 1))
-	plot(
-	  1:tstep, faketemp, type="l", ylab="temp", xlab="time", ylim=range(faketemp),
-	  ann=F, frame.plot=F)
-	points(i, faketemp[i], col="red", pch=20)
-}
-```
-Population will then grow, for years and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.We initialised the ressource layer in the previous chapter 
-in [the  section about ressources](#ressource). In the following sectinos we will use this ressource raster to initialise site size et define how ressource are used by the different culture.
-
 ## Initializing Site Population and Culture {#initsize}
 
 Each site is then assigned as either belonging to the hunter-gather (HG) or farmer (F) culture.
@@ -548,3 +464,89 @@ growHG <- apply(Nts[1:(i-1), sites$culture=="HG",drop=F], 1, sum)  # Sum of 'HG'
 plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot growth of 'F' culture
 points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
 ```
+
+## ~~ Network, Site Size And Climate -- DEPRECATED ~~
+
+The following steps were designed but never used ; they can be quite fun and useful.
+
+----
+
+Create a network between sites  (requires `igraph`)
+
+```{r sitesnetwork, eval=T}
+
+library(igraph)
+subsites  <- sites
+crs(subsites) <- "+proj=lonlat"
+subsites <- sites[sample(nrow(sites), 20), ]
+ig <- graph_from_adjacency_matrix(
+  as.matrix(distance(subsites)), weighted=T, mode="undirected")
+ig <- set_graph_attr(ig, "layout", crds(subsites))
+
+V(ig)$label <- ""
+V(ig)$size <- (size+1)*5
+V(ig)$frame.color <- "black"
+V(ig)$frame.width <- .5
+E(ig)$weight <- 1/(E(ig)$weight^2)
+E(ig)$width <- exp(E(ig)$weight)+.6
+
+allcomu <- cluster_louvain(ig)$memberships[1,]
+V(ig)$color <- allcomu
+E(ig)$color <- allcomu[head_of(ig,E(ig))]
+
+plot(height.ras^1.9, col=col_ramp(50), legend=F, reset=F)
+plot(height.wat, col="lightblue", add=T, legend=F)
+plot(ig, add=T, rescale=F, alpha=.2)
+```
+
+Visualise sites on the 3D plot
+
+```{r 3Dnetwork, eval=F}
+
+plot_3d(
+  hm_lamb,height_map, zscale=20, fov=0, theta=20, zoom=1, phi=45,
+  windowsize=c(1000, 800), water=TRUE, waterdepth=mean(height),
+  wateralpha=1, watercolor="lightblue", waterlinecolor="lightblue",
+  waterlinealpha=.7
+)
+
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=2.13828, long=-1.685547, altitude=extract(height.ras,sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
+
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=crds(sites)[,"y"], long=crds(sites)[,"x"], altitude=extract(height.ras, sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
+       
+render_highquality(point_radius=5, samples=256, clear=TRUE, light=TRUE)
+
+```
+
+let's say the climate modulate site size in a naive way:
+
+
+```{r, animation.hook="gifski", interval=0.2, cache=TRUE, eval=F}
+for(i in seq(1, tstep, length.out=100)){
+	layout(matrix(1:2, nrow=2, ncol=1), heights=c(.8, .2))
+	par(mar=c(1, 2, 2, 1))
+	image(m, ann=F, axes=F, main=i)
+	mtext(round(i), 3, 1)
+	nsize <- size*faketemp[i] + size + 1
+	points(crds(sites), bg="green", pch=21, cex=nsize)
+	par(mar=c(2, 2, 0, 1))
+	plot(
+	  1:tstep, faketemp, type="l", ylab="temp", xlab="time", ylim=range(faketemp),
+	  ann=F, frame.plot=F)
+	points(i, faketemp[i], col="red", pch=20)
+}
+```
+
+Population will then grow, for years and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.We initialised the ressource layer in the previous chapter 
+in [the  section about ressources](#ressource). In the following sections we will use this ressource raster to initialise site size et define how ressource are used by the different culture.
+
