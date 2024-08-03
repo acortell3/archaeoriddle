@@ -276,7 +276,6 @@ More maps!! (the coolest)
 
 
 ```{r randommaps3}
- col_ramp <- colorRampPalette(c("light blue",terrain.colors(10)[6], "#54843f","grey","white"))
 plotMap(height.ras,height.wat)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
@@ -292,7 +291,6 @@ text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 
 ```{r}
 
- col_ramp <- colorRampPalette(c("light blue",terrain.colors(10)[6], "#54843f","grey","white"))
 plotMap(height.ras,height.wat)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
