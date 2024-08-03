@@ -42,9 +42,8 @@ Although in the future we will introduce additional layers which account for how
 #### Loss of the record
 The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term process affecting the record for every $t$ from the moment of its depositions to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.
 
-```{r, echo = FALSE,cache=FALSE}
-library(DiagrammeR)
-
+```{r diagram, echo = FALSE,cache=FALSE}
+require(DiagrammeR) #this should be already loaded but in case you have restarted you R session do forget to load it!
 grViz("
 digraph record_formation {
 
@@ -111,8 +110,7 @@ All in all, if we put together these variables, then the remaining record for a 
 $$V(t)=V_l(t)+V_s(t+1)$$
 There have been other quantitative approaches to the survival of the archaeological record, such as Surovell's (2007, 2009) approaches. These are rather focused on the loss of complete sites, and not that much on the loss of specific records. And, as the authors acknowledge, they refer to specific geographic locations. However, with specific parameter combinations of our loss probabilities, we can obtain correlations higher than 0.98 with Surovell's loss curves. In the case shown, for example, we have considered $\theta_s=0.9$ and $\theta_l=0.9997$
 
-```{r, echo = FALSE, message=FALSE, results=FALSE}
-
+```{r comp-sirovsbinom, echo = FALSE, message=FALSE, results=FALSE}
 
 ### COMPARISON OF SUROVELL AGAINST BINOMIAL
 
@@ -179,19 +177,14 @@ cor.test(Ss,Th_ss)
 
 
 ## Implementation
-This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are used as follows.
+This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are  are `short_loss` and long loss.
 
-<br>
+As before, to know more about these functions and their parameters you can look at the manual given in the package:
 
-```{r, echo=FALSE}
+```{r,eval=F}
 ?short_loss
-```
-<br>
-
-```{r, echo=FALSE}
 ?long_loss
 ```
-<br>
 
 ```{r, echo=FALSE, message=FALSE}
 a = knitr::spin('../../R/record_loss.R', format='Rmd', comment=c("#'","#'"),
@@ -199,9 +192,13 @@ a = knitr::spin('../../R/record_loss.R', format='Rmd', comment=c("#'","#'"),
 fs::file_move('../../R/record_loss.Rmd', '.')
 ```
 
-You can check the code for the short and long-term loss functions here:
+### Source {-}
+
+You can check the source code  for the short and long-term loss functions here:
 <details><summary>Show code</summary>
+
 **Code**
+
 ```{r, echo=FALSE, results='asis'}
 res = knitr::knit_child(input='record_loss.Rmd', quiet=TRUE)
 cat(res, sep = '\n')
@@ -211,17 +208,19 @@ fs::file_delete('record_loss.Rmd')
 
 <br>
 
-Once this is done, it is fairly easy to recompute the remaining record, and show it in the same terms as before. In this case, we have computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can heck how the model work and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). 
+## Usage 
 
-```{r}
+With these functions, it is fairly easy to recompute the remaining record, and show it in the same format as before. Here we computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can play with these model and parameters using the online shiny app [here](https://acortell3.shinyapps.io/archaeo_record_model). 
+
+```{r loss-rec}
 tlRec <- apply(Rec, 2, short_loss, th_s)
 lRec <- long_loss(tlRec, th_l, 7500)
 tlRec <- t(lRec)
 ```
 
+We can then visualize  the results of these lost using simple `barplots`:
 
-```{r, message=FALSE}
-library(viridis)
+```{r plot-loss-rec, message=FALSE}
 barplot(tlRec[c(1:4,77:79),], col = viridis(10), legend = colnames(Rec)[c(1:4,77:79)],
         xlab = "Depth", ylab = "nsamples", main = "Distribution of specific years along depth with population")
 lines(Ps*300, col = "darkred", lwd = 1.5)
