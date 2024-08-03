@@ -34,7 +34,7 @@ This bookdown has two main objectives:
 
 To use this book you can follow it on the online version at [thearchaeoriddle.org](https://thearchaeoriddle.org) and copy paste the chunks on your local computer,  or you can clone the source at the git repository [here](https://github.com/acortell3/archaeoriddle/) and compile the bookdown on your local machine.
 
-## Dependencies {-}
+### Dependencies {-}
 
 If you want to for this to be successful, you will need to install a few additional packages. You can do this by running the following command, which will check if the packages are installed and install them if not, then load them.
 
@@ -54,7 +54,7 @@ devtools::install_github("acortell3/archaeoriddle")
 library(archaeoriddle)
 ```
 
-## Compiling the book  {-}
+### Compiling the book  {-}
 
 If you want to compile the book yourself, you will need `bookdown` and a few more packages used to render the book. But first, you will need to clone the repository:
 
@@ -84,6 +84,6 @@ Using load_all() instead of install will allow you to modify the source code and
 You can then render the book locally, note that this may take a long time as it generate full new world and single simulations
 
 ```{r rendering,eval=F}
-bookdown::render_book(".")
+bookdown::render_book() #you need to be in the folder 'doc/bookdown/' 
 ```
 

@@ -261,7 +261,7 @@ run_simulation <- function(cultures=NULL,
                            Ips=NULL
 ){
   ## Run stochastic process  
-  
+  if(visumin || visu) wplot=F 
   Ks <- sites$Ks
   cultures <- sites$culture
   if(is.null(Nts)){ 
@@ -476,7 +476,7 @@ run_simulation <- function(cultures=NULL,
         warcasualties[i] <- casualties
         sizew <- casualties^2/4000
         warpoints(sites, s, attack, Ne=Nts[i,],
-                  buffersize=buff, sizewar=sizew+0.5)
+                  buffersize=buff, sizewar=sizew+0.5,plot=wplot)
         
         #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
         Ips[[s]] <- changePopSize(loosingPop=Ips[[s]],
