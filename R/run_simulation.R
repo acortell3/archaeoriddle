@@ -138,7 +138,7 @@ simplefight <- function(Ne, a, b){
 #' 
 #' @return Returns the updated population size of both settlements engaged in the fight
 #' @export
-fightbetterloss <- function(Ne,a,b){
+fightbetterloss <- function(Ne,a,b,log=F){
   if( runif(1) < Ne[a]/(Ne[a] + Ne[b]) ){
     v <- a
     l <- b
@@ -150,7 +150,7 @@ fightbetterloss <- function(Ne,a,b){
   one <- Ne
   Ne[v] <- rbinom(n=1, prob=1 - Ne[l]/(Ne[v] + Ne[l]), size=Ne[v])
   Ne[l] <- rbinom(n=1, prob=1 - Ne[v]/(Ne[v] + Ne[l]), size=Ne[l])
-  print(paste0("victory ", v, "(", one[v], "-", Ne[v],") over ", l,
+  if(log)print(paste0("victory ", v, "(", one[v], "-", Ne[v],") over ", l,
                " (", one[l], "-", Ne[l], "), tot: ", (one[v]-Ne[v]) + (one[l]-Ne[l]), "losses"))
   return(Ne)
 }   
@@ -246,6 +246,7 @@ run_simulation <- function(cultures=NULL,
                            foldervid="pathtofinal",
                            visu=FALSE,
                            visumin=TRUE,
+                           log=F,
                            ts=20000,
                            Kbase=c("HG"=35, "F"=120),
                            cul_ext=c("HG"=7, "F"=6),
@@ -295,10 +296,12 @@ run_simulation <- function(cultures=NULL,
         )
       )
     }
-    print(
-      paste("year", i, "total", sum(sapply(Ips,nrow)),
-            "with", length(sites), "sites (", 
-            paste0(paste(names(countcult), countcult, sep=":"), collapse=","), ")"))
+    if(log){
+        print(
+              paste("year", i, "total", sum(sapply(Ips,nrow)),
+                    "with", length(sites), "sites (", 
+                    paste0(paste(names(countcult), countcult, sep=":"), collapse=","), ")"))
+      }
     if (visumin){
       ### visualisation =====
       frame <- frame+1
@@ -374,8 +377,10 @@ run_simulation <- function(cultures=NULL,
               new_site$Ks <- round(initKs(
                 Kbase, sites=new_site, ressources,
                 sizeex="F", rate=0.45))
-              print(paste0("new settlement (", sites$culture[s], ") of K ",
+              if(log){
+                  print(paste0("new settlement (", sites$culture[s], ") of K ",
                            new_site$Ks, " and pop ", migrants))
+              }
               
               sites <- rbind(sites, new_site)
               
@@ -405,14 +410,16 @@ run_simulation <- function(cultures=NULL,
           attractivity[Nts[i-1,]<10] <- 0 
           attractivity[sites$culture!=sites$culture[s]] <- 0 
           if(any(is.na(attractivity))){
-            print(attractivity)
+            if(log)print(attractivity)
             attractivity[is.na(attractivity)] <- 0
           }
           
           city <- sample(size=1, x=seq_along(sites), prob=attractivity)
           Nts[i,city] <- Nts[i-1,city] + migrants
-          print(paste(migrants, "migrant from", sites$culture[s],
+          if(log){
+              print(paste(migrants, "migrant from", sites$culture[s],
                       "to", sites$culture[city]))
+          }
           havemoved <- T
         }
         if( havemoved ){
@@ -472,7 +479,7 @@ run_simulation <- function(cultures=NULL,
         } else {
           attack <- sample(clash, 1)
         }
-        newns <- fightbetterloss(Ne=Nts[i,], a=s, b=attack)
+        newns <- fightbetterloss(Ne=Nts[i,], a=s, b=attack,log=log)
         casualties <- sum(Nts[i, c(s,attack)] - newns[c(s,attack)])
         warcasualties[i] <- casualties
         sizew <- casualties^2/4000
@@ -485,11 +492,13 @@ run_simulation <- function(cultures=NULL,
         Ips[[attack]] <- changePopSize(loosingPop=Ips[[attack]],
                                        size=(Nts[i, attack] - newns[attack]))
         Nts[i,] <- newns
-        print(paste0("fight : #", s, " (",
-                     cultures[s], ") left with ", Nts[i,s],
-                     " (bef:", Nts[i-1,s], ") ind., attacked: #", attack, " (",
-                     cultures[attack], ") left with ", Nts[i,attack],
-                     " (bef:", Nts[i-1,attack],") ind., #death=",casualties))
+        if(log){
+            print(paste0("fight : #", s, " (",
+                         cultures[s], ") left with ", Nts[i,s],
+                         " (bef:", Nts[i-1,s], ") ind., attacked: #", attack, " (",
+                         cultures[attack], ") left with ", Nts[i,attack],
+                         " (bef:", Nts[i-1,attack],") ind., #death=",casualties))
+        }
       }
     }
     if(visumin){
