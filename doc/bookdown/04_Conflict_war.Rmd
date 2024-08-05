@@ -1,16 +1,16 @@
 # Migration & Conflict
 
-## Migration
+## Fission
 
-Although the protocol described in the [previous chapter](#popgrowth) tends to keep the population of a site close to its carrying capacity, it happens often that the population size overwcome carrying capacity. When this happen, people in the settlement have the chance to move and create a new settlement. This is modulated by two parameters that are culture-dependent:
-+ `minimals`: this define the minimal number of individual, in relation to carrying capacity, are need inorder to create a new settelement.
-+ `prob_split`: this give the probability that, given te minimal number of individualis reached, the group will actually split and move. It is also culture-dependent.
+Although the protocol described in the [previous chapter](#popgrowth) tends to keep the population of a site close to its carrying capacity, it often happens that the population size still exceeds the carrying capacity. When this occurs, the surplus individuals have the opportunity to migrate and establish a new settlement. This process is influenced by two culture-dependent parameters:
++ `minimals`: This defines the minimum number of individuals, in relation to the carrying capacity, needed to create a new settlement.
++ `prob_split`: This defines the probability that, given the minimum number of individuals is reached, the group will actually split and relocate. It is also culture-dependent.
 
-When this happens, the group will look for a space to move. This space will depend on which space is 'available'. how far from the original settlement and the ressource available at the place.
+When this occurs, the group will search for a suitable location to relocate. The selection of this space depends on its availability, its proximity to the original settlement, and the resources available at the new location.
 
-The available space is conditionned by the space on the map that isn't too high, in water or within the range of pre-existing setllement. This range also depends on the culture (reflecting the cultural differences in term of mobility) and the population size of the settlement reflecting the capacity of the settelmeent to send people to defend their territory and the increased need for ressources.
+The criteria for available space are determined by areas on the map that are neither too elevated, submerged in water, nor within the vicinity of pre-existing settlements. This vicinity range is also influenced by cultural factors—reflecting the cultural differences in terms of mobility—and by the population size of the settlement. The latter reflects the settlement's capability to dispatch individuals to defend its territory and its increasing needs for resources.
 
-Once all the available space are set up, an attraction maps is created, defining the probability to move to any square of the raster. This probability is defined has a function to the distance from the original settlement and the available ressources.  
+Once all the available spaces have been identified, a friction surface is created. This surface determines the probability of moving to any square of the raster. This probability is defined as a function of the distance from the original settlement and the availability of resources.
 
 To do so we create a friction surface using a logistic decay function defined as:
 $$
@@ -27,7 +27,7 @@ We then combine this first friction surface with the ressource raster to compute
 
 This final friction surface can be summarised as:
 $$
-w = \frac{0.7 \cdot d_2 + 0.3 \cdot \text{ressources}}{0.7 \cdot \text{max}(d_2) + 0.3 \cdot \text{minmax}(\text{ressources})}
+w = \frac{0.7 \cdot d_2 + 0.3 \cdot \text{ressources}}{0.7 \cdot \text{max}(d_2) + 0.3 \cdot \text{max}(\text{ressources})}
 $$
 
 Where:
@@ -39,63 +39,52 @@ Where:
 When a site position is chosen, a new settlement is created, using the functions described in the previous chapter, to generate the carrying capacity of the new settlement and it's new population structure
 
 
-Here is the implemantation in `run_simulation`:
+This is wrapped within the function `run_simulation`, that will be described in details in the [next chapter](#main-simu). Here is a simplified version of the section of the code that handle this migration events:
 
 ```{r code-migration, eval=F}
-        migrants <- newN - round(Ks[[s]]*0.9)
-        ##Creation of new city
-        new_site <- NULL
-        #if(sites$culture[s]=="F")print(paste("possib",migrants, (minimals[sites$culture[s]]*sites$Ks[s])))
-        tmp <- Nts[i-1,]
-        tmp[Nts[i,] > 0] <- Nts[i, Nts[i,] > 0]
-        #tmp=tmp+sqrt(sites$Ks)
-        havemoved <- F
+migrants <- newN - round(Ks[[s]]*0.9) #possible migrants,
+new_site <- NULL
+tmp <- Nts[i-1,]
+tmp[Nts[i,] > 0] <- Nts[i, Nts[i,] > 0]
+havemoved <- F
 
-        if (migrants >= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){
-            #if supopulation > 10 people, 10% chance of creation of a new city
-            #mean of area of influence
-            infarea <- (sqrt(tmp)+penal_cul[cultures]) * buffersettl
-            buffersize <- rnorm(length(infarea), infarea, infarea * 0.1)
-            buffersize[tmp==0] <- 0.00001
-            territory <- erase(viable, buffer(sites, buffersize))
-            if( length(territory)>0 ){
-                ##select a new site given its distance to the old one and the ressourcesource available in ressources
-                d2 <- logisticdecay(
-                                    sites[s], dem, x=20000*cul_ext[sites$culture[s]]
-                )
-                w <- (0.7 * d2 + 0.3*ressources) / (0.7*minmax(d2)[2] + 0.3*minmax(ressources)[2])
-                new_site <- spatSample(
-                                       x=mask(
-                                              w * logisticdecay(sites[s], dem, k=0.00002,
-                                                                x=20000*cul_ext[sites$culture[s]]),
-                                              territory),
-                                       size=1, method="weights", xy=T)[1:2]
-                new_site <- vect(new_site, geom=c("x","y"))
+if (migrants >= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){
+    #if supopulation > 10 people, 10% chance of creation of a new city
+    #mean of area of influence
+    infarea <- (sqrt(tmp)+penal_cul[cultures]) * buffersettl
+    buffersize <- rnorm(length(infarea), infarea, infarea * 0.1)
+    buffersize[tmp==0] <- 0.00001
+    territory <- erase(viable, buffer(sites, buffersize))
+    if( length(territory)>0 ){
+        ##select a new site given its distance to the old one and the ressourcesource available in ressources
+        d2 <- logisticdecay( sites[s], dem, x=20000*cul_ext[sites$culture[s]])
+        w <- (0.7 * d2 + 0.3*ressources) / (0.7*minmax(d2)[2] + 0.3*minmax(ressources)[2])
+        new_site <- spatSample(
+           x=mask( w * logisticdecay(sites[s], dem, k=0.00002, x=20000*cul_ext[sites$culture[s]]),territory),
+           size=1, method="weights", xy=T)[1:2]
+        new_site <- vect(new_site, geom=c("x","y"))
 
-                if ( length(new_site)>0 & all(!is.na(crds(new_site))) ){
-                    ##add new site to site listes
-
-                    Ips[[length(Ips)+1]] <- initpopstruc(n=migrants) #initialise a fake population, will be updated by real migrants later
-                    new_site$culture <- sites$culture[s]
-                    new_site$Ks <- round( initKs(
-                        Kbase, sites=new_site, ressources,
-                        sizeex="F", rate=0.45))
-                    sites <- rbind(sites, new_site)
-                    Ks[length(Ks)+1] <- new_site$Ks
-                    city <- length(Ips)
-                    Nts <- cbind(Nts, rep(0,ts+1))
-                    Nts[i, city] <- migrants
-                    cultures <- c(cultures, cultures[s])
-                    havemoved <- T
-                }
-                if( havemoved ){
-                    Ips[c(s,city)] <- changePopSize(
-                        loosingPop=Ips[[s]], winingPop=Ips[[city]], size=migrants
-                    )
-                    newN <- newN - migrants
-                }
-            }
+        if ( length(new_site)>0 & all(!is.na(crds(new_site))) ){
+            ##add new site to site listes
+            Ips[[length(Ips)+1]] <- initpopstruc(n=migrants) #initialise a fake population, will be updated by real migrants later
+            new_site$culture <- sites$culture[s]
+            new_site$Ks <- round( initKs(
+                Kbase, sites=new_site, ressources,
+                sizeex="F", rate=0.45))
+            sites <- rbind(sites, new_site)
+            Ks[length(Ks)+1] <- new_site$Ks
+            city <- length(Ips)
+            Nts <- cbind(Nts, rep(0,ts+1))
+            Nts[i, city] <- migrants
+            cultures <- c(cultures, cultures[s])
+            havemoved <- T
         }
+        if( havemoved ){
+            Ips[c(s,city)] <- changePopSize(loosingPop=Ips[[s]], winingPop=Ips[[city]], size=migrants)
+            newN <- newN - migrants
+        }
+    }
+}
 ```
 
 This uses a couple of internal function some we already describe like:
@@ -105,9 +94,105 @@ This uses a couple of internal function some we already describe like:
 and specific one like:
 - `changePopSize`: Change population size by moving population from one to another; or remove a group of people
 
-## Conflict and War
-`whotouch`
 
+## Migration
+
+If the fission event fails, people will then move to another settlement. The choice of the new settlement is based on a combination of the distance to the new settlement, its 'available space,' which correspond to how far from carrying capacity the population will be once the migrant move in, and the resources available at this site. Each settlement is assigned a probability, given these elements, used to randomly choose the site of migration, following this equation:
+
+$$
+\text{attractivity} = \exp\left(\text{resources} \times \text{space} \times \log(\text{distance})\right) / \sum \exp\left(\text{resources} \times \text{space} \times \log(\text{distance})\right)
+$$
+
+Here is a simplified version of the actual implementation available in `run_simulation`:
+
+```{r migration-desc,eval=F}
+att <- extract(ressources,sites)[,2]
+space <- sites$Ks - (Nts[i-1,] + migrants)
+dis <- extract(logisticdecay(sites[s], dem, k=0.00002, x=1), sites)[,2]
+attractivity <- att * space * dis
+#attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture
+attractivity[s] <- min(attractivity)-1
+attractivity <- exp(attractivity)/sum(exp(attractivity))
+attractivity[Nts[i-1,]<10] <- 0 
+attractivity[sites$culture!=sites$culture[s]] <- 0 
+if(any(is.na(attractivity))) attractivity[is.na(attractivity)] <- 0
+city <- sample(size=1, x=seq_along(sites), prob=attractivity)
+Nts[i,city] <- Nts[i-1,city] + migrants
+
+```
+
+## Conflict and War
+
+
++ the culture of the  settlements,
+During each time steps of the simulation, each settltement have the opportunity to fight against another settlement. This again, will depend on multiple factor such as the culture of the settlements and their population sizes. Here's a breakdown of how war is simulated according to the provided code snippet:
+
+1. **Identification of Aggressors**:
+    - In the archaeoriddle simulation, only Farmer have a aggressive behavior and engage in conflict. Thus during a first stepo, farmers ettlements with a population size greater than 50 are identified as potential aggressors (`potentialfighters`). From this subset of the Farmer's settlement,10% of them will actually try to engage in warfare.
+
+5. **Selecting the Target for Attack**:
+    - Settlements within a radius from the agressor and with a different culture  are identified as potential victims. The radius is defined by theparameters `bufferatack`. Then:
+    - If there is only one clash candidate, that candidate is selected as the target.
+    - If there are multiple candidates, one is randomly selected as the target of the attack.
+
+6. **Conducting the Battle and Calculating Losses**:
+    - The battle is simulated through the `fightbetterloss` function, which calculates the new population sizes for both the aggressor and the victim after the conflict.
+    - The casualties from the battle are calculated, and these are used to determine the size of the war event.
+
+To calculate who win and what are the loss we defined a function `fightbetterloss` that simulates a battle between two settlements and calculates their post-conflict population sizes based on their initial population sizes. The outcome of who wins the battle is determined probabilistically, influenced by the relative sizes of each settlement's population. 
+
+The battle outcome between two settlements, A and B, is determined by:
+
+$$ P(\text{Victory for A}) = \frac{N_A}{N_A + N_B} $$
+
+where \(N_A\) and \(N_B\) are the population sizes of settlements A and B, respectively. This probability is used to decide who the victor (v) is and who the loser (l) is. The new population sizes of the victor and the loser after the battle are determined by binomial distributions, reflecting the randomness of conflict outcomes:
+
+For the victor (\(v\)):
+$$ N_{v,\text{new}} = \text{Binomial}\left(n = N_v, p = 1 - \frac{N_l}{N_v + N_l}\right) $$
+
+For the loser (\(l\)):
+$$ N_{l,\text{new}} = \text{Binomial}\left(n = N_l, p = 1 - \frac{N_v}{N_v + N_l}\right) $$
+
+In these equations, \(N_{v,\text{new}}\) and \(N_{l,\text{new}}\) are the new population sizes for the victor and the loser; \(n\) is the size parameter of the binomial distribution, which is the pre-battle population size; and \(p\) is the success probability of surviving the battle. The success probability for each side inversely depends on the ratio of the opponent’s population size to the total population involved in the conflict, reflecting the idea that the larger the opponent's population, the higher the casualties and thus, the lower the survival probability.
+
+7. **Recording War Casualties and War Events**:
+    - Casualties are recorded, and a `warpoints` function visualizes or logs the event, using the calculated size of the war and any additional parameters (like a fixed size increase and plotting options).
+
+8. **Adjusting Populations**:
+    - Population sizes are adjusted according to the battle outcomes. This adjustment simulates the "effectively killing people in the population." Ideally, this adjustment should consider age demographics for more realism.
+
+This process incorporates cultural differences, population sizes, and proximity to dictate when and how wars occur between settlements, simulating the nuanced and multifaceted nature of conflict in a simplified manner.
+
+
+```{r}
+
+poitentialfighters <- which(sites$culture=="F" & Nts[i,]>50)
+for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*0.1))){
+  buff <- bufferatack
+  potentialvictims <- which(sites$culture !=sites$culture[s] & Nts[i,]>0) 
+  clash <- whotouch(s, sites, Ne=Nts[i,], buffersize=buff)
+  if(length(clash)>0 && !is.na(clash)){
+    if(length(clash) == 1){
+      attack <- clash
+    } else {
+      attack <- sample(clash, 1)
+    }
+    newns <- fightbetterloss(Ne=Nts[i,], a=s, b=attack)
+    casualties <- sum(Nts[i, c(s,attack)] - newns[c(s,attack)])
+    warcasualties[i] <- casualties
+    sizew <- casualties^2/4000
+    warpoints(sites, s, attack, Ne=Nts[i,],
+              buffersize=buff, sizewar=sizew+0.5,plot=wplot)
+    
+    #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
+    Ips[[s]] <- changePopSize(loosingPop=Ips[[s]],
+                              size=(Nts[i,s] - newns[s]))
+    Ips[[attack]] <- changePopSize(loosingPop=Ips[[attack]],
+                                   size=(Nts[i, attack] - newns[attack]))
+    Nts[i,] <- newns
+  }
+}
+```
 
 ## ~~ Network, Site Size And Climate -- DEPRECATED ~~
 
