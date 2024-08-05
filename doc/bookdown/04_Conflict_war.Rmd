@@ -1,0 +1,197 @@
+# Migration & Conflict
+
+## Migration
+
+Although the protocol described in the [previous chapter](#popgrowth) tends to keep the population of a site close to its carrying capacity, it happens often that the population size overwcome carrying capacity. When this happen, people in the settlement have the chance to move and create a new settlement. This is modulated by two parameters that are culture-dependent:
++ `minimals`: this define the minimal number of individual, in relation to carrying capacity, are need inorder to create a new settelement.
++ `prob_split`: this give the probability that, given te minimal number of individualis reached, the group will actually split and move. It is also culture-dependent.
+
+When this happens, the group will look for a space to move. This space will depend on which space is 'available'. how far from the original settlement and the ressource available at the place.
+
+The available space is conditionned by the space on the map that isn't too high, in water or within the range of pre-existing setllement. This range also depends on the culture (reflecting the cultural differences in term of mobility) and the population size of the settlement reflecting the capacity of the settelmeent to send people to defend their territory and the increased need for ressources.
+
+Once all the available space are set up, an attraction maps is created, defining the probability to move to any square of the raster. This probability is defined has a function to the distance from the original settlement and the available ressources.  
+
+To do so we create a friction surface using a logistic decay function defined as:
+$$
+\text{logdec} = L - \frac{L}{1 + e^{-k(ds - x_0)}}
+$$
+
+where:
+- $L$: The maximum value, set as one to give a probability
+- $k$: Growth rate, here set as 0.0001
+- $ds$: Distance to the point of interest
+- $x_0$: The midpoint of the logistic function, set as 20000, ie 20km from the origin, modulated by `cult_ext`, a culture-dependent parameters reflecting the technological abilities of the culture to move.
+
+We then combine this first friction surface with the ressource raster to compute another friction map representing weighted average probability, where the distance to origin account for 70% of the final probability and available ressources 30%.
+
+This final friction surface can be summarised as:
+$$
+w = \frac{0.7 \cdot d_2 + 0.3 \cdot \text{ressources}}{0.7 \cdot \text{max}(d_2) + 0.3 \cdot \text{minmax}(\text{ressources})}
+$$
+
+Where:
+
+- $d_2$ is the result of the logistic decay function applied to a given site and its parameters.
+- `ressources` represents available resources.
+- `max`() return the maximal value of a raster, to normalise value as probabilites (it's implemented by `terra::minmax()` function)
+
+When a site position is chosen, a new settlement is created, using the functions described in the previous chapter, to generate the carrying capacity of the new settlement and it's new population structure
+
+
+Here is the implemantation in `run_simulation`:
+
+```{r code-migration, eval=F}
+        migrants <- newN - round(Ks[[s]]*0.9)
+        ##Creation of new city
+        new_site <- NULL
+        #if(sites$culture[s]=="F")print(paste("possib",migrants, (minimals[sites$culture[s]]*sites$Ks[s])))
+        tmp <- Nts[i-1,]
+        tmp[Nts[i,] > 0] <- Nts[i, Nts[i,] > 0]
+        #tmp=tmp+sqrt(sites$Ks)
+        havemoved <- F
+
+        if (migrants >= (minimals[sites$culture[s]]*sites$Ks[s]) & runif(1)<prob_split[sites$culture[s]] ){
+            #if supopulation > 10 people, 10% chance of creation of a new city
+            #mean of area of influence
+            infarea <- (sqrt(tmp)+penal_cul[cultures]) * buffersettl
+            buffersize <- rnorm(length(infarea), infarea, infarea * 0.1)
+            buffersize[tmp==0] <- 0.00001
+            territory <- erase(viable, buffer(sites, buffersize))
+            if( length(territory)>0 ){
+                ##select a new site given its distance to the old one and the ressourcesource available in ressources
+                d2 <- logisticdecay(
+                                    sites[s], dem, x=20000*cul_ext[sites$culture[s]]
+                )
+                w <- (0.7 * d2 + 0.3*ressources) / (0.7*minmax(d2)[2] + 0.3*minmax(ressources)[2])
+                new_site <- spatSample(
+                                       x=mask(
+                                              w * logisticdecay(sites[s], dem, k=0.00002,
+                                                                x=20000*cul_ext[sites$culture[s]]),
+                                              territory),
+                                       size=1, method="weights", xy=T)[1:2]
+                new_site <- vect(new_site, geom=c("x","y"))
+
+                if ( length(new_site)>0 & all(!is.na(crds(new_site))) ){
+                    ##add new site to site listes
+
+                    Ips[[length(Ips)+1]] <- initpopstruc(n=migrants) #initialise a fake population, will be updated by real migrants later
+                    new_site$culture <- sites$culture[s]
+                    new_site$Ks <- round( initKs(
+                        Kbase, sites=new_site, ressources,
+                        sizeex="F", rate=0.45))
+                    sites <- rbind(sites, new_site)
+                    Ks[length(Ks)+1] <- new_site$Ks
+                    city <- length(Ips)
+                    Nts <- cbind(Nts, rep(0,ts+1))
+                    Nts[i, city] <- migrants
+                    cultures <- c(cultures, cultures[s])
+                    havemoved <- T
+                }
+                if( havemoved ){
+                    Ips[c(s,city)] <- changePopSize(
+                        loosingPop=Ips[[s]], winingPop=Ips[[city]], size=migrants
+                    )
+                    newN <- newN - migrants
+                }
+            }
+        }
+```
+
+This uses a couple of internal function some we already describe like:
+- `initpopstruc`
+- `initKs`
+
+and specific one like:
+- `changePopSize`: Change population size by moving population from one to another; or remove a group of people
+
+## Conflict and War
+`whotouch`
+
+
+## ~~ Network, Site Size And Climate -- DEPRECATED ~~
+
+The following steps were designed but never used ; they can be quite fun and useful.
+
+----
+
+Create a network between sites  (requires `igraph`)
+
+```{r sitesnetwork, eval=T}
+
+library(igraph)
+subsites  <- sites
+crs(subsites) <- "+proj=lonlat"
+subsites <- sites[sample(nrow(sites), 20), ]
+ig <- graph_from_adjacency_matrix(
+  as.matrix(distance(subsites)), weighted=T, mode="undirected")
+ig <- set_graph_attr(ig, "layout", crds(subsites))
+
+V(ig)$label <- ""
+V(ig)$size <- (size+1)*5
+V(ig)$frame.color <- "black"
+V(ig)$frame.width <- .5
+E(ig)$weight <- 1/(E(ig)$weight^2)
+E(ig)$width <- exp(E(ig)$weight)+.6
+
+allcomu <- cluster_louvain(ig)$memberships[1,]
+V(ig)$color <- allcomu
+E(ig)$color <- allcomu[head_of(ig,E(ig))]
+
+plot(height.ras, col=col_ramp(20), legend=F, reset=F)
+plot(height.wat, col="lightblue", add=T, legend=F)
+plot(ig, add=T, rescale=F, alpha=.2)
+```
+
+Visualise sites on the 3D plot
+
+```{r 3Dnetwork, eval=F}
+
+plot_3d(
+  hm_lamb,height_map, zscale=20, fov=0, theta=20, zoom=1, phi=45,
+  windowsize=c(1000, 800), water=TRUE, waterdepth=mean(height),
+  wateralpha=1, watercolor="lightblue", waterlinecolor="lightblue",
+  waterlinealpha=.7
+)
+
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=2.13828, long=-1.685547, altitude=extract(height.ras,sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
+
+render_points(
+  extent=raster::extent(raster::raster(height.ras)),
+  lat=crds(sites)[,"y"], long=crds(sites)[,"x"], altitude=extract(height.ras, sites)[,1]+20,
+  zscale=20, size=1, col=categorical_pal(max(allcomu))[allcomu],
+  clear_previous=TRUE
+)
+       
+render_highquality(point_radius=5, samples=256, clear=TRUE, light=TRUE)
+
+```
+
+let's say the climate modulate site size in a naive way:
+
+
+```{r, animation.hook="gifski", interval=0.2, cache=TRUE, eval=F}
+for(i in seq(1, tstep, length.out=100)){
+	layout(matrix(1:2, nrow=2, ncol=1), heights=c(.8, .2))
+	par(mar=c(1, 2, 2, 1))
+	image(m, ann=F, axes=F, main=i)
+	mtext(round(i), 3, 1)
+	nsize <- size*faketemp[i] + size + 1
+	points(crds(sites), bg="green", pch=21, cex=nsize)
+	par(mar=c(2, 2, 0, 1))
+	plot(
+	  1:tstep, faketemp, type="l", ylab="temp", xlab="time", ylim=range(faketemp),
+	  ann=F, frame.plot=F)
+	points(i, faketemp[i], col="red", pch=20)
+}
+```
+
+Population will then grow, for years and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.We initialised the ressource layer in the previous chapter 
+in [the  section about ressources](#ressource). In the following sections we will use this ressource raster to initialise site size et define how ressource are used by the different culture.
+
+
