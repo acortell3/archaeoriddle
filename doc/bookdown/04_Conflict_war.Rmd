@@ -14,14 +14,14 @@ Once all the available spaces have been identified, a friction surface is create
 
 To do so we create a friction surface using a logistic decay function defined as:
 $$
-\text{logdec} = L - \frac{L}{1 + e^{-k(ds - x_0)}}
+\text{logdec}(ds,k,L) = L - \frac{L}{1 + e^{-k(ds - x_0)}}
 $$
 
 where:
-- $L$: The maximum value, set as one to give a probability
-- $k$: Growth rate, here set as 0.0001
-- $ds$: Distance to the point of interest
-- $x_0$: The midpoint of the logistic function, set as 20000, ie 20km from the origin, modulated by `cult_ext`, a culture-dependent parameters reflecting the technological abilities of the culture to move.
++ $L$: The maximum value, set as one to give a probability
++ $k$: Growth rate, here set as 0.0001
++ $ds$: raster representing the distance to the focal settlement 
++ $x_0$: The midpoint of the logistic function, set as 20000, ie 20km from the origin, modulated by `cult_ext`, a culture-dependent parameters reflecting the technological abilities of the culture to move.
 
 We then combine this first friction surface with the ressource raster to compute another friction map representing weighted average probability, where the distance to origin account for 70% of the final probability and available ressources 30%.
 
@@ -100,7 +100,7 @@ and specific one like:
 If the fission event fails, people will then move to another settlement. The choice of the new settlement is based on a combination of the distance to the new settlement, its 'available space,' which correspond to how far from carrying capacity the population will be once the migrant move in, and the resources available at this site. Each settlement is assigned a probability, given these elements, used to randomly choose the site of migration, following this equation:
 
 $$
-\text{attractivity} = \exp\left(\text{resources} \times \text{space} \times \log(\text{distance})\right) / \sum \exp\left(\text{resources} \times \text{space} \times \log(\text{distance})\right)
+\text{attractivity} = \frac{e^{\left(\text{resources} \times \text{space} \times \log(\text{distance})\right)} }{ \sum \exp\left(\text{resources} \times \text{space} \times \log(\text{distance})\right)}
 $$
 
 Here is a simplified version of the actual implementation available in `run_simulation`:
@@ -155,16 +155,33 @@ $$ N_{l,\text{new}} = \text{Binomial}\left(n = N_l, p = 1 - \frac{N_v}{N_v + N_l
 
 In these equations, \(N_{v,\text{new}}\) and \(N_{l,\text{new}}\) are the new population sizes for the victor and the loser; \(n\) is the size parameter of the binomial distribution, which is the pre-battle population size; and \(p\) is the success probability of surviving the battle. The success probability for each side inversely depends on the ratio of the opponent’s population size to the total population involved in the conflict, reflecting the idea that the larger the opponent's population, the higher the casualties and thus, the lower the survival probability.
 
-7. **Recording War Casualties and War Events**:
-    - Casualties are recorded, and a `warpoints` function visualizes or logs the event, using the calculated size of the war and any additional parameters (like a fixed size increase and plotting options).
-
-8. **Adjusting Populations**:
-    - Population sizes are adjusted according to the battle outcomes. This adjustment simulates the "effectively killing people in the population." Ideally, this adjustment should consider age demographics for more realism.
-
 This process incorporates cultural differences, population sizes, and proximity to dictate when and how wars occur between settlements, simulating the nuanced and multifaceted nature of conflict in a simplified manner.
 
+A quick illustration of how the outcome of conflicts between two settlements of varying size:
 
-```{r}
+```{r illu-war,out.width="45%",fig.cap="Simulation run with population A with 100 people, and populaiton B with a growing populatoin size from 10 to 100, represent fraction of population a from 10% to same population size. Noise has been added to visualise alldata",fig.show="hold"}
+compare=do.call("rbind",lapply(seq(10,100,3),function(b)
+    t(rbind(b/100,replicate(100,c(100,b)-fightbetterloss(c(100,b),1,2))))
+ ))
+plot(compare[,1]+runif(100,0,0.01),compare[,2],col=adjustcolor("red",.6),pch=20,main="number of loss",xlab="ratio A/B",ylab="number of loss")
+points(compare[,1]+.015+runif(100,0,0.01),compare[,3],col=adjustcolor("blue",.6),pch=20)
+legend("topleft",legend=c("loss for A","loss for B"),col=c("red","blue"),pch=20)
+
+
+cls=heat.colors(length(unique(compare[,1])))
+names(cls)=unique(compare[,1])
+plot(compare[,2]+runif(100),compare[,3]+runif(100),bg=cls[as.character(compare[,1])],pch=21,ylab="losses for B",xlab="losses for A",xlim=c(0,80),ylim=c(0,80),cex=2)
+legend("bottomrigh",legend=names(cls)[seq(1,length(cls),length.out=9)],fill=cls[seq(1,length(cls),length.out=9)],ncol = 3,title="ratio A/B")
+abline(a=1,b=1,col="green",lwd=3)
+```
+
+The model with generate loss in both sides, but on average less for the biggest populaiton, while stil allowing cases where the smaller settlement win the fight and generate more damage that it receives. These difference get smoothed when the size of the two settlements become similar.
+
+
+
+
+Here is a simplified version of the actual implementation available in `run_simulation`:
+```{r desc-war, eval=F}
 
 poitentialfighters <- which(sites$culture=="F" & Nts[i,]>50)
 for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*0.1))){
