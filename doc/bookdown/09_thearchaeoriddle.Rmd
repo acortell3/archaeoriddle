@@ -1,4 +1,4 @@
-# Archaoriddle: the original
+# Archaeoriddle: the original challenge
 
 As I (simon) am stupid I didn't generate seeds for each experiment so we cannot re-run it EXACTLY the same. But I kept lot of informations and output about it.
 

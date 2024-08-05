@@ -1,4 +1,4 @@
-# Generate Archaeological remaind and squares
+# Generate Final archaeological record
 
 
 ## Using sites size to generate deposite

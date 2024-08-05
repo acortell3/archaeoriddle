@@ -24,17 +24,21 @@ The project has been a great success, and the team presented at several conferen
 ## What will you find in this bookdown?
 This bookdown document provides an explanation of the model used in the creation of the project. Everything has been developed using R. By downloading the package "archaeoriddle" from GitHub, you can reproduce the world of the *Rabbithole* or adapt it to create your own using the code provided in this bookdown document. This might be useful not only to create a virtual world from scratch while attending to different archaeological constraints, but also provides an excellent exercise to practice making R-based ABMs. Finally, all the data, this includes the data that we produceed (including what's on the website) or the one that you produce from this is free, and you are free modify to suit your differing needs. We have structured the following chapters as follows:
 
--   Landscape, climate, and environment: functions and methods to create 'realistic' artificial environments.
+-   Landscape & resources: functions and methods to create 'realistic' artificial environments.
 
--   Population growth on multiple sites: functions and methods to design population that grows, dies, moves, and fights.
+-   Population structure & growth: functions & methods to initialise sites location, population structure and growth.
+  
+-   Migration & conflicts: functions & methods that handle movements of populations and their interactions.
 
--   Record formation: functions and methods to generate archaeological record given the population of each site.
+-   Main simulation: the main function that wrap together the previous elements to simulate the interactions processes.
+
+-   Record formation: functions and methods that generate archaeological record given the population of each site generated during the main simulation.
 
 -   Record loss: functions and methods to simulate loss of the record through time.
 
--   Final choice and simulation: functions and methods that explore different patterns of population growth.
+-   Generate Final archaeological record: functions and methods that wrap together the main simulation, the record formation and loss, and generate shareable files for people to explore
 
--   Generate archaeological remains and squares: functions and methods to create, organise, and share the data.
+- Archaoriddle: the original:  The full description of the parameters, runs and data generated, as well as the 5 proposal gather for the original challenges
 
 ## What can you do with this?
 Well, many things! We have mentioned the data already generated (which can be freely downloaded) can be used for your own research purposes or as an educational tool. We encourage you to use the code in this bookdown to generate your own *Rabbithole* and pose your own research questions with synthetic data. Additionally, this book is also a good document for the development of ABMs in R. 
