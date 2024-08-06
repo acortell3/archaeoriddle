@@ -14,9 +14,7 @@ jobs:
       - name: Install OS dependencies 
         run: sudo apt-get install -y libglpk-dev gdal-bin proj-bin libgdal-dev libproj-dev libudunits2-dev
       - name: Install R dependencies
-        run: Rscript -e 'install.packages(c("rmarkdown", "bookdown","DiagrammeR","viridis","terra","sf","igraph","rayshader","printr"))'
-      - name: Install Archaeoriddle
-        run: Rscript -e 'install.packages(".", repos=NULL, type="source")'
+        run: Rscript -e 'install.packages(c("bookdown","DiagrammeR","terra","sf","igraph"))'
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("doc/bookdown/")'
       - uses: actions/upload-artifact@v1

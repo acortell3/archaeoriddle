@@ -10,7 +10,8 @@ output:
 To simulate the interaction between two groups, we need an environment in which they can interact in. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.
 An important part of the simulation is to generate a landscape and an environment. Environmental variable are often autocorrelated. For example, The temperature at a given time is never _extremly_  different to the temperature slightly before and slightly after this time. Same is true with the slope, or the elevation of a place, 
 
-## Coloured noise
+## Autocorrelated noise generation
+
 
 An interesting way to generate such auto-correlated variable is to use [coloured noise](https://en.wikipedia.org/wiki/Colors_of_noise). This use specific distribution to define the relation between frequencies found in your signal with the power of these frequencies. In [pink noise](https://en.wikipedia.org/wiki/Pink_noise) (or $\frac{1}{f}$-noise) for example, the power of each frequencis will be invertly proportional to the frequencies (_ie_ you will have, low frequencies with high power, high frequencies with low ones).  We defined an `environment` function, which in turns uses `TK95` to generate a power law noise.
 

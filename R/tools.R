@@ -46,7 +46,7 @@ extractDates <- function(record, years=NULL, n){
 #' @importFrom terra plot
 #' @export
 plotMap <- function(height, water, maintitle="",...){
-  terra::plot(height, col=col_ramp(20), legend=F, reset=F, main=maintitle,...)
+  terra::plot(height, col=col_ramp(50), legend=F, reset=F, main=maintitle,...)
   terra::plot(water, col="lightblue", add=T, legend=F,reset=F,...)
   above_level <- height > mean(height[])
   coastline <- sf::st_as_sf(as.polygons(above_level))[2,]
