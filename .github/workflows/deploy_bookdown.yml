@@ -14,7 +14,7 @@ jobs:
       - name: Install OS dependencies 
         run: sudo apt-get install -y libglpk-dev gdal-bin proj-bin libgdal-dev libproj-dev libudunits2-dev
       - name: Install R dependencies
-        run: Rscript -e 'install.packages(c("bookdown","DiagrammeR","terra","sf","igraph"))'
+        run: Rscript -e 'install.packages(c("bookdown","DiagrammeR","terra","sf","igraph","devtools"))'
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("doc/bookdown/")'
       - uses: actions/upload-artifact@v1
