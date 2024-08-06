@@ -20,6 +20,7 @@ github-repo: acortell3/archaeoriddle
 description: "First draft of Rbookdown to describe how data have been generated"
 favicon: "favicon.ico"
 ---
+
 # Preface{-}
 
 ```{r setup, include=FALSE}
@@ -65,7 +66,7 @@ cd archaeoriddle
 
 Once done you can then load the package using the local source:
 
-```{r loadpack, eval=F}
+```{r loadpack, eval=T}
 devtools::load_all()
 ```
 
