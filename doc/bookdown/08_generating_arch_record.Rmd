@@ -1,14 +1,26 @@
-# Generate Final archaeological record
+# Generate final archaeological record {#final-output}
 
+Now that all the pieces are in place we need to combine them to generate files that can be shared with people in order for them to guess the original parameters.
 
-## Using sites size to generate deposite
+To summarize what we have so far:
+
+1. we generated a fake environment in Chapter \@ref(env}
+2. we localised sites on the map and defined a population growth process in Chapter \@ref(popgrowth}
+3. we defined rules to decide how population move and enter in conflict when they grow in Chapter \@ref(conflict}
+4. we run simulation these process of grwoth, conflict and migration on the environement for long time in Chapter \@ref(main-simu}
+4. we defined processes that use this simulate growth to generate an archaeological record in Chapter \@ref(genrec}
+5. we defined processes that transform this archaeological record using credible loss \@ref(genrec}
+
+Here we will use all these previous steps to generate csvs that can be shared. In this chapter we will use the simulation run in the Chapter \@ref(main-simu) ; if you want to generated new 'fake'-dataset, different from the one that have been presented in the original challenge and that will be described in the chapter \@ref(original-challenge), you will want to run longer simulation, and choose among different run on the looks interesting/realistic. We provide a script `./scriptmini.R` that to give some idea about how to automatize these run and how to choose among them.
+
+## Using sites size to generate deposit
 
 This has been done using file `dateGeneration.R`, we will describe it here now.
 
-First we get the result of a simulation.
+First we get the rasters defining the environment (If you folllowed the book since the beginning they should be already in memory but in case you didn't we we reload them here:
 
 ```{r getRaster,eval=T,cache=F}
-height.ras=rast("data_original/east_narnia4x.tif")
+height.ras=rast("data_toshare/dem_raster.tiff")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 height.groups=height.ras
@@ -216,16 +228,17 @@ inter$end=sapply(ld,min)
 Some maps we use and did for fake papers and social media etc... 
 
 
-```{r randommaps}
+```{r randommaps,out.width="30%",fig.show="hold"}
 
 ## plotting oldschool map
 
+par(mar=c(0,0,0,0),oma=c(0,0,0,0))
 
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=.8,col=as.factor(inter$culture),alpha=.8)
-box()
+box(which="outer")
 
 old=inter[inter$start>7180,]
 ne=inter[inter$start>6800 & inter$end<6900,]

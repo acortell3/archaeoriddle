@@ -4,7 +4,7 @@ output:
   pdf_document: default
 ---
 
-# Landscape & Resources
+# Landscape & Resources {#env}
 
 
 To simulate the interaction between two groups, we need an environment in which they can interact in. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.

@@ -6,7 +6,7 @@ output:
 ---
 
 
-# Record loss
+# Record loss {#recloss} 
 
 ## Theoretical model
 

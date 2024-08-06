@@ -169,6 +169,7 @@ The general organisation of the algorithm is as follow:
 We wrapped all this in a function, `run_simulation` that return a list of object. Let see one simple example:
 
 ```{r single-run-ex1,eval=T}
+ts <- 250 # we keep using 250 time steps.
 onesimu <- run_simulation(
   sites=sites, viable=viable, dem=height.ras,
   ressources=ress,
@@ -183,10 +184,12 @@ onesimu <- run_simulation(
   prob_survive=c("HG"=0.8, "F"=0.65), #proba of dying when pop > K
   prob_split=c("HG"=0.5, "F"=0.6), #proba of creating a new settlement when Ne > K
   minimals=c("HG"=0.14,"F"=0.20), #how big the group of migrant should be to create a new city vs migrate to a existing one 
-  bufferatack=300, #distance max around which settlement can fight
+  bufferatack=500, #distance max around which settlement can fight 
   prob_move=c("HG"=0.2, "F"=0.1) #proba of migrating to existing settlement when Ne > K
 )
 ```
+
+Not that we here use a larger bufferatack that generates more conflicts. 
 
 ### Source code {-}
 

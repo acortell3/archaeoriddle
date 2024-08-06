@@ -1,4 +1,4 @@
-# Population structure & growth
+# Population structure & growth {#popgrowth}
 
 ## Settlements position
 
@@ -73,7 +73,7 @@ INs <- round(runif(length(sites), 0.85, 0.95)*sites$Ks)
 # initialise population structure for all sites
 Ips <- lapply(INs, initpopstruc)
 
-ts <- 150
+ts <- 250
 
 # We put the population structure across the years in a matrix: each row will represent a time step of the simulation ; each column a sites
 
