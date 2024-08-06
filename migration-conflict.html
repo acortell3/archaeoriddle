@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Migration &amp; Conflict | Methods Riddles, the ultimate revelations</title>
+  <meta name="description" content="First draft of Rbookdown to describe how data have been generated" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Migration &amp; Conflict | Methods Riddles, the ultimate revelations" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="First draft of Rbookdown to describe how data have been generated" />
+  <meta name="github-repo" content="acortell3/archaeoriddle" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Migration &amp; Conflict | Methods Riddles, the ultimate revelations" />
+  
+  <meta name="twitter:description" content="First draft of Rbookdown to describe how data have been generated" />
+  
+
+<meta name="author" content="CDAL" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link rel="prev" href="population-structure-growth.html"/>
+<link rel="next" href="main-simu.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.11/grViz.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-is-archaeoriddle"><i class="fa fa-check"></i><b>1.1</b> What is archaeoriddle?</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-will-you-find-in-this-bookdown"><i class="fa fa-check"></i><b>1.2</b> What will you find in this bookdown?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#what-can-you-do-with-this"><i class="fa fa-check"></i><b>1.3</b> What can you do with this?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="landscape-resources.html"><a href="landscape-resources.html"><i class="fa fa-check"></i><b>2</b> Landscape &amp; Resources</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="landscape-resources.html"><a href="landscape-resources.html#autocorrelated-noise-generation"><i class="fa fa-check"></i><b>2.1</b> Autocorrelated noise generation</a></li>
+<li class="chapter" data-level="2.2" data-path="landscape-resources.html"><a href="landscape-resources.html#slope-and-elevation"><i class="fa fa-check"></i><b>2.2</b> Slope and Elevation</a></li>
+<li class="chapter" data-level="2.3" data-path="landscape-resources.html"><a href="landscape-resources.html#environmental-resources"><i class="fa fa-check"></i><b>2.3</b> Environmental resources</a></li>
+<li class="chapter" data-level="2.4" data-path="landscape-resources.html"><a href="landscape-resources.html#manual-selection"><i class="fa fa-check"></i><b>2.4</b> Manually Select Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="population-structure-growth.html"><a href="population-structure-growth.html"><i class="fa fa-check"></i><b>3</b> Population structure &amp; growth</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="population-structure-growth.html"><a href="population-structure-growth.html#settlements-position"><i class="fa fa-check"></i><b>3.1</b> Settlements position</a></li>
+<li class="chapter" data-level="3.2" data-path="population-structure-growth.html"><a href="population-structure-growth.html#initsize"><i class="fa fa-check"></i><b>3.2</b> Initializing Site Population and Culture</a></li>
+<li class="chapter" data-level="3.3" data-path="population-structure-growth.html"><a href="population-structure-growth.html#base-pop-growth"><i class="fa fa-check"></i><b>3.3</b> Population Growth : <span class="math inline">\(Pop\)</span>-protocol</a>
+<ul>
+<li class="chapter" data-level="" data-path="population-structure-growth.html"><a href="population-structure-growth.html#source"><i class="fa fa-check"></i>Source</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="migration-conflict.html"><a href="migration-conflict.html"><i class="fa fa-check"></i><b>4</b> Migration &amp; Conflict</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="migration-conflict.html"><a href="migration-conflict.html#fission"><i class="fa fa-check"></i><b>4.1</b> Fission</a></li>
+<li class="chapter" data-level="4.2" data-path="migration-conflict.html"><a href="migration-conflict.html#migration"><i class="fa fa-check"></i><b>4.2</b> Migration</a></li>
+<li class="chapter" data-level="4.3" data-path="migration-conflict.html"><a href="migration-conflict.html#conflict-and-war"><i class="fa fa-check"></i><b>4.3</b> Conflict and War</a></li>
+<li class="chapter" data-level="4.4" data-path="migration-conflict.html"><a href="migration-conflict.html#network-site-size-and-climate-deprecated"><i class="fa fa-check"></i><b>4.4</b> ~~ Network, Site Size And Climate – DEPRECATED ~~</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="main-simu.html"><a href="main-simu.html"><i class="fa fa-check"></i><b>5</b> Main Simulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="main-simu.html"><a href="main-simu.html#initial-parameters"><i class="fa fa-check"></i><b>5.1</b> Initial Parameters</a></li>
+<li class="chapter" data-level="5.2" data-path="main-simu.html"><a href="main-simu.html#algorithm"><i class="fa fa-check"></i><b>5.2</b> Algorithm</a>
+<ul>
+<li class="chapter" data-level="" data-path="main-simu.html"><a href="main-simu.html#source-code"><i class="fa fa-check"></i>Source code</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="main-simu.html"><a href="main-simu.html#explore-simulation"><i class="fa fa-check"></i><b>5.3</b> Explore simulation:</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="recgen.html"><a href="recgen.html"><i class="fa fa-check"></i><b>6</b> Record formation</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="recgen.html"><a href="recgen.html#theoretical-model"><i class="fa fa-check"></i><b>6.1</b> Theoretical model</a></li>
+<li class="chapter" data-level="6.2" data-path="recgen.html"><a href="recgen.html#implementation"><i class="fa fa-check"></i><b>6.2</b> Implementation</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="recgen.html"><a href="recgen.html#population-pop-protocol"><i class="fa fa-check"></i><b>6.2.1</b> Population <span class="math inline">\(Pop\)</span>-protocol</a></li>
+<li class="chapter" data-level="6.2.2" data-path="recgen.html"><a href="recgen.html#anthropogenic-deposition-a-protocol"><i class="fa fa-check"></i><b>6.2.2</b> Anthropogenic deposition <span class="math inline">\(A\)</span>-protocol</a></li>
+<li class="chapter" data-level="6.2.3" data-path="recgen.html"><a href="recgen.html#depth-d-protocol"><i class="fa fa-check"></i><b>6.2.3</b> Depth <span class="math inline">\(D\)</span>-protocol</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="recgen.html"><a href="recgen.html#minimal-example-and-simulation"><i class="fa fa-check"></i><b>6.3</b> Minimal example and simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="record-loss.html"><a href="record-loss.html"><i class="fa fa-check"></i><b>7</b> Record loss</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="record-loss.html"><a href="record-loss.html#theoretical-model-1"><i class="fa fa-check"></i><b>7.1</b> Theoretical model</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="record-loss.html"><a href="record-loss.html#general-purpose"><i class="fa fa-check"></i><b>7.1.1</b> General purpose</a></li>
+<li class="chapter" data-level="7.1.2" data-path="record-loss.html"><a href="record-loss.html#model-layers"><i class="fa fa-check"></i><b>7.1.2</b> Model layers</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="record-loss.html"><a href="record-loss.html#implementation-1"><i class="fa fa-check"></i><b>7.2</b> Implementation</a>
+<ul>
+<li class="chapter" data-level="" data-path="record-loss.html"><a href="record-loss.html#source-1"><i class="fa fa-check"></i>Source</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="record-loss.html"><a href="record-loss.html#usage"><i class="fa fa-check"></i><b>7.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="generate-final-archaeological-record.html"><a href="generate-final-archaeological-record.html"><i class="fa fa-check"></i><b>8</b> Generate Final archaeological record</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="generate-final-archaeological-record.html"><a href="generate-final-archaeological-record.html#using-sites-size-to-generate-deposite"><i class="fa fa-check"></i><b>8.1</b> Using sites size to generate deposite</a></li>
+<li class="chapter" data-level="8.2" data-path="generate-final-archaeological-record.html"><a href="generate-final-archaeological-record.html#split-environment-in-a-grid"><i class="fa fa-check"></i><b>8.2</b> Split environment in a grid</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="archaeoriddle-the-original-challenge.html"><a href="archaeoriddle-the-original-challenge.html"><i class="fa fa-check"></i><b>9</b> Archaeoriddle: the original challenge</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="archaeoriddle-the-original-challenge.html"><a href="archaeoriddle-the-original-challenge.html#generate-and-share-final-simulation"><i class="fa fa-check"></i><b>9.1</b> Generate and share final simulation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/acortell3/archaeoriddle/">
+source</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Methods Riddles, the ultimate revelations</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="migration-conflict" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Migration &amp; Conflict<a href="migration-conflict.html#migration-conflict" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="fission" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Fission<a href="migration-conflict.html#fission" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Although the protocol described in the <a href="#popgrowth">previous chapter</a> tends to keep the population of a site close to its carrying capacity, it often happens that the population size still exceeds the carrying capacity. When this occurs, the surplus individuals have the opportunity to migrate and establish a new settlement. This process is influenced by two culture-dependent parameters:
++ <code>minimals</code>: This defines the minimum number of individuals, in relation to the carrying capacity, needed to create a new settlement.
++ <code>prob_split</code>: This defines the probability that, given the minimum number of individuals is reached, the group will actually split and relocate. It is also culture-dependent.</p>
+<p>When this occurs, the group will search for a suitable location to relocate. The selection of this space depends on its availability, its proximity to the original settlement, and the resources available at the new location.</p>
+<p>The criteria for available space are determined by areas on the map that are neither too elevated, submerged in water, nor within the vicinity of pre-existing settlements. This vicinity range is also influenced by cultural factors—reflecting the cultural differences in terms of mobility—and by the population size of the settlement. The latter reflects the settlement’s capability to dispatch individuals to defend its territory and its increasing needs for resources.</p>
+<p>Once all the available spaces have been identified, a friction surface is created. This surface determines the probability of moving to any square of the raster. This probability is defined as a function of the distance from the original settlement and the availability of resources.</p>
+<p>To do so we create a friction surface using a logistic decay function defined as:
+<span class="math display">\[
+\text{logdec}(ds,k,L) = L - \frac{L}{1 + e^{-k(ds - x_0)}}
+\]</span></p>
+<p>where:
++ <span class="math inline">\(L\)</span>: The maximum value, set as one to give a probability
++ <span class="math inline">\(k\)</span>: Growth rate, here set as 0.0001
++ <span class="math inline">\(ds\)</span>: raster representing the distance to the focal settlement
++ <span class="math inline">\(x_0\)</span>: The midpoint of the logistic function, set as 20000, ie 20km from the origin, modulated by <code>cult_ext</code>, a culture-dependent parameters reflecting the technological abilities of the culture to move.</p>
+<p>We then combine this first friction surface with the ressource raster to compute another friction map representing weighted average probability, where the distance to origin account for 70% of the final probability and available ressources 30%.</p>
+<p>This final friction surface can be summarised as:
+<span class="math display">\[
+w = \frac{0.7 \cdot d_2 + 0.3 \cdot \text{ressources}}{0.7 \cdot \text{max}(d_2) + 0.3 \cdot \text{max}(\text{ressources})}
+\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(d_2\)</span> is the result of the logistic decay function applied to a given site and its parameters.</li>
+<li><code>ressources</code> represents available resources.</li>
+<li><code>max</code>() return the maximal value of a raster, to normalise value as probabilites (it’s implemented by <code>terra::minmax()</code> function)</li>
+</ul>
+<p>When a site position is chosen, a new settlement is created, using the functions described in the previous chapter, to generate the carrying capacity of the new settlement and it’s new population structure</p>
+<p>This is wrapped within the function <code>run_simulation</code>, that will be described in details in the <a href="main-simu.html#main-simu">next chapter</a>. Here is a simplified version of the section of the code that handle this migration events:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="migration-conflict.html#cb35-1" tabindex="-1"></a>migrants <span class="ot">&lt;-</span> newN <span class="sc">-</span> <span class="fu">round</span>(Ks[[s]]<span class="sc">*</span><span class="fl">0.9</span>) <span class="co">#possible migrants,</span></span>
+<span id="cb35-2"><a href="migration-conflict.html#cb35-2" tabindex="-1"></a>new_site <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb35-3"><a href="migration-conflict.html#cb35-3" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> Nts[i<span class="dv">-1</span>,]</span>
+<span id="cb35-4"><a href="migration-conflict.html#cb35-4" tabindex="-1"></a>tmp[Nts[i,] <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> Nts[i, Nts[i,] <span class="sc">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb35-5"><a href="migration-conflict.html#cb35-5" tabindex="-1"></a>havemoved <span class="ot">&lt;-</span> F</span>
+<span id="cb35-6"><a href="migration-conflict.html#cb35-6" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="migration-conflict.html#cb35-7" tabindex="-1"></a><span class="cf">if</span> (migrants <span class="sc">&gt;=</span> (minimals[sites<span class="sc">$</span>culture[s]]<span class="sc">*</span>sites<span class="sc">$</span>Ks[s]) <span class="sc">&amp;</span> <span class="fu">runif</span>(<span class="dv">1</span>)<span class="sc">&lt;</span>prob_split[sites<span class="sc">$</span>culture[s]] ){</span>
+<span id="cb35-8"><a href="migration-conflict.html#cb35-8" tabindex="-1"></a>    <span class="co">#if supopulation &gt; 10 people, 10% chance of creation of a new city</span></span>
+<span id="cb35-9"><a href="migration-conflict.html#cb35-9" tabindex="-1"></a>    <span class="co">#mean of area of influence</span></span>
+<span id="cb35-10"><a href="migration-conflict.html#cb35-10" tabindex="-1"></a>    infarea <span class="ot">&lt;-</span> (<span class="fu">sqrt</span>(tmp)<span class="sc">+</span>penal_cul[cultures]) <span class="sc">*</span> buffersettl</span>
+<span id="cb35-11"><a href="migration-conflict.html#cb35-11" tabindex="-1"></a>    buffersize <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(infarea), infarea, infarea <span class="sc">*</span> <span class="fl">0.1</span>)</span>
+<span id="cb35-12"><a href="migration-conflict.html#cb35-12" tabindex="-1"></a>    buffersize[tmp<span class="sc">==</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="fl">0.00001</span></span>
+<span id="cb35-13"><a href="migration-conflict.html#cb35-13" tabindex="-1"></a>    territory <span class="ot">&lt;-</span> <span class="fu">erase</span>(viable, <span class="fu">buffer</span>(sites, buffersize))</span>
+<span id="cb35-14"><a href="migration-conflict.html#cb35-14" tabindex="-1"></a>    <span class="cf">if</span>( <span class="fu">length</span>(territory)<span class="sc">&gt;</span><span class="dv">0</span> ){</span>
+<span id="cb35-15"><a href="migration-conflict.html#cb35-15" tabindex="-1"></a>        <span class="do">##select a new site given its distance to the old one and the ressourcesource available in ressources</span></span>
+<span id="cb35-16"><a href="migration-conflict.html#cb35-16" tabindex="-1"></a>        d2 <span class="ot">&lt;-</span> <span class="fu">logisticdecay</span>( sites[s], dem, <span class="at">x=</span><span class="dv">20000</span><span class="sc">*</span>cul_ext[sites<span class="sc">$</span>culture[s]])</span>
+<span id="cb35-17"><a href="migration-conflict.html#cb35-17" tabindex="-1"></a>        w <span class="ot">&lt;-</span> (<span class="fl">0.7</span> <span class="sc">*</span> d2 <span class="sc">+</span> <span class="fl">0.3</span><span class="sc">*</span>ressources) <span class="sc">/</span> (<span class="fl">0.7</span><span class="sc">*</span><span class="fu">minmax</span>(d2)[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.3</span><span class="sc">*</span><span class="fu">minmax</span>(ressources)[<span class="dv">2</span>])</span>
+<span id="cb35-18"><a href="migration-conflict.html#cb35-18" tabindex="-1"></a>        new_site <span class="ot">&lt;-</span> <span class="fu">spatSample</span>(</span>
+<span id="cb35-19"><a href="migration-conflict.html#cb35-19" tabindex="-1"></a>           <span class="at">x=</span><span class="fu">mask</span>( w <span class="sc">*</span> <span class="fu">logisticdecay</span>(sites[s], dem, <span class="at">k=</span><span class="fl">0.00002</span>, <span class="at">x=</span><span class="dv">20000</span><span class="sc">*</span>cul_ext[sites<span class="sc">$</span>culture[s]]),territory),</span>
+<span id="cb35-20"><a href="migration-conflict.html#cb35-20" tabindex="-1"></a>           <span class="at">size=</span><span class="dv">1</span>, <span class="at">method=</span><span class="st">&quot;weights&quot;</span>, <span class="at">xy=</span>T)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb35-21"><a href="migration-conflict.html#cb35-21" tabindex="-1"></a>        new_site <span class="ot">&lt;-</span> <span class="fu">vect</span>(new_site, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>))</span>
+<span id="cb35-22"><a href="migration-conflict.html#cb35-22" tabindex="-1"></a></span>
+<span id="cb35-23"><a href="migration-conflict.html#cb35-23" tabindex="-1"></a>        <span class="cf">if</span> ( <span class="fu">length</span>(new_site)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> <span class="fu">all</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">crds</span>(new_site))) ){</span>
+<span id="cb35-24"><a href="migration-conflict.html#cb35-24" tabindex="-1"></a>            <span class="do">##add new site to site listes</span></span>
+<span id="cb35-25"><a href="migration-conflict.html#cb35-25" tabindex="-1"></a>            Ips[[<span class="fu">length</span>(Ips)<span class="sc">+</span><span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">initpopstruc</span>(<span class="at">n=</span>migrants) <span class="co">#initialise a fake population, will be updated by real migrants later</span></span>
+<span id="cb35-26"><a href="migration-conflict.html#cb35-26" tabindex="-1"></a>            new_site<span class="sc">$</span>culture <span class="ot">&lt;-</span> sites<span class="sc">$</span>culture[s]</span>
+<span id="cb35-27"><a href="migration-conflict.html#cb35-27" tabindex="-1"></a>            new_site<span class="sc">$</span>Ks <span class="ot">&lt;-</span> <span class="fu">round</span>( <span class="fu">initKs</span>(</span>
+<span id="cb35-28"><a href="migration-conflict.html#cb35-28" tabindex="-1"></a>                Kbase, <span class="at">sites=</span>new_site, ressources,</span>
+<span id="cb35-29"><a href="migration-conflict.html#cb35-29" tabindex="-1"></a>                <span class="at">sizeex=</span><span class="st">&quot;F&quot;</span>, <span class="at">rate=</span><span class="fl">0.45</span>))</span>
+<span id="cb35-30"><a href="migration-conflict.html#cb35-30" tabindex="-1"></a>            sites <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sites, new_site)</span>
+<span id="cb35-31"><a href="migration-conflict.html#cb35-31" tabindex="-1"></a>            Ks[<span class="fu">length</span>(Ks)<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> new_site<span class="sc">$</span>Ks</span>
+<span id="cb35-32"><a href="migration-conflict.html#cb35-32" tabindex="-1"></a>            city <span class="ot">&lt;-</span> <span class="fu">length</span>(Ips)</span>
+<span id="cb35-33"><a href="migration-conflict.html#cb35-33" tabindex="-1"></a>            Nts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Nts, <span class="fu">rep</span>(<span class="dv">0</span>,ts<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb35-34"><a href="migration-conflict.html#cb35-34" tabindex="-1"></a>            Nts[i, city] <span class="ot">&lt;-</span> migrants</span>
+<span id="cb35-35"><a href="migration-conflict.html#cb35-35" tabindex="-1"></a>            cultures <span class="ot">&lt;-</span> <span class="fu">c</span>(cultures, cultures[s])</span>
+<span id="cb35-36"><a href="migration-conflict.html#cb35-36" tabindex="-1"></a>            havemoved <span class="ot">&lt;-</span> T</span>
+<span id="cb35-37"><a href="migration-conflict.html#cb35-37" tabindex="-1"></a>        }</span>
+<span id="cb35-38"><a href="migration-conflict.html#cb35-38" tabindex="-1"></a>        <span class="cf">if</span>( havemoved ){</span>
+<span id="cb35-39"><a href="migration-conflict.html#cb35-39" tabindex="-1"></a>            Ips[<span class="fu">c</span>(s,city)] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(<span class="at">loosingPop=</span>Ips[[s]], <span class="at">winingPop=</span>Ips[[city]], <span class="at">size=</span>migrants)</span>
+<span id="cb35-40"><a href="migration-conflict.html#cb35-40" tabindex="-1"></a>            newN <span class="ot">&lt;-</span> newN <span class="sc">-</span> migrants</span>
+<span id="cb35-41"><a href="migration-conflict.html#cb35-41" tabindex="-1"></a>        }</span>
+<span id="cb35-42"><a href="migration-conflict.html#cb35-42" tabindex="-1"></a>    }</span>
+<span id="cb35-43"><a href="migration-conflict.html#cb35-43" tabindex="-1"></a>}</span></code></pre></div>
+<p>This uses a couple of internal function some we already describe like:
+- <code>initpopstruc</code>
+- <code>initKs</code></p>
+<p>and specific one like:
+- <code>changePopSize</code>: Change population size by moving population from one to another; or remove a group of people</p>
+</div>
+<div id="migration" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Migration<a href="migration-conflict.html#migration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If the fission event fails, people will then move to another settlement. The choice of the new settlement is based on a combination of the distance to the new settlement, its ‘available space,’ which correspond to how far from carrying capacity the population will be once the migrant move in, and the resources available at this site. Each settlement is assigned a probability, given these elements, used to randomly choose the site of migration, following this equation:</p>
+<p><span class="math display">\[
+\text{attractivity} = \frac{e^{\left(\text{resources} \times \text{space} \times \log(\text{distance})\right)} }{ \sum \exp\left(\text{resources} \times \text{space} \times \log(\text{distance})\right)}
+\]</span></p>
+<p>Here is a simplified version of the actual implementation available in <code>run_simulation</code>:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="migration-conflict.html#cb36-1" tabindex="-1"></a>att <span class="ot">&lt;-</span> <span class="fu">extract</span>(ressources,sites)[,<span class="dv">2</span>]</span>
+<span id="cb36-2"><a href="migration-conflict.html#cb36-2" tabindex="-1"></a>space <span class="ot">&lt;-</span> sites<span class="sc">$</span>Ks <span class="sc">-</span> (Nts[i<span class="dv">-1</span>,] <span class="sc">+</span> migrants)</span>
+<span id="cb36-3"><a href="migration-conflict.html#cb36-3" tabindex="-1"></a>dis <span class="ot">&lt;-</span> <span class="fu">extract</span>(<span class="fu">logisticdecay</span>(sites[s], dem, <span class="at">k=</span><span class="fl">0.00002</span>, <span class="at">x=</span><span class="dv">1</span>), sites)[,<span class="dv">2</span>]</span>
+<span id="cb36-4"><a href="migration-conflict.html#cb36-4" tabindex="-1"></a>attractivity <span class="ot">&lt;-</span> att <span class="sc">*</span> space <span class="sc">*</span> dis</span>
+<span id="cb36-5"><a href="migration-conflict.html#cb36-5" tabindex="-1"></a><span class="co">#attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture</span></span>
+<span id="cb36-6"><a href="migration-conflict.html#cb36-6" tabindex="-1"></a>attractivity[s] <span class="ot">&lt;-</span> <span class="fu">min</span>(attractivity)<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb36-7"><a href="migration-conflict.html#cb36-7" tabindex="-1"></a>attractivity <span class="ot">&lt;-</span> <span class="fu">exp</span>(attractivity)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(attractivity))</span>
+<span id="cb36-8"><a href="migration-conflict.html#cb36-8" tabindex="-1"></a>attractivity[Nts[i<span class="dv">-1</span>,]<span class="sc">&lt;</span><span class="dv">10</span>] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb36-9"><a href="migration-conflict.html#cb36-9" tabindex="-1"></a>attractivity[sites<span class="sc">$</span>culture<span class="sc">!=</span>sites<span class="sc">$</span>culture[s]] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb36-10"><a href="migration-conflict.html#cb36-10" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">any</span>(<span class="fu">is.na</span>(attractivity))) attractivity[<span class="fu">is.na</span>(attractivity)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb36-11"><a href="migration-conflict.html#cb36-11" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">size=</span><span class="dv">1</span>, <span class="at">x=</span><span class="fu">seq_along</span>(sites), <span class="at">prob=</span>attractivity)</span>
+<span id="cb36-12"><a href="migration-conflict.html#cb36-12" tabindex="-1"></a>Nts[i,city] <span class="ot">&lt;-</span> Nts[i<span class="dv">-1</span>,city] <span class="sc">+</span> migrants</span></code></pre></div>
+</div>
+<div id="conflict-and-war" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Conflict and War<a href="migration-conflict.html#conflict-and-war" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>the culture of the settlements,
+During each time steps of the simulation, each settltement have the opportunity to fight against another settlement. This again, will depend on multiple factor such as the culture of the settlements and their population sizes. Here’s a breakdown of how war is simulated according to the provided code snippet:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><strong>Identification of Aggressors</strong>:
+<ul>
+<li>In the archaeoriddle simulation, only Farmer have a aggressive behavior and engage in conflict. Thus during a first stepo, farmers ettlements with a population size greater than 50 are identified as potential aggressors (<code>potentialfighters</code>). From this subset of the Farmer’s settlement,10% of them will actually try to engage in warfare.</li>
+</ul></li>
+<li><strong>Selecting the Target for Attack</strong>:
+<ul>
+<li>Settlements within a radius from the agressor and with a different culture are identified as potential victims. The radius is defined by theparameters <code>bufferatack</code>. Then:</li>
+<li>If there is only one clash candidate, that candidate is selected as the target.</li>
+<li>If there are multiple candidates, one is randomly selected as the target of the attack.</li>
+</ul></li>
+<li><strong>Conducting the Battle and Calculating Losses</strong>:
+<ul>
+<li>The battle is simulated through the <code>fightbetterloss</code> function, which calculates the new population sizes for both the aggressor and the victim after the conflict.</li>
+<li>The casualties from the battle are calculated, and these are used to determine the size of the war event.</li>
+</ul></li>
+</ol>
+<p>To calculate who win and what are the loss we defined a function <code>fightbetterloss</code> that simulates a battle between two settlements and calculates their post-conflict population sizes based on their initial population sizes. The outcome of who wins the battle is determined probabilistically, influenced by the relative sizes of each settlement’s population.</p>
+<p>The battle outcome between two settlements, A and B, is determined by:</p>
+<p><span class="math display">\[ P(\text{Victory for A}) = \frac{N_A}{N_A + N_B} \]</span></p>
+<p>where <span class="math inline">\(N_A\)</span> and <span class="math inline">\(N_B\)</span> are the population sizes of settlements A and B, respectively. This probability is used to decide who the victor (v) is and who the loser (l) is. The new population sizes of the victor and the loser after the battle are determined by binomial distributions, reflecting the randomness of conflict outcomes:</p>
+<p>For the victor (<span class="math inline">\(v\)</span>):
+<span class="math display">\[ N_{v,\text{new}} = \text{Binomial}\left(n = N_v, p = 1 - \frac{N_l}{N_v + N_l}\right) \]</span></p>
+<p>For the loser (<span class="math inline">\(l\)</span>):
+<span class="math display">\[ N_{l,\text{new}} = \text{Binomial}\left(n = N_l, p = 1 - \frac{N_v}{N_v + N_l}\right) \]</span></p>
+<p>In these equations, <span class="math inline">\(N_{v,\text{new}}\)</span> and <span class="math inline">\(N_{l,\text{new}}\)</span> are the new population sizes for the victor and the loser; <span class="math inline">\(n\)</span> is the size parameter of the binomial distribution, which is the pre-battle population size; and <span class="math inline">\(p\)</span> is the success probability of surviving the battle. The success probability for each side inversely depends on the ratio of the opponent’s population size to the total population involved in the conflict, reflecting the idea that the larger the opponent’s population, the higher the casualties and thus, the lower the survival probability.</p>
+<p>This process incorporates cultural differences, population sizes, and proximity to dictate when and how wars occur between settlements, simulating the nuanced and multifaceted nature of conflict in a simplified manner.</p>
+<p>A quick illustration of how the outcome of conflicts between two settlements of varying size:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="migration-conflict.html#cb37-1" tabindex="-1"></a>compare<span class="ot">=</span><span class="fu">do.call</span>(<span class="st">&quot;rbind&quot;</span>,<span class="fu">lapply</span>(<span class="fu">seq</span>(<span class="dv">10</span>,<span class="dv">100</span>,<span class="dv">3</span>),<span class="cf">function</span>(b)</span>
+<span id="cb37-2"><a href="migration-conflict.html#cb37-2" tabindex="-1"></a>    <span class="fu">t</span>(<span class="fu">rbind</span>(b<span class="sc">/</span><span class="dv">100</span>,<span class="fu">replicate</span>(<span class="dv">100</span>,<span class="fu">c</span>(<span class="dv">100</span>,b)<span class="sc">-</span><span class="fu">fightbetterloss</span>(<span class="fu">c</span>(<span class="dv">100</span>,b),<span class="dv">1</span>,<span class="dv">2</span>))))</span>
+<span id="cb37-3"><a href="migration-conflict.html#cb37-3" tabindex="-1"></a> ))</span>
+<span id="cb37-4"><a href="migration-conflict.html#cb37-4" tabindex="-1"></a><span class="fu">plot</span>(compare[,<span class="dv">1</span>]<span class="sc">+</span><span class="fu">runif</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="fl">0.01</span>),compare[,<span class="dv">2</span>],<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;red&quot;</span>,.<span class="dv">6</span>),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">main=</span><span class="st">&quot;number of loss&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;ratio A/B&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;number of loss&quot;</span>)</span>
+<span id="cb37-5"><a href="migration-conflict.html#cb37-5" tabindex="-1"></a><span class="fu">points</span>(compare[,<span class="dv">1</span>]<span class="sc">+</span>.<span class="dv">015</span><span class="sc">+</span><span class="fu">runif</span>(<span class="dv">100</span>,<span class="dv">0</span>,<span class="fl">0.01</span>),compare[,<span class="dv">3</span>],<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;blue&quot;</span>,.<span class="dv">6</span>),<span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb37-6"><a href="migration-conflict.html#cb37-6" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;loss for A&quot;</span>,<span class="st">&quot;loss for B&quot;</span>),<span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>),<span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb37-7"><a href="migration-conflict.html#cb37-7" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="migration-conflict.html#cb37-8" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="migration-conflict.html#cb37-9" tabindex="-1"></a>cls<span class="ot">=</span><span class="fu">heat.colors</span>(<span class="fu">length</span>(<span class="fu">unique</span>(compare[,<span class="dv">1</span>])))</span>
+<span id="cb37-10"><a href="migration-conflict.html#cb37-10" tabindex="-1"></a><span class="fu">names</span>(cls)<span class="ot">=</span><span class="fu">unique</span>(compare[,<span class="dv">1</span>])</span>
+<span id="cb37-11"><a href="migration-conflict.html#cb37-11" tabindex="-1"></a><span class="fu">plot</span>(compare[,<span class="dv">2</span>]<span class="sc">+</span><span class="fu">runif</span>(<span class="dv">100</span>),compare[,<span class="dv">3</span>]<span class="sc">+</span><span class="fu">runif</span>(<span class="dv">100</span>),<span class="at">bg=</span>cls[<span class="fu">as.character</span>(compare[,<span class="dv">1</span>])],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">ylab=</span><span class="st">&quot;losses for B&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;losses for A&quot;</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">80</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">80</span>),<span class="at">cex=</span><span class="dv">2</span>)</span>
+<span id="cb37-12"><a href="migration-conflict.html#cb37-12" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomrigh&quot;</span>,<span class="at">legend=</span><span class="fu">names</span>(cls)[<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(cls),<span class="at">length.out=</span><span class="dv">9</span>)],<span class="at">fill=</span>cls[<span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(cls),<span class="at">length.out=</span><span class="dv">9</span>)],<span class="at">ncol =</span> <span class="dv">3</span>,<span class="at">title=</span><span class="st">&quot;ratio A/B&quot;</span>)</span>
+<span id="cb37-13"><a href="migration-conflict.html#cb37-13" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">1</span>,<span class="at">b=</span><span class="dv">1</span>,<span class="at">col=</span><span class="st">&quot;green&quot;</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:illu-war"></span>
+<img src="_main_files/figure-html/illu-war-1.png" alt="Simulation run with population A with 100 people, and populaiton B with a growing populatoin size from 10 to 100, represent fraction of population a from 10% to same population size. Noise has been added to visualise alldata" width="45%" /><img src="_main_files/figure-html/illu-war-2.png" alt="Simulation run with population A with 100 people, and populaiton B with a growing populatoin size from 10 to 100, represent fraction of population a from 10% to same population size. Noise has been added to visualise alldata" width="45%" />
+<p class="caption">
+Figure 4.1: Simulation run with population A with 100 people, and populaiton B with a growing populatoin size from 10 to 100, represent fraction of population a from 10% to same population size. Noise has been added to visualise alldata
+</p>
+</div>
+<p>The model with generate loss in both sides, but on average less for the biggest populaiton, while stil allowing cases where the smaller settlement win the fight and generate more damage that it receives. These difference get smoothed when the size of the two settlements become similar.</p>
+<p>Here is a simplified version of the actual implementation available in <code>run_simulation</code>:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="migration-conflict.html#cb38-1" tabindex="-1"></a></span>
+<span id="cb38-2"><a href="migration-conflict.html#cb38-2" tabindex="-1"></a>poitentialfighters <span class="ot">&lt;-</span> <span class="fu">which</span>(sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span> <span class="sc">&amp;</span> Nts[i,]<span class="sc">&gt;</span><span class="dv">50</span>)</span>
+<span id="cb38-3"><a href="migration-conflict.html#cb38-3" tabindex="-1"></a><span class="cf">for</span> (s <span class="cf">in</span> <span class="fu">sample</span>(<span class="at">x=</span>potentialfighters, <span class="at">size=</span><span class="fu">round</span>(<span class="fu">length</span>(potentialfighters)<span class="sc">*</span><span class="fl">0.1</span>))){</span>
+<span id="cb38-4"><a href="migration-conflict.html#cb38-4" tabindex="-1"></a>  buff <span class="ot">&lt;-</span> bufferatack</span>
+<span id="cb38-5"><a href="migration-conflict.html#cb38-5" tabindex="-1"></a>  potentialvictims <span class="ot">&lt;-</span> <span class="fu">which</span>(sites<span class="sc">$</span>culture <span class="sc">!=</span>sites<span class="sc">$</span>culture[s] <span class="sc">&amp;</span> Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>) </span>
+<span id="cb38-6"><a href="migration-conflict.html#cb38-6" tabindex="-1"></a>  clash <span class="ot">&lt;-</span> <span class="fu">whotouch</span>(s, sites, <span class="at">Ne=</span>Nts[i,], <span class="at">buffersize=</span>buff)</span>
+<span id="cb38-7"><a href="migration-conflict.html#cb38-7" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">length</span>(clash)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(clash)){</span>
+<span id="cb38-8"><a href="migration-conflict.html#cb38-8" tabindex="-1"></a>    <span class="cf">if</span>(<span class="fu">length</span>(clash) <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb38-9"><a href="migration-conflict.html#cb38-9" tabindex="-1"></a>      attack <span class="ot">&lt;-</span> clash</span>
+<span id="cb38-10"><a href="migration-conflict.html#cb38-10" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb38-11"><a href="migration-conflict.html#cb38-11" tabindex="-1"></a>      attack <span class="ot">&lt;-</span> <span class="fu">sample</span>(clash, <span class="dv">1</span>)</span>
+<span id="cb38-12"><a href="migration-conflict.html#cb38-12" tabindex="-1"></a>    }</span>
+<span id="cb38-13"><a href="migration-conflict.html#cb38-13" tabindex="-1"></a>    newns <span class="ot">&lt;-</span> <span class="fu">fightbetterloss</span>(<span class="at">Ne=</span>Nts[i,], <span class="at">a=</span>s, <span class="at">b=</span>attack)</span>
+<span id="cb38-14"><a href="migration-conflict.html#cb38-14" tabindex="-1"></a>    casualties <span class="ot">&lt;-</span> <span class="fu">sum</span>(Nts[i, <span class="fu">c</span>(s,attack)] <span class="sc">-</span> newns[<span class="fu">c</span>(s,attack)])</span>
+<span id="cb38-15"><a href="migration-conflict.html#cb38-15" tabindex="-1"></a>    warcasualties[i] <span class="ot">&lt;-</span> casualties</span>
+<span id="cb38-16"><a href="migration-conflict.html#cb38-16" tabindex="-1"></a>    sizew <span class="ot">&lt;-</span> casualties<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="dv">4000</span></span>
+<span id="cb38-17"><a href="migration-conflict.html#cb38-17" tabindex="-1"></a>    <span class="fu">warpoints</span>(sites, s, attack, <span class="at">Ne=</span>Nts[i,],</span>
+<span id="cb38-18"><a href="migration-conflict.html#cb38-18" tabindex="-1"></a>              <span class="at">buffersize=</span>buff, <span class="at">sizewar=</span>sizew<span class="fl">+0.5</span>,<span class="at">plot=</span>wplot)</span>
+<span id="cb38-19"><a href="migration-conflict.html#cb38-19" tabindex="-1"></a>    </span>
+<span id="cb38-20"><a href="migration-conflict.html#cb38-20" tabindex="-1"></a>    <span class="co">#effectively kill people in population (should be done taking into account age pyramid to be more realistic)</span></span>
+<span id="cb38-21"><a href="migration-conflict.html#cb38-21" tabindex="-1"></a>    Ips[[s]] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(<span class="at">loosingPop=</span>Ips[[s]],</span>
+<span id="cb38-22"><a href="migration-conflict.html#cb38-22" tabindex="-1"></a>                              <span class="at">size=</span>(Nts[i,s] <span class="sc">-</span> newns[s]))</span>
+<span id="cb38-23"><a href="migration-conflict.html#cb38-23" tabindex="-1"></a>    Ips[[attack]] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(<span class="at">loosingPop=</span>Ips[[attack]],</span>
+<span id="cb38-24"><a href="migration-conflict.html#cb38-24" tabindex="-1"></a>                                   <span class="at">size=</span>(Nts[i, attack] <span class="sc">-</span> newns[attack]))</span>
+<span id="cb38-25"><a href="migration-conflict.html#cb38-25" tabindex="-1"></a>    Nts[i,] <span class="ot">&lt;-</span> newns</span>
+<span id="cb38-26"><a href="migration-conflict.html#cb38-26" tabindex="-1"></a>  }</span>
+<span id="cb38-27"><a href="migration-conflict.html#cb38-27" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="network-site-size-and-climate-deprecated" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> ~~ Network, Site Size And Climate – DEPRECATED ~~<a href="migration-conflict.html#network-site-size-and-climate-deprecated" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The following steps were designed but never used ; they can be quite fun and useful.</p>
+<hr />
+<p>Create a network between sites (requires <code>igraph</code>)</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="migration-conflict.html#cb39-1" tabindex="-1"></a></span>
+<span id="cb39-2"><a href="migration-conflict.html#cb39-2" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb39-3"><a href="migration-conflict.html#cb39-3" tabindex="-1"></a>subsites  <span class="ot">&lt;-</span> sites</span>
+<span id="cb39-4"><a href="migration-conflict.html#cb39-4" tabindex="-1"></a><span class="fu">crs</span>(subsites) <span class="ot">&lt;-</span> <span class="st">&quot;+proj=lonlat&quot;</span></span>
+<span id="cb39-5"><a href="migration-conflict.html#cb39-5" tabindex="-1"></a>subsites <span class="ot">&lt;-</span> sites[<span class="fu">sample</span>(<span class="fu">nrow</span>(sites), <span class="dv">20</span>), ]</span>
+<span id="cb39-6"><a href="migration-conflict.html#cb39-6" tabindex="-1"></a>ig <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(</span>
+<span id="cb39-7"><a href="migration-conflict.html#cb39-7" tabindex="-1"></a>  <span class="fu">as.matrix</span>(<span class="fu">distance</span>(subsites)), <span class="at">weighted=</span>T, <span class="at">mode=</span><span class="st">&quot;undirected&quot;</span>)</span>
+<span id="cb39-8"><a href="migration-conflict.html#cb39-8" tabindex="-1"></a>ig <span class="ot">&lt;-</span> <span class="fu">set_graph_attr</span>(ig, <span class="st">&quot;layout&quot;</span>, <span class="fu">crds</span>(subsites))</span>
+<span id="cb39-9"><a href="migration-conflict.html#cb39-9" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="migration-conflict.html#cb39-10" tabindex="-1"></a><span class="fu">V</span>(ig)<span class="sc">$</span>label <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb39-11"><a href="migration-conflict.html#cb39-11" tabindex="-1"></a><span class="fu">V</span>(ig)<span class="sc">$</span>size <span class="ot">&lt;-</span> (size<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span><span class="dv">5</span></span>
+<span id="cb39-12"><a href="migration-conflict.html#cb39-12" tabindex="-1"></a><span class="fu">V</span>(ig)<span class="sc">$</span>frame.color <span class="ot">&lt;-</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb39-13"><a href="migration-conflict.html#cb39-13" tabindex="-1"></a><span class="fu">V</span>(ig)<span class="sc">$</span>frame.width <span class="ot">&lt;-</span> .<span class="dv">5</span></span>
+<span id="cb39-14"><a href="migration-conflict.html#cb39-14" tabindex="-1"></a><span class="fu">E</span>(ig)<span class="sc">$</span>weight <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>(<span class="fu">E</span>(ig)<span class="sc">$</span>weight<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb39-15"><a href="migration-conflict.html#cb39-15" tabindex="-1"></a><span class="fu">E</span>(ig)<span class="sc">$</span>width <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">E</span>(ig)<span class="sc">$</span>weight)<span class="sc">+</span>.<span class="dv">6</span></span>
+<span id="cb39-16"><a href="migration-conflict.html#cb39-16" tabindex="-1"></a></span>
+<span id="cb39-17"><a href="migration-conflict.html#cb39-17" tabindex="-1"></a>allcomu <span class="ot">&lt;-</span> <span class="fu">cluster_louvain</span>(ig)<span class="sc">$</span>memberships[<span class="dv">1</span>,]</span>
+<span id="cb39-18"><a href="migration-conflict.html#cb39-18" tabindex="-1"></a><span class="fu">V</span>(ig)<span class="sc">$</span>color <span class="ot">&lt;-</span> allcomu</span>
+<span id="cb39-19"><a href="migration-conflict.html#cb39-19" tabindex="-1"></a><span class="fu">E</span>(ig)<span class="sc">$</span>color <span class="ot">&lt;-</span> allcomu[<span class="fu">head_of</span>(ig,<span class="fu">E</span>(ig))]</span>
+<span id="cb39-20"><a href="migration-conflict.html#cb39-20" tabindex="-1"></a></span>
+<span id="cb39-21"><a href="migration-conflict.html#cb39-21" tabindex="-1"></a><span class="fu">plot</span>(height.ras, <span class="at">col=</span><span class="fu">col_ramp</span>(<span class="dv">20</span>), <span class="at">legend=</span>F, <span class="at">reset=</span>F)</span>
+<span id="cb39-22"><a href="migration-conflict.html#cb39-22" tabindex="-1"></a><span class="fu">plot</span>(height.wat, <span class="at">col=</span><span class="st">&quot;lightblue&quot;</span>, <span class="at">add=</span>T, <span class="at">legend=</span>F)</span>
+<span id="cb39-23"><a href="migration-conflict.html#cb39-23" tabindex="-1"></a><span class="fu">plot</span>(ig, <span class="at">add=</span>T, <span class="at">rescale=</span>F, <span class="at">alpha=</span>.<span class="dv">2</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/sitesnetwork-1.png" width="672" /></p>
+<p>Visualise sites on the 3D plot</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="migration-conflict.html#cb40-1" tabindex="-1"></a></span>
+<span id="cb40-2"><a href="migration-conflict.html#cb40-2" tabindex="-1"></a><span class="fu">plot_3d</span>(</span>
+<span id="cb40-3"><a href="migration-conflict.html#cb40-3" tabindex="-1"></a>  hm_lamb,height_map, <span class="at">zscale=</span><span class="dv">20</span>, <span class="at">fov=</span><span class="dv">0</span>, <span class="at">theta=</span><span class="dv">20</span>, <span class="at">zoom=</span><span class="dv">1</span>, <span class="at">phi=</span><span class="dv">45</span>,</span>
+<span id="cb40-4"><a href="migration-conflict.html#cb40-4" tabindex="-1"></a>  <span class="at">windowsize=</span><span class="fu">c</span>(<span class="dv">1000</span>, <span class="dv">800</span>), <span class="at">water=</span><span class="cn">TRUE</span>, <span class="at">waterdepth=</span><span class="fu">mean</span>(height),</span>
+<span id="cb40-5"><a href="migration-conflict.html#cb40-5" tabindex="-1"></a>  <span class="at">wateralpha=</span><span class="dv">1</span>, <span class="at">watercolor=</span><span class="st">&quot;lightblue&quot;</span>, <span class="at">waterlinecolor=</span><span class="st">&quot;lightblue&quot;</span>,</span>
+<span id="cb40-6"><a href="migration-conflict.html#cb40-6" tabindex="-1"></a>  <span class="at">waterlinealpha=</span>.<span class="dv">7</span></span>
+<span id="cb40-7"><a href="migration-conflict.html#cb40-7" tabindex="-1"></a>)</span>
+<span id="cb40-8"><a href="migration-conflict.html#cb40-8" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="migration-conflict.html#cb40-9" tabindex="-1"></a><span class="fu">render_points</span>(</span>
+<span id="cb40-10"><a href="migration-conflict.html#cb40-10" tabindex="-1"></a>  <span class="at">extent=</span>raster<span class="sc">::</span><span class="fu">extent</span>(raster<span class="sc">::</span><span class="fu">raster</span>(height.ras)),</span>
+<span id="cb40-11"><a href="migration-conflict.html#cb40-11" tabindex="-1"></a>  <span class="at">lat=</span><span class="fl">2.13828</span>, <span class="at">long=</span><span class="sc">-</span><span class="fl">1.685547</span>, <span class="at">altitude=</span><span class="fu">extract</span>(height.ras,sites)[,<span class="dv">1</span>]<span class="sc">+</span><span class="dv">20</span>,</span>
+<span id="cb40-12"><a href="migration-conflict.html#cb40-12" tabindex="-1"></a>  <span class="at">zscale=</span><span class="dv">20</span>, <span class="at">size=</span><span class="dv">1</span>, <span class="at">col=</span><span class="fu">categorical_pal</span>(<span class="fu">max</span>(allcomu))[allcomu],</span>
+<span id="cb40-13"><a href="migration-conflict.html#cb40-13" tabindex="-1"></a>  <span class="at">clear_previous=</span><span class="cn">TRUE</span></span>
+<span id="cb40-14"><a href="migration-conflict.html#cb40-14" tabindex="-1"></a>)</span>
+<span id="cb40-15"><a href="migration-conflict.html#cb40-15" tabindex="-1"></a></span>
+<span id="cb40-16"><a href="migration-conflict.html#cb40-16" tabindex="-1"></a><span class="fu">render_points</span>(</span>
+<span id="cb40-17"><a href="migration-conflict.html#cb40-17" tabindex="-1"></a>  <span class="at">extent=</span>raster<span class="sc">::</span><span class="fu">extent</span>(raster<span class="sc">::</span><span class="fu">raster</span>(height.ras)),</span>
+<span id="cb40-18"><a href="migration-conflict.html#cb40-18" tabindex="-1"></a>  <span class="at">lat=</span><span class="fu">crds</span>(sites)[,<span class="st">&quot;y&quot;</span>], <span class="at">long=</span><span class="fu">crds</span>(sites)[,<span class="st">&quot;x&quot;</span>], <span class="at">altitude=</span><span class="fu">extract</span>(height.ras, sites)[,<span class="dv">1</span>]<span class="sc">+</span><span class="dv">20</span>,</span>
+<span id="cb40-19"><a href="migration-conflict.html#cb40-19" tabindex="-1"></a>  <span class="at">zscale=</span><span class="dv">20</span>, <span class="at">size=</span><span class="dv">1</span>, <span class="at">col=</span><span class="fu">categorical_pal</span>(<span class="fu">max</span>(allcomu))[allcomu],</span>
+<span id="cb40-20"><a href="migration-conflict.html#cb40-20" tabindex="-1"></a>  <span class="at">clear_previous=</span><span class="cn">TRUE</span></span>
+<span id="cb40-21"><a href="migration-conflict.html#cb40-21" tabindex="-1"></a>)</span>
+<span id="cb40-22"><a href="migration-conflict.html#cb40-22" tabindex="-1"></a>       </span>
+<span id="cb40-23"><a href="migration-conflict.html#cb40-23" tabindex="-1"></a><span class="fu">render_highquality</span>(<span class="at">point_radius=</span><span class="dv">5</span>, <span class="at">samples=</span><span class="dv">256</span>, <span class="at">clear=</span><span class="cn">TRUE</span>, <span class="at">light=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<p>let’s say the climate modulate site size in a naive way:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="migration-conflict.html#cb41-1" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, tstep, <span class="at">length.out=</span><span class="dv">100</span>)){</span>
+<span id="cb41-2"><a href="migration-conflict.html#cb41-2" tabindex="-1"></a>    <span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">ncol=</span><span class="dv">1</span>), <span class="at">heights=</span><span class="fu">c</span>(.<span class="dv">8</span>, .<span class="dv">2</span>))</span>
+<span id="cb41-3"><a href="migration-conflict.html#cb41-3" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>))</span>
+<span id="cb41-4"><a href="migration-conflict.html#cb41-4" tabindex="-1"></a>    <span class="fu">image</span>(m, <span class="at">ann=</span>F, <span class="at">axes=</span>F, <span class="at">main=</span>i)</span>
+<span id="cb41-5"><a href="migration-conflict.html#cb41-5" tabindex="-1"></a>    <span class="fu">mtext</span>(<span class="fu">round</span>(i), <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb41-6"><a href="migration-conflict.html#cb41-6" tabindex="-1"></a>    nsize <span class="ot">&lt;-</span> size<span class="sc">*</span>faketemp[i] <span class="sc">+</span> size <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb41-7"><a href="migration-conflict.html#cb41-7" tabindex="-1"></a>    <span class="fu">points</span>(<span class="fu">crds</span>(sites), <span class="at">bg=</span><span class="st">&quot;green&quot;</span>, <span class="at">pch=</span><span class="dv">21</span>, <span class="at">cex=</span>nsize)</span>
+<span id="cb41-8"><a href="migration-conflict.html#cb41-8" tabindex="-1"></a>    <span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb41-9"><a href="migration-conflict.html#cb41-9" tabindex="-1"></a>    <span class="fu">plot</span>(</span>
+<span id="cb41-10"><a href="migration-conflict.html#cb41-10" tabindex="-1"></a>      <span class="dv">1</span><span class="sc">:</span>tstep, faketemp, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;temp&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylim=</span><span class="fu">range</span>(faketemp),</span>
+<span id="cb41-11"><a href="migration-conflict.html#cb41-11" tabindex="-1"></a>      <span class="at">ann=</span>F, <span class="at">frame.plot=</span>F)</span>
+<span id="cb41-12"><a href="migration-conflict.html#cb41-12" tabindex="-1"></a>    <span class="fu">points</span>(i, faketemp[i], <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="dv">20</span>)</span>
+<span id="cb41-13"><a href="migration-conflict.html#cb41-13" tabindex="-1"></a>}</span></code></pre></div>
+<p>Population will then grow, for years and years. This implies multiple things: population need resources and a way to grow with regard to these resources and their own technologies.We initialised the ressource layer in the previous chapter
+in <a href="#ressource">the section about ressources</a>. In the following sections we will use this ressource raster to initialise site size et define how ressource are used by the different culture.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="population-structure-growth.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="main-simu.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

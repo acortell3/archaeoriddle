@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Main Simulation | Methods Riddles, the ultimate revelations</title>
+  <meta name="description" content="First draft of Rbookdown to describe how data have been generated" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Main Simulation | Methods Riddles, the ultimate revelations" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="First draft of Rbookdown to describe how data have been generated" />
+  <meta name="github-repo" content="acortell3/archaeoriddle" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Main Simulation | Methods Riddles, the ultimate revelations" />
+  
+  <meta name="twitter:description" content="First draft of Rbookdown to describe how data have been generated" />
+  
+
+<meta name="author" content="CDAL" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link rel="prev" href="migration-conflict.html"/>
+<link rel="next" href="recgen.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.11/grViz.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-is-archaeoriddle"><i class="fa fa-check"></i><b>1.1</b> What is archaeoriddle?</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-will-you-find-in-this-bookdown"><i class="fa fa-check"></i><b>1.2</b> What will you find in this bookdown?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#what-can-you-do-with-this"><i class="fa fa-check"></i><b>1.3</b> What can you do with this?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="landscape-resources.html"><a href="landscape-resources.html"><i class="fa fa-check"></i><b>2</b> Landscape &amp; Resources</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="landscape-resources.html"><a href="landscape-resources.html#autocorrelated-noise-generation"><i class="fa fa-check"></i><b>2.1</b> Autocorrelated noise generation</a></li>
+<li class="chapter" data-level="2.2" data-path="landscape-resources.html"><a href="landscape-resources.html#slope-and-elevation"><i class="fa fa-check"></i><b>2.2</b> Slope and Elevation</a></li>
+<li class="chapter" data-level="2.3" data-path="landscape-resources.html"><a href="landscape-resources.html#environmental-resources"><i class="fa fa-check"></i><b>2.3</b> Environmental resources</a></li>
+<li class="chapter" data-level="2.4" data-path="landscape-resources.html"><a href="landscape-resources.html#manual-selection"><i class="fa fa-check"></i><b>2.4</b> Manually Select Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="population-structure-growth.html"><a href="population-structure-growth.html"><i class="fa fa-check"></i><b>3</b> Population structure &amp; growth</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="population-structure-growth.html"><a href="population-structure-growth.html#settlements-position"><i class="fa fa-check"></i><b>3.1</b> Settlements position</a></li>
+<li class="chapter" data-level="3.2" data-path="population-structure-growth.html"><a href="population-structure-growth.html#initsize"><i class="fa fa-check"></i><b>3.2</b> Initializing Site Population and Culture</a></li>
+<li class="chapter" data-level="3.3" data-path="population-structure-growth.html"><a href="population-structure-growth.html#base-pop-growth"><i class="fa fa-check"></i><b>3.3</b> Population Growth : <span class="math inline">\(Pop\)</span>-protocol</a>
+<ul>
+<li class="chapter" data-level="" data-path="population-structure-growth.html"><a href="population-structure-growth.html#source"><i class="fa fa-check"></i>Source</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="migration-conflict.html"><a href="migration-conflict.html"><i class="fa fa-check"></i><b>4</b> Migration &amp; Conflict</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="migration-conflict.html"><a href="migration-conflict.html#fission"><i class="fa fa-check"></i><b>4.1</b> Fission</a></li>
+<li class="chapter" data-level="4.2" data-path="migration-conflict.html"><a href="migration-conflict.html#migration"><i class="fa fa-check"></i><b>4.2</b> Migration</a></li>
+<li class="chapter" data-level="4.3" data-path="migration-conflict.html"><a href="migration-conflict.html#conflict-and-war"><i class="fa fa-check"></i><b>4.3</b> Conflict and War</a></li>
+<li class="chapter" data-level="4.4" data-path="migration-conflict.html"><a href="migration-conflict.html#network-site-size-and-climate-deprecated"><i class="fa fa-check"></i><b>4.4</b> ~~ Network, Site Size And Climate – DEPRECATED ~~</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="main-simu.html"><a href="main-simu.html"><i class="fa fa-check"></i><b>5</b> Main Simulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="main-simu.html"><a href="main-simu.html#initial-parameters"><i class="fa fa-check"></i><b>5.1</b> Initial Parameters</a></li>
+<li class="chapter" data-level="5.2" data-path="main-simu.html"><a href="main-simu.html#algorithm"><i class="fa fa-check"></i><b>5.2</b> Algorithm</a>
+<ul>
+<li class="chapter" data-level="" data-path="main-simu.html"><a href="main-simu.html#source-code"><i class="fa fa-check"></i>Source code</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="main-simu.html"><a href="main-simu.html#explore-simulation"><i class="fa fa-check"></i><b>5.3</b> Explore simulation:</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="recgen.html"><a href="recgen.html"><i class="fa fa-check"></i><b>6</b> Record formation</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="recgen.html"><a href="recgen.html#theoretical-model"><i class="fa fa-check"></i><b>6.1</b> Theoretical model</a></li>
+<li class="chapter" data-level="6.2" data-path="recgen.html"><a href="recgen.html#implementation"><i class="fa fa-check"></i><b>6.2</b> Implementation</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="recgen.html"><a href="recgen.html#population-pop-protocol"><i class="fa fa-check"></i><b>6.2.1</b> Population <span class="math inline">\(Pop\)</span>-protocol</a></li>
+<li class="chapter" data-level="6.2.2" data-path="recgen.html"><a href="recgen.html#anthropogenic-deposition-a-protocol"><i class="fa fa-check"></i><b>6.2.2</b> Anthropogenic deposition <span class="math inline">\(A\)</span>-protocol</a></li>
+<li class="chapter" data-level="6.2.3" data-path="recgen.html"><a href="recgen.html#depth-d-protocol"><i class="fa fa-check"></i><b>6.2.3</b> Depth <span class="math inline">\(D\)</span>-protocol</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="recgen.html"><a href="recgen.html#minimal-example-and-simulation"><i class="fa fa-check"></i><b>6.3</b> Minimal example and simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="record-loss.html"><a href="record-loss.html"><i class="fa fa-check"></i><b>7</b> Record loss</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="record-loss.html"><a href="record-loss.html#theoretical-model-1"><i class="fa fa-check"></i><b>7.1</b> Theoretical model</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="record-loss.html"><a href="record-loss.html#general-purpose"><i class="fa fa-check"></i><b>7.1.1</b> General purpose</a></li>
+<li class="chapter" data-level="7.1.2" data-path="record-loss.html"><a href="record-loss.html#model-layers"><i class="fa fa-check"></i><b>7.1.2</b> Model layers</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="record-loss.html"><a href="record-loss.html#implementation-1"><i class="fa fa-check"></i><b>7.2</b> Implementation</a>
+<ul>
+<li class="chapter" data-level="" data-path="record-loss.html"><a href="record-loss.html#source-1"><i class="fa fa-check"></i>Source</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="record-loss.html"><a href="record-loss.html#usage"><i class="fa fa-check"></i><b>7.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="generate-final-archaeological-record.html"><a href="generate-final-archaeological-record.html"><i class="fa fa-check"></i><b>8</b> Generate Final archaeological record</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="generate-final-archaeological-record.html"><a href="generate-final-archaeological-record.html#using-sites-size-to-generate-deposite"><i class="fa fa-check"></i><b>8.1</b> Using sites size to generate deposite</a></li>
+<li class="chapter" data-level="8.2" data-path="generate-final-archaeological-record.html"><a href="generate-final-archaeological-record.html#split-environment-in-a-grid"><i class="fa fa-check"></i><b>8.2</b> Split environment in a grid</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="archaeoriddle-the-original-challenge.html"><a href="archaeoriddle-the-original-challenge.html"><i class="fa fa-check"></i><b>9</b> Archaeoriddle: the original challenge</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="archaeoriddle-the-original-challenge.html"><a href="archaeoriddle-the-original-challenge.html#generate-and-share-final-simulation"><i class="fa fa-check"></i><b>9.1</b> Generate and share final simulation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/acortell3/archaeoriddle/">
+source</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Methods Riddles, the ultimate revelations</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="main-simu" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Main Simulation<a href="main-simu.html#main-simu" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="initial-parameters" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Initial Parameters<a href="main-simu.html#initial-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We now have sites with two cultures, a environment and function to make population growth, migrate and engages into wars. Each function depends on a lot of paramaters, some have been reviewd before other are explain in the help of each function. Often the parameters can differs between the two cultures. He we gave a list of parameters, close to those used during the Archaeoriddle challenge:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="main-simu.html#cb42-1" tabindex="-1"></a></span>
+<span id="cb42-2"><a href="main-simu.html#cb42-2" tabindex="-1"></a><span class="co">#initialisation</span></span>
+<span id="cb42-3"><a href="main-simu.html#cb42-3" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="main-simu.html#cb42-4" tabindex="-1"></a>Kbase<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">45</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">120</span>) <span class="co">#difference in K for the two cultures use and defined before ; will be use in simulation to define new site</span></span>
+<span id="cb42-5"><a href="main-simu.html#cb42-5" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="main-simu.html#cb42-6" tabindex="-1"></a><span class="co"># spatial penality for cultural extentions, ie for population to move out of initial site : lower, bigger penality</span></span>
+<span id="cb42-7"><a href="main-simu.html#cb42-7" tabindex="-1"></a>cul_ext <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">7</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">6</span>)</span>
+<span id="cb42-8"><a href="main-simu.html#cb42-8" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="main-simu.html#cb42-9" tabindex="-1"></a><span class="co"># penality of occupational area ie how hard it is to come close to your site ; if low, other sites can come close</span></span>
+<span id="cb42-10"><a href="main-simu.html#cb42-10" tabindex="-1"></a>penal_cul <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">5</span>)</span>
+<span id="cb42-11"><a href="main-simu.html#cb42-11" tabindex="-1"></a><span class="co"># proba to give birth every year</span></span>
+<span id="cb42-12"><a href="main-simu.html#cb42-12" tabindex="-1"></a>prob_birth <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.3</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.5</span>)</span>
+<span id="cb42-13"><a href="main-simu.html#cb42-13" tabindex="-1"></a><span class="co"># proba to die when pop &gt; K</span></span>
+<span id="cb42-14"><a href="main-simu.html#cb42-14" tabindex="-1"></a>prob_survive <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.8</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>)</span>
+<span id="cb42-15"><a href="main-simu.html#cb42-15" tabindex="-1"></a><span class="co"># proba to create new settlement when Ne &gt; K</span></span>
+<span id="cb42-16"><a href="main-simu.html#cb42-16" tabindex="-1"></a>prob_split <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>)</span>
+<span id="cb42-17"><a href="main-simu.html#cb42-17" tabindex="-1"></a><span class="co"># how big the group of migrant should be to create a new city vs</span></span>
+<span id="cb42-18"><a href="main-simu.html#cb42-18" tabindex="-1"></a><span class="co"># migrate to a existing one</span></span>
+<span id="cb42-19"><a href="main-simu.html#cb42-19" tabindex="-1"></a>minimals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.14</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.20</span>)</span>
+<span id="cb42-20"><a href="main-simu.html#cb42-20" tabindex="-1"></a><span class="co"># prob to migrate to existing settlement when Ne &gt; K</span></span>
+<span id="cb42-21"><a href="main-simu.html#cb42-21" tabindex="-1"></a>prob_move <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<p>Let’s see our raster map again, and put the sites on top, with their ids and showing there initial population size:</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="main-simu.html#cb43-1" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat,<span class="fu">paste0</span>(<span class="st">&quot;year &quot;</span>, <span class="dv">0</span>))</span>
+<span id="cb43-2"><a href="main-simu.html#cb43-2" tabindex="-1"></a><span class="fu">plot</span>(sites, <span class="at">pch=</span><span class="dv">21</span>, <span class="at">add=</span>T, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)],<span class="at">cex=</span>(<span class="dv">1</span><span class="sc">+</span>Nts[<span class="dv">1</span>,]<span class="sc">/</span><span class="dv">100</span>))</span>
+<span id="cb43-3"><a href="main-simu.html#cb43-3" tabindex="-1"></a><span class="fu">text</span>(sites,<span class="at">pos=</span><span class="dv">3</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>The <code>run_simulation</code> function will take the raster data and parameters for defined before for the two different cultures and run for the specified number of years <code>ts</code> (150).</p>
+<p>It will then call the functions described above to model contacts between sites, the outcomes of fights and migrations. If you want</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="main-simu.html#cb44-1" tabindex="-1"></a>?run_simulation</span>
+<span id="cb44-2"><a href="main-simu.html#cb44-2" tabindex="-1"></a>?whotouch</span>
+<span id="cb44-3"><a href="main-simu.html#cb44-3" tabindex="-1"></a>?fightbetterloss</span>
+<span id="cb44-4"><a href="main-simu.html#cb44-4" tabindex="-1"></a>?changePopSize</span>
+<span id="cb44-5"><a href="main-simu.html#cb44-5" tabindex="-1"></a>?warpoints</span></code></pre></div>
+</div>
+<div id="algorithm" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Algorithm<a href="main-simu.html#algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The general organisation of the algorithm is as follow:</p>
+<blockquote>
+<p>initialisation
+for all sites s:
+N_s &lt;- growth(N_s)
+if(N_s&gt;K_s):
+moving people:
+if( N_s - K-S &gt; min_s * K_s and probsplit_s):
+create new city:
+find the closest most attractive spot and move there
+else if(proba move ):
+migration
+war(s)</p>
+</blockquote>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="main-simu.html#cb45-1" tabindex="-1"></a></span>
+<span id="cb45-2"><a href="main-simu.html#cb45-2" tabindex="-1"></a><span class="fl">1.</span> <span class="sc">**</span> initialisation <span class="sc">**</span></span>
+<span id="cb45-3"><a href="main-simu.html#cb45-3" tabindex="-1"></a>  </span>
+<span id="cb45-4"><a href="main-simu.html#cb45-4" tabindex="-1"></a><span class="fl">2.</span> <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>(ts<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb45-5"><a href="main-simu.html#cb45-5" tabindex="-1"></a>    inactives <span class="ot">&lt;-</span> (Nts[i<span class="dv">-1</span>,]<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb45-6"><a href="main-simu.html#cb45-6" tabindex="-1"></a>    <span class="cf">for</span> ( s <span class="cf">in</span> <span class="fu">sample</span>(<span class="fu">seq_along</span>(sites)[<span class="sc">!</span>inactives]) <span class="sc">:</span> <span class="co">#among all active site</span></span>
+<span id="cb45-7"><a href="main-simu.html#cb45-7" tabindex="-1"></a>        N_s <span class="ot">&lt;-</span> <span class="fu">Gpd</span>()</span>
+<span id="cb45-8"><a href="main-simu.html#cb45-8" tabindex="-1"></a>        <span class="cf">if</span> <span class="sc">$</span>N_s<span class="sc">&gt;</span> K_s<span class="sc">$</span> <span class="er">:</span></span>
+<span id="cb45-9"><a href="main-simu.html#cb45-9" tabindex="-1"></a>            migrants <span class="ot">&lt;-</span> newN <span class="sc">-</span> <span class="fu">round</span>(Ks[[s]]<span class="sc">*</span><span class="fl">0.9</span>)</span>
+<span id="cb45-10"><a href="main-simu.html#cb45-10" tabindex="-1"></a>            <span class="cf">if</span> (migrants <span class="sc">&gt;=</span> (minimals[sites<span class="sc">$</span>culture[s]]<span class="sc">*</span>sites<span class="sc">$</span>Ks[s]) <span class="sc">&amp;</span> <span class="fu">runif</span>(<span class="dv">1</span>)<span class="sc">&lt;</span>prob_split[sites<span class="sc">$</span>culture[s]] ){</span>
+<span id="cb45-11"><a href="main-simu.html#cb45-11" tabindex="-1"></a>          <span class="co">#if subpopulation &gt; 10 people, 10% chance of creation of a new city</span></span>
+<span id="cb45-12"><a href="main-simu.html#cb45-12" tabindex="-1"></a></span>
+<span id="cb45-13"><a href="main-simu.html#cb45-13" tabindex="-1"></a>          infarea <span class="ot">&lt;-</span> (<span class="fu">sqrt</span>(tmp)<span class="sc">+</span>penal_cul[cultures]) <span class="sc">*</span> buffersettl</span>
+<span id="cb45-14"><a href="main-simu.html#cb45-14" tabindex="-1"></a>          buffersize <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(infarea), infarea, infarea <span class="sc">*</span> <span class="fl">0.1</span>)</span>
+<span id="cb45-15"><a href="main-simu.html#cb45-15" tabindex="-1"></a>          buffersize[tmp<span class="sc">==</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb45-16"><a href="main-simu.html#cb45-16" tabindex="-1"></a>          territory <span class="ot">&lt;-</span> <span class="fu">erase</span>(viable, <span class="fu">buffer</span>(sites, buffersize))</span>
+<span id="cb45-17"><a href="main-simu.html#cb45-17" tabindex="-1"></a>          </span>
+<span id="cb45-18"><a href="main-simu.html#cb45-18" tabindex="-1"></a>          <span class="cf">if</span>( <span class="fu">length</span>(territory)<span class="sc">&gt;</span><span class="dv">0</span> ){</span>
+<span id="cb45-19"><a href="main-simu.html#cb45-19" tabindex="-1"></a>            <span class="do">##select a new site given its distance to the old one and the ressourcesource available in ressources</span></span>
+<span id="cb45-20"><a href="main-simu.html#cb45-20" tabindex="-1"></a>            d2 <span class="ot">&lt;-</span> <span class="fu">logisticdecay</span>( sites[s], dem, <span class="at">x=</span><span class="dv">20000</span><span class="sc">*</span>cul_ext[sites<span class="sc">$</span>culture[s]])</span>
+<span id="cb45-21"><a href="main-simu.html#cb45-21" tabindex="-1"></a>            w <span class="ot">&lt;-</span> (<span class="fl">0.7</span> <span class="sc">*</span> d2 <span class="sc">+</span> <span class="fl">0.3</span><span class="sc">*</span>ressources) <span class="sc">/</span> (<span class="fl">0.7</span><span class="sc">*</span><span class="fu">minmax</span>(d2)[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.3</span><span class="sc">*</span><span class="fu">minmax</span>(ressources)[<span class="dv">2</span>])</span>
+<span id="cb45-22"><a href="main-simu.html#cb45-22" tabindex="-1"></a>            new_site <span class="ot">&lt;-</span> <span class="fu">spatSample</span>(</span>
+<span id="cb45-23"><a href="main-simu.html#cb45-23" tabindex="-1"></a>              <span class="at">x=</span><span class="fu">mask</span>(</span>
+<span id="cb45-24"><a href="main-simu.html#cb45-24" tabindex="-1"></a>                w <span class="sc">*</span> <span class="fu">logisticdecay</span>(sites[s], dem, <span class="at">k=</span><span class="fl">0.00002</span>,</span>
+<span id="cb45-25"><a href="main-simu.html#cb45-25" tabindex="-1"></a>                                  <span class="at">x=</span><span class="dv">20000</span><span class="sc">*</span>cul_ext[sites<span class="sc">$</span>culture[s]]),</span>
+<span id="cb45-26"><a href="main-simu.html#cb45-26" tabindex="-1"></a>                territory),</span>
+<span id="cb45-27"><a href="main-simu.html#cb45-27" tabindex="-1"></a>              <span class="at">size=</span><span class="dv">1</span>, <span class="at">method=</span><span class="st">&quot;weights&quot;</span>, <span class="at">xy=</span>T)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb45-28"><a href="main-simu.html#cb45-28" tabindex="-1"></a>            new_site <span class="ot">&lt;-</span> <span class="fu">vect</span>(new_site, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>))</span>
+<span id="cb45-29"><a href="main-simu.html#cb45-29" tabindex="-1"></a>            </span>
+<span id="cb45-30"><a href="main-simu.html#cb45-30" tabindex="-1"></a>            <span class="cf">if</span> ( <span class="fu">length</span>(new_site)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> <span class="fu">all</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">crds</span>(new_site))) ){</span>
+<span id="cb45-31"><a href="main-simu.html#cb45-31" tabindex="-1"></a>              <span class="do">##add new site to site listes</span></span>
+<span id="cb45-32"><a href="main-simu.html#cb45-32" tabindex="-1"></a>              Ips[[<span class="fu">length</span>(Ips)<span class="sc">+</span><span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">initpopstruc</span>(<span class="at">n=</span>migrants) <span class="co">#initialise a fake populaition, will be updated by real migrants later</span></span>
+<span id="cb45-33"><a href="main-simu.html#cb45-33" tabindex="-1"></a>              new_site<span class="sc">$</span>culture <span class="ot">&lt;-</span> sites<span class="sc">$</span>culture[s]</span>
+<span id="cb45-34"><a href="main-simu.html#cb45-34" tabindex="-1"></a>              new_site<span class="sc">$</span>Ks <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">initKs</span>(</span>
+<span id="cb45-35"><a href="main-simu.html#cb45-35" tabindex="-1"></a>                Kbase, <span class="at">sites=</span>new_site, ressources,</span>
+<span id="cb45-36"><a href="main-simu.html#cb45-36" tabindex="-1"></a>                <span class="at">sizeex=</span><span class="st">&quot;F&quot;</span>, <span class="at">rate=</span><span class="fl">0.45</span>))</span>
+<span id="cb45-37"><a href="main-simu.html#cb45-37" tabindex="-1"></a>              sites <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sites, new_site)</span>
+<span id="cb45-38"><a href="main-simu.html#cb45-38" tabindex="-1"></a>              Ks[<span class="fu">length</span>(Ks)<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> new_site<span class="sc">$</span>Ks</span>
+<span id="cb45-39"><a href="main-simu.html#cb45-39" tabindex="-1"></a>            }</span>
+<span id="cb45-40"><a href="main-simu.html#cb45-40" tabindex="-1"></a>          }</span>
+<span id="cb45-41"><a href="main-simu.html#cb45-41" tabindex="-1"></a>        }</span>
+<span id="cb45-42"><a href="main-simu.html#cb45-42" tabindex="-1"></a>        <span class="do">## if no creation of new city happen, there is a certain probability that people will move</span></span>
+<span id="cb45-43"><a href="main-simu.html#cb45-43" tabindex="-1"></a>        <span class="cf">if</span>( <span class="fu">length</span>(new_site)<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> prob_move[sites<span class="sc">$</span>culture[s]] ){</span>
+<span id="cb45-44"><a href="main-simu.html#cb45-44" tabindex="-1"></a>           <span class="co">#migration to existing site</span></span>
+<span id="cb45-45"><a href="main-simu.html#cb45-45" tabindex="-1"></a>          att <span class="ot">&lt;-</span> <span class="fu">extract</span>(ressources,sites)[,<span class="dv">2</span>]</span>
+<span id="cb45-46"><a href="main-simu.html#cb45-46" tabindex="-1"></a>          space <span class="ot">&lt;-</span> sites<span class="sc">$</span>Ks <span class="sc">-</span> (Nts[i<span class="dv">-1</span>,] <span class="sc">+</span> migrants)</span>
+<span id="cb45-47"><a href="main-simu.html#cb45-47" tabindex="-1"></a>          dis <span class="ot">&lt;-</span> <span class="fu">extract</span>(<span class="fu">logisticdecay</span>(sites[s], dem, <span class="at">k=</span><span class="fl">0.00002</span>, <span class="at">x=</span><span class="dv">1</span>), sites)[,<span class="dv">2</span>]</span>
+<span id="cb45-48"><a href="main-simu.html#cb45-48" tabindex="-1"></a>          attractivity <span class="ot">&lt;-</span> att <span class="sc">*</span> space <span class="sc">*</span> dis</span>
+<span id="cb45-49"><a href="main-simu.html#cb45-49" tabindex="-1"></a>          <span class="co">#attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture</span></span>
+<span id="cb45-50"><a href="main-simu.html#cb45-50" tabindex="-1"></a>          attractivity[s] <span class="ot">&lt;-</span> <span class="fu">min</span>(attractivity)<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb45-51"><a href="main-simu.html#cb45-51" tabindex="-1"></a>          attractivity <span class="ot">&lt;-</span> <span class="fu">exp</span>(attractivity)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(attractivity))</span>
+<span id="cb45-52"><a href="main-simu.html#cb45-52" tabindex="-1"></a>          attractivity[Nts[i<span class="dv">-1</span>,]<span class="sc">&lt;</span><span class="dv">10</span>] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb45-53"><a href="main-simu.html#cb45-53" tabindex="-1"></a>          attractivity[sites<span class="sc">$</span>culture<span class="sc">!=</span>sites<span class="sc">$</span>culture[s]] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb45-54"><a href="main-simu.html#cb45-54" tabindex="-1"></a>          <span class="cf">if</span>(<span class="fu">any</span>(<span class="fu">is.na</span>(attractivity))){</span>
+<span id="cb45-55"><a href="main-simu.html#cb45-55" tabindex="-1"></a>            <span class="fu">print</span>(attractivity)</span>
+<span id="cb45-56"><a href="main-simu.html#cb45-56" tabindex="-1"></a>            attractivity[<span class="fu">is.na</span>(attractivity)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb45-57"><a href="main-simu.html#cb45-57" tabindex="-1"></a>          }</span>
+<span id="cb45-58"><a href="main-simu.html#cb45-58" tabindex="-1"></a>          </span>
+<span id="cb45-59"><a href="main-simu.html#cb45-59" tabindex="-1"></a>          city <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">size=</span><span class="dv">1</span>, <span class="at">x=</span><span class="fu">seq_along</span>(sites), <span class="at">prob=</span>attractivity)</span>
+<span id="cb45-60"><a href="main-simu.html#cb45-60" tabindex="-1"></a>          Nts[i,city] <span class="ot">&lt;-</span> Nts[i<span class="dv">-1</span>,city] <span class="sc">+</span> migrants</span>
+<span id="cb45-61"><a href="main-simu.html#cb45-61" tabindex="-1"></a>        }</span>
+<span id="cb45-62"><a href="main-simu.html#cb45-62" tabindex="-1"></a>        <span class="cf">if</span>( havemoved ){</span>
+<span id="cb45-63"><a href="main-simu.html#cb45-63" tabindex="-1"></a>          Ips[<span class="fu">c</span>(s,city)] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>( <span class="at">loosingPop=</span>Ips[[s]], <span class="at">winingPop=</span>Ips[[city]], <span class="at">size=</span>migrants)</span>
+<span id="cb45-64"><a href="main-simu.html#cb45-64" tabindex="-1"></a>          newN <span class="ot">&lt;-</span> newN <span class="sc">-</span> migrants</span>
+<span id="cb45-65"><a href="main-simu.html#cb45-65" tabindex="-1"></a>        }</span>
+<span id="cb45-66"><a href="main-simu.html#cb45-66" tabindex="-1"></a>        </span>
+<span id="cb45-67"><a href="main-simu.html#cb45-67" tabindex="-1"></a>      <span class="er">}</span></span>
+<span id="cb45-68"><a href="main-simu.html#cb45-68" tabindex="-1"></a>      Nts[i,s] <span class="ot">&lt;-</span> newN</span>
+<span id="cb45-69"><a href="main-simu.html#cb45-69" tabindex="-1"></a>      </span>
+<span id="cb45-70"><a href="main-simu.html#cb45-70" tabindex="-1"></a>    <span class="er">}</span></span>
+<span id="cb45-71"><a href="main-simu.html#cb45-71" tabindex="-1"></a>    <span class="do">## WAR =======================</span></span>
+<span id="cb45-72"><a href="main-simu.html#cb45-72" tabindex="-1"></a>    potentialfighters <span class="ot">&lt;-</span> <span class="fu">which</span>(sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span> <span class="sc">&amp;</span> Nts[i,]<span class="sc">&gt;</span><span class="dv">50</span>)</span>
+<span id="cb45-73"><a href="main-simu.html#cb45-73" tabindex="-1"></a>    <span class="cf">for</span> (s <span class="cf">in</span> <span class="fu">sample</span>(<span class="at">x=</span>potentialfighters, <span class="at">size=</span><span class="fu">round</span>(<span class="fu">length</span>(potentialfighters)<span class="sc">*</span><span class="fl">0.1</span>))){</span>
+<span id="cb45-74"><a href="main-simu.html#cb45-74" tabindex="-1"></a>      buff <span class="ot">&lt;-</span> bufferatack</span>
+<span id="cb45-75"><a href="main-simu.html#cb45-75" tabindex="-1"></a>      potentialvictims <span class="ot">&lt;-</span> <span class="fu">which</span>(sites<span class="sc">$</span>culture <span class="sc">!=</span>sites<span class="sc">$</span>culture[s] <span class="sc">&amp;</span> Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>) </span>
+<span id="cb45-76"><a href="main-simu.html#cb45-76" tabindex="-1"></a>      clash <span class="ot">&lt;-</span> <span class="fu">whotouch</span>(s, sites, <span class="at">Ne=</span>Nts[i,], <span class="at">buffersize=</span>buff)</span>
+<span id="cb45-77"><a href="main-simu.html#cb45-77" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">length</span>(clash)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(clash)){</span>
+<span id="cb45-78"><a href="main-simu.html#cb45-78" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">length</span>(clash) <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb45-79"><a href="main-simu.html#cb45-79" tabindex="-1"></a>          attack <span class="ot">&lt;-</span> clash</span>
+<span id="cb45-80"><a href="main-simu.html#cb45-80" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb45-81"><a href="main-simu.html#cb45-81" tabindex="-1"></a>          attack <span class="ot">&lt;-</span> <span class="fu">sample</span>(clash, <span class="dv">1</span>)</span>
+<span id="cb45-82"><a href="main-simu.html#cb45-82" tabindex="-1"></a>        }</span>
+<span id="cb45-83"><a href="main-simu.html#cb45-83" tabindex="-1"></a>        newns <span class="ot">&lt;-</span> <span class="fu">fightbetterloss</span>(<span class="at">Ne=</span>Nts[i,], <span class="at">a=</span>s, <span class="at">b=</span>attack)</span>
+<span id="cb45-84"><a href="main-simu.html#cb45-84" tabindex="-1"></a>        casualties <span class="ot">&lt;-</span> <span class="fu">sum</span>(Nts[i, <span class="fu">c</span>(s,attack)] <span class="sc">-</span> newns[<span class="fu">c</span>(s,attack)])</span>
+<span id="cb45-85"><a href="main-simu.html#cb45-85" tabindex="-1"></a>        warcasualties[i] <span class="ot">&lt;-</span> casualties</span>
+<span id="cb45-86"><a href="main-simu.html#cb45-86" tabindex="-1"></a>        sizew <span class="ot">&lt;-</span> casualties<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="dv">4000</span></span>
+<span id="cb45-87"><a href="main-simu.html#cb45-87" tabindex="-1"></a>        <span class="fu">warpoints</span>(sites, s, attack, <span class="at">Ne=</span>Nts[i,],</span>
+<span id="cb45-88"><a href="main-simu.html#cb45-88" tabindex="-1"></a>                  <span class="at">buffersize=</span>buff, <span class="at">sizewar=</span>sizew<span class="fl">+0.5</span>)</span>
+<span id="cb45-89"><a href="main-simu.html#cb45-89" tabindex="-1"></a>        </span>
+<span id="cb45-90"><a href="main-simu.html#cb45-90" tabindex="-1"></a>        <span class="co">#effectively kill people in population (should be done taking into account age pyramid to be more realistic)</span></span>
+<span id="cb45-91"><a href="main-simu.html#cb45-91" tabindex="-1"></a>        Ips[[s]] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(<span class="at">loosingPop=</span>Ips[[s]],</span>
+<span id="cb45-92"><a href="main-simu.html#cb45-92" tabindex="-1"></a>                                  <span class="at">size=</span>(Nts[i,s] <span class="sc">-</span> newns[s]))</span>
+<span id="cb45-93"><a href="main-simu.html#cb45-93" tabindex="-1"></a>        Ips[[attack]] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(<span class="at">loosingPop=</span>Ips[[attack]],</span>
+<span id="cb45-94"><a href="main-simu.html#cb45-94" tabindex="-1"></a>                                       <span class="at">size=</span>(Nts[i, attack] <span class="sc">-</span> newns[attack]))</span>
+<span id="cb45-95"><a href="main-simu.html#cb45-95" tabindex="-1"></a>        Nts[i,] <span class="ot">&lt;-</span> newns</span>
+<span id="cb45-96"><a href="main-simu.html#cb45-96" tabindex="-1"></a>      }</span>
+<span id="cb45-97"><a href="main-simu.html#cb45-97" tabindex="-1"></a>  }</span>
+<span id="cb45-98"><a href="main-simu.html#cb45-98" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">Nts=</span>Nts, <span class="at">warcasualties=</span>warcasualties, <span class="at">Ips=</span>Ips, <span class="at">sites=</span>sites))</span>
+<span id="cb45-99"><a href="main-simu.html#cb45-99" tabindex="-1"></a><span class="er">}</span></span></code></pre></div>
+<p>We wrapped all this in a function, <code>run_simulation</code> that return a list of object. Let see one simple example:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="main-simu.html#cb46-1" tabindex="-1"></a>onesimu <span class="ot">&lt;-</span> <span class="fu">run_simulation</span>(</span>
+<span id="cb46-2"><a href="main-simu.html#cb46-2" tabindex="-1"></a>  <span class="at">sites=</span>sites, <span class="at">viable=</span>viable, <span class="at">dem=</span>height.ras,</span>
+<span id="cb46-3"><a href="main-simu.html#cb46-3" tabindex="-1"></a>  <span class="at">ressources=</span>ress,</span>
+<span id="cb46-4"><a href="main-simu.html#cb46-4" tabindex="-1"></a>  <span class="at">water=</span>height.wat,</span>
+<span id="cb46-5"><a href="main-simu.html#cb46-5" tabindex="-1"></a>  <span class="at">foldervid=</span><span class="st">&quot;nan&quot;</span>,</span>
+<span id="cb46-6"><a href="main-simu.html#cb46-6" tabindex="-1"></a>  <span class="at">visu=</span>F, <span class="at">visumin=</span>F,</span>
+<span id="cb46-7"><a href="main-simu.html#cb46-7" tabindex="-1"></a>  <span class="at">ts=</span>ts, <span class="co">#length of simulation in year</span></span>
+<span id="cb46-8"><a href="main-simu.html#cb46-8" tabindex="-1"></a>  <span class="at">Kbase=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">35</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">110</span>), <span class="co">#difference in K for the two cultures</span></span>
+<span id="cb46-9"><a href="main-simu.html#cb46-9" tabindex="-1"></a>  <span class="at">cul_ext=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">7</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">6</span>), <span class="co">#spatial penality to extent: lower, bigger penality</span></span>
+<span id="cb46-10"><a href="main-simu.html#cb46-10" tabindex="-1"></a>  <span class="at">penal_cul=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">5</span>), <span class="co">#penality of occupational area: low, other sites can cam close</span></span>
+<span id="cb46-11"><a href="main-simu.html#cb46-11" tabindex="-1"></a>  <span class="at">prob_birth=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.3</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.5</span>), <span class="co">#proba of giving birth every year</span></span>
+<span id="cb46-12"><a href="main-simu.html#cb46-12" tabindex="-1"></a>  <span class="at">prob_survive=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.8</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.65</span>), <span class="co">#proba of dying when pop &gt; K</span></span>
+<span id="cb46-13"><a href="main-simu.html#cb46-13" tabindex="-1"></a>  <span class="at">prob_split=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.5</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>), <span class="co">#proba of creating a new settlement when Ne &gt; K</span></span>
+<span id="cb46-14"><a href="main-simu.html#cb46-14" tabindex="-1"></a>  <span class="at">minimals=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.14</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.20</span>), <span class="co">#how big the group of migrant should be to create a new city vs migrate to a existing one </span></span>
+<span id="cb46-15"><a href="main-simu.html#cb46-15" tabindex="-1"></a>  <span class="at">bufferatack=</span><span class="dv">300</span>, <span class="co">#distance max around which settlement can fight</span></span>
+<span id="cb46-16"><a href="main-simu.html#cb46-16" tabindex="-1"></a>  <span class="at">prob_move=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.1</span>) <span class="co">#proba of migrating to existing settlement when Ne &gt; K</span></span>
+<span id="cb46-17"><a href="main-simu.html#cb46-17" tabindex="-1"></a>)</span>
+<span id="cb46-18"><a href="main-simu.html#cb46-18" tabindex="-1"></a><span class="do">## |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          </span></span></code></pre></div>
+<div id="source-code" class="section level3 unnumbered hasAnchor">
+<h3>Source code<a href="main-simu.html#source-code" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+Check the code of the simulation functions here:
+<details>
+<summary>
+Show code
+</summary>
+<p><strong>Code</strong></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="main-simu.html#cb47-1" tabindex="-1"></a><span class="do">## Function 17. Change population sizes</span></span>
+<span id="cb47-2"><a href="main-simu.html#cb47-2" tabindex="-1"></a>changePopSize <span class="ot">&lt;-</span> <span class="cf">function</span>(loosingPop, size, <span class="at">winingPop=</span><span class="cn">NULL</span>, <span class="at">new=</span>F,</span>
+<span id="cb47-3"><a href="main-simu.html#cb47-3" tabindex="-1"></a>                          <span class="at">method=</span><span class="st">&quot;random&quot;</span>, <span class="at">probs=</span>dnorm,</span>
+<span id="cb47-4"><a href="main-simu.html#cb47-4" tabindex="-1"></a>                          <span class="at">prob.option=</span><span class="fu">list</span>(<span class="st">&quot;sd&quot;</span><span class="ot">=</span><span class="dv">10</span>, <span class="st">&quot;mean&quot;</span><span class="ot">=</span><span class="dv">22</span>)) {</span>
+<span id="cb47-5"><a href="main-simu.html#cb47-5" tabindex="-1"></a>  <span class="co">#print(dim(loosingPop))</span></span>
+<span id="cb47-6"><a href="main-simu.html#cb47-6" tabindex="-1"></a>  <span class="co">#if(!is.null(winingPop))</span></span>
+<span id="cb47-7"><a href="main-simu.html#cb47-7" tabindex="-1"></a>  <span class="co">#    print(dim(winingPop))</span></span>
+<span id="cb47-8"><a href="main-simu.html#cb47-8" tabindex="-1"></a>  <span class="co">#if(length(size)==0 || size==0)return(data.frame(Age=numeric(),Sex=character()))</span></span>
+<span id="cb47-9"><a href="main-simu.html#cb47-9" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">nrow</span>(loosingPop)<span class="sc">==</span><span class="dv">0</span>){</span>
+<span id="cb47-10"><a href="main-simu.html#cb47-10" tabindex="-1"></a>    kill <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb47-11"><a href="main-simu.html#cb47-11" tabindex="-1"></a>  }<span class="cf">else</span> <span class="cf">if</span>(method<span class="sc">==</span><span class="st">&quot;random&quot;</span>){</span>
+<span id="cb47-12"><a href="main-simu.html#cb47-12" tabindex="-1"></a>    kill <span class="ot">&lt;-</span> <span class="fu">tryCatch</span>(</span>
+<span id="cb47-13"><a href="main-simu.html#cb47-13" tabindex="-1"></a>      <span class="fu">sample</span>(<span class="at">x=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(loosingPop), <span class="at">size=</span>size,</span>
+<span id="cb47-14"><a href="main-simu.html#cb47-14" tabindex="-1"></a>             <span class="at">prob=</span><span class="fu">probs</span>(loosingPop<span class="sc">$</span>Age, <span class="at">mean=</span>prob.option<span class="sc">$</span>mean, <span class="at">sd=</span>prob.option<span class="sc">$</span>sd)),</span>
+<span id="cb47-15"><a href="main-simu.html#cb47-15" tabindex="-1"></a>      <span class="at">error=</span><span class="cf">function</span>(e){</span>
+<span id="cb47-16"><a href="main-simu.html#cb47-16" tabindex="-1"></a>        <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;problem with population replacement for settlement of size:&quot;</span>,</span>
+<span id="cb47-17"><a href="main-simu.html#cb47-17" tabindex="-1"></a>                     <span class="fu">nrow</span>(loosingPop), <span class="st">&quot; need to loose &quot;</span>, size));<span class="dv">0</span></span>
+<span id="cb47-18"><a href="main-simu.html#cb47-18" tabindex="-1"></a>        }</span>
+<span id="cb47-19"><a href="main-simu.html#cb47-19" tabindex="-1"></a>      )</span>
+<span id="cb47-20"><a href="main-simu.html#cb47-20" tabindex="-1"></a>  }</span>
+<span id="cb47-21"><a href="main-simu.html#cb47-21" tabindex="-1"></a>  <span class="co">#print(paste(&quot;diff&quot;,nrow(popdistrib)-size,&quot;new&quot;,size))</span></span>
+<span id="cb47-22"><a href="main-simu.html#cb47-22" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(winingPop)){</span>
+<span id="cb47-23"><a href="main-simu.html#cb47-23" tabindex="-1"></a>    winingPop <span class="ot">&lt;-</span> <span class="fu">rbind</span>(winingPop, loosingPop[kill,])</span>
+<span id="cb47-24"><a href="main-simu.html#cb47-24" tabindex="-1"></a>  }</span>
+<span id="cb47-25"><a href="main-simu.html#cb47-25" tabindex="-1"></a>  loosingPop <span class="ot">&lt;-</span> loosingPop[<span class="sc">-</span>kill,]</span>
+<span id="cb47-26"><a href="main-simu.html#cb47-26" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(winingPop))</span>
+<span id="cb47-27"><a href="main-simu.html#cb47-27" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(loosingPop, winingPop))</span>
+<span id="cb47-28"><a href="main-simu.html#cb47-28" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb47-29"><a href="main-simu.html#cb47-29" tabindex="-1"></a>    <span class="fu">return</span>(loosingPop)</span>
+<span id="cb47-30"><a href="main-simu.html#cb47-30" tabindex="-1"></a>  </span>
+<span id="cb47-31"><a href="main-simu.html#cb47-31" tabindex="-1"></a>}</span>
+<span id="cb47-32"><a href="main-simu.html#cb47-32" tabindex="-1"></a></span>
+<span id="cb47-33"><a href="main-simu.html#cb47-33" tabindex="-1"></a></span>
+<span id="cb47-34"><a href="main-simu.html#cb47-34" tabindex="-1"></a><span class="do">## Function 18. Check sites touching</span></span>
+<span id="cb47-35"><a href="main-simu.html#cb47-35" tabindex="-1"></a>whotouch <span class="ot">&lt;-</span> <span class="cf">function</span>(i, sites, Ne, <span class="at">homophily=</span>F, <span class="at">buffersize=</span><span class="dv">200</span>){</span>
+<span id="cb47-36"><a href="main-simu.html#cb47-36" tabindex="-1"></a>  touch <span class="ot">&lt;-</span> <span class="fu">st_intersects</span>(</span>
+<span id="cb47-37"><a href="main-simu.html#cb47-37" tabindex="-1"></a>    <span class="fu">st_make_valid</span>(<span class="fu">st_as_sf</span>(<span class="fu">buffer</span>(sites[i], Ne[i] <span class="sc">*</span> buffersize<span class="fl">+0.00001</span>))),</span>
+<span id="cb47-38"><a href="main-simu.html#cb47-38" tabindex="-1"></a>    <span class="fu">st_make_valid</span>(<span class="fu">st_as_sf</span>(<span class="fu">buffer</span>(sites, Ne <span class="sc">*</span> buffersize<span class="fl">+0.00001</span>))))</span>
+<span id="cb47-39"><a href="main-simu.html#cb47-39" tabindex="-1"></a>  <span class="cf">if</span>( <span class="fu">length</span>(touch) <span class="sc">&gt;</span> <span class="dv">0</span> ){</span>
+<span id="cb47-40"><a href="main-simu.html#cb47-40" tabindex="-1"></a>    enemies <span class="ot">&lt;-</span> <span class="fu">unlist</span>(touch)</span>
+<span id="cb47-41"><a href="main-simu.html#cb47-41" tabindex="-1"></a>    <span class="cf">if</span>(homophily){</span>
+<span id="cb47-42"><a href="main-simu.html#cb47-42" tabindex="-1"></a>      enemies <span class="ot">&lt;-</span> enemies[enemies <span class="sc">!=</span> i]</span>
+<span id="cb47-43"><a href="main-simu.html#cb47-43" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb47-44"><a href="main-simu.html#cb47-44" tabindex="-1"></a>      enemies <span class="ot">&lt;-</span> enemies[sites<span class="sc">$</span>culture[enemies] <span class="sc">!=</span> sites<span class="sc">$</span>culture[i]]</span>
+<span id="cb47-45"><a href="main-simu.html#cb47-45" tabindex="-1"></a>    }</span>
+<span id="cb47-46"><a href="main-simu.html#cb47-46" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb47-47"><a href="main-simu.html#cb47-47" tabindex="-1"></a>    enemies <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb47-48"><a href="main-simu.html#cb47-48" tabindex="-1"></a>  }</span>
+<span id="cb47-49"><a href="main-simu.html#cb47-49" tabindex="-1"></a>  <span class="co">#after adding a small number to zero, does that means that often some zero size group may be taken as fighter? checking below if this happen</span></span>
+<span id="cb47-50"><a href="main-simu.html#cb47-50" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">sum</span>(Ne[enemies]<span class="sc">==</span><span class="dv">0</span>)<span class="sc">&gt;</span><span class="dv">0</span>){</span>
+<span id="cb47-51"><a href="main-simu.html#cb47-51" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">&quot;some already dead enemies&quot;</span>)</span>
+<span id="cb47-52"><a href="main-simu.html#cb47-52" tabindex="-1"></a>      <span class="fu">print</span>(<span class="fu">which</span>(Ne[enemies]<span class="sc">==</span><span class="dv">0</span>))</span>
+<span id="cb47-53"><a href="main-simu.html#cb47-53" tabindex="-1"></a>      enemies<span class="ot">=</span>enemies[Ne[enemies]<span class="sc">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb47-54"><a href="main-simu.html#cb47-54" tabindex="-1"></a>  }</span>
+<span id="cb47-55"><a href="main-simu.html#cb47-55" tabindex="-1"></a></span>
+<span id="cb47-56"><a href="main-simu.html#cb47-56" tabindex="-1"></a>  <span class="fu">return</span>(enemies)</span>
+<span id="cb47-57"><a href="main-simu.html#cb47-57" tabindex="-1"></a>}</span>
+<span id="cb47-58"><a href="main-simu.html#cb47-58" tabindex="-1"></a></span>
+<span id="cb47-59"><a href="main-simu.html#cb47-59" tabindex="-1"></a></span>
+<span id="cb47-60"><a href="main-simu.html#cb47-60" tabindex="-1"></a><span class="do">## Function 19. Model a simple fight</span></span>
+<span id="cb47-61"><a href="main-simu.html#cb47-61" tabindex="-1"></a>simplefight <span class="ot">&lt;-</span> <span class="cf">function</span>(Ne, a, b){</span>
+<span id="cb47-62"><a href="main-simu.html#cb47-62" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> Ne[a] <span class="sc">/</span> (Ne[a] <span class="sc">+</span> Ne[b])){</span>
+<span id="cb47-63"><a href="main-simu.html#cb47-63" tabindex="-1"></a>    v <span class="ot">&lt;-</span> a</span>
+<span id="cb47-64"><a href="main-simu.html#cb47-64" tabindex="-1"></a>    l <span class="ot">&lt;-</span> b</span>
+<span id="cb47-65"><a href="main-simu.html#cb47-65" tabindex="-1"></a>  }</span>
+<span id="cb47-66"><a href="main-simu.html#cb47-66" tabindex="-1"></a>  <span class="cf">else</span>{</span>
+<span id="cb47-67"><a href="main-simu.html#cb47-67" tabindex="-1"></a>    v <span class="ot">&lt;-</span> b</span>
+<span id="cb47-68"><a href="main-simu.html#cb47-68" tabindex="-1"></a>    l <span class="ot">&lt;-</span> a</span>
+<span id="cb47-69"><a href="main-simu.html#cb47-69" tabindex="-1"></a>  }</span>
+<span id="cb47-70"><a href="main-simu.html#cb47-70" tabindex="-1"></a>  <span class="co"># Keep the original pop sizes for reporting outcome</span></span>
+<span id="cb47-71"><a href="main-simu.html#cb47-71" tabindex="-1"></a>  one <span class="ot">&lt;-</span> Ne</span>
+<span id="cb47-72"><a href="main-simu.html#cb47-72" tabindex="-1"></a>  <span class="co"># Update population sizes using a binomial</span></span>
+<span id="cb47-73"><a href="main-simu.html#cb47-73" tabindex="-1"></a>  Ne[v] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">prob=</span><span class="fl">0.9</span>, <span class="at">size=</span>Ne[v])</span>
+<span id="cb47-74"><a href="main-simu.html#cb47-74" tabindex="-1"></a>  Ne[l] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">prob=</span><span class="fl">0.4</span>, <span class="at">size=</span>Ne[l])</span>
+<span id="cb47-75"><a href="main-simu.html#cb47-75" tabindex="-1"></a>  <span class="fu">print</span>(</span>
+<span id="cb47-76"><a href="main-simu.html#cb47-76" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="st">&quot;victory&quot;</span>, v, <span class="st">&quot;(&quot;</span>, one[v], <span class="st">&quot;-&quot;</span>, Ne[v],<span class="st">&quot;) over&quot;</span>, l, </span>
+<span id="cb47-77"><a href="main-simu.html#cb47-77" tabindex="-1"></a>          <span class="st">&quot;(&quot;</span>,one[l],<span class="st">&quot;-&quot;</span>,Ne[l],<span class="st">&quot;), total of: &quot;</span>, (one[v]<span class="sc">-</span>Ne[v]) <span class="sc">+</span> (one[l]<span class="sc">-</span>Ne[l]), <span class="st">&quot;people&quot;</span>))</span>
+<span id="cb47-78"><a href="main-simu.html#cb47-78" tabindex="-1"></a>  <span class="fu">return</span>(Ne)</span>
+<span id="cb47-79"><a href="main-simu.html#cb47-79" tabindex="-1"></a>}   </span>
+<span id="cb47-80"><a href="main-simu.html#cb47-80" tabindex="-1"></a></span>
+<span id="cb47-81"><a href="main-simu.html#cb47-81" tabindex="-1"></a></span>
+<span id="cb47-82"><a href="main-simu.html#cb47-82" tabindex="-1"></a><span class="do">## Function 20. Model fight with better probabilities</span></span>
+<span id="cb47-83"><a href="main-simu.html#cb47-83" tabindex="-1"></a>fightbetterloss <span class="ot">&lt;-</span> <span class="cf">function</span>(Ne,a,b,<span class="at">log=</span>F){</span>
+<span id="cb47-84"><a href="main-simu.html#cb47-84" tabindex="-1"></a>  <span class="cf">if</span>( <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> Ne[a]<span class="sc">/</span>(Ne[a] <span class="sc">+</span> Ne[b]) ){</span>
+<span id="cb47-85"><a href="main-simu.html#cb47-85" tabindex="-1"></a>    v <span class="ot">&lt;-</span> a</span>
+<span id="cb47-86"><a href="main-simu.html#cb47-86" tabindex="-1"></a>    l <span class="ot">&lt;-</span> b</span>
+<span id="cb47-87"><a href="main-simu.html#cb47-87" tabindex="-1"></a>  }</span>
+<span id="cb47-88"><a href="main-simu.html#cb47-88" tabindex="-1"></a>  <span class="cf">else</span>{</span>
+<span id="cb47-89"><a href="main-simu.html#cb47-89" tabindex="-1"></a>    v <span class="ot">&lt;-</span> b</span>
+<span id="cb47-90"><a href="main-simu.html#cb47-90" tabindex="-1"></a>    l <span class="ot">&lt;-</span> a</span>
+<span id="cb47-91"><a href="main-simu.html#cb47-91" tabindex="-1"></a>  }</span>
+<span id="cb47-92"><a href="main-simu.html#cb47-92" tabindex="-1"></a>  one <span class="ot">&lt;-</span> Ne</span>
+<span id="cb47-93"><a href="main-simu.html#cb47-93" tabindex="-1"></a>  Ne[v] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">prob=</span><span class="dv">1</span> <span class="sc">-</span> Ne[l]<span class="sc">/</span>(Ne[v] <span class="sc">+</span> Ne[l]), <span class="at">size=</span>Ne[v])</span>
+<span id="cb47-94"><a href="main-simu.html#cb47-94" tabindex="-1"></a>  Ne[l] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="at">n=</span><span class="dv">1</span>, <span class="at">prob=</span><span class="dv">1</span> <span class="sc">-</span> Ne[v]<span class="sc">/</span>(Ne[v] <span class="sc">+</span> Ne[l]), <span class="at">size=</span>Ne[l])</span>
+<span id="cb47-95"><a href="main-simu.html#cb47-95" tabindex="-1"></a>  <span class="cf">if</span>(log)<span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;victory &quot;</span>, v, <span class="st">&quot;(&quot;</span>, one[v], <span class="st">&quot;-&quot;</span>, Ne[v],<span class="st">&quot;) over &quot;</span>, l,</span>
+<span id="cb47-96"><a href="main-simu.html#cb47-96" tabindex="-1"></a>               <span class="st">&quot; (&quot;</span>, one[l], <span class="st">&quot;-&quot;</span>, Ne[l], <span class="st">&quot;), tot: &quot;</span>, (one[v]<span class="sc">-</span>Ne[v]) <span class="sc">+</span> (one[l]<span class="sc">-</span>Ne[l]), <span class="st">&quot;losses&quot;</span>))</span>
+<span id="cb47-97"><a href="main-simu.html#cb47-97" tabindex="-1"></a>  <span class="fu">return</span>(Ne)</span>
+<span id="cb47-98"><a href="main-simu.html#cb47-98" tabindex="-1"></a>}   </span>
+<span id="cb47-99"><a href="main-simu.html#cb47-99" tabindex="-1"></a></span>
+<span id="cb47-100"><a href="main-simu.html#cb47-100" tabindex="-1"></a></span>
+<span id="cb47-101"><a href="main-simu.html#cb47-101" tabindex="-1"></a><span class="do">## Function 21. Draw a war symbol where two clans are fighting</span></span>
+<span id="cb47-102"><a href="main-simu.html#cb47-102" tabindex="-1"></a>warpoints <span class="ot">&lt;-</span> <span class="cf">function</span>(sites, a, b, Ne, <span class="at">buffersize=</span><span class="dv">300</span>, <span class="at">plot=</span>T, <span class="at">sizewar=</span><span class="dv">2</span>){</span>
+<span id="cb47-103"><a href="main-simu.html#cb47-103" tabindex="-1"></a>  meetpoints <span class="ot">&lt;-</span> <span class="fu">crop</span>(</span>
+<span id="cb47-104"><a href="main-simu.html#cb47-104" tabindex="-1"></a>    <span class="fu">buffer</span>(sites[a], <span class="dv">1</span><span class="sc">+</span>Ne[a] <span class="sc">*</span> buffersize),</span>
+<span id="cb47-105"><a href="main-simu.html#cb47-105" tabindex="-1"></a>    <span class="fu">buffer</span>(sites[b], <span class="dv">1</span><span class="sc">+</span>Ne[b] <span class="sc">*</span> buffersize)</span>
+<span id="cb47-106"><a href="main-simu.html#cb47-106" tabindex="-1"></a>  )</span>
+<span id="cb47-107"><a href="main-simu.html#cb47-107" tabindex="-1"></a>  <span class="cf">if</span>( <span class="fu">length</span>(meetpoints)<span class="sc">&gt;</span><span class="dv">0</span> ){</span>
+<span id="cb47-108"><a href="main-simu.html#cb47-108" tabindex="-1"></a>    p <span class="ot">&lt;-</span> <span class="fu">spatSample</span>(meetpoints, <span class="dv">1</span>)</span>
+<span id="cb47-109"><a href="main-simu.html#cb47-109" tabindex="-1"></a>    <span class="cf">if</span>(plot <span class="sc">&amp;</span> <span class="fu">length</span>(p)<span class="sc">&gt;</span><span class="dv">0</span>){</span>
+<span id="cb47-110"><a href="main-simu.html#cb47-110" tabindex="-1"></a>      <span class="fu">plot</span>(p, <span class="at">add=</span>T, <span class="at">bg=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="st">&quot;🔥&quot;</span>, <span class="at">cex=</span>sizewar,</span>
+<span id="cb47-111"><a href="main-simu.html#cb47-111" tabindex="-1"></a>           <span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;yellow&quot;</span>, <span class="fl">0.1</span>))</span>
+<span id="cb47-112"><a href="main-simu.html#cb47-112" tabindex="-1"></a>      <span class="fu">plot</span>(p, <span class="at">add=</span>T, <span class="at">bg=</span><span class="st">&quot;yellow&quot;</span>, <span class="at">pch=</span><span class="st">&quot;⚔️&quot;</span> ,<span class="at">cex=</span>sizewar)</span>
+<span id="cb47-113"><a href="main-simu.html#cb47-113" tabindex="-1"></a>    }</span>
+<span id="cb47-114"><a href="main-simu.html#cb47-114" tabindex="-1"></a>    <span class="fu">return</span>(p)</span>
+<span id="cb47-115"><a href="main-simu.html#cb47-115" tabindex="-1"></a>  }</span>
+<span id="cb47-116"><a href="main-simu.html#cb47-116" tabindex="-1"></a>  <span class="cf">else</span> <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb47-117"><a href="main-simu.html#cb47-117" tabindex="-1"></a>}</span>
+<span id="cb47-118"><a href="main-simu.html#cb47-118" tabindex="-1"></a></span>
+<span id="cb47-119"><a href="main-simu.html#cb47-119" tabindex="-1"></a></span>
+<span id="cb47-120"><a href="main-simu.html#cb47-120" tabindex="-1"></a></span>
+<span id="cb47-121"><a href="main-simu.html#cb47-121" tabindex="-1"></a><span class="do">## Function 22. Run simulation</span></span>
+<span id="cb47-122"><a href="main-simu.html#cb47-122" tabindex="-1"></a>run_simulation <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">cultures=</span><span class="cn">NULL</span>,</span>
+<span id="cb47-123"><a href="main-simu.html#cb47-123" tabindex="-1"></a>                           <span class="at">viable=</span><span class="cn">NULL</span>,</span>
+<span id="cb47-124"><a href="main-simu.html#cb47-124" tabindex="-1"></a>                           <span class="at">sites=</span><span class="cn">NULL</span>,</span>
+<span id="cb47-125"><a href="main-simu.html#cb47-125" tabindex="-1"></a>                           <span class="at">dem=</span><span class="cn">NULL</span>,</span>
+<span id="cb47-126"><a href="main-simu.html#cb47-126" tabindex="-1"></a>                           <span class="at">ressources=</span><span class="cn">NULL</span>,</span>
+<span id="cb47-127"><a href="main-simu.html#cb47-127" tabindex="-1"></a>                           <span class="at">water=</span><span class="cn">NULL</span>,</span>
+<span id="cb47-128"><a href="main-simu.html#cb47-128" tabindex="-1"></a>                           <span class="at">foldervid=</span><span class="st">&quot;pathtofinal&quot;</span>,</span>
+<span id="cb47-129"><a href="main-simu.html#cb47-129" tabindex="-1"></a>                           <span class="at">visu=</span><span class="cn">FALSE</span>,</span>
+<span id="cb47-130"><a href="main-simu.html#cb47-130" tabindex="-1"></a>                           <span class="at">visumin=</span><span class="cn">TRUE</span>,</span>
+<span id="cb47-131"><a href="main-simu.html#cb47-131" tabindex="-1"></a>                           <span class="at">log=</span>F,</span>
+<span id="cb47-132"><a href="main-simu.html#cb47-132" tabindex="-1"></a>                           <span class="at">ts=</span><span class="dv">20000</span>,</span>
+<span id="cb47-133"><a href="main-simu.html#cb47-133" tabindex="-1"></a>                           <span class="at">Kbase=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">35</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">120</span>),</span>
+<span id="cb47-134"><a href="main-simu.html#cb47-134" tabindex="-1"></a>                           <span class="at">cul_ext=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">7</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">6</span>),</span>
+<span id="cb47-135"><a href="main-simu.html#cb47-135" tabindex="-1"></a>                           <span class="at">penal_cul=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">5</span>),</span>
+<span id="cb47-136"><a href="main-simu.html#cb47-136" tabindex="-1"></a>                           <span class="at">prob_birth=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.3</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.5</span>),</span>
+<span id="cb47-137"><a href="main-simu.html#cb47-137" tabindex="-1"></a>                           <span class="at">prob_survive=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.8</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>),</span>
+<span id="cb47-138"><a href="main-simu.html#cb47-138" tabindex="-1"></a>                           <span class="at">prob_split=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span> .<span class="dv">2</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>),</span>
+<span id="cb47-139"><a href="main-simu.html#cb47-139" tabindex="-1"></a>                           <span class="at">prob_move=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.1</span>),</span>
+<span id="cb47-140"><a href="main-simu.html#cb47-140" tabindex="-1"></a>                           <span class="at">minimals=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span>.<span class="dv">14</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span>.<span class="dv">20</span>), </span>
+<span id="cb47-141"><a href="main-simu.html#cb47-141" tabindex="-1"></a>                           <span class="at">bufferatack=</span><span class="dv">400</span>,</span>
+<span id="cb47-142"><a href="main-simu.html#cb47-142" tabindex="-1"></a>                           <span class="at">buffersettl=</span><span class="dv">2000</span>,</span>
+<span id="cb47-143"><a href="main-simu.html#cb47-143" tabindex="-1"></a>                           <span class="at">Nts=</span><span class="cn">NULL</span>,</span>
+<span id="cb47-144"><a href="main-simu.html#cb47-144" tabindex="-1"></a>                           <span class="at">Ips=</span><span class="cn">NULL</span></span>
+<span id="cb47-145"><a href="main-simu.html#cb47-145" tabindex="-1"></a>){</span>
+<span id="cb47-146"><a href="main-simu.html#cb47-146" tabindex="-1"></a>  <span class="do">## Run stochastic process  </span></span>
+<span id="cb47-147"><a href="main-simu.html#cb47-147" tabindex="-1"></a>  wplot <span class="ot">&lt;-</span> F</span>
+<span id="cb47-148"><a href="main-simu.html#cb47-148" tabindex="-1"></a>  <span class="cf">if</span>(visumin <span class="sc">||</span> visu) wplot <span class="ot">&lt;-</span> T</span>
+<span id="cb47-149"><a href="main-simu.html#cb47-149" tabindex="-1"></a>  Ks <span class="ot">&lt;-</span> sites<span class="sc">$</span>Ks</span>
+<span id="cb47-150"><a href="main-simu.html#cb47-150" tabindex="-1"></a>  cultures <span class="ot">&lt;-</span> sites<span class="sc">$</span>culture</span>
+<span id="cb47-151"><a href="main-simu.html#cb47-151" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(Nts)){ </span>
+<span id="cb47-152"><a href="main-simu.html#cb47-152" tabindex="-1"></a>    INs <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">runif</span>(<span class="fu">length</span>(sites), <span class="fl">0.85</span>, <span class="fl">0.95</span>) <span class="sc">*</span> sites<span class="sc">$</span>Ks) <span class="co">#Population size at initialisation</span></span>
+<span id="cb47-153"><a href="main-simu.html#cb47-153" tabindex="-1"></a>    Ips <span class="ot">&lt;-</span> <span class="fu">lapply</span>(INs, initpopstruc) <span class="co">#initialise population structure for all sites</span></span>
+<span id="cb47-154"><a href="main-simu.html#cb47-154" tabindex="-1"></a>    Nts <span class="ot">&lt;-</span> <span class="fu">initlistsites</span>(Ips, <span class="at">ts=</span>ts)</span>
+<span id="cb47-155"><a href="main-simu.html#cb47-155" tabindex="-1"></a>    frame <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb47-156"><a href="main-simu.html#cb47-156" tabindex="-1"></a>    mint <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb47-157"><a href="main-simu.html#cb47-157" tabindex="-1"></a>  } <span class="cf">else</span> {<span class="do">##should check and test howto start back a simulation</span></span>
+<span id="cb47-158"><a href="main-simu.html#cb47-158" tabindex="-1"></a>    mint <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Nts) </span>
+<span id="cb47-159"><a href="main-simu.html#cb47-159" tabindex="-1"></a>    frame <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Nts) </span>
+<span id="cb47-160"><a href="main-simu.html#cb47-160" tabindex="-1"></a>  }</span>
+<span id="cb47-161"><a href="main-simu.html#cb47-161" tabindex="-1"></a>  </span>
+<span id="cb47-162"><a href="main-simu.html#cb47-162" tabindex="-1"></a>  <span class="do">### visualisation =====</span></span>
+<span id="cb47-163"><a href="main-simu.html#cb47-163" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">dir.exists</span>(foldervid) <span class="sc">&amp;</span> visu){</span>
+<span id="cb47-164"><a href="main-simu.html#cb47-164" tabindex="-1"></a>    <span class="fu">dir.create</span>(foldervid)</span>
+<span id="cb47-165"><a href="main-simu.html#cb47-165" tabindex="-1"></a>  }</span>
+<span id="cb47-166"><a href="main-simu.html#cb47-166" tabindex="-1"></a>  <span class="do">###</span></span>
+<span id="cb47-167"><a href="main-simu.html#cb47-167" tabindex="-1"></a>  </span>
+<span id="cb47-168"><a href="main-simu.html#cb47-168" tabindex="-1"></a>  warcasualties <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">&quot;integer&quot;</span>, ts)</span>
+<span id="cb47-169"><a href="main-simu.html#cb47-169" tabindex="-1"></a>  </span>
+<span id="cb47-170"><a href="main-simu.html#cb47-170" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>(ts<span class="sc">+</span><span class="dv">1</span>)){</span>
+<span id="cb47-171"><a href="main-simu.html#cb47-171" tabindex="-1"></a>    countcult <span class="ot">&lt;-</span> <span class="fu">table</span>(sites<span class="sc">$</span>culture[Nts[i<span class="dv">-1</span>, ] <span class="sc">&gt;</span> <span class="dv">0</span>])</span>
+<span id="cb47-172"><a href="main-simu.html#cb47-172" tabindex="-1"></a>    <span class="cf">if</span> ( <span class="fu">length</span>(countcult) <span class="sc">!=</span> <span class="dv">2</span> ) {</span>
+<span id="cb47-173"><a href="main-simu.html#cb47-173" tabindex="-1"></a>      <span class="fu">return</span>(</span>
+<span id="cb47-174"><a href="main-simu.html#cb47-174" tabindex="-1"></a>        <span class="fu">list</span>(<span class="at">Nts=</span>Nts[,<span class="dv">1</span><span class="sc">:</span>i], </span>
+<span id="cb47-175"><a href="main-simu.html#cb47-175" tabindex="-1"></a>             <span class="at">warcasualties=</span>warcasualties[<span class="dv">1</span><span class="sc">:</span>i],</span>
+<span id="cb47-176"><a href="main-simu.html#cb47-176" tabindex="-1"></a>             <span class="at">Ips=</span>Ips,</span>
+<span id="cb47-177"><a href="main-simu.html#cb47-177" tabindex="-1"></a>             <span class="at">sites=</span>sites</span>
+<span id="cb47-178"><a href="main-simu.html#cb47-178" tabindex="-1"></a>        )</span>
+<span id="cb47-179"><a href="main-simu.html#cb47-179" tabindex="-1"></a>      )</span>
+<span id="cb47-180"><a href="main-simu.html#cb47-180" tabindex="-1"></a>    }</span>
+<span id="cb47-181"><a href="main-simu.html#cb47-181" tabindex="-1"></a>    <span class="cf">if</span>(log){</span>
+<span id="cb47-182"><a href="main-simu.html#cb47-182" tabindex="-1"></a>        <span class="fu">print</span>(</span>
+<span id="cb47-183"><a href="main-simu.html#cb47-183" tabindex="-1"></a>              <span class="fu">paste</span>(<span class="st">&quot;year&quot;</span>, i, <span class="st">&quot;total&quot;</span>, <span class="fu">sum</span>(<span class="fu">sapply</span>(Ips,nrow)),</span>
+<span id="cb47-184"><a href="main-simu.html#cb47-184" tabindex="-1"></a>                    <span class="st">&quot;with&quot;</span>, <span class="fu">length</span>(sites), <span class="st">&quot;sites (&quot;</span>, </span>
+<span id="cb47-185"><a href="main-simu.html#cb47-185" tabindex="-1"></a>                    <span class="fu">paste0</span>(<span class="fu">paste</span>(<span class="fu">names</span>(countcult), countcult, <span class="at">sep=</span><span class="st">&quot;:&quot;</span>), <span class="at">collapse=</span><span class="st">&quot;,&quot;</span>), <span class="st">&quot;)&quot;</span>))</span>
+<span id="cb47-186"><a href="main-simu.html#cb47-186" tabindex="-1"></a>      }</span>
+<span id="cb47-187"><a href="main-simu.html#cb47-187" tabindex="-1"></a>    <span class="cf">if</span> (visumin){</span>
+<span id="cb47-188"><a href="main-simu.html#cb47-188" tabindex="-1"></a>      <span class="do">### visualisation =====</span></span>
+<span id="cb47-189"><a href="main-simu.html#cb47-189" tabindex="-1"></a>      frame <span class="ot">&lt;-</span> frame<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb47-190"><a href="main-simu.html#cb47-190" tabindex="-1"></a>      filename <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;map_%06d.png&quot;</span>, frame)</span>
+<span id="cb47-191"><a href="main-simu.html#cb47-191" tabindex="-1"></a>      <span class="fu">png</span>(<span class="fu">file.path</span>(foldervid,filename), <span class="at">width=</span><span class="dv">800</span>, <span class="at">height=</span><span class="dv">800</span>, <span class="at">pointsize=</span><span class="dv">20</span>)</span>
+<span id="cb47-192"><a href="main-simu.html#cb47-192" tabindex="-1"></a>      <span class="fu">plotMap</span>(dem, water, <span class="fu">paste0</span>(<span class="st">&quot;year &quot;</span>,i))</span>
+<span id="cb47-193"><a href="main-simu.html#cb47-193" tabindex="-1"></a>      <span class="do">########</span></span>
+<span id="cb47-194"><a href="main-simu.html#cb47-194" tabindex="-1"></a>    }</span>
+<span id="cb47-195"><a href="main-simu.html#cb47-195" tabindex="-1"></a>    inactives <span class="ot">&lt;-</span> (Nts[i<span class="dv">-1</span>,]<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb47-196"><a href="main-simu.html#cb47-196" tabindex="-1"></a>    <span class="cf">for</span> ( s <span class="cf">in</span> <span class="fu">sample</span>(<span class="fu">seq_along</span>(sites)[<span class="sc">!</span>inactives]) ){</span>
+<span id="cb47-197"><a href="main-simu.html#cb47-197" tabindex="-1"></a>      <span class="cf">if</span> ( visu ) {</span>
+<span id="cb47-198"><a href="main-simu.html#cb47-198" tabindex="-1"></a>        <span class="do">### visualisation =====</span></span>
+<span id="cb47-199"><a href="main-simu.html#cb47-199" tabindex="-1"></a>        frame <span class="ot">&lt;-</span> frame<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb47-200"><a href="main-simu.html#cb47-200" tabindex="-1"></a>        filename <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">&quot;map_%08d.png&quot;</span>, frame)</span>
+<span id="cb47-201"><a href="main-simu.html#cb47-201" tabindex="-1"></a>        <span class="fu">png</span>(<span class="fu">file.path</span>(foldervid,filename), <span class="at">width=</span><span class="dv">800</span>, <span class="at">height=</span><span class="dv">800</span>, <span class="at">pointsize=</span><span class="dv">20</span>)</span>
+<span id="cb47-202"><a href="main-simu.html#cb47-202" tabindex="-1"></a>        <span class="fu">plotMap</span>(dem,water,<span class="fu">paste0</span>(<span class="st">&quot;year &quot;</span>, i))</span>
+<span id="cb47-203"><a href="main-simu.html#cb47-203" tabindex="-1"></a>        <span class="do">########</span></span>
+<span id="cb47-204"><a href="main-simu.html#cb47-204" tabindex="-1"></a>      }</span>
+<span id="cb47-205"><a href="main-simu.html#cb47-205" tabindex="-1"></a>      </span>
+<span id="cb47-206"><a href="main-simu.html#cb47-206" tabindex="-1"></a>      city <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb47-207"><a href="main-simu.html#cb47-207" tabindex="-1"></a>      Ips[[s]] <span class="ot">&lt;-</span> <span class="fu">Gpd</span>( <span class="co">#compute new population for the sites</span></span>
+<span id="cb47-208"><a href="main-simu.html#cb47-208" tabindex="-1"></a>        Ips[[s]], <span class="at">K =</span> Ks[[s]],</span>
+<span id="cb47-209"><a href="main-simu.html#cb47-209" tabindex="-1"></a>        <span class="at">p_offspring =</span> prob_birth[sites<span class="sc">$</span>culture[s]],</span>
+<span id="cb47-210"><a href="main-simu.html#cb47-210" tabindex="-1"></a>        <span class="at">prob =</span> prob_survive[sites<span class="sc">$</span>culture[s]]</span>
+<span id="cb47-211"><a href="main-simu.html#cb47-211" tabindex="-1"></a>      )</span>
+<span id="cb47-212"><a href="main-simu.html#cb47-212" tabindex="-1"></a>      newN <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Ips[[s]]) <span class="co">#count population size</span></span>
+<span id="cb47-213"><a href="main-simu.html#cb47-213" tabindex="-1"></a>      </span>
+<span id="cb47-214"><a href="main-simu.html#cb47-214" tabindex="-1"></a>      <span class="cf">if</span>(newN <span class="sc">&gt;=</span> (Ks[[s]])){ <span class="co">#if new population is more than carrying capacity: migration scenario</span></span>
+<span id="cb47-215"><a href="main-simu.html#cb47-215" tabindex="-1"></a>        migrants <span class="ot">&lt;-</span> newN <span class="sc">-</span> <span class="fu">round</span>(Ks[[s]]<span class="sc">*</span><span class="fl">0.9</span>)</span>
+<span id="cb47-216"><a href="main-simu.html#cb47-216" tabindex="-1"></a>        <span class="do">##Creation of new city</span></span>
+<span id="cb47-217"><a href="main-simu.html#cb47-217" tabindex="-1"></a>        new_site <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb47-218"><a href="main-simu.html#cb47-218" tabindex="-1"></a>        <span class="co">#if(sites$culture[s]==&quot;F&quot;)print(paste(&quot;possib&quot;,migrants, (minimals[sites$culture[s]]*sites$Ks[s])))</span></span>
+<span id="cb47-219"><a href="main-simu.html#cb47-219" tabindex="-1"></a>        tmp <span class="ot">&lt;-</span> Nts[i<span class="dv">-1</span>,]</span>
+<span id="cb47-220"><a href="main-simu.html#cb47-220" tabindex="-1"></a>        tmp[Nts[i,] <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> Nts[i, Nts[i,] <span class="sc">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb47-221"><a href="main-simu.html#cb47-221" tabindex="-1"></a>        <span class="co">#tmp=tmp+sqrt(sites$Ks)</span></span>
+<span id="cb47-222"><a href="main-simu.html#cb47-222" tabindex="-1"></a>        havemoved <span class="ot">&lt;-</span> F</span>
+<span id="cb47-223"><a href="main-simu.html#cb47-223" tabindex="-1"></a>        </span>
+<span id="cb47-224"><a href="main-simu.html#cb47-224" tabindex="-1"></a>        <span class="cf">if</span> (migrants <span class="sc">&gt;=</span> (minimals[sites<span class="sc">$</span>culture[s]]<span class="sc">*</span>sites<span class="sc">$</span>Ks[s]) <span class="sc">&amp;</span> <span class="fu">runif</span>(<span class="dv">1</span>)<span class="sc">&lt;</span>prob_split[sites<span class="sc">$</span>culture[s]] ){</span>
+<span id="cb47-225"><a href="main-simu.html#cb47-225" tabindex="-1"></a>          <span class="co">#if supopulation &gt; 10 people, 10% chance of creation of a new city</span></span>
+<span id="cb47-226"><a href="main-simu.html#cb47-226" tabindex="-1"></a>          </span>
+<span id="cb47-227"><a href="main-simu.html#cb47-227" tabindex="-1"></a>          <span class="co">#print(paste(&quot;look for new spot for &quot;,migrants, &quot;from site&quot;,s,&quot;culture&quot;,sites$culture[s]))</span></span>
+<span id="cb47-228"><a href="main-simu.html#cb47-228" tabindex="-1"></a>          <span class="co">#mean of area of influence</span></span>
+<span id="cb47-229"><a href="main-simu.html#cb47-229" tabindex="-1"></a>          infarea <span class="ot">&lt;-</span> (<span class="fu">sqrt</span>(tmp)<span class="sc">+</span>penal_cul[cultures]) <span class="sc">*</span> buffersettl</span>
+<span id="cb47-230"><a href="main-simu.html#cb47-230" tabindex="-1"></a>          buffersize <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(infarea), infarea, infarea <span class="sc">*</span> <span class="fl">0.1</span>)</span>
+<span id="cb47-231"><a href="main-simu.html#cb47-231" tabindex="-1"></a>          buffersize[tmp<span class="sc">==</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="fl">0.00001</span></span>
+<span id="cb47-232"><a href="main-simu.html#cb47-232" tabindex="-1"></a>          territory <span class="ot">&lt;-</span> <span class="fu">erase</span>(viable, <span class="fu">buffer</span>(sites, buffersize))</span>
+<span id="cb47-233"><a href="main-simu.html#cb47-233" tabindex="-1"></a>          </span>
+<span id="cb47-234"><a href="main-simu.html#cb47-234" tabindex="-1"></a>          <span class="cf">if</span>( <span class="fu">length</span>(territory)<span class="sc">&gt;</span><span class="dv">0</span> ){</span>
+<span id="cb47-235"><a href="main-simu.html#cb47-235" tabindex="-1"></a>            <span class="co">#print(paste(&quot;found new spot&quot;,migrants))</span></span>
+<span id="cb47-236"><a href="main-simu.html#cb47-236" tabindex="-1"></a>            </span>
+<span id="cb47-237"><a href="main-simu.html#cb47-237" tabindex="-1"></a>            <span class="do">##select a new site given its distance to the old one and the ressourcesource available in ressources</span></span>
+<span id="cb47-238"><a href="main-simu.html#cb47-238" tabindex="-1"></a>            d2 <span class="ot">&lt;-</span> <span class="fu">logisticdecay</span>(</span>
+<span id="cb47-239"><a href="main-simu.html#cb47-239" tabindex="-1"></a>              sites[s], dem, <span class="at">x=</span><span class="dv">20000</span><span class="sc">*</span>cul_ext[sites<span class="sc">$</span>culture[s]]</span>
+<span id="cb47-240"><a href="main-simu.html#cb47-240" tabindex="-1"></a>            )</span>
+<span id="cb47-241"><a href="main-simu.html#cb47-241" tabindex="-1"></a>            w <span class="ot">&lt;-</span> (<span class="fl">0.7</span> <span class="sc">*</span> d2 <span class="sc">+</span> <span class="fl">0.3</span><span class="sc">*</span>ressources) <span class="sc">/</span> (<span class="fl">0.7</span><span class="sc">*</span><span class="fu">minmax</span>(d2)[<span class="dv">2</span>] <span class="sc">+</span> <span class="fl">0.3</span><span class="sc">*</span><span class="fu">minmax</span>(ressources)[<span class="dv">2</span>])</span>
+<span id="cb47-242"><a href="main-simu.html#cb47-242" tabindex="-1"></a>            new_site <span class="ot">&lt;-</span> <span class="fu">spatSample</span>(</span>
+<span id="cb47-243"><a href="main-simu.html#cb47-243" tabindex="-1"></a>              <span class="at">x=</span><span class="fu">mask</span>(</span>
+<span id="cb47-244"><a href="main-simu.html#cb47-244" tabindex="-1"></a>                w <span class="sc">*</span> <span class="fu">logisticdecay</span>(sites[s], dem, <span class="at">k=</span><span class="fl">0.00002</span>,</span>
+<span id="cb47-245"><a href="main-simu.html#cb47-245" tabindex="-1"></a>                                  <span class="at">x=</span><span class="dv">20000</span><span class="sc">*</span>cul_ext[sites<span class="sc">$</span>culture[s]]),</span>
+<span id="cb47-246"><a href="main-simu.html#cb47-246" tabindex="-1"></a>                territory),</span>
+<span id="cb47-247"><a href="main-simu.html#cb47-247" tabindex="-1"></a>              <span class="at">size=</span><span class="dv">1</span>, <span class="at">method=</span><span class="st">&quot;weights&quot;</span>, <span class="at">xy=</span>T)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb47-248"><a href="main-simu.html#cb47-248" tabindex="-1"></a>            new_site <span class="ot">&lt;-</span> <span class="fu">vect</span>(new_site, <span class="at">geom=</span><span class="fu">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>))</span>
+<span id="cb47-249"><a href="main-simu.html#cb47-249" tabindex="-1"></a>            </span>
+<span id="cb47-250"><a href="main-simu.html#cb47-250" tabindex="-1"></a>            <span class="cf">if</span> ( <span class="fu">length</span>(new_site)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> <span class="fu">all</span>(<span class="sc">!</span><span class="fu">is.na</span>(<span class="fu">crds</span>(new_site))) ){</span>
+<span id="cb47-251"><a href="main-simu.html#cb47-251" tabindex="-1"></a>              <span class="do">##add new site to site listes</span></span>
+<span id="cb47-252"><a href="main-simu.html#cb47-252" tabindex="-1"></a>              <span class="do">##initialise population struc of new site</span></span>
+<span id="cb47-253"><a href="main-simu.html#cb47-253" tabindex="-1"></a>              <span class="co">#print(paste(&quot;total sites:&quot;,length(Ips)))</span></span>
+<span id="cb47-254"><a href="main-simu.html#cb47-254" tabindex="-1"></a>              <span class="co">#print(paste(&quot;dim Nts:&quot;,dim(Nts)[2]))</span></span>
+<span id="cb47-255"><a href="main-simu.html#cb47-255" tabindex="-1"></a>              <span class="co">#print(paste(&quot;site sf Nts:&quot;,length(sites)))</span></span>
+<span id="cb47-256"><a href="main-simu.html#cb47-256" tabindex="-1"></a>              </span>
+<span id="cb47-257"><a href="main-simu.html#cb47-257" tabindex="-1"></a>              Ips[[<span class="fu">length</span>(Ips)<span class="sc">+</span><span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">initpopstruc</span>(<span class="at">n=</span>migrants) <span class="co">#initialise a fake populaition, will be updated by real migrants later</span></span>
+<span id="cb47-258"><a href="main-simu.html#cb47-258" tabindex="-1"></a>              new_site<span class="sc">$</span>culture <span class="ot">&lt;-</span> sites<span class="sc">$</span>culture[s]</span>
+<span id="cb47-259"><a href="main-simu.html#cb47-259" tabindex="-1"></a>              new_site<span class="sc">$</span>Ks <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">initKs</span>(</span>
+<span id="cb47-260"><a href="main-simu.html#cb47-260" tabindex="-1"></a>                Kbase, <span class="at">sites=</span>new_site, ressources,</span>
+<span id="cb47-261"><a href="main-simu.html#cb47-261" tabindex="-1"></a>                <span class="at">sizeex=</span><span class="st">&quot;F&quot;</span>, <span class="at">rate=</span><span class="fl">0.45</span>))</span>
+<span id="cb47-262"><a href="main-simu.html#cb47-262" tabindex="-1"></a>              <span class="cf">if</span>(log){</span>
+<span id="cb47-263"><a href="main-simu.html#cb47-263" tabindex="-1"></a>                  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;new settlement (&quot;</span>, sites<span class="sc">$</span>culture[s], <span class="st">&quot;) of K &quot;</span>,</span>
+<span id="cb47-264"><a href="main-simu.html#cb47-264" tabindex="-1"></a>                           new_site<span class="sc">$</span>Ks, <span class="st">&quot; and pop &quot;</span>, migrants))</span>
+<span id="cb47-265"><a href="main-simu.html#cb47-265" tabindex="-1"></a>              }</span>
+<span id="cb47-266"><a href="main-simu.html#cb47-266" tabindex="-1"></a>              </span>
+<span id="cb47-267"><a href="main-simu.html#cb47-267" tabindex="-1"></a>              sites <span class="ot">&lt;-</span> <span class="fu">rbind</span>(sites, new_site)</span>
+<span id="cb47-268"><a href="main-simu.html#cb47-268" tabindex="-1"></a>              </span>
+<span id="cb47-269"><a href="main-simu.html#cb47-269" tabindex="-1"></a>              Ks[<span class="fu">length</span>(Ks)<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> new_site<span class="sc">$</span>Ks</span>
+<span id="cb47-270"><a href="main-simu.html#cb47-270" tabindex="-1"></a>              city <span class="ot">&lt;-</span> <span class="fu">length</span>(Ips)</span>
+<span id="cb47-271"><a href="main-simu.html#cb47-271" tabindex="-1"></a>              Nts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(Nts, <span class="fu">rep</span>(<span class="dv">0</span>,ts<span class="sc">+</span><span class="dv">1</span>))</span>
+<span id="cb47-272"><a href="main-simu.html#cb47-272" tabindex="-1"></a>              Nts[i, city] <span class="ot">&lt;-</span> migrants</span>
+<span id="cb47-273"><a href="main-simu.html#cb47-273" tabindex="-1"></a>              cultures <span class="ot">&lt;-</span> <span class="fu">c</span>(cultures, cultures[s])</span>
+<span id="cb47-274"><a href="main-simu.html#cb47-274" tabindex="-1"></a>              <span class="co">#print(paste(&quot;new site sf Nts:&quot;,length(sites)))</span></span>
+<span id="cb47-275"><a href="main-simu.html#cb47-275" tabindex="-1"></a>              <span class="co">#print(paste(&quot;new dim Nts:&quot;,dim(Nts)[2]))</span></span>
+<span id="cb47-276"><a href="main-simu.html#cb47-276" tabindex="-1"></a>              <span class="co">#print(paste(&quot;new total sites:&quot;,length(Ips)))</span></span>
+<span id="cb47-277"><a href="main-simu.html#cb47-277" tabindex="-1"></a>              havemoved <span class="ot">&lt;-</span> T</span>
+<span id="cb47-278"><a href="main-simu.html#cb47-278" tabindex="-1"></a>            }</span>
+<span id="cb47-279"><a href="main-simu.html#cb47-279" tabindex="-1"></a>          }</span>
+<span id="cb47-280"><a href="main-simu.html#cb47-280" tabindex="-1"></a>        }</span>
+<span id="cb47-281"><a href="main-simu.html#cb47-281" tabindex="-1"></a>        <span class="do">## if no creation of new city happen, there is a certain probability that people will move</span></span>
+<span id="cb47-282"><a href="main-simu.html#cb47-282" tabindex="-1"></a>        <span class="cf">if</span>( <span class="fu">length</span>(new_site)<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">&lt;</span> prob_move[sites<span class="sc">$</span>culture[s]] ){</span>
+<span id="cb47-283"><a href="main-simu.html#cb47-283" tabindex="-1"></a>          </span>
+<span id="cb47-284"><a href="main-simu.html#cb47-284" tabindex="-1"></a>          <span class="co">#getj</span></span>
+<span id="cb47-285"><a href="main-simu.html#cb47-285" tabindex="-1"></a>          att <span class="ot">&lt;-</span> <span class="fu">extract</span>(ressources,sites)[,<span class="dv">2</span>]</span>
+<span id="cb47-286"><a href="main-simu.html#cb47-286" tabindex="-1"></a>          space <span class="ot">&lt;-</span> sites<span class="sc">$</span>Ks <span class="sc">-</span> (Nts[i<span class="dv">-1</span>,] <span class="sc">+</span> migrants)</span>
+<span id="cb47-287"><a href="main-simu.html#cb47-287" tabindex="-1"></a>          dis <span class="ot">&lt;-</span> <span class="fu">extract</span>(<span class="fu">logisticdecay</span>(sites[s], dem, <span class="at">k=</span><span class="fl">0.00002</span>, <span class="at">x=</span><span class="dv">1</span>), sites)[,<span class="dv">2</span>]</span>
+<span id="cb47-288"><a href="main-simu.html#cb47-288" tabindex="-1"></a>          attractivity <span class="ot">&lt;-</span> att <span class="sc">*</span> space <span class="sc">*</span> dis</span>
+<span id="cb47-289"><a href="main-simu.html#cb47-289" tabindex="-1"></a>          <span class="co">#attractivity=attractivity*(1+10*(sites$culture[s]==sites$culture)) #4 times more likely to go to similar culture</span></span>
+<span id="cb47-290"><a href="main-simu.html#cb47-290" tabindex="-1"></a>          attractivity[s] <span class="ot">&lt;-</span> <span class="fu">min</span>(attractivity)<span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb47-291"><a href="main-simu.html#cb47-291" tabindex="-1"></a>          attractivity <span class="ot">&lt;-</span> <span class="fu">exp</span>(attractivity)<span class="sc">/</span><span class="fu">sum</span>(<span class="fu">exp</span>(attractivity))</span>
+<span id="cb47-292"><a href="main-simu.html#cb47-292" tabindex="-1"></a>          attractivity[Nts[i<span class="dv">-1</span>,]<span class="sc">&lt;</span><span class="dv">10</span>] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb47-293"><a href="main-simu.html#cb47-293" tabindex="-1"></a>          attractivity[sites<span class="sc">$</span>culture<span class="sc">!=</span>sites<span class="sc">$</span>culture[s]] <span class="ot">&lt;-</span> <span class="dv">0</span> </span>
+<span id="cb47-294"><a href="main-simu.html#cb47-294" tabindex="-1"></a>          <span class="cf">if</span>(<span class="fu">any</span>(<span class="fu">is.na</span>(attractivity))){</span>
+<span id="cb47-295"><a href="main-simu.html#cb47-295" tabindex="-1"></a>            <span class="cf">if</span>(log)<span class="fu">print</span>(attractivity)</span>
+<span id="cb47-296"><a href="main-simu.html#cb47-296" tabindex="-1"></a>            attractivity[<span class="fu">is.na</span>(attractivity)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb47-297"><a href="main-simu.html#cb47-297" tabindex="-1"></a>          }</span>
+<span id="cb47-298"><a href="main-simu.html#cb47-298" tabindex="-1"></a>          </span>
+<span id="cb47-299"><a href="main-simu.html#cb47-299" tabindex="-1"></a>          city <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">size=</span><span class="dv">1</span>, <span class="at">x=</span><span class="fu">seq_along</span>(sites), <span class="at">prob=</span>attractivity)</span>
+<span id="cb47-300"><a href="main-simu.html#cb47-300" tabindex="-1"></a>          Nts[i,city] <span class="ot">&lt;-</span> Nts[i<span class="dv">-1</span>,city] <span class="sc">+</span> migrants</span>
+<span id="cb47-301"><a href="main-simu.html#cb47-301" tabindex="-1"></a>          <span class="cf">if</span>(log){</span>
+<span id="cb47-302"><a href="main-simu.html#cb47-302" tabindex="-1"></a>              <span class="fu">print</span>(<span class="fu">paste</span>(migrants, <span class="st">&quot;migrant from&quot;</span>, sites<span class="sc">$</span>culture[s],</span>
+<span id="cb47-303"><a href="main-simu.html#cb47-303" tabindex="-1"></a>                      <span class="st">&quot;to&quot;</span>, sites<span class="sc">$</span>culture[city]))</span>
+<span id="cb47-304"><a href="main-simu.html#cb47-304" tabindex="-1"></a>          }</span>
+<span id="cb47-305"><a href="main-simu.html#cb47-305" tabindex="-1"></a>          havemoved <span class="ot">&lt;-</span> T</span>
+<span id="cb47-306"><a href="main-simu.html#cb47-306" tabindex="-1"></a>        }</span>
+<span id="cb47-307"><a href="main-simu.html#cb47-307" tabindex="-1"></a>        <span class="cf">if</span>( havemoved ){</span>
+<span id="cb47-308"><a href="main-simu.html#cb47-308" tabindex="-1"></a>          </span>
+<span id="cb47-309"><a href="main-simu.html#cb47-309" tabindex="-1"></a>          <span class="co">#print(paste(&quot;old spot&quot;,migrants,&quot; for &quot;,nrow(Ips[[s]])))</span></span>
+<span id="cb47-310"><a href="main-simu.html#cb47-310" tabindex="-1"></a>          <span class="co">#print(paste(&quot;old new spot&quot;,migrants,&quot; for &quot;,nrow(Ips[[city]])))</span></span>
+<span id="cb47-311"><a href="main-simu.html#cb47-311" tabindex="-1"></a>          </span>
+<span id="cb47-312"><a href="main-simu.html#cb47-312" tabindex="-1"></a>          <span class="co">#if(city&gt;length(Ips))print(paste(&quot;problem, migrants:&quot;,migrants))</span></span>
+<span id="cb47-313"><a href="main-simu.html#cb47-313" tabindex="-1"></a>          <span class="co">#print(paste(&quot;the other:&quot;,city))</span></span>
+<span id="cb47-314"><a href="main-simu.html#cb47-314" tabindex="-1"></a>          Ips[<span class="fu">c</span>(s,city)] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(</span>
+<span id="cb47-315"><a href="main-simu.html#cb47-315" tabindex="-1"></a>            <span class="at">loosingPop=</span>Ips[[s]], <span class="at">winingPop=</span>Ips[[city]], <span class="at">size=</span>migrants</span>
+<span id="cb47-316"><a href="main-simu.html#cb47-316" tabindex="-1"></a>          )</span>
+<span id="cb47-317"><a href="main-simu.html#cb47-317" tabindex="-1"></a>          newN <span class="ot">&lt;-</span> newN <span class="sc">-</span> migrants</span>
+<span id="cb47-318"><a href="main-simu.html#cb47-318" tabindex="-1"></a>          <span class="co">#print(paste(&quot;loosing &quot;,newN,&quot; vs &quot;,nrow(Ips[[s]])))</span></span>
+<span id="cb47-319"><a href="main-simu.html#cb47-319" tabindex="-1"></a>          <span class="co">#print(paste(&quot;wining &quot;,newN,&quot; vs &quot;,nrow(Ips[[city]])))</span></span>
+<span id="cb47-320"><a href="main-simu.html#cb47-320" tabindex="-1"></a>        }</span>
+<span id="cb47-321"><a href="main-simu.html#cb47-321" tabindex="-1"></a>        </span>
+<span id="cb47-322"><a href="main-simu.html#cb47-322" tabindex="-1"></a>      }</span>
+<span id="cb47-323"><a href="main-simu.html#cb47-323" tabindex="-1"></a>      Nts[i,s] <span class="ot">&lt;-</span> newN</span>
+<span id="cb47-324"><a href="main-simu.html#cb47-324" tabindex="-1"></a>      </span>
+<span id="cb47-325"><a href="main-simu.html#cb47-325" tabindex="-1"></a>      <span class="cf">if</span> (visu){</span>
+<span id="cb47-326"><a href="main-simu.html#cb47-326" tabindex="-1"></a>        <span class="do">###visualisation=========</span></span>
+<span id="cb47-327"><a href="main-simu.html#cb47-327" tabindex="-1"></a>        sitescols <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(sites))</span>
+<span id="cb47-328"><a href="main-simu.html#cb47-328" tabindex="-1"></a>        siteslwd <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="fu">length</span>(sites))</span>
+<span id="cb47-329"><a href="main-simu.html#cb47-329" tabindex="-1"></a>        ii<span class="ot">=</span><span class="cn">NULL</span></span>
+<span id="cb47-330"><a href="main-simu.html#cb47-330" tabindex="-1"></a>        <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.null</span>(city)){</span>
+<span id="cb47-331"><a href="main-simu.html#cb47-331" tabindex="-1"></a>          sitescols[s] <span class="ot">&lt;-</span> <span class="st">&quot;yellow&quot;</span></span>
+<span id="cb47-332"><a href="main-simu.html#cb47-332" tabindex="-1"></a>          sitescols[city] <span class="ot">&lt;-</span> <span class="st">&quot;red&quot;</span></span>
+<span id="cb47-333"><a href="main-simu.html#cb47-333" tabindex="-1"></a>          siteslwd[s] <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb47-334"><a href="main-simu.html#cb47-334" tabindex="-1"></a>          siteslwd[city] <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb47-335"><a href="main-simu.html#cb47-335" tabindex="-1"></a>          ii <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(<span class="fu">st_combine</span>(<span class="fu">st_as_sf</span>(sites[<span class="fu">c</span>(s, city)])), <span class="st">&quot;LINESTRING&quot;</span>)</span>
+<span id="cb47-336"><a href="main-simu.html#cb47-336" tabindex="-1"></a>        }</span>
+<span id="cb47-337"><a href="main-simu.html#cb47-337" tabindex="-1"></a>        <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(ii)){</span>
+<span id="cb47-338"><a href="main-simu.html#cb47-338" tabindex="-1"></a>          <span class="fu">plot</span>(ii ,<span class="at">add=</span>T)</span>
+<span id="cb47-339"><a href="main-simu.html#cb47-339" tabindex="-1"></a>        }</span>
+<span id="cb47-340"><a href="main-simu.html#cb47-340" tabindex="-1"></a>        tmp <span class="ot">&lt;-</span> Nts[i<span class="dv">-1</span>,]</span>
+<span id="cb47-341"><a href="main-simu.html#cb47-341" tabindex="-1"></a>        tmp[Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>] <span class="ot">&lt;-</span> Nts[i,Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb47-342"><a href="main-simu.html#cb47-342" tabindex="-1"></a>        <span class="fu">plot</span>(sites, <span class="at">cex=</span>(<span class="fu">as.integer</span>(Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>) <span class="sc">*</span> <span class="fl">0.3</span> <span class="sc">+</span> Nts[i,]<span class="sc">/</span><span class="dv">200</span>), </span>
+<span id="cb47-343"><a href="main-simu.html#cb47-343" tabindex="-1"></a>             <span class="at">pch=</span><span class="dv">21</span>, <span class="at">add=</span>T, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)],</span>
+<span id="cb47-344"><a href="main-simu.html#cb47-344" tabindex="-1"></a>             <span class="at">lwd=</span>siteslwd, <span class="at">col=</span>sitescols)</span>
+<span id="cb47-345"><a href="main-simu.html#cb47-345" tabindex="-1"></a>        <span class="fu">dev.off</span>()</span>
+<span id="cb47-346"><a href="main-simu.html#cb47-346" tabindex="-1"></a>        <span class="do">###=======================</span></span>
+<span id="cb47-347"><a href="main-simu.html#cb47-347" tabindex="-1"></a>      }</span>
+<span id="cb47-348"><a href="main-simu.html#cb47-348" tabindex="-1"></a>    }</span>
+<span id="cb47-349"><a href="main-simu.html#cb47-349" tabindex="-1"></a>    <span class="cf">if</span>(visumin){</span>
+<span id="cb47-350"><a href="main-simu.html#cb47-350" tabindex="-1"></a>      <span class="fu">plot</span>(sites, <span class="at">cex=</span>(<span class="fu">as.integer</span>(Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>) <span class="sc">*</span> <span class="fl">0.3</span> <span class="sc">+</span> Nts[i,]<span class="sc">/</span><span class="dv">200</span>),</span>
+<span id="cb47-351"><a href="main-simu.html#cb47-351" tabindex="-1"></a>           <span class="at">pch=</span><span class="dv">21</span>, <span class="at">add=</span>T, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)])</span>
+<span id="cb47-352"><a href="main-simu.html#cb47-352" tabindex="-1"></a>    }</span>
+<span id="cb47-353"><a href="main-simu.html#cb47-353" tabindex="-1"></a>    potentialfighters <span class="ot">&lt;-</span> <span class="fu">which</span>(sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span> <span class="sc">&amp;</span> Nts[i,]<span class="sc">&gt;</span><span class="dv">50</span>)</span>
+<span id="cb47-354"><a href="main-simu.html#cb47-354" tabindex="-1"></a>    <span class="cf">for</span> (s <span class="cf">in</span> <span class="fu">sample</span>(<span class="at">x=</span>potentialfighters, <span class="at">size=</span><span class="fu">round</span>(<span class="fu">length</span>(potentialfighters)<span class="sc">*</span><span class="fl">0.1</span>))){</span>
+<span id="cb47-355"><a href="main-simu.html#cb47-355" tabindex="-1"></a>      buff <span class="ot">&lt;-</span> bufferatack</span>
+<span id="cb47-356"><a href="main-simu.html#cb47-356" tabindex="-1"></a>      potentialvictims <span class="ot">&lt;-</span> <span class="fu">which</span>(sites<span class="sc">$</span>culture <span class="sc">!=</span>sites<span class="sc">$</span>culture[s] <span class="sc">&amp;</span> Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>) </span>
+<span id="cb47-357"><a href="main-simu.html#cb47-357" tabindex="-1"></a>      clash <span class="ot">&lt;-</span> <span class="fu">whotouch</span>(s, sites, <span class="at">Ne=</span>Nts[i,], <span class="at">buffersize=</span>buff)</span>
+<span id="cb47-358"><a href="main-simu.html#cb47-358" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">length</span>(clash)<span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(clash)){</span>
+<span id="cb47-359"><a href="main-simu.html#cb47-359" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">length</span>(clash) <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb47-360"><a href="main-simu.html#cb47-360" tabindex="-1"></a>          attack <span class="ot">&lt;-</span> clash</span>
+<span id="cb47-361"><a href="main-simu.html#cb47-361" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb47-362"><a href="main-simu.html#cb47-362" tabindex="-1"></a>          attack <span class="ot">&lt;-</span> <span class="fu">sample</span>(clash, <span class="dv">1</span>)</span>
+<span id="cb47-363"><a href="main-simu.html#cb47-363" tabindex="-1"></a>        }</span>
+<span id="cb47-364"><a href="main-simu.html#cb47-364" tabindex="-1"></a>        newns <span class="ot">&lt;-</span> <span class="fu">fightbetterloss</span>(<span class="at">Ne=</span>Nts[i,], <span class="at">a=</span>s, <span class="at">b=</span>attack,<span class="at">log=</span>log)</span>
+<span id="cb47-365"><a href="main-simu.html#cb47-365" tabindex="-1"></a>        casualties <span class="ot">&lt;-</span> <span class="fu">sum</span>(Nts[i, <span class="fu">c</span>(s,attack)] <span class="sc">-</span> newns[<span class="fu">c</span>(s,attack)])</span>
+<span id="cb47-366"><a href="main-simu.html#cb47-366" tabindex="-1"></a>        warcasualties[i] <span class="ot">&lt;-</span> casualties</span>
+<span id="cb47-367"><a href="main-simu.html#cb47-367" tabindex="-1"></a>        sizew <span class="ot">&lt;-</span> casualties<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="dv">4000</span></span>
+<span id="cb47-368"><a href="main-simu.html#cb47-368" tabindex="-1"></a>        <span class="fu">warpoints</span>(sites, s, attack, <span class="at">Ne=</span>Nts[i,],</span>
+<span id="cb47-369"><a href="main-simu.html#cb47-369" tabindex="-1"></a>                  <span class="at">buffersize=</span>buff, <span class="at">sizewar=</span>sizew<span class="fl">+0.5</span>,<span class="at">plot=</span>wplot)</span>
+<span id="cb47-370"><a href="main-simu.html#cb47-370" tabindex="-1"></a>        </span>
+<span id="cb47-371"><a href="main-simu.html#cb47-371" tabindex="-1"></a>        <span class="co">#effectively kill people in population (should be done taking into account age pyramid to be more realistic)</span></span>
+<span id="cb47-372"><a href="main-simu.html#cb47-372" tabindex="-1"></a>        Ips[[s]] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(<span class="at">loosingPop=</span>Ips[[s]],</span>
+<span id="cb47-373"><a href="main-simu.html#cb47-373" tabindex="-1"></a>                                  <span class="at">size=</span>(Nts[i,s] <span class="sc">-</span> newns[s]))</span>
+<span id="cb47-374"><a href="main-simu.html#cb47-374" tabindex="-1"></a>        Ips[[attack]] <span class="ot">&lt;-</span> <span class="fu">changePopSize</span>(<span class="at">loosingPop=</span>Ips[[attack]],</span>
+<span id="cb47-375"><a href="main-simu.html#cb47-375" tabindex="-1"></a>                                       <span class="at">size=</span>(Nts[i, attack] <span class="sc">-</span> newns[attack]))</span>
+<span id="cb47-376"><a href="main-simu.html#cb47-376" tabindex="-1"></a>        Nts[i,] <span class="ot">&lt;-</span> newns</span>
+<span id="cb47-377"><a href="main-simu.html#cb47-377" tabindex="-1"></a>        <span class="cf">if</span>(log){</span>
+<span id="cb47-378"><a href="main-simu.html#cb47-378" tabindex="-1"></a>            <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;fight : #&quot;</span>, s, <span class="st">&quot; (&quot;</span>,</span>
+<span id="cb47-379"><a href="main-simu.html#cb47-379" tabindex="-1"></a>                         cultures[s], <span class="st">&quot;) left with &quot;</span>, Nts[i,s],</span>
+<span id="cb47-380"><a href="main-simu.html#cb47-380" tabindex="-1"></a>                         <span class="st">&quot; (bef:&quot;</span>, Nts[i<span class="dv">-1</span>,s], <span class="st">&quot;) ind., attacked: #&quot;</span>, attack, <span class="st">&quot; (&quot;</span>,</span>
+<span id="cb47-381"><a href="main-simu.html#cb47-381" tabindex="-1"></a>                         cultures[attack], <span class="st">&quot;) left with &quot;</span>, Nts[i,attack],</span>
+<span id="cb47-382"><a href="main-simu.html#cb47-382" tabindex="-1"></a>                         <span class="st">&quot; (bef:&quot;</span>, Nts[i<span class="dv">-1</span>,attack],<span class="st">&quot;) ind., #death=&quot;</span>,casualties))</span>
+<span id="cb47-383"><a href="main-simu.html#cb47-383" tabindex="-1"></a>        }</span>
+<span id="cb47-384"><a href="main-simu.html#cb47-384" tabindex="-1"></a>      }</span>
+<span id="cb47-385"><a href="main-simu.html#cb47-385" tabindex="-1"></a>    }</span>
+<span id="cb47-386"><a href="main-simu.html#cb47-386" tabindex="-1"></a>    <span class="cf">if</span>(visumin){</span>
+<span id="cb47-387"><a href="main-simu.html#cb47-387" tabindex="-1"></a>      <span class="fu">dev.off</span>()</span>
+<span id="cb47-388"><a href="main-simu.html#cb47-388" tabindex="-1"></a>    }</span>
+<span id="cb47-389"><a href="main-simu.html#cb47-389" tabindex="-1"></a>  }</span>
+<span id="cb47-390"><a href="main-simu.html#cb47-390" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">Nts=</span>Nts, <span class="at">warcasualties=</span>warcasualties, <span class="at">Ips=</span>Ips, <span class="at">sites=</span>sites))</span>
+<span id="cb47-391"><a href="main-simu.html#cb47-391" tabindex="-1"></a>}</span></code></pre></div>
+</details>
+</div>
+</div>
+<div id="explore-simulation" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Explore simulation:<a href="main-simu.html#explore-simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The list <code>onesimu</code> contains a few interesting info:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="main-simu.html#cb48-1" tabindex="-1"></a>Nts <span class="ot">&lt;-</span> onesimu<span class="sc">$</span>Nts <span class="co"># population at each timestep</span></span>
+<span id="cb48-2"><a href="main-simu.html#cb48-2" tabindex="-1"></a>warcasualties <span class="ot">&lt;-</span> onesimu<span class="sc">$</span>warcasualties <span class="co">#death by war at each time step</span></span></code></pre></div>
+<p>Use ressource to adjust the Ks:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="main-simu.html#cb49-1" tabindex="-1"></a><span class="fu">plot</span>(sites, <span class="at">cex=</span>(<span class="dv">1</span><span class="sc">+</span>Nts[<span class="dv">1</span>,]<span class="sc">/</span><span class="dv">100</span>), <span class="at">pch=</span><span class="dv">21</span>, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)])</span></code></pre></div>
+<p><img src="_main_files/figure-html/explore-ex1-b-1.png" width="672" /></p>
+<p>We look at the simulation step by step interaction between sites:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="main-simu.html#cb50-1" tabindex="-1"></a><span class="do">## visualise trajectories for each site</span></span>
+<span id="cb50-2"><a href="main-simu.html#cb50-2" tabindex="-1"></a>i <span class="ot">&lt;-</span> ts</span>
+<span id="cb50-3"><a href="main-simu.html#cb50-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(Nts)), <span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;popsize&quot;</span>)</span>
+<span id="cb50-4"><a href="main-simu.html#cb50-4" tabindex="-1"></a>nill <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(Nts),</span>
+<span id="cb50-5"><a href="main-simu.html#cb50-5" tabindex="-1"></a>       <span class="cf">function</span>(j)<span class="fu">lines</span>(Nts[,j],<span class="at">col=</span><span class="fu">rainbow</span>(<span class="dv">2</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)[j]])</span>
+<span id="cb50-6"><a href="main-simu.html#cb50-6" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/explore-ex1-trajpersite-1.png" width="672" /></p>
+<p>Visualise, Record deposit and loss for the 5 first sites (see next chapters to learn about <code>A_rates</code> and <code>Rec_c</code>).</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="main-simu.html#cb51-1" tabindex="-1"></a>alldeposit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb51-2"><a href="main-simu.html#cb51-2" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb51-3"><a href="main-simu.html#cb51-3" tabindex="-1"></a>  <span class="cf">function</span>(i){</span>
+<span id="cb51-4"><a href="main-simu.html#cb51-4" tabindex="-1"></a>    <span class="fu">Rec_c</span>(<span class="fu">sapply</span>(Nts[,i], A_rates), <span class="at">InitBP =</span> <span class="dv">15000</span>, <span class="at">ts=</span>ts, <span class="at">r=</span><span class="fl">0.2</span>, <span class="at">max_bone_thickness=</span><span class="st">&quot;m&quot;</span>)</span>
+<span id="cb51-5"><a href="main-simu.html#cb51-5" tabindex="-1"></a>  }</span>
+<span id="cb51-6"><a href="main-simu.html#cb51-6" tabindex="-1"></a>)</span>
+<span id="cb51-7"><a href="main-simu.html#cb51-7" tabindex="-1"></a>maxy <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">sapply</span>(alldeposit, <span class="cf">function</span>(i)<span class="fu">max</span>(<span class="fu">apply</span>(i,<span class="dv">2</span>,sum))))</span>
+<span id="cb51-8"><a href="main-simu.html#cb51-8" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="main-simu.html#cb51-9" tabindex="-1"></a>nill <span class="ot">&lt;-</span> <span class="fu">lapply</span>(alldeposit, <span class="cf">function</span>(depo)<span class="fu">barplot</span>(<span class="fu">t</span>(depo), <span class="at">col=</span><span class="fu">viridis</span>(ts<span class="sc">+</span><span class="dv">1</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,maxy)))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-16-1.png" width="50%" /><img src="_main_files/figure-html/unnamed-chunk-16-2.png" width="50%" /><img src="_main_files/figure-html/unnamed-chunk-16-3.png" width="50%" /><img src="_main_files/figure-html/unnamed-chunk-16-4.png" width="50%" /><img src="_main_files/figure-html/unnamed-chunk-16-5.png" width="50%" /></p>
+<p>Population by time and culture</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="main-simu.html#cb52-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(Nts)),</span>
+<span id="cb52-2"><a href="main-simu.html#cb52-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;popsize&quot;</span>)</span>
+<span id="cb52-3"><a href="main-simu.html#cb52-3" tabindex="-1"></a>na<span class="ot">=</span><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(Nts),</span>
+<span id="cb52-4"><a href="main-simu.html#cb52-4" tabindex="-1"></a>       <span class="cf">function</span>(i)<span class="fu">lines</span>(Nts[,i], <span class="at">col=</span><span class="fu">rainbow</span>(<span class="dv">2</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)[i]]))</span>
+<span id="cb52-5"><a href="main-simu.html#cb52-5" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>,<span class="at">legend=</span><span class="fu">c</span>(<span class="st">&quot;F&quot;</span>,<span class="st">&quot;HG&quot;</span>),<span class="at">col=</span> <span class="fu">rainbow</span>(<span class="dv">2</span>),<span class="at">lwd=</span><span class="dv">1</span>,<span class="at">title=</span><span class="st">&quot;culture&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/visu-onesime1-1.png" width="50%" /></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="main-simu.html#cb53-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">apply</span>(Nts, <span class="dv">1</span>, sum)[<span class="dv">1</span><span class="sc">:</span>i], <span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;popsize&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/visu-onesime1-2.png" width="50%" /></p>
+<p>Exploring some trajectories of the simulations</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="main-simu.html#cb54-1" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Nts)  <span class="co"># Get the number of rows in Nts</span></span>
+<span id="cb54-2"><a href="main-simu.html#cb54-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i, sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span>,<span class="at">drop=</span>F], <span class="dv">1</span>, sum), <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>,</span>
+<span id="cb54-3"><a href="main-simu.html#cb54-3" tabindex="-1"></a>     <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(<span class="fu">apply</span>(Nts, <span class="dv">1</span>, sum))))  <span class="co"># Plot sum of &#39;F&#39; culture values</span></span>
+<span id="cb54-4"><a href="main-simu.html#cb54-4" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i, sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;HG&quot;</span>], <span class="dv">1</span>, sum),</span>
+<span id="cb54-5"><a href="main-simu.html#cb54-5" tabindex="-1"></a>       <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)  <span class="co"># Add points for &#39;HG&#39; culture values</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="main-simu.html#cb55-1" tabindex="-1"></a><span class="fu">plot</span>(warcasualties[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>)], <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;green&quot;</span>, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">yaxt=</span><span class="st">&quot;n&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;&quot;</span>)  <span class="co"># Plot war casualties</span></span>
+<span id="cb55-2"><a href="main-simu.html#cb55-2" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">4</span>)  <span class="co"># Add an axis on the right side</span></span>
+<span id="cb55-3"><a href="main-simu.html#cb55-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)  <span class="co"># Allow a new plot to be drawn on the existing plot</span></span>
+<span id="cb55-4"><a href="main-simu.html#cb55-4" tabindex="-1"></a>growF <span class="ot">&lt;-</span> <span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>), sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span>,<span class="at">drop=</span>F], <span class="dv">1</span>, sum)  <span class="co"># Sum of &#39;F&#39; culture values excluding last row</span></span>
+<span id="cb55-5"><a href="main-simu.html#cb55-5" tabindex="-1"></a>growHG <span class="ot">&lt;-</span> <span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>), sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;HG&quot;</span>,<span class="at">drop=</span>F], <span class="dv">1</span>, sum)  <span class="co"># Sum of &#39;HG&#39; culture values excluding last row</span></span>
+<span id="cb55-6"><a href="main-simu.html#cb55-6" tabindex="-1"></a><span class="fu">plot</span>(growF, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(growF, growHG)))  <span class="co"># Plot growth of &#39;F&#39; culture</span></span>
+<span id="cb55-7"><a href="main-simu.html#cb55-7" tabindex="-1"></a><span class="fu">points</span>(growHG, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)  <span class="co"># Add points for growth of &#39;HG&#39; culture</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="migration-conflict.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="recgen.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
