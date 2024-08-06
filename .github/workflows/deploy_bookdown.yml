@@ -11,10 +11,16 @@ jobs:
       - uses: actions/checkout@v3
       - uses: r-lib/actions/setup-r@v2
       - uses: r-lib/actions/setup-pandoc@v2
-      - name: Install OS dependencies 
-        run: sudo apt-get install -y libglpk-dev gdal-bin proj-bin libgdal-dev libproj-dev libudunits2-dev
-      - name: Install R dependencies
-        run: Rscript -e 'install.packages(c("bookdown","DiagrammeR","terra","sf","igraph","devtools"))'
+	  - name: Install packages
+		uses: r-lib/actions/setup-r-dependencies@v2
+		  with:
+			packages: |
+			  any::bookdown
+			  any::DiagrammeR
+			  any::terra
+			  any::sf
+			  any::igraph
+			  any::devtools
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("doc/bookdown/")'
       - uses: actions/upload-artifact@v1
