@@ -12,7 +12,7 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
       - uses: r-lib/actions/setup-pandoc@v2
       - name: Install OS dependencies 
-        run: sudo apt-get install -y libglpk-dev gdal-bin proj-bin libgdal-dev libproj-dev libudunits2-dev
+        run: sudo apt-get install -y libglpk-dev gdal-bin proj-bin libgdal-dev libproj-dev libudunits2-dev libharfbuzz-dev libfribidi-dev 
       - name: Install R dependencies
         run: Rscript -e 'install.packages(c("bookdown","DiagrammeR","terra","sf","igraph","devtools"))'
       - name: Render Book
