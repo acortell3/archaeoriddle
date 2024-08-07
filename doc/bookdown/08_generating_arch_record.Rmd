@@ -4,90 +4,67 @@ Now that all the pieces are in place we need to combine them to generate files t
 
 To summarize what we have so far:
 
-1. we generated a fake environment in Chapter \@ref(env}
-2. we localised sites on the map and defined a population growth process in Chapter \@ref(popgrowth}
-3. we defined rules to decide how population move and enter in conflict when they grow in Chapter \@ref(conflict}
-4. we run simulation these process of grwoth, conflict and migration on the environement for long time in Chapter \@ref(main-simu}
-4. we defined processes that use this simulate growth to generate an archaeological record in Chapter \@ref(genrec}
-5. we defined processes that transform this archaeological record using credible loss \@ref(genrec}
+1. we generated a fake environment in Chapter \@ref(env)
+2. we localised sites on the map and defined a population growth process in Chapter \@ref(popgrowth)
+3. we defined rules to decide how population move and enter in conflict when they grow in Chapter \@ref(conflict)
+4. we run simulation these process of grwoth, conflict and migration on the environement for long time in Chapter \@ref(main-simu)
+4. we defined processes that use this simulate growth to generate an archaeological record in Chapter \@ref(recgen)
+5. we defined processes that transform this archaeological record using credible loss \@ref(recgen}
 
 Here we will use all these previous steps to generate csvs that can be shared. In this chapter we will use the simulation run in the Chapter \@ref(main-simu) ; if you want to generated new 'fake'-dataset, different from the one that have been presented in the original challenge and that will be described in the chapter \@ref(original-challenge), you will want to run longer simulation, and choose among different run on the looks interesting/realistic. We provide a script `./scriptmini.R` that to give some idea about how to automatize these run and how to choose among them.
+
+
 
 ## Using sites size to generate deposit
 
 This has been done using file `dateGeneration.R`, we will describe it here now.
 
-First we get the rasters defining the environment (If you folllowed the book since the beginning they should be already in memory but in case you didn't we we reload them here:
+First we get the rasters defining the environment (If you followed the book since the beginning they should be already in memory but in case you didn't we we reload them here:
 
-```{r getRaster,eval=T,cache=F}
+```{r getRaster-ex,eval=T,cache=F}
 height.ras=rast("data_toshare/dem_raster.tiff")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
-height.groups=height.ras
-maxh=max(height.ras[],na.rm=T)
-height.groups[height.groups<mean(height.groups[])]=NA
-height.groups[height.groups<(maxh*.7)]=1
-height.groups[height.groups>(maxh*.7)]=200
-height.groups[is.na(height.groups)]=-1
-height.poly=as.polygons(height.groups)
-viable=makeValid(height.poly[2,])
-expname="data_original/general_results_selected_simu/buffattack300_K110_PSU065_3"
-onesimu=readRDS(paste0(expname,"_all.RDS"))
-sites=readRDS(paste0(expname,"_sitesRast.RDS"))
-if(class(sites)[1] == "PackedSpatVector")
-    sites=terra::vect(sites)
 Nts=onesimu$Nts
-#alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[1:i,s],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = "m"))
-#allShortLoss=lapply(1:10,function(ind){Rec=alldeposit[[ind]];print(paste0("settlement #",ind));apply(Rec,2,short_loss,.6)})
-#allShortLoss=lapply(allShortLoss,function(Rec)long_loss(Rec,.9997,7500))
+plotMap(height.ras,height.wat)
 ```
 
-Using `Rec_c` , `short_loss` and `long_loss` we generate deposit. Generating everything can take long time but  it's basically done like this:
+Using `Rec_c` , `short_loss` and `long_loss`, that we presented in the Chapter \@ref(recgen) & \@ref(recloss), we generate deposit. This can take long time if the simulation included a lot of sites, spanning over long period of time. Here we first generate all deposit from the matrix `Nts` generated during the simulation of the Chapter \@ref(main-simu) and then apply all loss functions together:
 
 
-```{r doloss,eval=F}
-
+```{r doloss-ex,eval=T}
 #All in one:
-alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[,s],A_rates), InitBP = 7500,ts=ncol(Nts),r = 0.2, Max_bone_thickness = "m"))
+alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[,s],A_rates), InitBP = 7500,ts=ncol(Nts),r = 0.2, max_bone_thickness = "m"))
 allLosses=lapply(1:length(alldeposit),function(ind){
-                 st=Sys.time()
-                    print(paste0("settlement #",ind));
-                    Rec=alldeposit[[ind]];                    
-                    Rec=apply(Rec,2,short_loss,.6)  #apply short loss
-                    Rec=long_loss(Rec,.9997,7500) #apply long loss
-                    print(Sys.time()-st)
-                    return(Rec)
+    Rec=alldeposit[[ind]];                    
+    Rec=apply(Rec,2,short_loss,.6)  #apply short loss
+    Rec=long_loss(Rec,.9997,7500) #apply long loss
+    return(Rec)
 })
 rm(alldeposit)
 ```
 
-Remove where to small
+Once this is done, we have a list with all the date available from all site that have existed during our simulation. Realisticly, not _all_  date will be recovered for a given archaeologicl sites, thus we cap the maximum number of sample available per sites. As you will see in the original challange presented in the Chapter \@ref(original-challenge), we assume that the biggest sites -- the one that will received most funding and attention, will very likely get 30 dates. We thus subsample the number of dates for smaller site given this ration of $\frac{30}{n_{\text{largest}}}$. Here simulation have been greatly shortened, thus sites have way less samples. We thus cap the larges sites to have only 80% of the dates it generate, and sample the other sites using this ratio.
 
-```{r removesmall, eval=F}
-
-
+```{r removesmall-ex, eval=T}
 maxSites=max(sapply(allLosses,sum))
-nsample=round(sapply(allLosses,sum)*30/maxSites)
+nsample=round(sapply(allLosses,sum)*(30/maxSites))
 allRemainingDates=lapply(seq_along(allLosses),function(r)extractDates(allLosses[[r]],n=nsample[r]))
 rm(allLosses) #object are big, need to free memory
-
 ```
 
 
 
-```{r getadates,eval=F}
-
-#pdf(paste0(expname,"_mapFound.pdf"))
-#plotMap(height.ras,height.wat,paste0("final after losses"))
-#plot(sites[1:10,],cex=3*(lengths(allRemainingDates)-1)/(29),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture[1:10])])
-#dev.off()
+```{r getadates-ex,eval=T,out.width="45%",fig.show="hold"}
+expname="exn"
+plotMap(height.ras,height.wat,paste0("final after losses"))
+plot(sites[1:10,],cex=3*(lengths(allRemainingDates)-1)/(29),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture[1:10])])
 
 dates=unique(unlist(allRemainingDates))
 dates=rev(sort(dates[!is.na(dates)]))
 plot(table(unlist(allRemainingDates)))
 totallDatesRemains=sapply(allRemainingDates,function(i)table(factor(i,levels=dates)))
-saveRDS(allRemainingDates,file=paste0(expname,"_dates.RDS"))
-
+saveRDS(allRemainingDates,file=file.path(foldtmp,paste0(expname,"_dates.RDS")))
 ```
 
 From this we have, for every site, a list of date(s)
@@ -97,15 +74,9 @@ This has been done using the script `exploreDate.R` but will be explained here:
 
 Loading simulation results, green are the sites who survived, dots are all the site that existed.
 
-```{r getfakeresults,cache=F}
-height.ras=rast("data_original/east_narnia4x.tif")
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
+```{r getfakeresults-ex,cache=F}
 
-
-Nts=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
-ress=rast("data_original/resources.tiff")
-allsites=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS")
+allsites=vect(file.path(foldtmp,"allsites.shp"))
 if(class(allsites)[1] == "PackedSpatVector")
     allsites=terra::vect(allsites)
 plotMap(height.ras,height.wat)
@@ -115,14 +86,13 @@ plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60
 
 Loading dates:
 
-```{r getfakedates,cache=F}
-dates=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
+```{r getfakedates-ex,cache=F}
+dates=readRDS(file=file.path(foldtmp,paste0(expname,"_dates.RDS")))
 ```
 
 Keep sites with foundable dates
 
-```{r extractdates,cache=F}
-
+```{r extractdates-ex,cache=F}
 foundsites=allsites[lengths(dates)>0,]
 foundsites$numdates=unlist(lengths(dates[lengths(dates)>0]))
 founddates=dates[lengths(dates)>0]
@@ -130,7 +100,7 @@ founddates=dates[lengths(dates)>0]
 
 Remove BP to the dates, add some random variation
 
-```{r addstdev,cache=F}
+```{r addstdev-ex,cache=F}
 stdpool=c(20,30,40,50,60,80,100,120)
 founddates=lapply(founddates,sort)
 founddates=lapply(founddates,gsub,pattern=" BP",replacement="")
@@ -145,7 +115,7 @@ plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$cult
 
 Split the environment in grids and extract date for each grid
 
-```{r plotallfoundiste,cache=F}
+```{r plotallfoundiste-ex,cache=F}
 
 leftdates=dates[lengths(dates)>0]
 plotMap(height.ras,height.wat)
@@ -158,33 +128,37 @@ text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
 
 Public selection
 
-```{r getpublicsele,cache=F}
+```{r getpublicsele-ex,cache=F,out.width="45%",fig.show="hold"}
 plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
-selection=c(14,30,45,65,66)
-plot(squares[selection],add=T,col=adjustcolor("blue",.3))
+selection=sample(seq_along(squares),4)
 inter=st_intersection(st_as_sf(foundsites),squares[selection])
+while(nrow(inter)<5){
+    selection=sample(seq_along(squares),4)
+    inter=st_intersection(st_as_sf(foundsites),squares[selection])
+}
+plot(squares[selection],add=T,col=adjustcolor("blue",.3))
 plotMap(height.ras,height.wat)
 plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
 ```
 
-Giving name to the publicly available data
-The names have bee ngenerated via: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php)
+### Giving name to the publicly available data
 
-```{r namesites,cache=F}
+On the original challenge we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php) to choose nice, randomly generated  name. You will see in the section \@ref(naming) that we positionned them with cultural relevent group, although this has no impact on the results. Here we took all the name we had for the original challenge to randomly assignate some for you custom world.
+
+```{r namesites-ex,cache=F}
 
 site_dist=st_distance(inter)
-#min(site_dist[as.numeric(site_dist)>units(0)])
+potname=c("Farwallow" ,"Bearcall" ,"Dustscar" ,"Clearreach" ,"Rabbithole",
+"Épibéliard" ,"Cololuçon" ,"Pulogne" ,"Haguemasse" ,"Auriteaux" ,"Bourville" ,"Banau" ,"Montnesse" ,"Bannet" ,"Alenlon", "Roullac" ,"Genneville" ,"Vinlès" ,"Antonnet" ,"Courtou" ,"Beaulogne" ,"Coloville" ,"Sarsart" ,"Soilon" ,"Cololimar","Zava" ,"Catadrid" ,"Tegon" ,"Alicia" ,"Mulid" ,"Zararbella" ,"Malid" ,"Cásca" ,"Granalejos" ,"Segorez" ,"Terteixo" ,"Astumanca" ,"Galle" ,"Talona" ,"Girovega" ,"Albanada" ,"Nadoba" ,"Senca" ,"Vallanca" ,"Taville")
 
-sitesnames=1:nrow(inter)
+u=0
+while(length(potname)<nrow(inter)){
+    u=u+1
+    potname=c(potname,paste0(potname,u))
+}
+sitesnames=sample(potname,nrow(inter))
 
-sitesnames[c(1:4, 20)]=c("Farwallow" ,"Bearcall" ,"Dustscar" ,"Clearreach" ,"Rabbithole")
-
-fr=c("Épibéliard" ,"Cololuçon" ,"Pulogne" ,"Haguemasse" ,"Auriteaux" ,"Bourville" ,"Banau" ,"Montnesse" ,"Bannet" ,"Alenlon", "Roullac" ,"Genneville" ,"Vinlès" ,"Antonnet" ,"Courtou" ,"Beaulogne" ,"Coloville" ,"Sarsart" ,"Soilon" ,"Cololimar")
-sitesnames[5:19]=fr[1:(19-4)]
-spain=c("Zava" ,"Catadrid" ,"Tegon" ,"Alicia" ,"Mulid" ,"Zararbella" ,"Malid" ,"Cásca" ,"Granalejos" ,"Segorez" ,"Terteixo" ,"Astumanca" ,"Galle" ,"Talona" ,"Girovega" ,"Albanada" ,"Nadoba" ,"Senca" ,"Vallanca" ,"Taville")
-
-sitesnames[21:length(sitesnames)]=spain[1:(length(sitesnames)-20)]
 inter=cbind(inter,sitesnames)
 plotMap(height.ras,height.wat)
 plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
@@ -193,8 +167,7 @@ text(st_coordinates(inter),inter$sitesnames,cex=.8)
 
 Export csv and data for each public square
 
-```{r exportpublic,eval=F}
-
+```{r exportpublic-ex,eval=F}
 
 inter$sitesnames=sitesnames
 for(g in selection){
@@ -205,9 +178,11 @@ coords=st_coordinates(curr)
 
 ```
 
+The csv generate for this specific run of the bookdown can be [downloaded here]('dataset')
+
 Export csv and data for all ever square
 
-```{r exportprivate,eval=F}
+```{r exportprivate-ex,eval=F}
 
 allsites=st_intersection(st_as_sf(foundsites),squares[-selection])
 
@@ -228,7 +203,7 @@ inter$end=sapply(ld,min)
 Some maps we use and did for fake papers and social media etc... 
 
 
-```{r randommaps,out.width="30%",fig.show="hold"}
+```{r randommaps-ex,out.width="30%",fig.show="hold"}
 
 ## plotting oldschool map
 
@@ -272,7 +247,7 @@ box()
 
 More maps for twitter:
 
-```{r randommaps2}
+```{r randommaps2-ex}
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
@@ -288,7 +263,7 @@ text(x = -1.2, y = 1.8/2, labels = "???? ", adj=c(0,0), cex = 3, col = "black", 
 More maps!! (the coolest)
 
 
-```{r randommaps3}
+```{r randommaps3-ex}
 plotMap(height.ras,height.wat)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
