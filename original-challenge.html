@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>9 Archaeoriddle: the original challenge | Methods Riddles, the ultimate revelations</title>
+  <meta name="description" content="First draft of Rbookdown to describe how data have been generated" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="9 Archaeoriddle: the original challenge | Methods Riddles, the ultimate revelations" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="First draft of Rbookdown to describe how data have been generated" />
+  <meta name="github-repo" content="acortell3/archaeoriddle" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="9 Archaeoriddle: the original challenge | Methods Riddles, the ultimate revelations" />
+  
+  <meta name="twitter:description" content="First draft of Rbookdown to describe how data have been generated" />
+  
+
+<meta name="author" content="CDAL" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link rel="prev" href="final-output.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.11/grViz.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-is-archaeoriddle"><i class="fa fa-check"></i><b>1.1</b> What is archaeoriddle?</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#what-will-you-find-in-this-bookdown"><i class="fa fa-check"></i><b>1.2</b> What will you find in this bookdown?</a></li>
+<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#what-can-you-do-with-this"><i class="fa fa-check"></i><b>1.3</b> What can you do with this?</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="env.html"><a href="env.html"><i class="fa fa-check"></i><b>2</b> Landscape &amp; Resources</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="env.html"><a href="env.html#autocorrelated-noise-generation"><i class="fa fa-check"></i><b>2.1</b> Autocorrelated noise generation</a></li>
+<li class="chapter" data-level="2.2" data-path="env.html"><a href="env.html#slope-and-elevation"><i class="fa fa-check"></i><b>2.2</b> Slope and Elevation</a></li>
+<li class="chapter" data-level="2.3" data-path="env.html"><a href="env.html#environmental-resources"><i class="fa fa-check"></i><b>2.3</b> Environmental resources</a></li>
+<li class="chapter" data-level="2.4" data-path="env.html"><a href="env.html#manual-selection"><i class="fa fa-check"></i><b>2.4</b> Manually Select Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="popgrowth.html"><a href="popgrowth.html"><i class="fa fa-check"></i><b>3</b> Population structure &amp; growth</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="popgrowth.html"><a href="popgrowth.html#settlements-position"><i class="fa fa-check"></i><b>3.1</b> Settlements position</a></li>
+<li class="chapter" data-level="3.2" data-path="popgrowth.html"><a href="popgrowth.html#initsize"><i class="fa fa-check"></i><b>3.2</b> Initializing Site Population and Culture</a></li>
+<li class="chapter" data-level="3.3" data-path="popgrowth.html"><a href="popgrowth.html#base-pop-growth"><i class="fa fa-check"></i><b>3.3</b> Population Growth : <span class="math inline">\(Pop\)</span>-protocol</a>
+<ul>
+<li class="chapter" data-level="" data-path="popgrowth.html"><a href="popgrowth.html#source"><i class="fa fa-check"></i>Source</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="conflict.html"><a href="conflict.html"><i class="fa fa-check"></i><b>4</b> Migration &amp; Conflict</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="conflict.html"><a href="conflict.html#fission"><i class="fa fa-check"></i><b>4.1</b> Fission</a></li>
+<li class="chapter" data-level="4.2" data-path="conflict.html"><a href="conflict.html#migration"><i class="fa fa-check"></i><b>4.2</b> Migration</a></li>
+<li class="chapter" data-level="4.3" data-path="conflict.html"><a href="conflict.html#conflict-and-war"><i class="fa fa-check"></i><b>4.3</b> Conflict and War</a></li>
+<li class="chapter" data-level="4.4" data-path="conflict.html"><a href="conflict.html#network-site-size-and-climate-deprecated"><i class="fa fa-check"></i><b>4.4</b> ~~ Network, Site Size And Climate – DEPRECATED ~~</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="main-simu.html"><a href="main-simu.html"><i class="fa fa-check"></i><b>5</b> Main Simulation</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="main-simu.html"><a href="main-simu.html#initial-parameters"><i class="fa fa-check"></i><b>5.1</b> Initial Parameters</a></li>
+<li class="chapter" data-level="5.2" data-path="main-simu.html"><a href="main-simu.html#preparation"><i class="fa fa-check"></i><b>5.2</b> Preparation</a></li>
+<li class="chapter" data-level="5.3" data-path="main-simu.html"><a href="main-simu.html#algorithm"><i class="fa fa-check"></i><b>5.3</b> Algorithm</a>
+<ul>
+<li class="chapter" data-level="" data-path="main-simu.html"><a href="main-simu.html#source-code"><i class="fa fa-check"></i>Source code</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="main-simu.html"><a href="main-simu.html#explore-simulation"><i class="fa fa-check"></i><b>5.4</b> Explore simulation:</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="recgen.html"><a href="recgen.html"><i class="fa fa-check"></i><b>6</b> Record formation</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="recgen.html"><a href="recgen.html#theoretical-model"><i class="fa fa-check"></i><b>6.1</b> Theoretical model</a></li>
+<li class="chapter" data-level="6.2" data-path="recgen.html"><a href="recgen.html#implementation"><i class="fa fa-check"></i><b>6.2</b> Implementation</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="recgen.html"><a href="recgen.html#population-pop-protocol"><i class="fa fa-check"></i><b>6.2.1</b> Population <span class="math inline">\(Pop\)</span>-protocol</a></li>
+<li class="chapter" data-level="6.2.2" data-path="recgen.html"><a href="recgen.html#anthropogenic-deposition-a-protocol"><i class="fa fa-check"></i><b>6.2.2</b> Anthropogenic deposition <span class="math inline">\(A\)</span>-protocol</a></li>
+<li class="chapter" data-level="6.2.3" data-path="recgen.html"><a href="recgen.html#depth-d-protocol"><i class="fa fa-check"></i><b>6.2.3</b> Depth <span class="math inline">\(D\)</span>-protocol</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="recgen.html"><a href="recgen.html#minimal-example-and-simulation"><i class="fa fa-check"></i><b>6.3</b> Minimal example and simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="recloss.html"><a href="recloss.html"><i class="fa fa-check"></i><b>7</b> Record loss</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="recloss.html"><a href="recloss.html#theoretical-model-1"><i class="fa fa-check"></i><b>7.1</b> Theoretical model</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="recloss.html"><a href="recloss.html#general-purpose"><i class="fa fa-check"></i><b>7.1.1</b> General purpose</a></li>
+<li class="chapter" data-level="7.1.2" data-path="recloss.html"><a href="recloss.html#model-layers"><i class="fa fa-check"></i><b>7.1.2</b> Model layers</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="recloss.html"><a href="recloss.html#implementation-1"><i class="fa fa-check"></i><b>7.2</b> Implementation</a>
+<ul>
+<li class="chapter" data-level="" data-path="recloss.html"><a href="recloss.html#source-1"><i class="fa fa-check"></i>Source</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="recloss.html"><a href="recloss.html#usage"><i class="fa fa-check"></i><b>7.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="final-output.html"><a href="final-output.html"><i class="fa fa-check"></i><b>8</b> Generate final archaeological record</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="final-output.html"><a href="final-output.html#using-sites-size-to-generate-deposit"><i class="fa fa-check"></i><b>8.1</b> Using sites size to generate deposit</a></li>
+<li class="chapter" data-level="8.2" data-path="final-output.html"><a href="final-output.html#split-environment-in-a-grid"><i class="fa fa-check"></i><b>8.2</b> Split environment in a grid</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="final-output.html"><a href="final-output.html#giving-name-to-the-publicly-available-data"><i class="fa fa-check"></i><b>8.2.1</b> Giving name to the publicly available data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="original-challenge.html"><a href="original-challenge.html"><i class="fa fa-check"></i><b>9</b> Archaeoriddle: the original challenge</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="original-challenge.html"><a href="original-challenge.html#generate-and-share-final-simulation"><i class="fa fa-check"></i><b>9.1</b> Generate and share final simulation</a></li>
+<li class="chapter" data-level="9.2" data-path="original-challenge.html"><a href="original-challenge.html#split-environment-in-a-grid-1"><i class="fa fa-check"></i><b>9.2</b> Split environment in a grid</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="original-challenge.html"><a href="original-challenge.html#naming"><i class="fa fa-check"></i><b>9.2.1</b> Giving name to the publicly available data</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/acortell3/archaeoriddle/">
+source</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Methods Riddles, the ultimate revelations</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="original-challenge" class="section level1 hasAnchor" number="9">
+<h1><span class="header-section-number">9</span> Archaeoriddle: the original challenge<a href="original-challenge.html#original-challenge" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>As I (simon) am stupid I didn’t generate seeds for each experiment so we cannot re-run it EXACTLY the same. But I kept lot of informations and output about it.</p>
+<p>They are stored in the folder <code>general_results_selected_simu/</code></p>
+<p>and will allow us to reconstruct most of what happened. We basically run thousands of simulations and choose the one who looked the cool 😆. We used the script <code>scriptmini.R</code> that allow to run one simulation and ran in in parallel as described in <code>smallscript.md</code>.</p>
+<p>This summarise all the previous steps but using the original map and sites.</p>
+<p>The original raster:</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="original-challenge.html#cb89-1" tabindex="-1"></a></span>
+<span id="cb89-2"><a href="original-challenge.html#cb89-2" tabindex="-1"></a>original.ras <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data_original/east_narnia4x.tif&quot;</span>)</span>
+<span id="cb89-3"><a href="original-challenge.html#cb89-3" tabindex="-1"></a><span class="fu">plot</span>(original.ras, <span class="at">col=</span><span class="fu">col_ramp</span>(<span class="dv">20</span>), <span class="at">legend=</span>F, <span class="at">reset=</span>F)</span>
+<span id="cb89-4"><a href="original-challenge.html#cb89-4" tabindex="-1"></a>original.wat <span class="ot">&lt;-</span> original.ras</span>
+<span id="cb89-5"><a href="original-challenge.html#cb89-5" tabindex="-1"></a>original.wat[original.wat<span class="sc">&gt;</span><span class="fu">mean</span>(original.wat[])] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb89-6"><a href="original-challenge.html#cb89-6" tabindex="-1"></a><span class="fu">plot</span>(original.wat, <span class="at">col=</span><span class="st">&quot;lightblue&quot;</span>, <span class="at">add=</span>T, <span class="at">legend=</span>F)</span>
+<span id="cb89-7"><a href="original-challenge.html#cb89-7" tabindex="-1"></a></span>
+<span id="cb89-8"><a href="original-challenge.html#cb89-8" tabindex="-1"></a>original.groups <span class="ot">&lt;-</span> original.ras <span class="co"># taking back the raster created before</span></span>
+<span id="cb89-9"><a href="original-challenge.html#cb89-9" tabindex="-1"></a>original.groups[original.groups<span class="sc">&lt;</span><span class="fu">mean</span>(original.groups[])] <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co">#replace values that are below mean level (under water)</span></span>
+<span id="cb89-10"><a href="original-challenge.html#cb89-10" tabindex="-1"></a>original.groups[original.groups<span class="sc">&lt;</span>(maxh<span class="sc">*</span>.<span class="dv">7</span>)] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># values below 70% of the maximum original are set as 1</span></span>
+<span id="cb89-11"><a href="original-challenge.html#cb89-11" tabindex="-1"></a>original.groups[original.groups<span class="sc">&gt;</span>(maxh<span class="sc">*</span>.<span class="dv">7</span>)] <span class="ot">&lt;-</span> <span class="dv">200</span> <span class="co"># value above at 200 (high mountains)</span></span>
+<span id="cb89-12"><a href="original-challenge.html#cb89-12" tabindex="-1"></a>original.groups[<span class="fu">is.na</span>(original.groups)] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">1</span> <span class="co">#  NA values (below waters) are set to -1</span></span>
+<span id="cb89-13"><a href="original-challenge.html#cb89-13" tabindex="-1"></a>original.poly <span class="ot">&lt;-</span> <span class="fu">as.polygons</span>(original.groups) <span class="co"># convert original.groups as polygons that will be of three type: -1 =&gt; under water, 1, viable, and 200, high mountaines</span></span>
+<span id="cb89-14"><a href="original-challenge.html#cb89-14" tabindex="-1"></a>original.viable <span class="ot">&lt;-</span> <span class="fu">makeValid</span>(original.poly[<span class="dv">2</span>,]) <span class="co"># select polygon with &#39;1&#39; and make it a valid polygon as it may have some loop and problems</span></span>
+<span id="cb89-15"><a href="original-challenge.html#cb89-15" tabindex="-1"></a><span class="co"># get only the non submerged actual land and plot it</span></span>
+<span id="cb89-16"><a href="original-challenge.html#cb89-16" tabindex="-1"></a>above_level <span class="ot">&lt;-</span> original.ras <span class="sc">&gt;</span> <span class="fu">mean</span>(original.ras[])</span>
+<span id="cb89-17"><a href="original-challenge.html#cb89-17" tabindex="-1"></a>coastline <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(<span class="fu">as.polygons</span>(above_level))[<span class="dv">2</span>,]</span>
+<span id="cb89-18"><a href="original-challenge.html#cb89-18" tabindex="-1"></a><span class="fu">plot</span>(coastline, <span class="at">col=</span><span class="cn">NA</span>, <span class="at">bgc=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;cyan&quot;</span>, <span class="fl">0.1</span>), <span class="at">add=</span>T)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>Adding ressource</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="original-challenge.html#cb90-1" tabindex="-1"></a><span class="do">##ressource geolocalisation set manually</span></span>
+<span id="cb90-2"><a href="original-challenge.html#cb90-2" tabindex="-1"></a>goodresources <span class="ot">&lt;-</span> <span class="fu">vect</span>(</span>
+<span id="cb90-3"><a href="original-challenge.html#cb90-3" tabindex="-1"></a>  <span class="fu">cbind</span>(</span>
+<span id="cb90-4"><a href="original-challenge.html#cb90-4" tabindex="-1"></a>    <span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2300711</span>, <span class="sc">-</span><span class="fl">3.1455282</span>, <span class="sc">-</span><span class="fl">0.5086485</span>, <span class="sc">-</span><span class="fl">1.9639755</span>,</span>
+<span id="cb90-5"><a href="original-challenge.html#cb90-5" tabindex="-1"></a>        <span class="sc">-</span><span class="fl">0.4077843</span>, <span class="fl">0.019688</span>, <span class="sc">-</span><span class="fl">3.116710</span>),</span>
+<span id="cb90-6"><a href="original-challenge.html#cb90-6" tabindex="-1"></a>    <span class="at">y=</span><span class="fu">c</span>(<span class="fl">3.6423000</span>, <span class="sc">-</span><span class="fl">0.2551019</span>, <span class="sc">-</span><span class="fl">0.7440748</span>, <span class="fl">1.1303214</span>,</span>
+<span id="cb90-7"><a href="original-challenge.html#cb90-7" tabindex="-1"></a>        <span class="fl">1.0248567</span>, <span class="fl">0.2194895</span>, <span class="fl">2.0267718</span>)</span>
+<span id="cb90-8"><a href="original-challenge.html#cb90-8" tabindex="-1"></a>  )</span>
+<span id="cb90-9"><a href="original-challenge.html#cb90-9" tabindex="-1"></a>)</span>
+<span id="cb90-10"><a href="original-challenge.html#cb90-10" tabindex="-1"></a><span class="co">#spread of resources</span></span>
+<span id="cb90-11"><a href="original-challenge.html#cb90-11" tabindex="-1"></a>areas <span class="ot">&lt;-</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">2000</span>, <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">400</span>)</span>
+<span id="cb90-12"><a href="original-challenge.html#cb90-12" tabindex="-1"></a><span class="co">#speed of ressource decay:</span></span>
+<span id="cb90-13"><a href="original-challenge.html#cb90-13" tabindex="-1"></a>ks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.0002</span>, <span class="fl">0.0001000</span>, <span class="fl">0.0001600</span>, <span class="fl">0.0001800</span>, <span class="fl">0.00040</span>, .<span class="dv">0002</span>, <span class="fl">0.0002</span>)<span class="sc">/</span><span class="dv">4</span></span>
+<span id="cb90-14"><a href="original-challenge.html#cb90-14" tabindex="-1"></a></span>
+<span id="cb90-15"><a href="original-challenge.html#cb90-15" tabindex="-1"></a><span class="fu">crs</span>(goodresources) <span class="ot">&lt;-</span> <span class="fu">crs</span>(original.ras)</span>
+<span id="cb90-16"><a href="original-challenge.html#cb90-16" tabindex="-1"></a></span>
+<span id="cb90-17"><a href="original-challenge.html#cb90-17" tabindex="-1"></a>original.allres <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb90-18"><a href="original-challenge.html#cb90-18" tabindex="-1"></a>  <span class="fu">seq_along</span>(goodresources),</span>
+<span id="cb90-19"><a href="original-challenge.html#cb90-19" tabindex="-1"></a>  <span class="cf">function</span>(i){</span>
+<span id="cb90-20"><a href="original-challenge.html#cb90-20" tabindex="-1"></a>    <span class="fu">logisticdecay</span>(goodresources[i], <span class="fu">mask</span>(original.ras, original.viable),</span>
+<span id="cb90-21"><a href="original-challenge.html#cb90-21" tabindex="-1"></a>                  <span class="at">x=</span>areas[i], <span class="at">k=</span>ks[i]</span>
+<span id="cb90-22"><a href="original-challenge.html#cb90-22" tabindex="-1"></a>    )</span>
+<span id="cb90-23"><a href="original-challenge.html#cb90-23" tabindex="-1"></a>  }</span>
+<span id="cb90-24"><a href="original-challenge.html#cb90-24" tabindex="-1"></a>)</span>
+<span id="cb90-25"><a href="original-challenge.html#cb90-25" tabindex="-1"></a><span class="do">## |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          </span></span>
+<span id="cb90-26"><a href="original-challenge.html#cb90-26" tabindex="-1"></a></span>
+<span id="cb90-27"><a href="original-challenge.html#cb90-27" tabindex="-1"></a>allna <span class="ot">&lt;-</span> <span class="fu">sapply</span>(original.allres, <span class="cf">function</span>(i)<span class="fu">any</span>(<span class="fu">is.na</span>(<span class="fu">values</span>(i))))</span>
+<span id="cb90-28"><a href="original-challenge.html#cb90-28" tabindex="-1"></a>original.allres <span class="ot">&lt;-</span> original.allres[<span class="sc">!</span>allna]</span>
+<span id="cb90-29"><a href="original-challenge.html#cb90-29" tabindex="-1"></a>original.ress <span class="ot">&lt;-</span> original.allres[[<span class="dv">1</span>]]</span>
+<span id="cb90-30"><a href="original-challenge.html#cb90-30" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(original.allres))</span>
+<span id="cb90-31"><a href="original-challenge.html#cb90-31" tabindex="-1"></a>    original.ress <span class="ot">&lt;-</span> original.ress <span class="sc">+</span> original.allres[[i]]</span>
+<span id="cb90-32"><a href="original-challenge.html#cb90-32" tabindex="-1"></a>original.ress <span class="ot">&lt;-</span> <span class="fu">mask</span>(original.ress,original.viable)</span>
+<span id="cb90-33"><a href="original-challenge.html#cb90-33" tabindex="-1"></a><span class="fu">plot</span>(original.ress)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>This, should be exactly what is stored in <code>data_original/resources.tiff</code></p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="original-challenge.html#cb91-1" tabindex="-1"></a><span class="fu">plot</span>(original.ress)</span></code></pre></div>
+<p><img src="_main_files/figure-html/comptiff-1.png" width="45%" /></p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="original-challenge.html#cb92-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">rast</span>(<span class="st">&quot;data_original/resources.tiff&quot;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/comptiff-2.png" width="45%" /></p>
+<p>We then take back the sites position defined for the original archaeoriddle:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="original-challenge.html#cb93-1" tabindex="-1"></a>original.sites<span class="ot">=</span><span class="fu">vect</span>(<span class="st">&quot;data_original/sitesinitialposition/&quot;</span>)</span>
+<span id="cb93-2"><a href="original-challenge.html#cb93-2" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="original-challenge.html#cb93-3" tabindex="-1"></a></span>
+<span id="cb93-4"><a href="original-challenge.html#cb93-4" tabindex="-1"></a>Kbase<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">45</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">120</span>) <span class="co">#difference in K for the two cultures</span></span>
+<span id="cb93-5"><a href="original-challenge.html#cb93-5" tabindex="-1"></a></span>
+<span id="cb93-6"><a href="original-challenge.html#cb93-6" tabindex="-1"></a><span class="co"># spatial penality to extent: lower, bigger penality</span></span>
+<span id="cb93-7"><a href="original-challenge.html#cb93-7" tabindex="-1"></a>cul_ext <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">7</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">6</span>)</span>
+<span id="cb93-8"><a href="original-challenge.html#cb93-8" tabindex="-1"></a><span class="co"># penality of occupational area: low, other sites can come close</span></span>
+<span id="cb93-9"><a href="original-challenge.html#cb93-9" tabindex="-1"></a>penal_cul <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">5</span>)</span>
+<span id="cb93-10"><a href="original-challenge.html#cb93-10" tabindex="-1"></a><span class="co"># proba to give birth every year</span></span>
+<span id="cb93-11"><a href="original-challenge.html#cb93-11" tabindex="-1"></a>prob_birth <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.3</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.5</span>)</span>
+<span id="cb93-12"><a href="original-challenge.html#cb93-12" tabindex="-1"></a><span class="co"># proba to die when pop &gt; K</span></span>
+<span id="cb93-13"><a href="original-challenge.html#cb93-13" tabindex="-1"></a>prob_survive <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.8</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>)</span>
+<span id="cb93-14"><a href="original-challenge.html#cb93-14" tabindex="-1"></a><span class="co"># proba to create new settlement when Ne &gt; K</span></span>
+<span id="cb93-15"><a href="original-challenge.html#cb93-15" tabindex="-1"></a>prob_split <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>)</span>
+<span id="cb93-16"><a href="original-challenge.html#cb93-16" tabindex="-1"></a><span class="co"># how big the group of migrant should be to create a new city vs</span></span>
+<span id="cb93-17"><a href="original-challenge.html#cb93-17" tabindex="-1"></a><span class="co"># migrate to a existing one</span></span>
+<span id="cb93-18"><a href="original-challenge.html#cb93-18" tabindex="-1"></a>minimals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.14</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.20</span>)</span>
+<span id="cb93-19"><a href="original-challenge.html#cb93-19" tabindex="-1"></a><span class="co"># prob to migrate to existing settlement when Ne &gt; K</span></span>
+<span id="cb93-20"><a href="original-challenge.html#cb93-20" tabindex="-1"></a>prob_move <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.1</span>)</span></code></pre></div>
+<p>Let’s check again our raster and the sites and there cutlures etc…</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="original-challenge.html#cb94-1" tabindex="-1"></a><span class="fu">plotMap</span>(original.ras,original.wat,<span class="fu">paste0</span>(<span class="st">&quot;year &quot;</span>, <span class="dv">0</span>))</span>
+<span id="cb94-2"><a href="original-challenge.html#cb94-2" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">crds</span>(original.sites), <span class="at">pch=</span><span class="dv">21</span>, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(original.sites<span class="sc">$</span>culture)],<span class="at">col=</span><span class="dv">1</span>)</span>
+<span id="cb94-3"><a href="original-challenge.html#cb94-3" tabindex="-1"></a><span class="fu">text</span>(original.sites,<span class="at">pos=</span><span class="dv">3</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p>Let’s run one simple simulation on the archaeoriddle:</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="original-challenge.html#cb95-1" tabindex="-1"></a></span>
+<span id="cb95-2"><a href="original-challenge.html#cb95-2" tabindex="-1"></a>ts <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb95-3"><a href="original-challenge.html#cb95-3" tabindex="-1"></a></span>
+<span id="cb95-4"><a href="original-challenge.html#cb95-4" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Starting simulation &quot;</span>,<span class="st">&quot;nan&quot;</span>))</span>
+<span id="cb95-5"><a href="original-challenge.html#cb95-5" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation nan&quot;</span></span>
+<span id="cb95-6"><a href="original-challenge.html#cb95-6" tabindex="-1"></a></span>
+<span id="cb95-7"><a href="original-challenge.html#cb95-7" tabindex="-1"></a>onesimu <span class="ot">&lt;-</span> <span class="fu">run_simulation</span>(</span>
+<span id="cb95-8"><a href="original-challenge.html#cb95-8" tabindex="-1"></a>  <span class="at">sites=</span>original.sites, <span class="at">viable=</span>original.viable, <span class="at">dem=</span>original.ras,</span>
+<span id="cb95-9"><a href="original-challenge.html#cb95-9" tabindex="-1"></a>  <span class="at">ressources=</span>original.ress,</span>
+<span id="cb95-10"><a href="original-challenge.html#cb95-10" tabindex="-1"></a>  <span class="at">water=</span>original.wat,</span>
+<span id="cb95-11"><a href="original-challenge.html#cb95-11" tabindex="-1"></a>  <span class="at">foldervid=</span><span class="st">&quot;nan&quot;</span>,</span>
+<span id="cb95-12"><a href="original-challenge.html#cb95-12" tabindex="-1"></a>  <span class="at">visu=</span>F, <span class="at">visumin=</span>F,</span>
+<span id="cb95-13"><a href="original-challenge.html#cb95-13" tabindex="-1"></a>  <span class="at">ts=</span>ts, <span class="co">#length of simulation in year</span></span>
+<span id="cb95-14"><a href="original-challenge.html#cb95-14" tabindex="-1"></a>  <span class="at">Kbase=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">35</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">110</span>), <span class="co">#difference in K for the two cultures</span></span>
+<span id="cb95-15"><a href="original-challenge.html#cb95-15" tabindex="-1"></a>  <span class="at">cul_ext=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">7</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">6</span>), <span class="co">#spatial penality to extent: lower, bigger penality</span></span>
+<span id="cb95-16"><a href="original-challenge.html#cb95-16" tabindex="-1"></a>  <span class="at">penal_cul=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">5</span>), <span class="co">#penality of occupational area: low, other sites can cam close</span></span>
+<span id="cb95-17"><a href="original-challenge.html#cb95-17" tabindex="-1"></a>  <span class="at">prob_birth=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.3</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.5</span>), <span class="co">#proba of giving birth every year</span></span>
+<span id="cb95-18"><a href="original-challenge.html#cb95-18" tabindex="-1"></a>  <span class="at">prob_survive=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.8</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.65</span>), <span class="co">#proba of dying when pop &gt; K</span></span>
+<span id="cb95-19"><a href="original-challenge.html#cb95-19" tabindex="-1"></a>  <span class="at">prob_split=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.5</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.6</span>), <span class="co">#proba of creating a new settlement when Ne &gt; K</span></span>
+<span id="cb95-20"><a href="original-challenge.html#cb95-20" tabindex="-1"></a>  <span class="at">minimals=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.14</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.20</span>), <span class="co">#how big the group of migrant should be to create a new city vs migrate to a existing one </span></span>
+<span id="cb95-21"><a href="original-challenge.html#cb95-21" tabindex="-1"></a>  <span class="at">bufferatack=</span><span class="dv">300</span>, <span class="co">#distance max around which settlement can fight</span></span>
+<span id="cb95-22"><a href="original-challenge.html#cb95-22" tabindex="-1"></a>  <span class="at">prob_move=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>, <span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.1</span>) <span class="co">#proba of migrating to existing settlement when Ne &gt; K</span></span>
+<span id="cb95-23"><a href="original-challenge.html#cb95-23" tabindex="-1"></a>)</span>
+<span id="cb95-24"><a href="original-challenge.html#cb95-24" tabindex="-1"></a><span class="do">## |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          |---------|---------|---------|---------|=========================================                                          </span></span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="original-challenge.html#cb96-1" tabindex="-1"></a>Nts <span class="ot">&lt;-</span> onesimu<span class="sc">$</span>Nts <span class="co"># population at each timestep</span></span>
+<span id="cb96-2"><a href="original-challenge.html#cb96-2" tabindex="-1"></a>warcasualties <span class="ot">&lt;-</span> onesimu<span class="sc">$</span>warcasualties <span class="co">#death by war at each time step</span></span>
+<span id="cb96-3"><a href="original-challenge.html#cb96-3" tabindex="-1"></a><span class="fu">plot</span>(sites, <span class="at">cex=</span>(<span class="dv">1</span><span class="sc">+</span>Nts[<span class="dv">1</span>,]<span class="sc">/</span><span class="dv">100</span>), <span class="at">pch=</span><span class="dv">21</span>, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(original.sites<span class="sc">$</span>culture)])</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="original-challenge.html#cb97-1" tabindex="-1"></a></span>
+<span id="cb97-2"><a href="original-challenge.html#cb97-2" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Nts)</span>
+<span id="cb97-3"><a href="original-challenge.html#cb97-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(Nts)), <span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;popsize&quot;</span>)</span>
+<span id="cb97-4"><a href="original-challenge.html#cb97-4" tabindex="-1"></a><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(Nts),</span>
+<span id="cb97-5"><a href="original-challenge.html#cb97-5" tabindex="-1"></a>       <span class="cf">function</span>(j)<span class="fu">lines</span>(Nts[,j],<span class="at">col=</span><span class="fu">rainbow</span>(<span class="dv">2</span>)[<span class="fu">as.factor</span>(original.sites<span class="sc">$</span>culture)[j]])</span>
+<span id="cb97-6"><a href="original-challenge.html#cb97-6" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<pre><code>## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL
+## 
+## [[5]]
+## NULL
+## 
+## [[6]]
+## NULL
+## 
+## [[7]]
+## NULL
+## 
+## [[8]]
+## NULL
+## 
+## [[9]]
+## NULL
+## 
+## [[10]]
+## NULL
+## 
+## [[11]]
+## NULL
+## 
+## [[12]]
+## NULL
+## 
+## [[13]]
+## NULL
+## 
+## [[14]]
+## NULL
+## 
+## [[15]]
+## NULL
+## 
+## [[16]]
+## NULL
+## 
+## [[17]]
+## NULL
+## 
+## [[18]]
+## NULL
+## 
+## [[19]]
+## NULL
+## 
+## [[20]]
+## NULL
+## 
+## [[21]]
+## NULL
+## 
+## [[22]]
+## NULL
+## 
+## [[23]]
+## NULL
+## 
+## [[24]]
+## NULL
+## 
+## [[25]]
+## NULL
+## 
+## [[26]]
+## NULL
+## 
+## [[27]]
+## NULL
+## 
+## [[28]]
+## NULL
+## 
+## [[29]]
+## NULL
+## 
+## [[30]]
+## NULL
+## 
+## [[31]]
+## NULL
+## 
+## [[32]]
+## NULL
+## 
+## [[33]]
+## NULL
+## 
+## [[34]]
+## NULL
+## 
+## [[35]]
+## NULL
+## 
+## [[36]]
+## NULL
+## 
+## [[37]]
+## NULL
+## 
+## [[38]]
+## NULL
+## 
+## [[39]]
+## NULL
+## 
+## [[40]]
+## NULL
+## 
+## [[41]]
+## NULL
+## 
+## [[42]]
+## NULL
+## 
+## [[43]]
+## NULL
+## 
+## [[44]]
+## NULL
+## 
+## [[45]]
+## NULL
+## 
+## [[46]]
+## NULL
+## 
+## [[47]]
+## NULL
+## 
+## [[48]]
+## NULL
+## 
+## [[49]]
+## NULL
+## 
+## [[50]]
+## NULL
+## 
+## [[51]]
+## NULL
+## 
+## [[52]]
+## NULL
+## 
+## [[53]]
+## NULL
+## 
+## [[54]]
+## NULL
+## 
+## [[55]]
+## NULL
+## 
+## [[56]]
+## NULL
+## 
+## [[57]]
+## NULL
+## 
+## [[58]]
+## NULL
+## 
+## [[59]]
+## NULL
+## 
+## [[60]]
+## NULL
+## 
+## [[61]]
+## NULL
+## 
+## [[62]]
+## NULL
+## 
+## [[63]]
+## NULL
+## 
+## [[64]]
+## NULL
+## 
+## [[65]]
+## NULL
+## 
+## [[66]]
+## NULL
+## 
+## [[67]]
+## NULL
+## 
+## [[68]]
+## NULL
+## 
+## [[69]]
+## NULL
+## 
+## [[70]]
+## NULL
+## 
+## [[71]]
+## NULL
+## 
+## [[72]]
+## NULL
+## 
+## [[73]]
+## NULL
+## 
+## [[74]]
+## NULL
+## 
+## [[75]]
+## NULL
+## 
+## [[76]]
+## NULL
+## 
+## [[77]]
+## NULL
+## 
+## [[78]]
+## NULL
+## 
+## [[79]]
+## NULL
+## 
+## [[80]]
+## NULL
+## 
+## [[81]]
+## NULL
+## 
+## [[82]]
+## NULL
+## 
+## [[83]]
+## NULL
+## 
+## [[84]]
+## NULL
+## 
+## [[85]]
+## NULL
+## 
+## [[86]]
+## NULL
+## 
+## [[87]]
+## NULL
+## 
+## [[88]]
+## NULL
+## 
+## [[89]]
+## NULL</code></pre>
+<p>Visualise, Record deposit and loss. for the 5 first sites (see next chapters for <code>A_rates</code>).</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="original-challenge.html#cb99-1" tabindex="-1"></a>alldeposit <span class="ot">&lt;-</span> <span class="fu">lapply</span>(</span>
+<span id="cb99-2"><a href="original-challenge.html#cb99-2" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb99-3"><a href="original-challenge.html#cb99-3" tabindex="-1"></a>  <span class="cf">function</span>(i){</span>
+<span id="cb99-4"><a href="original-challenge.html#cb99-4" tabindex="-1"></a>    <span class="fu">Rec_c</span>(<span class="fu">sapply</span>(Nts[,i], A_rates), <span class="at">InitBP =</span> <span class="dv">15000</span>, <span class="at">ts=</span>ts, <span class="at">r=</span><span class="fl">0.2</span>, <span class="at">max_bone_thickness=</span><span class="st">&quot;m&quot;</span>)</span>
+<span id="cb99-5"><a href="original-challenge.html#cb99-5" tabindex="-1"></a>  }</span>
+<span id="cb99-6"><a href="original-challenge.html#cb99-6" tabindex="-1"></a>)</span>
+<span id="cb99-7"><a href="original-challenge.html#cb99-7" tabindex="-1"></a>maxy <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">sapply</span>(alldeposit, <span class="cf">function</span>(i)<span class="fu">max</span>(<span class="fu">apply</span>(i,<span class="dv">2</span>,sum))))</span>
+<span id="cb99-8"><a href="original-challenge.html#cb99-8" tabindex="-1"></a></span>
+<span id="cb99-9"><a href="original-challenge.html#cb99-9" tabindex="-1"></a>nill <span class="ot">&lt;-</span> <span class="fu">lapply</span>(alldeposit, <span class="cf">function</span>(depo)<span class="fu">barplot</span>(<span class="fu">t</span>(depo), <span class="at">col=</span><span class="fu">viridis</span>(ts<span class="sc">+</span><span class="dv">1</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,maxy)))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-36-1.png" width="25%" /><img src="_main_files/figure-html/unnamed-chunk-36-2.png" width="25%" /><img src="_main_files/figure-html/unnamed-chunk-36-3.png" width="25%" /><img src="_main_files/figure-html/unnamed-chunk-36-4.png" width="25%" /><img src="_main_files/figure-html/unnamed-chunk-36-5.png" width="25%" /></p>
+<p>Population by time and culture</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="original-challenge.html#cb100-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="at">type=</span><span class="st">&quot;n&quot;</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(Nts)),</span>
+<span id="cb100-2"><a href="original-challenge.html#cb100-2" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;time&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;popsize&quot;</span>)</span>
+<span id="cb100-3"><a href="original-challenge.html#cb100-3" tabindex="-1"></a><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(Nts),</span>
+<span id="cb100-4"><a href="original-challenge.html#cb100-4" tabindex="-1"></a>       <span class="cf">function</span>(i)<span class="fu">lines</span>(Nts[,i], <span class="at">col=</span><span class="fu">rainbow</span>(<span class="dv">2</span>)[<span class="fu">as.factor</span>(original.sites<span class="sc">$</span>culture)[i]]))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<pre><code>## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL
+## 
+## [[5]]
+## NULL
+## 
+## [[6]]
+## NULL
+## 
+## [[7]]
+## NULL
+## 
+## [[8]]
+## NULL
+## 
+## [[9]]
+## NULL
+## 
+## [[10]]
+## NULL
+## 
+## [[11]]
+## NULL
+## 
+## [[12]]
+## NULL
+## 
+## [[13]]
+## NULL
+## 
+## [[14]]
+## NULL
+## 
+## [[15]]
+## NULL
+## 
+## [[16]]
+## NULL
+## 
+## [[17]]
+## NULL
+## 
+## [[18]]
+## NULL
+## 
+## [[19]]
+## NULL
+## 
+## [[20]]
+## NULL
+## 
+## [[21]]
+## NULL
+## 
+## [[22]]
+## NULL
+## 
+## [[23]]
+## NULL
+## 
+## [[24]]
+## NULL
+## 
+## [[25]]
+## NULL
+## 
+## [[26]]
+## NULL
+## 
+## [[27]]
+## NULL
+## 
+## [[28]]
+## NULL
+## 
+## [[29]]
+## NULL
+## 
+## [[30]]
+## NULL
+## 
+## [[31]]
+## NULL
+## 
+## [[32]]
+## NULL
+## 
+## [[33]]
+## NULL
+## 
+## [[34]]
+## NULL
+## 
+## [[35]]
+## NULL
+## 
+## [[36]]
+## NULL
+## 
+## [[37]]
+## NULL
+## 
+## [[38]]
+## NULL
+## 
+## [[39]]
+## NULL
+## 
+## [[40]]
+## NULL
+## 
+## [[41]]
+## NULL
+## 
+## [[42]]
+## NULL
+## 
+## [[43]]
+## NULL
+## 
+## [[44]]
+## NULL
+## 
+## [[45]]
+## NULL
+## 
+## [[46]]
+## NULL
+## 
+## [[47]]
+## NULL
+## 
+## [[48]]
+## NULL
+## 
+## [[49]]
+## NULL
+## 
+## [[50]]
+## NULL
+## 
+## [[51]]
+## NULL
+## 
+## [[52]]
+## NULL
+## 
+## [[53]]
+## NULL
+## 
+## [[54]]
+## NULL
+## 
+## [[55]]
+## NULL
+## 
+## [[56]]
+## NULL
+## 
+## [[57]]
+## NULL
+## 
+## [[58]]
+## NULL
+## 
+## [[59]]
+## NULL
+## 
+## [[60]]
+## NULL
+## 
+## [[61]]
+## NULL
+## 
+## [[62]]
+## NULL
+## 
+## [[63]]
+## NULL
+## 
+## [[64]]
+## NULL
+## 
+## [[65]]
+## NULL
+## 
+## [[66]]
+## NULL
+## 
+## [[67]]
+## NULL
+## 
+## [[68]]
+## NULL
+## 
+## [[69]]
+## NULL
+## 
+## [[70]]
+## NULL
+## 
+## [[71]]
+## NULL
+## 
+## [[72]]
+## NULL
+## 
+## [[73]]
+## NULL
+## 
+## [[74]]
+## NULL
+## 
+## [[75]]
+## NULL
+## 
+## [[76]]
+## NULL
+## 
+## [[77]]
+## NULL
+## 
+## [[78]]
+## NULL
+## 
+## [[79]]
+## NULL
+## 
+## [[80]]
+## NULL
+## 
+## [[81]]
+## NULL
+## 
+## [[82]]
+## NULL
+## 
+## [[83]]
+## NULL
+## 
+## [[84]]
+## NULL
+## 
+## [[85]]
+## NULL
+## 
+## [[86]]
+## NULL
+## 
+## [[87]]
+## NULL
+## 
+## [[88]]
+## NULL
+## 
+## [[89]]
+## NULL
+plot(apply(Nts, 1, sum)[1:i], xlab=&quot;time&quot;, ylab=&quot;popsize&quot;)</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-37-2.png" width="672" /></p>
+<p>Exploring some trajectories of the simulations</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="original-challenge.html#cb102-1" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Nts)  <span class="co"># Get the number of rows in Nts</span></span>
+<span id="cb102-2"><a href="original-challenge.html#cb102-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i, original.sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span>], <span class="dv">1</span>, sum), <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>,</span>
+<span id="cb102-3"><a href="original-challenge.html#cb102-3" tabindex="-1"></a>     <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(<span class="fu">apply</span>(Nts, <span class="dv">1</span>, sum))))  <span class="co"># Plot sum of &#39;F&#39; culture values</span></span>
+<span id="cb102-4"><a href="original-challenge.html#cb102-4" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i, original.sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;HG&quot;</span>], <span class="dv">1</span>, sum),</span>
+<span id="cb102-5"><a href="original-challenge.html#cb102-5" tabindex="-1"></a>       <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)  <span class="co"># Add points for &#39;HG&#39; culture values</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="original-challenge.html#cb103-1" tabindex="-1"></a><span class="fu">plot</span>(warcasualties[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>)], <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;green&quot;</span>, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">yaxt=</span><span class="st">&quot;n&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;&quot;</span>)  <span class="co"># Plot war casualties</span></span>
+<span id="cb103-2"><a href="original-challenge.html#cb103-2" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">4</span>)  <span class="co"># Add an axis on the right side</span></span>
+<span id="cb103-3"><a href="original-challenge.html#cb103-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)  <span class="co"># Allow a new plot to be drawn on the existing plot</span></span>
+<span id="cb103-4"><a href="original-challenge.html#cb103-4" tabindex="-1"></a>growF <span class="ot">&lt;-</span> <span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>), original.sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span>], <span class="dv">1</span>, sum)  <span class="co"># Sum of &#39;F&#39; culture values excluding last row</span></span>
+<span id="cb103-5"><a href="original-challenge.html#cb103-5" tabindex="-1"></a>growHG <span class="ot">&lt;-</span> <span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>), original.sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;HG&quot;</span>], <span class="dv">1</span>, sum)  <span class="co"># Sum of &#39;HG&#39; culture values excluding last row</span></span>
+<span id="cb103-6"><a href="original-challenge.html#cb103-6" tabindex="-1"></a><span class="fu">plot</span>(growF, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(growF, growHG)))  <span class="co"># Plot growth of &#39;F&#39; culture</span></span>
+<span id="cb103-7"><a href="original-challenge.html#cb103-7" tabindex="-1"></a><span class="fu">points</span>(growHG, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">type=</span><span class="st">&quot;l&quot;</span>)  <span class="co"># Add points for growth of &#39;HG&#39; culture</span></span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-38-2.png" width="672" /></p>
+<div id="generate-and-share-final-simulation" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Generate and share final simulation<a href="original-challenge.html#generate-and-share-final-simulation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>No we have the full setup, we want to generate a record people will uses :</p>
+<ol style="list-style-type: decimal">
+<li>We first load the maps and the sites:</li>
+</ol>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="original-challenge.html#cb104-1" tabindex="-1"></a>sites<span class="ot">=</span><span class="fu">vect</span>(<span class="st">&quot;data_original/sitesinitialposition/&quot;</span>)</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>run one simulation</li>
+</ol>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="original-challenge.html#cb105-1" tabindex="-1"></a></span>
+<span id="cb105-2"><a href="original-challenge.html#cb105-2" tabindex="-1"></a>ts<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb105-3"><a href="original-challenge.html#cb105-3" tabindex="-1"></a>expname<span class="ot">=</span><span class="st">&quot;basar&quot;</span></span>
+<span id="cb105-4"><a href="original-challenge.html#cb105-4" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Starting simulation &quot;</span>,expname))</span>
+<span id="cb105-5"><a href="original-challenge.html#cb105-5" tabindex="-1"></a></span>
+<span id="cb105-6"><a href="original-challenge.html#cb105-6" tabindex="-1"></a>onesimu<span class="ot">=</span><span class="fu">run_simulation</span> (</span>
+<span id="cb105-7"><a href="original-challenge.html#cb105-7" tabindex="-1"></a>                           <span class="at">sites=</span>sites,</span>
+<span id="cb105-8"><a href="original-challenge.html#cb105-8" tabindex="-1"></a>                           <span class="at">viable=</span>viable,</span>
+<span id="cb105-9"><a href="original-challenge.html#cb105-9" tabindex="-1"></a>                           <span class="at">dem=</span>height.ras,</span>
+<span id="cb105-10"><a href="original-challenge.html#cb105-10" tabindex="-1"></a>                           <span class="at">ressources=</span><span class="fu">rast</span>(<span class="st">&quot;data_original/resources.tiff&quot;</span>),</span>
+<span id="cb105-11"><a href="original-challenge.html#cb105-11" tabindex="-1"></a>                           <span class="at">water=</span>height.wat,</span>
+<span id="cb105-12"><a href="original-challenge.html#cb105-12" tabindex="-1"></a>                           <span class="at">foldervid=</span>expname,</span>
+<span id="cb105-13"><a href="original-challenge.html#cb105-13" tabindex="-1"></a>                           <span class="at">visu=</span>F,<span class="at">visumin=</span><span class="cn">TRUE</span>,</span>
+<span id="cb105-14"><a href="original-challenge.html#cb105-14" tabindex="-1"></a>                           <span class="at">ts=</span>ts,<span class="co">#length of simulation in year</span></span>
+<span id="cb105-15"><a href="original-challenge.html#cb105-15" tabindex="-1"></a>                           <span class="at">Kbase=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">35</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">110</span>),<span class="co">#difference in K for the two cultures</span></span>
+<span id="cb105-16"><a href="original-challenge.html#cb105-16" tabindex="-1"></a>                           <span class="at">cul_ext=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">7</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">6</span>),<span class="co">#spatial penality to extent: lower, bigger penality</span></span>
+<span id="cb105-17"><a href="original-challenge.html#cb105-17" tabindex="-1"></a>                           <span class="at">penal_cul=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="dv">4</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="dv">5</span>),<span class="co">#penality of occupational area: low, other sites can cam close</span></span>
+<span id="cb105-18"><a href="original-challenge.html#cb105-18" tabindex="-1"></a>                           <span class="at">prob_birth=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.3</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.5</span>),<span class="co">#proba to give birth every year</span></span>
+<span id="cb105-19"><a href="original-challenge.html#cb105-19" tabindex="-1"></a>                           <span class="at">prob_survive=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.8</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.65</span>),<span class="co">#proba to die when pop &gt; K</span></span>
+<span id="cb105-20"><a href="original-challenge.html#cb105-20" tabindex="-1"></a>                           <span class="at">prob_split=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span>.<span class="dv">5</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span>.<span class="dv">6</span>),<span class="co">#proba to create new settlement when Ne &gt; K</span></span>
+<span id="cb105-21"><a href="original-challenge.html#cb105-21" tabindex="-1"></a>                           <span class="at">minimals=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span>.<span class="dv">14</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span>.<span class="dv">20</span>),<span class="co">#how big the group of migrant should be to create a new city vs migrate to a existing one </span></span>
+<span id="cb105-22"><a href="original-challenge.html#cb105-22" tabindex="-1"></a>                           <span class="at">bufferatack=</span><span class="dv">300</span>,<span class="co">#distance max around which settlement can fight</span></span>
+<span id="cb105-23"><a href="original-challenge.html#cb105-23" tabindex="-1"></a>                           <span class="at">prob_move=</span><span class="fu">c</span>(<span class="st">&quot;HG&quot;</span><span class="ot">=</span><span class="fl">0.2</span>,<span class="st">&quot;F&quot;</span><span class="ot">=</span><span class="fl">0.1</span>) <span class="co">#proba to migrate to existing settlement when Ne &gt; K</span></span>
+<span id="cb105-24"><a href="original-challenge.html#cb105-24" tabindex="-1"></a>                           )</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>generate a few output, including a video that helps to select the good simulation, these things are also done by <code>scriptmini.R</code>:</li>
+</ol>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="original-challenge.html#cb106-1" tabindex="-1"></a></span>
+<span id="cb106-2"><a href="original-challenge.html#cb106-2" tabindex="-1"></a></span>
+<span id="cb106-3"><a href="original-challenge.html#cb106-3" tabindex="-1"></a>Nts<span class="ot">=</span>onesimu<span class="sc">$</span>Nts</span>
+<span id="cb106-4"><a href="original-challenge.html#cb106-4" tabindex="-1"></a>warcasualties<span class="ot">=</span>onesimu<span class="sc">$</span>warcasualties</span>
+<span id="cb106-5"><a href="original-challenge.html#cb106-5" tabindex="-1"></a>sites<span class="ot">=</span>onesimu<span class="sc">$</span>sites</span>
+<span id="cb106-6"><a href="original-challenge.html#cb106-6" tabindex="-1"></a>i<span class="ot">=</span><span class="fu">min</span>(ts,<span class="fu">which</span>(<span class="fu">apply</span>(Nts,<span class="dv">1</span>,sum)<span class="sc">==</span><span class="dv">0</span>))</span>
+<span id="cb106-7"><a href="original-challenge.html#cb106-7" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste0</span>(expname,<span class="st">&quot;_mapFinal.pdf&quot;</span>))</span>
+<span id="cb106-8"><a href="original-challenge.html#cb106-8" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat,<span class="fu">paste0</span>(<span class="st">&quot;year &quot;</span>,i))</span>
+<span id="cb106-9"><a href="original-challenge.html#cb106-9" tabindex="-1"></a><span class="fu">plot</span>(sites,<span class="at">cex=</span>(<span class="fu">as.integer</span>(Nts[i,]<span class="sc">&gt;</span><span class="dv">0</span>)<span class="sc">*</span><span class="fl">0.3</span><span class="sc">+</span>Nts[i,]<span class="sc">/</span><span class="dv">200</span>),<span class="at">pch=</span><span class="dv">21</span>,<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)])</span>
+<span id="cb106-10"><a href="original-challenge.html#cb106-10" tabindex="-1"></a><span class="fu">text</span>(sites)</span>
+<span id="cb106-11"><a href="original-challenge.html#cb106-11" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb106-12"><a href="original-challenge.html#cb106-12" tabindex="-1"></a></span>
+<span id="cb106-13"><a href="original-challenge.html#cb106-13" tabindex="-1"></a></span>
+<span id="cb106-14"><a href="original-challenge.html#cb106-14" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste0</span>(expname,<span class="st">&quot;growth_utils.pdf&quot;</span>))</span>
+<span id="cb106-15"><a href="original-challenge.html#cb106-15" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">2</span><span class="sc">:</span>i,warcasualties[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>)],<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">&quot;green&quot;</span>,<span class="at">type=</span><span class="st">&quot;h&quot;</span>,<span class="at">yaxt=</span><span class="st">&quot;n&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;&quot;</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i))</span>
+<span id="cb106-16"><a href="original-challenge.html#cb106-16" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">4</span>)</span>
+<span id="cb106-17"><a href="original-challenge.html#cb106-17" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb106-18"><a href="original-challenge.html#cb106-18" tabindex="-1"></a>growF<span class="ot">=</span><span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i,sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span>],<span class="dv">1</span>,sum)</span>
+<span id="cb106-19"><a href="original-challenge.html#cb106-19" tabindex="-1"></a>growHG<span class="ot">=</span><span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i,sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;HG&quot;</span>],<span class="dv">1</span>,sum)</span>
+<span id="cb106-20"><a href="original-challenge.html#cb106-20" tabindex="-1"></a><span class="fu">plot</span>(growF,<span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(growF,growHG)),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i))</span>
+<span id="cb106-21"><a href="original-challenge.html#cb106-21" tabindex="-1"></a><span class="fu">points</span>(growHG,<span class="at">col=</span><span class="st">&quot;blue&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span>
+<span id="cb106-22"><a href="original-challenge.html#cb106-22" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb106-23"><a href="original-challenge.html#cb106-23" tabindex="-1"></a></span>
+<span id="cb106-24"><a href="original-challenge.html#cb106-24" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste0</span>(expname,<span class="st">&quot;growth_tot.pdf&quot;</span>))</span>
+<span id="cb106-25"><a href="original-challenge.html#cb106-25" tabindex="-1"></a><span class="fu">plot</span>(warcasualties[<span class="dv">1</span><span class="sc">:</span>i<span class="dv">-1</span>],<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">&quot;green&quot;</span>,<span class="at">type=</span><span class="st">&quot;h&quot;</span>,<span class="at">yaxt=</span><span class="st">&quot;n&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb106-26"><a href="original-challenge.html#cb106-26" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">4</span>)</span>
+<span id="cb106-27"><a href="original-challenge.html#cb106-27" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb106-28"><a href="original-challenge.html#cb106-28" tabindex="-1"></a>growT<span class="ot">=</span><span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i,],<span class="dv">1</span>,sum)</span>
+<span id="cb106-29"><a href="original-challenge.html#cb106-29" tabindex="-1"></a><span class="fu">plot</span>(growT,<span class="at">col=</span><span class="st">&quot;black&quot;</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(growT)))</span>
+<span id="cb106-30"><a href="original-challenge.html#cb106-30" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div>
+<p>Let’s redo that with the selected simulation:</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="original-challenge.html#cb107-1" tabindex="-1"></a></span>
+<span id="cb107-2"><a href="original-challenge.html#cb107-2" tabindex="-1"></a>onesimu<span class="ot">=</span><span class="fu">readRDS</span>(<span class="st">&quot;data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS&quot;</span>)</span>
+<span id="cb107-3"><a href="original-challenge.html#cb107-3" tabindex="-1"></a><span class="co">#Nts=readRDS(&quot;nts&quot;)</span></span>
+<span id="cb107-4"><a href="original-challenge.html#cb107-4" tabindex="-1"></a><span class="co">#warcasualties=readRDS(&quot;war&quot;)</span></span>
+<span id="cb107-5"><a href="original-challenge.html#cb107-5" tabindex="-1"></a><span class="co">#sites=terra::vect(readRDS(&quot;general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS&quot;))</span></span>
+<span id="cb107-6"><a href="original-challenge.html#cb107-6" tabindex="-1"></a>Nts<span class="ot">=</span>onesimu<span class="sc">$</span>Nts</span>
+<span id="cb107-7"><a href="original-challenge.html#cb107-7" tabindex="-1"></a>warcasualties<span class="ot">=</span>onesimu<span class="sc">$</span>warcasualties</span></code></pre></div>
+<p>Plot the sites at the beginning</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="original-challenge.html#cb108-1" tabindex="-1"></a><span class="co"># source(&quot;tools.R&quot;)</span></span>
+<span id="cb108-2"><a href="original-challenge.html#cb108-2" tabindex="-1"></a></span>
+<span id="cb108-3"><a href="original-challenge.html#cb108-3" tabindex="-1"></a><span class="co">#expname=&quot;general_results_selected_simu/buffattack300_K110_PSU065_3&quot;</span></span>
+<span id="cb108-4"><a href="original-challenge.html#cb108-4" tabindex="-1"></a><span class="co">#sites=vect(readRDS(paste0(expname,&quot;_sitesRast.RDS&quot;)))</span></span>
+<span id="cb108-5"><a href="original-challenge.html#cb108-5" tabindex="-1"></a></span>
+<span id="cb108-6"><a href="original-challenge.html#cb108-6" tabindex="-1"></a>sites<span class="ot">=</span><span class="fu">vect</span>(<span class="st">&quot;data_original/sitesinitialposition/&quot;</span>)</span>
+<span id="cb108-7"><a href="original-challenge.html#cb108-7" tabindex="-1"></a>height.ras<span class="ot">=</span><span class="fu">rast</span>(<span class="st">&quot;data_original/east_narnia4x.tif&quot;</span>)</span>
+<span id="cb108-8"><a href="original-challenge.html#cb108-8" tabindex="-1"></a>height.wat<span class="ot">=</span>height.ras</span>
+<span id="cb108-9"><a href="original-challenge.html#cb108-9" tabindex="-1"></a>height.wat[height.wat<span class="sc">&gt;</span><span class="fu">mean</span>(height.wat[])]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb108-10"><a href="original-challenge.html#cb108-10" tabindex="-1"></a></span>
+<span id="cb108-11"><a href="original-challenge.html#cb108-11" tabindex="-1"></a>i<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb108-12"><a href="original-challenge.html#cb108-12" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat,<span class="fu">paste0</span>(<span class="st">&quot;year &quot;</span>,i,<span class="st">&quot;, when it all begins&quot;</span>))</span>
+<span id="cb108-13"><a href="original-challenge.html#cb108-13" tabindex="-1"></a><span class="fu">plot</span>(sites,<span class="at">cex=</span>(<span class="fu">as.integer</span>(Nts[<span class="dv">1</span>,]<span class="sc">&gt;</span><span class="dv">0</span>)<span class="sc">*</span><span class="fl">0.5</span><span class="sc">+</span>Nts[<span class="dv">1</span>,]<span class="sc">/</span><span class="dv">100</span>),<span class="at">pch=</span><span class="dv">21</span>,<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(sites<span class="sc">$</span>culture)])</span>
+<span id="cb108-14"><a href="original-challenge.html#cb108-14" tabindex="-1"></a><span class="fu">text</span>(sites[Nts[<span class="dv">1</span>,]<span class="sc">&gt;</span><span class="dv">0</span>],<span class="at">pos=</span><span class="dv">3</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/plotinitialcondition-1.png" width="672" /></p>
+<p>We can look at the war and the number of deaths for each battle</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="original-challenge.html#cb109-1" tabindex="-1"></a>i<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb109-2"><a href="original-challenge.html#cb109-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">2</span><span class="sc">:</span>i,warcasualties[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>)],<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">&quot;dark red&quot;</span>,<span class="at">type=</span><span class="st">&quot;h&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;# dead&quot;</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i))</span></code></pre></div>
+<p><img src="_main_files/figure-html/plotwar-1.png" width="672" /></p>
+<p>Comparison to the total population growth of each culture</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="original-challenge.html#cb110-1" tabindex="-1"></a>i<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb110-2"><a href="original-challenge.html#cb110-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">5</span>))</span>
+<span id="cb110-3"><a href="original-challenge.html#cb110-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">2</span><span class="sc">:</span>i,warcasualties[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>)],<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">&quot;dark red&quot;</span>,<span class="at">type=</span><span class="st">&quot;h&quot;</span>,<span class="at">yaxt=</span><span class="st">&quot;n&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;&quot;</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i),<span class="at">xlab=</span><span class="st">&quot;time&quot;</span>)</span>
+<span id="cb110-4"><a href="original-challenge.html#cb110-4" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">4</span>)</span>
+<span id="cb110-5"><a href="original-challenge.html#cb110-5" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;# dead&quot;</span>,<span class="dv">4</span>,<span class="fl">2.5</span>)</span>
+<span id="cb110-6"><a href="original-challenge.html#cb110-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb110-7"><a href="original-challenge.html#cb110-7" tabindex="-1"></a>growF<span class="ot">=</span><span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i,sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;F&quot;</span>],<span class="dv">1</span>,sum)</span>
+<span id="cb110-8"><a href="original-challenge.html#cb110-8" tabindex="-1"></a>growHG<span class="ot">=</span><span class="fu">apply</span>(Nts[<span class="dv">1</span><span class="sc">:</span>i,sites<span class="sc">$</span>culture<span class="sc">==</span><span class="st">&quot;HG&quot;</span>],<span class="dv">1</span>,sum)</span>
+<span id="cb110-9"><a href="original-challenge.html#cb110-9" tabindex="-1"></a><span class="fu">plot</span>(growF,<span class="at">col=</span><span class="st">&quot;orange&quot;</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>,<span class="at">lwd=</span><span class="dv">5</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(growF,growHG)),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i),<span class="at">ylab=</span><span class="st">&quot;pop&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb110-10"><a href="original-challenge.html#cb110-10" tabindex="-1"></a><span class="fu">points</span>(growHG,<span class="at">col=</span><span class="st">&quot;blue&quot;</span>,<span class="at">lwd=</span><span class="dv">5</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/plotwarWRTgrowths-1.png" width="672" /></p>
+<p>If we look at the total population size, we can see how the clashes slowed down the population growth:</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="original-challenge.html#cb111-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">5</span>))</span>
+<span id="cb111-2"><a href="original-challenge.html#cb111-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">2</span><span class="sc">:</span>i,warcasualties[<span class="dv">1</span><span class="sc">:</span>(i<span class="dv">-1</span>)],<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">col=</span><span class="st">&quot;dark red&quot;</span>,<span class="at">type=</span><span class="st">&quot;h&quot;</span>,<span class="at">yaxt=</span><span class="st">&quot;n&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;&quot;</span>,<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i),<span class="at">xlab=</span><span class="st">&quot;time&quot;</span>)</span>
+<span id="cb111-3"><a href="original-challenge.html#cb111-3" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">4</span>)</span>
+<span id="cb111-4"><a href="original-challenge.html#cb111-4" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;# dead&quot;</span>,<span class="dv">4</span>,<span class="fl">2.5</span>)</span>
+<span id="cb111-5"><a href="original-challenge.html#cb111-5" tabindex="-1"></a><span class="fu">par</span>(<span class="at">new=</span>T)</span>
+<span id="cb111-6"><a href="original-challenge.html#cb111-6" tabindex="-1"></a>growT<span class="ot">=</span><span class="fu">apply</span>(Nts,<span class="dv">1</span>,sum)</span>
+<span id="cb111-7"><a href="original-challenge.html#cb111-7" tabindex="-1"></a><span class="fu">plot</span>(growT,<span class="at">col=</span><span class="st">&quot;black&quot;</span>,<span class="at">type=</span><span class="st">&quot;l&quot;</span>,<span class="at">lwd=</span><span class="dv">5</span>,<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fu">max</span>(growT)),<span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,i),<span class="at">ylab=</span><span class="st">&quot;pop&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/plotwarTotgrowths-1.png" width="672" /></p>
+<p>This show if we looka at the growth rate:</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="original-challenge.html#cb112-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">diff</span>(growT,<span class="at">lag=</span><span class="dv">100</span>),<span class="at">type=</span><span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/rategrowth-1.png" width="672" /></p>
+<p>Replaying all that will give this:</p>
+<video controls>
+<source  src="interfinal.mp4" type="video/mp4">
+</video>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="original-challenge.html#cb113-1" tabindex="-1"></a>height.ras<span class="ot">=</span><span class="fu">rast</span>(<span class="st">&quot;data_toshare/dem_raster.tiff&quot;</span>)</span>
+<span id="cb113-2"><a href="original-challenge.html#cb113-2" tabindex="-1"></a>height.wat<span class="ot">=</span>height.ras</span>
+<span id="cb113-3"><a href="original-challenge.html#cb113-3" tabindex="-1"></a>height.wat[height.wat<span class="sc">&gt;</span><span class="fu">mean</span>(height.wat[])]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb113-4"><a href="original-challenge.html#cb113-4" tabindex="-1"></a>height.groups<span class="ot">=</span>height.ras</span>
+<span id="cb113-5"><a href="original-challenge.html#cb113-5" tabindex="-1"></a>maxh<span class="ot">=</span><span class="fu">max</span>(height.ras[],<span class="at">na.rm=</span>T)</span>
+<span id="cb113-6"><a href="original-challenge.html#cb113-6" tabindex="-1"></a>height.groups[height.groups<span class="sc">&lt;</span><span class="fu">mean</span>(height.groups[])]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb113-7"><a href="original-challenge.html#cb113-7" tabindex="-1"></a>height.groups[height.groups<span class="sc">&lt;</span>(maxh<span class="sc">*</span>.<span class="dv">7</span>)]<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb113-8"><a href="original-challenge.html#cb113-8" tabindex="-1"></a>height.groups[height.groups<span class="sc">&gt;</span>(maxh<span class="sc">*</span>.<span class="dv">7</span>)]<span class="ot">=</span><span class="dv">200</span></span>
+<span id="cb113-9"><a href="original-challenge.html#cb113-9" tabindex="-1"></a>height.groups[<span class="fu">is.na</span>(height.groups)]<span class="ot">=</span><span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb113-10"><a href="original-challenge.html#cb113-10" tabindex="-1"></a>height.poly<span class="ot">=</span><span class="fu">as.polygons</span>(height.groups)</span>
+<span id="cb113-11"><a href="original-challenge.html#cb113-11" tabindex="-1"></a>viable<span class="ot">=</span><span class="fu">makeValid</span>(height.poly[<span class="dv">2</span>,])</span>
+<span id="cb113-12"><a href="original-challenge.html#cb113-12" tabindex="-1"></a>expname<span class="ot">=</span><span class="st">&quot;data_original/general_results_selected_simu/buffattack300_K110_PSU065_3&quot;</span></span>
+<span id="cb113-13"><a href="original-challenge.html#cb113-13" tabindex="-1"></a>onesimu<span class="ot">=</span><span class="fu">readRDS</span>(<span class="fu">paste0</span>(expname,<span class="st">&quot;_all.RDS&quot;</span>))</span>
+<span id="cb113-14"><a href="original-challenge.html#cb113-14" tabindex="-1"></a>sites<span class="ot">=</span><span class="fu">readRDS</span>(<span class="fu">paste0</span>(expname,<span class="st">&quot;_sitesRast.RDS&quot;</span>))</span>
+<span id="cb113-15"><a href="original-challenge.html#cb113-15" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">class</span>(sites)[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;PackedSpatVector&quot;</span>)</span>
+<span id="cb113-16"><a href="original-challenge.html#cb113-16" tabindex="-1"></a>    sites<span class="ot">=</span>terra<span class="sc">::</span><span class="fu">vect</span>(sites)</span>
+<span id="cb113-17"><a href="original-challenge.html#cb113-17" tabindex="-1"></a>Nts<span class="ot">=</span>onesimu<span class="sc">$</span>Nts</span>
+<span id="cb113-18"><a href="original-challenge.html#cb113-18" tabindex="-1"></a><span class="co">#alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[1:i,s],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = &quot;m&quot;))</span></span>
+<span id="cb113-19"><a href="original-challenge.html#cb113-19" tabindex="-1"></a><span class="co">#allShortLoss=lapply(1:10,function(ind){Rec=alldeposit[[ind]];print(paste0(&quot;settlement #&quot;,ind));apply(Rec,2,short_loss,.6)})</span></span>
+<span id="cb113-20"><a href="original-challenge.html#cb113-20" tabindex="-1"></a><span class="co">#allShortLoss=lapply(allShortLoss,function(Rec)long_loss(Rec,.9997,7500))</span></span></code></pre></div>
+<p>Using <code>Rec_c</code> , <code>short_loss</code> and <code>long_loss</code> we generate deposit. Generating everything can take long time but it’s basically done like this:</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="original-challenge.html#cb114-1" tabindex="-1"></a></span>
+<span id="cb114-2"><a href="original-challenge.html#cb114-2" tabindex="-1"></a><span class="co">#All in one:</span></span>
+<span id="cb114-3"><a href="original-challenge.html#cb114-3" tabindex="-1"></a>alldeposit<span class="ot">=</span><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(Nts),<span class="cf">function</span>(s)<span class="fu">Rec_c</span>(<span class="fu">sapply</span>(Nts[,s],A_rates), <span class="at">InitBP =</span> <span class="dv">7500</span>,<span class="at">ts=</span><span class="fu">ncol</span>(Nts),<span class="at">r =</span> <span class="fl">0.2</span>, <span class="at">Max_bone_thickness =</span> <span class="st">&quot;m&quot;</span>))</span>
+<span id="cb114-4"><a href="original-challenge.html#cb114-4" tabindex="-1"></a>allLosses<span class="ot">=</span><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(alldeposit),<span class="cf">function</span>(ind){</span>
+<span id="cb114-5"><a href="original-challenge.html#cb114-5" tabindex="-1"></a>                 st<span class="ot">=</span><span class="fu">Sys.time</span>()</span>
+<span id="cb114-6"><a href="original-challenge.html#cb114-6" tabindex="-1"></a>                    <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;settlement #&quot;</span>,ind));</span>
+<span id="cb114-7"><a href="original-challenge.html#cb114-7" tabindex="-1"></a>                    Rec<span class="ot">=</span>alldeposit[[ind]];                    </span>
+<span id="cb114-8"><a href="original-challenge.html#cb114-8" tabindex="-1"></a>                    Rec<span class="ot">=</span><span class="fu">apply</span>(Rec,<span class="dv">2</span>,short_loss,.<span class="dv">6</span>)  <span class="co">#apply short loss</span></span>
+<span id="cb114-9"><a href="original-challenge.html#cb114-9" tabindex="-1"></a>                    Rec<span class="ot">=</span><span class="fu">long_loss</span>(Rec,.<span class="dv">9997</span>,<span class="dv">7500</span>) <span class="co">#apply long loss</span></span>
+<span id="cb114-10"><a href="original-challenge.html#cb114-10" tabindex="-1"></a>                    <span class="fu">print</span>(<span class="fu">Sys.time</span>()<span class="sc">-</span>st)</span>
+<span id="cb114-11"><a href="original-challenge.html#cb114-11" tabindex="-1"></a>                    <span class="fu">return</span>(Rec)</span>
+<span id="cb114-12"><a href="original-challenge.html#cb114-12" tabindex="-1"></a>})</span>
+<span id="cb114-13"><a href="original-challenge.html#cb114-13" tabindex="-1"></a><span class="fu">rm</span>(alldeposit)</span></code></pre></div>
+<p>Remove where to small</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="original-challenge.html#cb115-1" tabindex="-1"></a></span>
+<span id="cb115-2"><a href="original-challenge.html#cb115-2" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="original-challenge.html#cb115-3" tabindex="-1"></a>maxSites<span class="ot">=</span><span class="fu">max</span>(<span class="fu">sapply</span>(allLosses,sum))</span>
+<span id="cb115-4"><a href="original-challenge.html#cb115-4" tabindex="-1"></a>nsample<span class="ot">=</span><span class="fu">round</span>(<span class="fu">sapply</span>(allLosses,sum)<span class="sc">*</span><span class="dv">30</span><span class="sc">/</span>maxSites)</span>
+<span id="cb115-5"><a href="original-challenge.html#cb115-5" tabindex="-1"></a>allRemainingDates<span class="ot">=</span><span class="fu">lapply</span>(<span class="fu">seq_along</span>(allLosses),<span class="cf">function</span>(r)<span class="fu">extractDates</span>(allLosses[[r]],<span class="at">n=</span>nsample[r]))</span>
+<span id="cb115-6"><a href="original-challenge.html#cb115-6" tabindex="-1"></a><span class="fu">rm</span>(allLosses) <span class="co">#object are big, need to free memory</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="original-challenge.html#cb116-1" tabindex="-1"></a></span>
+<span id="cb116-2"><a href="original-challenge.html#cb116-2" tabindex="-1"></a><span class="co">#pdf(paste0(expname,&quot;_mapFound.pdf&quot;))</span></span>
+<span id="cb116-3"><a href="original-challenge.html#cb116-3" tabindex="-1"></a><span class="co">#plotMap(height.ras,height.wat,paste0(&quot;final after losses&quot;))</span></span>
+<span id="cb116-4"><a href="original-challenge.html#cb116-4" tabindex="-1"></a><span class="co">#plot(sites[1:10,],cex=3*(lengths(allRemainingDates)-1)/(29),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture[1:10])])</span></span>
+<span id="cb116-5"><a href="original-challenge.html#cb116-5" tabindex="-1"></a><span class="co">#dev.off()</span></span>
+<span id="cb116-6"><a href="original-challenge.html#cb116-6" tabindex="-1"></a></span>
+<span id="cb116-7"><a href="original-challenge.html#cb116-7" tabindex="-1"></a>dates<span class="ot">=</span><span class="fu">unique</span>(<span class="fu">unlist</span>(allRemainingDates))</span>
+<span id="cb116-8"><a href="original-challenge.html#cb116-8" tabindex="-1"></a>dates<span class="ot">=</span><span class="fu">rev</span>(<span class="fu">sort</span>(dates[<span class="sc">!</span><span class="fu">is.na</span>(dates)]))</span>
+<span id="cb116-9"><a href="original-challenge.html#cb116-9" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">table</span>(<span class="fu">unlist</span>(allRemainingDates)))</span>
+<span id="cb116-10"><a href="original-challenge.html#cb116-10" tabindex="-1"></a>totallDatesRemains<span class="ot">=</span><span class="fu">sapply</span>(allRemainingDates,<span class="cf">function</span>(i)<span class="fu">table</span>(<span class="fu">factor</span>(i,<span class="at">levels=</span>dates)))</span>
+<span id="cb116-11"><a href="original-challenge.html#cb116-11" tabindex="-1"></a><span class="fu">saveRDS</span>(allRemainingDates,<span class="at">file=</span><span class="fu">paste0</span>(expname,<span class="st">&quot;_dates.RDS&quot;</span>))</span></code></pre></div>
+<p>From this we have, for every site, a list of date(s)</p>
+<p>This has been done using the script <code>exploreDate.R</code> but will be explained here:</p>
+<p>Loading simulation results, green are the sites who survived, dots are all the site that existed.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="original-challenge.html#cb117-1" tabindex="-1"></a>height.ras<span class="ot">=</span><span class="fu">rast</span>(<span class="st">&quot;data_original/east_narnia4x.tif&quot;</span>)</span>
+<span id="cb117-2"><a href="original-challenge.html#cb117-2" tabindex="-1"></a>height.wat<span class="ot">=</span>height.ras</span>
+<span id="cb117-3"><a href="original-challenge.html#cb117-3" tabindex="-1"></a>height.wat[height.wat<span class="sc">&gt;</span><span class="fu">mean</span>(height.wat[])]<span class="ot">=</span><span class="cn">NA</span></span>
+<span id="cb117-4"><a href="original-challenge.html#cb117-4" tabindex="-1"></a></span>
+<span id="cb117-5"><a href="original-challenge.html#cb117-5" tabindex="-1"></a></span>
+<span id="cb117-6"><a href="original-challenge.html#cb117-6" tabindex="-1"></a>Nts<span class="ot">=</span><span class="fu">readRDS</span>(<span class="st">&quot;data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS&quot;</span>)<span class="sc">$</span>Nts</span>
+<span id="cb117-7"><a href="original-challenge.html#cb117-7" tabindex="-1"></a>ress<span class="ot">=</span><span class="fu">rast</span>(<span class="st">&quot;data_original/resources.tiff&quot;</span>)</span>
+<span id="cb117-8"><a href="original-challenge.html#cb117-8" tabindex="-1"></a>allsites<span class="ot">=</span><span class="fu">readRDS</span>(<span class="st">&quot;data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS&quot;</span>)</span>
+<span id="cb117-9"><a href="original-challenge.html#cb117-9" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">class</span>(allsites)[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;PackedSpatVector&quot;</span>)</span>
+<span id="cb117-10"><a href="original-challenge.html#cb117-10" tabindex="-1"></a>    allsites<span class="ot">=</span>terra<span class="sc">::</span><span class="fu">vect</span>(allsites)</span>
+<span id="cb117-11"><a href="original-challenge.html#cb117-11" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb117-12"><a href="original-challenge.html#cb117-12" tabindex="-1"></a><span class="fu">plot</span>(allsites,<span class="at">add=</span>T)</span>
+<span id="cb117-13"><a href="original-challenge.html#cb117-13" tabindex="-1"></a><span class="fu">plot</span>(allsites[Nts[<span class="fu">nrow</span>(Nts),]<span class="sc">&gt;</span><span class="dv">0</span>,],<span class="at">add=</span>T,<span class="at">pch=</span><span class="dv">21</span>,<span class="at">bg=</span><span class="st">&quot;green&quot;</span>,<span class="at">cex=</span>Nts[<span class="fu">nrow</span>(Nts),]<span class="sc">/</span><span class="dv">60</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/getfakeresults-1.png" width="672" /></p>
+<p>Loading dates:</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="original-challenge.html#cb118-1" tabindex="-1"></a>dates<span class="ot">=</span><span class="fu">readRDS</span>(<span class="st">&quot;data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS&quot;</span>)</span></code></pre></div>
+<p>Keep sites with foundable dates</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="original-challenge.html#cb119-1" tabindex="-1"></a></span>
+<span id="cb119-2"><a href="original-challenge.html#cb119-2" tabindex="-1"></a>foundsites<span class="ot">=</span>allsites[<span class="fu">lengths</span>(dates)<span class="sc">&gt;</span><span class="dv">0</span>,]</span>
+<span id="cb119-3"><a href="original-challenge.html#cb119-3" tabindex="-1"></a>foundsites<span class="sc">$</span>numdates<span class="ot">=</span><span class="fu">unlist</span>(<span class="fu">lengths</span>(dates[<span class="fu">lengths</span>(dates)<span class="sc">&gt;</span><span class="dv">0</span>]))</span>
+<span id="cb119-4"><a href="original-challenge.html#cb119-4" tabindex="-1"></a>founddates<span class="ot">=</span>dates[<span class="fu">lengths</span>(dates)<span class="sc">&gt;</span><span class="dv">0</span>]</span></code></pre></div>
+<p>Remove BP to the dates, add some random variation</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="original-challenge.html#cb120-1" tabindex="-1"></a>stdpool<span class="ot">=</span><span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">30</span>,<span class="dv">40</span>,<span class="dv">50</span>,<span class="dv">60</span>,<span class="dv">80</span>,<span class="dv">100</span>,<span class="dv">120</span>)</span>
+<span id="cb120-2"><a href="original-challenge.html#cb120-2" tabindex="-1"></a>founddates<span class="ot">=</span><span class="fu">lapply</span>(founddates,sort)</span>
+<span id="cb120-3"><a href="original-challenge.html#cb120-3" tabindex="-1"></a>founddates<span class="ot">=</span><span class="fu">lapply</span>(founddates,gsub,<span class="at">pattern=</span><span class="st">&quot; BP&quot;</span>,<span class="at">replacement=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb120-4"><a href="original-challenge.html#cb120-4" tabindex="-1"></a>founddates<span class="ot">=</span><span class="fu">lapply</span>(founddates,rev)</span>
+<span id="cb120-5"><a href="original-challenge.html#cb120-5" tabindex="-1"></a>founddates<span class="ot">=</span><span class="fu">lapply</span>(founddates,<span class="cf">function</span>(i)<span class="fu">paste0</span>(i,<span class="st">&quot; ± &quot;</span>,<span class="fu">sample</span>(stdpool,<span class="fu">length</span>(i),<span class="at">replace=</span>T,<span class="at">prob=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>)),<span class="st">&quot; BP&quot;</span>))</span>
+<span id="cb120-6"><a href="original-challenge.html#cb120-6" tabindex="-1"></a>foundsites<span class="sc">$</span>dates<span class="ot">=</span><span class="fu">sapply</span>(founddates,paste0,<span class="at">collapse=</span><span class="st">&quot; | &quot;</span>)</span>
+<span id="cb120-7"><a href="original-challenge.html#cb120-7" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb120-8"><a href="original-challenge.html#cb120-8" tabindex="-1"></a><span class="fu">plot</span>(foundsites,<span class="at">cex=</span>foundsites<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">20</span><span class="sc">+</span><span class="dv">1</span>,<span class="at">pch=</span><span class="dv">21</span>,<span class="at">bg=</span><span class="fu">as.factor</span>(foundsites<span class="sc">$</span>culture),<span class="at">add=</span>T)</span></code></pre></div>
+<p><img src="_main_files/figure-html/addstdev-1.png" width="672" /></p>
+</div>
+<div id="split-environment-in-a-grid-1" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Split environment in a grid<a href="original-challenge.html#split-environment-in-a-grid-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Split the environment in grids and extract date for each grid</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="original-challenge.html#cb121-1" tabindex="-1"></a></span>
+<span id="cb121-2"><a href="original-challenge.html#cb121-2" tabindex="-1"></a>leftdates<span class="ot">=</span>dates[<span class="fu">lengths</span>(dates)<span class="sc">&gt;</span><span class="dv">0</span>]</span>
+<span id="cb121-3"><a href="original-challenge.html#cb121-3" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb121-4"><a href="original-challenge.html#cb121-4" tabindex="-1"></a><span class="fu">plot</span>(foundsites,<span class="at">cex=</span>foundsites<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">20</span><span class="fl">+.1</span>,<span class="at">pch=</span><span class="dv">21</span>,<span class="at">bg=</span><span class="dv">1</span>,<span class="at">add=</span>T)</span>
+<span id="cb121-5"><a href="original-challenge.html#cb121-5" tabindex="-1"></a>squares<span class="ot">=</span><span class="fu">st_make_grid</span>(height.ras,.<span class="dv">5</span>)</span>
+<span id="cb121-6"><a href="original-challenge.html#cb121-6" tabindex="-1"></a><span class="fu">plot</span>(squares,<span class="at">add=</span>T,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="fu">rainbow</span>(<span class="fu">length</span>(squares)),.<span class="dv">35</span>))</span>
+<span id="cb121-7"><a href="original-challenge.html#cb121-7" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(<span class="fu">st_centroid</span>(squares)),<span class="at">label=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(squares),<span class="at">col=</span><span class="st">&quot;white&quot;</span>)</span>
+<span id="cb121-8"><a href="original-challenge.html#cb121-8" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(<span class="fu">st_centroid</span>(squares)),<span class="at">label=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(squares),<span class="at">col=</span><span class="st">&quot;white&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/plotallfoundiste-1.png" width="672" /></p>
+<p>Public selection</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="original-challenge.html#cb122-1" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb122-2"><a href="original-challenge.html#cb122-2" tabindex="-1"></a><span class="fu">plot</span>(foundsites,<span class="at">cex=</span>foundsites<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">20</span><span class="sc">+</span><span class="dv">1</span>,<span class="at">pch=</span><span class="dv">21</span>,<span class="at">bg=</span><span class="fu">as.factor</span>(foundsites<span class="sc">$</span>culture),<span class="at">add=</span>T)</span>
+<span id="cb122-3"><a href="original-challenge.html#cb122-3" tabindex="-1"></a>selection<span class="ot">=</span><span class="fu">c</span>(<span class="dv">14</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">65</span>,<span class="dv">66</span>)</span>
+<span id="cb122-4"><a href="original-challenge.html#cb122-4" tabindex="-1"></a><span class="fu">plot</span>(squares[selection],<span class="at">add=</span>T,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;blue&quot;</span>,.<span class="dv">3</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/getpublicsele-1.png" width="672" /></p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="original-challenge.html#cb123-1" tabindex="-1"></a>inter<span class="ot">=</span><span class="fu">st_intersection</span>(<span class="fu">st_as_sf</span>(foundsites),squares[selection])</span>
+<span id="cb123-2"><a href="original-challenge.html#cb123-2" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb123-3"><a href="original-challenge.html#cb123-3" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb123-4"><a href="original-challenge.html#cb123-4" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb123-5"><a href="original-challenge.html#cb123-5" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(inter<span class="sc">$</span>culture)],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">cex=</span><span class="dv">1</span><span class="sc">+</span>inter<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">10</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/getpublicsele-2.png" width="672" /></p>
+<div id="naming" class="section level3 hasAnchor" number="9.2.1">
+<h3><span class="header-section-number">9.2.1</span> Giving name to the publicly available data<a href="original-challenge.html#naming" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The names have bee ngenerated via: <a href="https://www.fantasynamegenerators.com/fantasy-town-names.php">fantasynamegenerators.com</a></p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="original-challenge.html#cb124-1" tabindex="-1"></a></span>
+<span id="cb124-2"><a href="original-challenge.html#cb124-2" tabindex="-1"></a>site_dist<span class="ot">=</span><span class="fu">st_distance</span>(inter)</span>
+<span id="cb124-3"><a href="original-challenge.html#cb124-3" tabindex="-1"></a><span class="co">#min(site_dist[as.numeric(site_dist)&gt;units(0)])</span></span>
+<span id="cb124-4"><a href="original-challenge.html#cb124-4" tabindex="-1"></a></span>
+<span id="cb124-5"><a href="original-challenge.html#cb124-5" tabindex="-1"></a>sitesnames<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(inter)</span>
+<span id="cb124-6"><a href="original-challenge.html#cb124-6" tabindex="-1"></a></span>
+<span id="cb124-7"><a href="original-challenge.html#cb124-7" tabindex="-1"></a>sitesnames[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="dv">20</span>)]<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;Farwallow&quot;</span> ,<span class="st">&quot;Bearcall&quot;</span> ,<span class="st">&quot;Dustscar&quot;</span> ,<span class="st">&quot;Clearreach&quot;</span> ,<span class="st">&quot;Rabbithole&quot;</span>)</span>
+<span id="cb124-8"><a href="original-challenge.html#cb124-8" tabindex="-1"></a></span>
+<span id="cb124-9"><a href="original-challenge.html#cb124-9" tabindex="-1"></a>fr<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;Épibéliard&quot;</span> ,<span class="st">&quot;Cololuçon&quot;</span> ,<span class="st">&quot;Pulogne&quot;</span> ,<span class="st">&quot;Haguemasse&quot;</span> ,<span class="st">&quot;Auriteaux&quot;</span> ,<span class="st">&quot;Bourville&quot;</span> ,<span class="st">&quot;Banau&quot;</span> ,<span class="st">&quot;Montnesse&quot;</span> ,<span class="st">&quot;Bannet&quot;</span> ,<span class="st">&quot;Alenlon&quot;</span>, <span class="st">&quot;Roullac&quot;</span> ,<span class="st">&quot;Genneville&quot;</span> ,<span class="st">&quot;Vinlès&quot;</span> ,<span class="st">&quot;Antonnet&quot;</span> ,<span class="st">&quot;Courtou&quot;</span> ,<span class="st">&quot;Beaulogne&quot;</span> ,<span class="st">&quot;Coloville&quot;</span> ,<span class="st">&quot;Sarsart&quot;</span> ,<span class="st">&quot;Soilon&quot;</span> ,<span class="st">&quot;Cololimar&quot;</span>)</span>
+<span id="cb124-10"><a href="original-challenge.html#cb124-10" tabindex="-1"></a>sitesnames[<span class="dv">5</span><span class="sc">:</span><span class="dv">19</span>]<span class="ot">=</span>fr[<span class="dv">1</span><span class="sc">:</span>(<span class="dv">19-4</span>)]</span>
+<span id="cb124-11"><a href="original-challenge.html#cb124-11" tabindex="-1"></a>spain<span class="ot">=</span><span class="fu">c</span>(<span class="st">&quot;Zava&quot;</span> ,<span class="st">&quot;Catadrid&quot;</span> ,<span class="st">&quot;Tegon&quot;</span> ,<span class="st">&quot;Alicia&quot;</span> ,<span class="st">&quot;Mulid&quot;</span> ,<span class="st">&quot;Zararbella&quot;</span> ,<span class="st">&quot;Malid&quot;</span> ,<span class="st">&quot;Cásca&quot;</span> ,<span class="st">&quot;Granalejos&quot;</span> ,<span class="st">&quot;Segorez&quot;</span> ,<span class="st">&quot;Terteixo&quot;</span> ,<span class="st">&quot;Astumanca&quot;</span> ,<span class="st">&quot;Galle&quot;</span> ,<span class="st">&quot;Talona&quot;</span> ,<span class="st">&quot;Girovega&quot;</span> ,<span class="st">&quot;Albanada&quot;</span> ,<span class="st">&quot;Nadoba&quot;</span> ,<span class="st">&quot;Senca&quot;</span> ,<span class="st">&quot;Vallanca&quot;</span> ,<span class="st">&quot;Taville&quot;</span>)</span>
+<span id="cb124-12"><a href="original-challenge.html#cb124-12" tabindex="-1"></a></span>
+<span id="cb124-13"><a href="original-challenge.html#cb124-13" tabindex="-1"></a>sitesnames[<span class="dv">21</span><span class="sc">:</span><span class="fu">length</span>(sitesnames)]<span class="ot">=</span>spain[<span class="dv">1</span><span class="sc">:</span>(<span class="fu">length</span>(sitesnames)<span class="sc">-</span><span class="dv">20</span>)]</span>
+<span id="cb124-14"><a href="original-challenge.html#cb124-14" tabindex="-1"></a>inter<span class="ot">=</span><span class="fu">cbind</span>(inter,sitesnames)</span>
+<span id="cb124-15"><a href="original-challenge.html#cb124-15" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb124-16"><a href="original-challenge.html#cb124-16" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(inter<span class="sc">$</span>culture)],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">cex=</span><span class="dv">1</span><span class="sc">+</span>inter<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb124-17"><a href="original-challenge.html#cb124-17" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(inter),inter<span class="sc">$</span>sitesnames,<span class="at">cex=</span>.<span class="dv">8</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/namesites-1.png" width="672" /></p>
+<p>Export csv and data for each public square</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="original-challenge.html#cb125-1" tabindex="-1"></a></span>
+<span id="cb125-2"><a href="original-challenge.html#cb125-2" tabindex="-1"></a></span>
+<span id="cb125-3"><a href="original-challenge.html#cb125-3" tabindex="-1"></a>inter<span class="sc">$</span>sitesnames<span class="ot">=</span>sitesnames</span>
+<span id="cb125-4"><a href="original-challenge.html#cb125-4" tabindex="-1"></a><span class="cf">for</span>(g <span class="cf">in</span> selection){</span>
+<span id="cb125-5"><a href="original-challenge.html#cb125-5" tabindex="-1"></a>curr<span class="ot">=</span>inter[inter<span class="sc">$</span>ID<span class="sc">==</span>g,]</span>
+<span id="cb125-6"><a href="original-challenge.html#cb125-6" tabindex="-1"></a>coords<span class="ot">=</span><span class="fu">st_coordinates</span>(curr)</span>
+<span id="cb125-7"><a href="original-challenge.html#cb125-7" tabindex="-1"></a>    <span class="fu">write.csv</span>(<span class="at">file=</span><span class="fu">paste0</span>(<span class="st">&quot;square_&quot;</span>,g,<span class="st">&quot;.csv&quot;</span>),<span class="fu">cbind.data.frame</span>(<span class="at">sitename=</span>curr<span class="sc">$</span>sitesnames,<span class="at">lon=</span>coords[,<span class="dv">1</span>],<span class="at">lat=</span>coords[,<span class="dv">2</span>],<span class="at">dates=</span>curr<span class="sc">$</span>dates,<span class="at">economy=</span>curr<span class="sc">$</span>culture))</span>
+<span id="cb125-8"><a href="original-challenge.html#cb125-8" tabindex="-1"></a>}</span></code></pre></div>
+<p>Export csv and data for all ever square</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="original-challenge.html#cb126-1" tabindex="-1"></a></span>
+<span id="cb126-2"><a href="original-challenge.html#cb126-2" tabindex="-1"></a>allsites<span class="ot">=</span><span class="fu">st_intersection</span>(<span class="fu">st_as_sf</span>(foundsites),squares[<span class="sc">-</span>selection])</span>
+<span id="cb126-3"><a href="original-challenge.html#cb126-3" tabindex="-1"></a></span>
+<span id="cb126-4"><a href="original-challenge.html#cb126-4" tabindex="-1"></a><span class="cf">for</span>(g <span class="cf">in</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(squares))[<span class="sc">-</span>selection]){</span>
+<span id="cb126-5"><a href="original-challenge.html#cb126-5" tabindex="-1"></a>curr<span class="ot">=</span>allsites[allsites<span class="sc">$</span>ID<span class="sc">==</span>g,]</span>
+<span id="cb126-6"><a href="original-challenge.html#cb126-6" tabindex="-1"></a>coords<span class="ot">=</span><span class="fu">st_coordinates</span>(curr)</span>
+<span id="cb126-7"><a href="original-challenge.html#cb126-7" tabindex="-1"></a>    <span class="fu">write.csv</span>(<span class="at">file=</span><span class="fu">paste0</span>(<span class="st">&quot;square_&quot;</span>,g,<span class="st">&quot;.csv&quot;</span>),<span class="fu">cbind.data.frame</span>(<span class="at">lon=</span>coords[,<span class="dv">1</span>],<span class="at">lat=</span>coords[,<span class="dv">2</span>],<span class="at">dates=</span>curr<span class="sc">$</span>dates,<span class="at">economy=</span>curr<span class="sc">$</span>culture))</span>
+<span id="cb126-8"><a href="original-challenge.html#cb126-8" tabindex="-1"></a>}</span>
+<span id="cb126-9"><a href="original-challenge.html#cb126-9" tabindex="-1"></a></span>
+<span id="cb126-10"><a href="original-challenge.html#cb126-10" tabindex="-1"></a>ld<span class="ot">=</span><span class="fu">strsplit</span>(inter<span class="sc">$</span>dates,<span class="st">&quot; </span><span class="sc">\\</span><span class="st">| &quot;</span>)</span>
+<span id="cb126-11"><a href="original-challenge.html#cb126-11" tabindex="-1"></a>ld<span class="ot">=</span><span class="fu">lapply</span>(ld,<span class="cf">function</span>(i)<span class="fu">gsub</span>(<span class="st">&quot; ± .*&quot;</span>,<span class="st">&quot;&quot;</span>,i))</span>
+<span id="cb126-12"><a href="original-challenge.html#cb126-12" tabindex="-1"></a>inter<span class="sc">$</span>start<span class="ot">=</span><span class="fu">sapply</span>(ld,max)</span>
+<span id="cb126-13"><a href="original-challenge.html#cb126-13" tabindex="-1"></a>inter<span class="sc">$</span>end<span class="ot">=</span><span class="fu">sapply</span>(ld,min)</span></code></pre></div>
+<p>Some maps we use and did for fake papers and social media etc…</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="original-challenge.html#cb127-1" tabindex="-1"></a></span>
+<span id="cb127-2"><a href="original-challenge.html#cb127-2" tabindex="-1"></a><span class="do">## plotting oldschool map</span></span>
+<span id="cb127-3"><a href="original-challenge.html#cb127-3" tabindex="-1"></a></span>
+<span id="cb127-4"><a href="original-challenge.html#cb127-4" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),<span class="at">oma=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span>
+<span id="cb127-5"><a href="original-challenge.html#cb127-5" tabindex="-1"></a></span>
+<span id="cb127-6"><a href="original-challenge.html#cb127-6" tabindex="-1"></a><span class="fu">plot</span>(height.wat,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;light blue&quot;</span>,.<span class="dv">4</span>),<span class="at">reset=</span>F,<span class="at">legend=</span>F,<span class="at">axes=</span>F)</span>
+<span id="cb127-7"><a href="original-challenge.html#cb127-7" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">1</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb127-8"><a href="original-challenge.html#cb127-8" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">3</span>)</span>
+<span id="cb127-9"><a href="original-challenge.html#cb127-9" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span>.<span class="dv">8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(inter<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb127-10"><a href="original-challenge.html#cb127-10" tabindex="-1"></a><span class="fu">box</span>(<span class="at">which=</span><span class="st">&quot;outer&quot;</span>)</span>
+<span id="cb127-11"><a href="original-challenge.html#cb127-11" tabindex="-1"></a></span>
+<span id="cb127-12"><a href="original-challenge.html#cb127-12" tabindex="-1"></a>old<span class="ot">=</span>inter[inter<span class="sc">$</span>start<span class="sc">&gt;</span><span class="dv">7180</span>,]</span>
+<span id="cb127-13"><a href="original-challenge.html#cb127-13" tabindex="-1"></a>ne<span class="ot">=</span>inter[inter<span class="sc">$</span>start<span class="sc">&gt;</span><span class="dv">6800</span> <span class="sc">&amp;</span> inter<span class="sc">$</span>end<span class="sc">&lt;</span><span class="dv">6900</span>,]</span>
+<span id="cb127-14"><a href="original-challenge.html#cb127-14" tabindex="-1"></a></span>
+<span id="cb127-15"><a href="original-challenge.html#cb127-15" tabindex="-1"></a><span class="fu">plot</span>(height.wat,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;light blue&quot;</span>,.<span class="dv">4</span>),<span class="at">reset=</span>F,<span class="at">legend=</span>F,<span class="at">axes=</span>F)</span>
+<span id="cb127-16"><a href="original-challenge.html#cb127-16" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">1</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb127-17"><a href="original-challenge.html#cb127-17" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(old),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">5</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb127-18"><a href="original-challenge.html#cb127-18" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(old),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span><span class="fl">1.8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(old<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb127-19"><a href="original-challenge.html#cb127-19" tabindex="-1"></a><span class="fu">box</span>()</span>
+<span id="cb127-20"><a href="original-challenge.html#cb127-20" tabindex="-1"></a></span>
+<span id="cb127-21"><a href="original-challenge.html#cb127-21" tabindex="-1"></a></span>
+<span id="cb127-22"><a href="original-challenge.html#cb127-22" tabindex="-1"></a><span class="fu">plot</span>(height.wat,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;light blue&quot;</span>,.<span class="dv">4</span>),<span class="at">reset=</span>F,<span class="at">legend=</span>F,<span class="at">axes=</span>F)</span>
+<span id="cb127-23"><a href="original-challenge.html#cb127-23" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">1</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb127-24"><a href="original-challenge.html#cb127-24" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">5</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb127-25"><a href="original-challenge.html#cb127-25" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span><span class="fl">1.8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(inter<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb127-26"><a href="original-challenge.html#cb127-26" tabindex="-1"></a><span class="fu">box</span>()</span>
+<span id="cb127-27"><a href="original-challenge.html#cb127-27" tabindex="-1"></a></span>
+<span id="cb127-28"><a href="original-challenge.html#cb127-28" tabindex="-1"></a></span>
+<span id="cb127-29"><a href="original-challenge.html#cb127-29" tabindex="-1"></a><span class="fu">plot</span>(height.wat,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;light blue&quot;</span>,.<span class="dv">4</span>),<span class="at">reset=</span>F,<span class="at">legend=</span>F,<span class="at">axes=</span>F)</span>
+<span id="cb127-30"><a href="original-challenge.html#cb127-30" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">1</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb127-31"><a href="original-challenge.html#cb127-31" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">5</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb127-32"><a href="original-challenge.html#cb127-32" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span><span class="fl">1.8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(inter<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb127-33"><a href="original-challenge.html#cb127-33" tabindex="-1"></a><span class="fu">box</span>()</span>
+<span id="cb127-34"><a href="original-challenge.html#cb127-34" tabindex="-1"></a></span>
+<span id="cb127-35"><a href="original-challenge.html#cb127-35" tabindex="-1"></a><span class="fu">plot</span>(height.wat,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;light blue&quot;</span>,.<span class="dv">4</span>),<span class="at">reset=</span>F,<span class="at">legend=</span>F,<span class="at">axes=</span>F)</span>
+<span id="cb127-36"><a href="original-challenge.html#cb127-36" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">1</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb127-37"><a href="original-challenge.html#cb127-37" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(ne),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">5</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb127-38"><a href="original-challenge.html#cb127-38" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(ne),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span><span class="fl">1.8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(ne<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb127-39"><a href="original-challenge.html#cb127-39" tabindex="-1"></a><span class="fu">box</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/randommaps-1.png" width="30%" /><img src="_main_files/figure-html/randommaps-2.png" width="30%" /><img src="_main_files/figure-html/randommaps-3.png" width="30%" /><img src="_main_files/figure-html/randommaps-4.png" width="30%" /><img src="_main_files/figure-html/randommaps-5.png" width="30%" /></p>
+<p>More maps for twitter:</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="original-challenge.html#cb128-1" tabindex="-1"></a><span class="fu">plot</span>(height.wat,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;light blue&quot;</span>,.<span class="dv">4</span>),<span class="at">reset=</span>F,<span class="at">legend=</span>F,<span class="at">axes=</span>F)</span>
+<span id="cb128-2"><a href="original-challenge.html#cb128-2" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb128-3"><a href="original-challenge.html#cb128-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">5</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb128-4"><a href="original-challenge.html#cb128-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span><span class="fl">1.8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(inter<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb128-5"><a href="original-challenge.html#cb128-5" tabindex="-1"></a><span class="fu">box</span>()</span>
+<span id="cb128-6"><a href="original-challenge.html#cb128-6" tabindex="-1"></a>sel<span class="ot">=</span>inter[<span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">15</span>,<span class="dv">36</span>),]</span>
+<span id="cb128-7"><a href="original-challenge.html#cb128-7" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(sel),sel<span class="sc">$</span>sitesnames,<span class="at">cex=</span>.<span class="dv">8</span>,<span class="at">pos=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">4</span>))</span>
+<span id="cb128-8"><a href="original-challenge.html#cb128-8" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">y =</span> .<span class="dv">7</span>, <span class="at">labels =</span> <span class="st">&quot;❤️&quot;</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">font =</span> <span class="dv">1</span>)</span>
+<span id="cb128-9"><a href="original-challenge.html#cb128-9" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">y =</span> <span class="fl">1.2</span>, <span class="at">labels =</span> <span class="st">&quot;🔥 &quot;</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">font =</span> <span class="dv">1</span>)</span>
+<span id="cb128-10"><a href="original-challenge.html#cb128-10" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">y =</span> <span class="fl">1.2</span>, <span class="at">labels =</span> <span class="st">&quot;⚔️ &quot;</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">font =</span> <span class="dv">1</span>)</span>
+<span id="cb128-11"><a href="original-challenge.html#cb128-11" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.2</span>, <span class="at">y =</span> <span class="fl">1.8</span><span class="sc">/</span><span class="dv">2</span>, <span class="at">labels =</span> <span class="st">&quot;???? &quot;</span>, <span class="at">adj=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">cex =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">font =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/randommaps2-1.png" width="672" />
+More maps!! (the coolest)</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="original-challenge.html#cb129-1" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb129-2"><a href="original-challenge.html#cb129-2" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb129-3"><a href="original-challenge.html#cb129-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">5</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb129-4"><a href="original-challenge.html#cb129-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span><span class="fl">1.8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(inter<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb129-5"><a href="original-challenge.html#cb129-5" tabindex="-1"></a>coastline<span class="ot">=</span><span class="fu">st_cast</span>(<span class="fu">st_as_sf</span>(<span class="fu">as.polygons</span>(height.ras<span class="sc">&gt;</span><span class="fu">mean</span>(height.ras[])))[<span class="dv">2</span>,],<span class="st">&quot;MULTILINESTRING&quot;</span>)</span>
+<span id="cb129-6"><a href="original-challenge.html#cb129-6" tabindex="-1"></a><span class="fu">plot</span>(coastline,<span class="at">add=</span>T,<span class="at">lwd=</span><span class="fl">1.1</span>,<span class="at">col=</span><span class="st">&quot;black&quot;</span>)</span>
+<span id="cb129-7"><a href="original-challenge.html#cb129-7" tabindex="-1"></a><span class="fu">box</span>()</span>
+<span id="cb129-8"><a href="original-challenge.html#cb129-8" tabindex="-1"></a>sel<span class="ot">=</span>inter[<span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">15</span>,<span class="dv">36</span>),]</span>
+<span id="cb129-9"><a href="original-challenge.html#cb129-9" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(sel),sel<span class="sc">$</span>sitesnames,<span class="at">cex=</span>.<span class="dv">8</span>,<span class="at">pos=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">4</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/randommaps3-1.png" width="672" /></p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="original-challenge.html#cb130-1" tabindex="-1"></a></span>
+<span id="cb130-2"><a href="original-challenge.html#cb130-2" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb130-3"><a href="original-challenge.html#cb130-3" tabindex="-1"></a><span class="fu">contour</span>(height.ras,<span class="at">levels=</span><span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">300</span>,<span class="dv">15</span>),<span class="at">axes=</span>F,<span class="at">ann=</span>F,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">labels=</span><span class="st">&quot;&quot;</span>,<span class="at">bg=</span><span class="st">&quot;light blue&quot;</span>,<span class="at">add=</span>T)</span>
+<span id="cb130-4"><a href="original-challenge.html#cb130-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">4</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">5</span>,<span class="at">cex=</span><span class="dv">3</span>)</span>
+<span id="cb130-5"><a href="original-challenge.html#cb130-5" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">pch=</span><span class="dv">20</span>,<span class="at">add=</span>T,<span class="at">lwd=</span>.<span class="dv">2</span>,<span class="at">cex=</span><span class="fl">1.8</span>,<span class="at">col=</span><span class="fu">as.factor</span>(inter<span class="sc">$</span>culture),<span class="at">alpha=</span>.<span class="dv">8</span>)</span>
+<span id="cb130-6"><a href="original-challenge.html#cb130-6" tabindex="-1"></a>coastline<span class="ot">=</span><span class="fu">st_cast</span>(<span class="fu">st_as_sf</span>(<span class="fu">as.polygons</span>(height.ras<span class="sc">&gt;</span><span class="fu">mean</span>(height.ras[])))[<span class="dv">2</span>,],<span class="st">&quot;MULTILINESTRING&quot;</span>)</span>
+<span id="cb130-7"><a href="original-challenge.html#cb130-7" tabindex="-1"></a><span class="fu">plot</span>(coastline,<span class="at">add=</span>T,<span class="at">lwd=</span><span class="fl">1.1</span>,<span class="at">col=</span><span class="st">&quot;black&quot;</span>)</span>
+<span id="cb130-8"><a href="original-challenge.html#cb130-8" tabindex="-1"></a><span class="fu">box</span>()</span>
+<span id="cb130-9"><a href="original-challenge.html#cb130-9" tabindex="-1"></a>sel<span class="ot">=</span>inter[<span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">2</span>,<span class="dv">15</span>,<span class="dv">36</span>),]</span>
+<span id="cb130-10"><a href="original-challenge.html#cb130-10" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(sel),sel<span class="sc">$</span>sitesnames,<span class="at">cex=</span>.<span class="dv">8</span>,<span class="at">pos=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">4</span>))</span>
+<span id="cb130-11"><a href="original-challenge.html#cb130-11" tabindex="-1"></a><span class="co">#text(x = -1, y = .7, labels = &quot;🍻&quot;, adj = c(0, 0), cex = 3, col = &quot;black&quot;, font = 1)</span></span>
+<span id="cb130-12"><a href="original-challenge.html#cb130-12" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">3.4</span>, <span class="at">y =</span> .<span class="dv">7</span>, <span class="at">labels =</span> <span class="st">&quot;🍻 &quot;</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="dv">10</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">font =</span> <span class="dv">1</span>)</span>
+<span id="cb130-13"><a href="original-challenge.html#cb130-13" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span><span class="fl">1.8</span>, <span class="at">y =</span> .<span class="dv">7</span>, <span class="at">labels =</span> <span class="st">&quot;👍 &quot;</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="dv">8</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">font =</span> <span class="dv">1</span>)</span>
+<span id="cb130-14"><a href="original-challenge.html#cb130-14" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="sc">-</span>.<span class="dv">5</span>, <span class="at">y =</span> .<span class="dv">7</span>, <span class="at">labels =</span> <span class="st">&quot;🍔 &quot;</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">cex =</span> <span class="dv">6</span>, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>, <span class="at">font =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="original-challenge.html#cb131-1" tabindex="-1"></a><span class="co">#text(x = -1, y = 1.2, labels = &quot;⚔️ &quot;, adj = c(0, 0), cex = 3, col = &quot;black&quot;, font = 1)</span></span>
+<span id="cb131-2"><a href="original-challenge.html#cb131-2" tabindex="-1"></a><span class="co">#text(x = -1.2, y = 1.8/2, labels = &quot;???? &quot;, adj=c(0,0), cex = 3, col = &quot;black&quot;, font = 1)</span></span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="final-output.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

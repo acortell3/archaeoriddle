@@ -173,11 +173,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="main-simu.html"><a href="main-simu.html"><i class="fa fa-check"></i><b>5</b> Main Simulation</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="main-simu.html"><a href="main-simu.html#initial-parameters"><i class="fa fa-check"></i><b>5.1</b> Initial Parameters</a></li>
-<li class="chapter" data-level="5.2" data-path="main-simu.html"><a href="main-simu.html#algorithm"><i class="fa fa-check"></i><b>5.2</b> Algorithm</a>
+<li class="chapter" data-level="5.2" data-path="main-simu.html"><a href="main-simu.html#preparation"><i class="fa fa-check"></i><b>5.2</b> Preparation</a></li>
+<li class="chapter" data-level="5.3" data-path="main-simu.html"><a href="main-simu.html#algorithm"><i class="fa fa-check"></i><b>5.3</b> Algorithm</a>
 <ul>
 <li class="chapter" data-level="" data-path="main-simu.html"><a href="main-simu.html#source-code"><i class="fa fa-check"></i>Source code</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="main-simu.html"><a href="main-simu.html#explore-simulation"><i class="fa fa-check"></i><b>5.3</b> Explore simulation:</a></li>
+<li class="chapter" data-level="5.4" data-path="main-simu.html"><a href="main-simu.html#explore-simulation"><i class="fa fa-check"></i><b>5.4</b> Explore simulation:</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="recgen.html"><a href="recgen.html"><i class="fa fa-check"></i><b>6</b> Record formation</a>
 <ul>
@@ -206,11 +207,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="final-output.html"><a href="final-output.html"><i class="fa fa-check"></i><b>8</b> Generate final archaeological record</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="final-output.html"><a href="final-output.html#using-sites-size-to-generate-deposit"><i class="fa fa-check"></i><b>8.1</b> Using sites size to generate deposit</a></li>
-<li class="chapter" data-level="8.2" data-path="final-output.html"><a href="final-output.html#split-environment-in-a-grid"><i class="fa fa-check"></i><b>8.2</b> Split environment in a grid</a></li>
-</ul></li>
-<li class="chapter" data-level="9" data-path="archaeoriddle-the-original-challenge.html"><a href="archaeoriddle-the-original-challenge.html"><i class="fa fa-check"></i><b>9</b> Archaeoriddle: the original challenge</a>
+<li class="chapter" data-level="8.2" data-path="final-output.html"><a href="final-output.html#split-environment-in-a-grid"><i class="fa fa-check"></i><b>8.2</b> Split environment in a grid</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="archaeoriddle-the-original-challenge.html"><a href="archaeoriddle-the-original-challenge.html#generate-and-share-final-simulation"><i class="fa fa-check"></i><b>9.1</b> Generate and share final simulation</a></li>
+<li class="chapter" data-level="8.2.1" data-path="final-output.html"><a href="final-output.html#giving-name-to-the-publicly-available-data"><i class="fa fa-check"></i><b>8.2.1</b> Giving name to the publicly available data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="original-challenge.html"><a href="original-challenge.html"><i class="fa fa-check"></i><b>9</b> Archaeoriddle: the original challenge</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="original-challenge.html"><a href="original-challenge.html#generate-and-share-final-simulation"><i class="fa fa-check"></i><b>9.1</b> Generate and share final simulation</a></li>
+<li class="chapter" data-level="9.2" data-path="original-challenge.html"><a href="original-challenge.html#split-environment-in-a-grid-1"><i class="fa fa-check"></i><b>9.2</b> Split environment in a grid</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="original-challenge.html"><a href="original-challenge.html#naming"><i class="fa fa-check"></i><b>9.2.1</b> Giving name to the publicly available data</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/acortell3/archaeoriddle/">
@@ -238,15 +246,15 @@ source</a></li>
 <div id="theoretical-model" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Theoretical model<a href="recgen.html#theoretical-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have produced a computational model, replicating the process of formation of the archaeological record in a specific site, accounting for different variables. In order to consider the possible relation between those variables, we have decided to express them as a Directed Acyclic Graph (DAG), following the ECS-DAG methodology proposed by Ferguson et al. (2020). In this case, however, and because our goal is to obtain an accurate initial template for the development of the model, we have not considered setting an exposure variable, but rather to propose different theoretical directional and causal relationships without relying on the conventional exposure-outcome assessment. Therefore, highlights in the graph below do not intend to differentiate among confounders, mediators, etc., but to emphasize the possible weight that each variable has for producing the outcome (produced waste by <span class="math inline">\(m^2\)</span>).</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-53f5066b32fe6ceef53f" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-53f5066b32fe6ceef53f">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Site function\",\n       fillcolor = cadetblue1]\n    c [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    d [label = \"Site type\",\n       fillcolor = cadetblue1]\n    e [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    f [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n    c -> {f}\n    d -> {e}\n    e -> {f}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-9bc52602e9258b7d9e38" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-9bc52602e9258b7d9e38">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Site function\",\n       fillcolor = cadetblue1]\n    c [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    d [label = \"Site type\",\n       fillcolor = cadetblue1]\n    e [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    f [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n    c -> {f}\n    d -> {e}\n    e -> {f}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>The above graph depicts a very schematic way to represent the formation of the archaeological record (<span class="math inline">\(W/m^2\)</span>). In this case, we are interested in radiocarbon dating, focusing on bone samples; that is the number (and range) of potential 14C dates produced in a site, and this is key to understand the way in which we produced the model. We are aware that generating a specific archaeological palimpsest depends on a large quantity of variables, some of which may be controlled by field archaeologists and some of which may not (or are not). Therefore, the graph above must be read as follows. Asides from the outcome variable, the exposure variables, <em>Pop (group size)</em>, <em>Anthropogenic deposition rates</em> and <em>Natural deposition rates</em> (depicted in orange), are designed in a way that they can be activated for the model to infer them, they can be provided by the archaeologist, or they can be simply ignored. In the most elementary case, the archaeologist could introduce directly the outcome variable (<span class="math inline">\(W/m^2\)</span>) without taking into account anything else, if she/he is confident to provide an accurate value.</p>
 <p>However, in most cases, this information will not be known to the field researcher, and in this situation, these variables can be modeled to different extents of complexity. While, for example, in the case of the most simple simulation, the field archaeologist could ignore deposition rates. In this case, and because we are only considering 14C dates, then the quantity of the sample becomes broadly proportional to the number of people present in a site, and thus it could be modeled like this.</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-191b6cad197f0017272f" style="width:50%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-191b6cad197f0017272f">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n           \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {b}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-fe7955c035e5e866876a" style="width:50%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-fe7955c035e5e866876a">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n           \n    ## Per node definition\n    a [label = \"Pop (group size)\",\n       fillcolor = orange]\n    b [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {b}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>However, deposition rates are difficult to ignore if we want to account for the formation process of the archaeological record. If these are known to the archaeologists that developed fieldwork, then this would be the behaviour of the model for creating <span class="math inline">\(W/m^2\)</span>.</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-14334fe4dcfd19071903" style="width:60%;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-14334fe4dcfd19071903">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    b [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    c [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-05a41d7e8a332c8dc618" style="width:60%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-05a41d7e8a332c8dc618">{"x":{"diagram":"\n  digraph record_formation {\n  \n    graph [layout = dot, ## Set title and layout\n           label = \"Record formation process\",\n           labelloc = \"t\"\n           fontname = Helvetica,\n           fontsize = 30]\n    \n    # node definitions with substituted label text\n    node [fontname = Helvetica, ## General node definition\n          style = filled,\n          color = MistyRose]\n          \n    ## Per node definition\n    a [label = \"Anthropogenic deposition rates\",\n       fillcolor = orange]\n    b [label = \"Natural deposition rates\",\n       fillcolor = orange]\n    c [label = \"Waste/sqrm\",\n       fillcolor = cadetblue,\n       fixedsize = shape,\n       width = 4.5,\n       height = 1,\n       fontsize = 30]\n    \n    ## General edge definition\n    edge [color = grey,\n           arrowhead = vee,\n           arrowtail = vee]\n    \n    ## Specific edges\n    a -> {c}\n    b -> {c}\n  }\n  \n  ## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Finally, if these are not known to the archaeologist, but they want to model them, then we would go back to the first DAG. In this case, keep reading for the specificities of the model.</p>
 <p>This is how each variable works specifically:</p>
 <ul>
@@ -277,7 +285,7 @@ source</a></li>
 <div id="population-pop-protocol" class="section level3 hasAnchor" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> Population <span class="math inline">\(Pop\)</span>-protocol<a href="recgen.html#population-pop-protocol" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Before anything, in order to account for the chronological occupation of the site, a demographic process must be produced <em>ie</em> sites need to be occupied. From these occupation a record sample is generated accordingly. This is what his done and described in the <a href="popgrowth.html#popgrowth">previous chapter</a>, but here we will use the function <code>Pop_stoch</code> to generate a simple stochastic growth and apply our loss function to it in order to describe and test the other protocols.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="recgen.html#cb56-1" tabindex="-1"></a>?Pop_stoch</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="recgen.html#cb58-1" tabindex="-1"></a>?Pop_stoch</span></code></pre></div>
 <p><br></p>
 </div>
 <div id="anthropogenic-deposition-a-protocol" class="section level3 hasAnchor" number="6.2.2">
@@ -311,62 +319,62 @@ You can inspect the <code>A_rates</code> code here:
 Show code
 </summary>
 <p><strong>Code</strong></p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="recgen.html#cb57-1" tabindex="-1"></a><span class="do">## Function 5. Simulate anthropogenic deposition</span></span>
-<span id="cb57-2"><a href="recgen.html#cb57-2" tabindex="-1"></a>A_rates <span class="ot">&lt;-</span> <span class="cf">function</span>(x,</span>
-<span id="cb57-3"><a href="recgen.html#cb57-3" tabindex="-1"></a>                    <span class="at">kcalpers =</span> <span class="dv">2</span>,</span>
-<span id="cb57-4"><a href="recgen.html#cb57-4" tabindex="-1"></a>                    <span class="at">kcalmeat_eat =</span> <span class="fl">0.45</span>,</span>
-<span id="cb57-5"><a href="recgen.html#cb57-5" tabindex="-1"></a>                    <span class="at">kcalmeat_prod =</span> <span class="fl">1.5</span>,</span>
-<span id="cb57-6"><a href="recgen.html#cb57-6" tabindex="-1"></a>                    <span class="at">in_camp_eat =</span> <span class="fl">0.55</span>,</span>
-<span id="cb57-7"><a href="recgen.html#cb57-7" tabindex="-1"></a>                    <span class="at">in_camp_stay =</span> <span class="dv">13</span>,</span>
-<span id="cb57-8"><a href="recgen.html#cb57-8" tabindex="-1"></a>                    <span class="at">kg =</span> <span class="fl">0.07</span>){</span>
-<span id="cb57-9"><a href="recgen.html#cb57-9" tabindex="-1"></a>  </span>
-<span id="cb57-10"><a href="recgen.html#cb57-10" tabindex="-1"></a>  </span>
-<span id="cb57-11"><a href="recgen.html#cb57-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.data.frame</span>(x) <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
-<span id="cb57-12"><a href="recgen.html#cb57-12" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
-<span id="cb57-13"><a href="recgen.html#cb57-13" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">1</span>){</span>
-<span id="cb57-14"><a href="recgen.html#cb57-14" tabindex="-1"></a>    P <span class="ot">&lt;-</span> x</span>
-<span id="cb57-15"><a href="recgen.html#cb57-15" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb57-16"><a href="recgen.html#cb57-16" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb57-17"><a href="recgen.html#cb57-17" tabindex="-1"></a>  }</span>
-<span id="cb57-18"><a href="recgen.html#cb57-18" tabindex="-1"></a>  </span>
-<span id="cb57-19"><a href="recgen.html#cb57-19" tabindex="-1"></a>  <span class="co"># Check variable values are within the defined ranges</span></span>
-<span id="cb57-20"><a href="recgen.html#cb57-20" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fl">1.5</span> <span class="sc">&lt;=</span> kcalpers <span class="sc">&amp;</span> kcalpers <span class="sc">&lt;=</span> <span class="fl">2.5</span>){</span>
-<span id="cb57-21"><a href="recgen.html#cb57-21" tabindex="-1"></a>    B <span class="ot">&lt;-</span> kcalpers<span class="sc">*</span><span class="dv">365</span></span>
-<span id="cb57-22"><a href="recgen.html#cb57-22" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb57-23"><a href="recgen.html#cb57-23" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalpers must be within [1.5, 2.5]&#39;</span>)</span>
-<span id="cb57-24"><a href="recgen.html#cb57-24" tabindex="-1"></a>  }</span>
-<span id="cb57-25"><a href="recgen.html#cb57-25" tabindex="-1"></a>  </span>
-<span id="cb57-26"><a href="recgen.html#cb57-26" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> kcalmeat_eat <span class="sc">&amp;</span> kcalmeat_eat <span class="sc">&lt;=</span> <span class="dv">1</span>) {</span>
-<span id="cb57-27"><a href="recgen.html#cb57-27" tabindex="-1"></a>    M <span class="ot">&lt;-</span> kcalmeat_eat</span>
-<span id="cb57-28"><a href="recgen.html#cb57-28" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb57-29"><a href="recgen.html#cb57-29" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_eat must be within [0, 1]&#39;</span>)</span>
-<span id="cb57-30"><a href="recgen.html#cb57-30" tabindex="-1"></a>  }</span>
-<span id="cb57-31"><a href="recgen.html#cb57-31" tabindex="-1"></a>  </span>
-<span id="cb57-32"><a href="recgen.html#cb57-32" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">1</span> <span class="sc">&lt;=</span> kcalmeat_prod <span class="sc">&amp;</span> kcalmeat_prod <span class="sc">&lt;</span> <span class="fl">2.5</span>) {</span>
-<span id="cb57-33"><a href="recgen.html#cb57-33" tabindex="-1"></a>    R <span class="ot">&lt;-</span> kcalmeat_prod</span>
-<span id="cb57-34"><a href="recgen.html#cb57-34" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb57-35"><a href="recgen.html#cb57-35" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_prod must be within [1, 25]&#39;</span>)</span>
-<span id="cb57-36"><a href="recgen.html#cb57-36" tabindex="-1"></a>  }</span>
-<span id="cb57-37"><a href="recgen.html#cb57-37" tabindex="-1"></a>  </span>
-<span id="cb57-38"><a href="recgen.html#cb57-38" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> in_camp_eat <span class="sc">&amp;</span> in_camp_eat <span class="sc">&lt;=</span> <span class="dv">1</span>){</span>
-<span id="cb57-39"><a href="recgen.html#cb57-39" tabindex="-1"></a>    S <span class="ot">&lt;-</span> in_camp_eat</span>
-<span id="cb57-40"><a href="recgen.html#cb57-40" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb57-41"><a href="recgen.html#cb57-41" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;in_camp_eat must be within [0, 1]&#39;</span>)</span>
-<span id="cb57-42"><a href="recgen.html#cb57-42" tabindex="-1"></a>  }</span>
-<span id="cb57-43"><a href="recgen.html#cb57-43" tabindex="-1"></a>  </span>
-<span id="cb57-44"><a href="recgen.html#cb57-44" tabindex="-1"></a>  <span class="cf">if</span> (in_camp_stay <span class="sc">&lt;=</span> <span class="dv">52</span>){</span>
-<span id="cb57-45"><a href="recgen.html#cb57-45" tabindex="-1"></a>    O <span class="ot">&lt;-</span> <span class="fu">round</span>(in_camp_stay<span class="sc">/</span><span class="dv">52</span>,<span class="dv">2</span>)</span>
-<span id="cb57-46"><a href="recgen.html#cb57-46" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb57-47"><a href="recgen.html#cb57-47" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;A year cannot have more than 52 weeks&#39;</span>)</span>
-<span id="cb57-48"><a href="recgen.html#cb57-48" tabindex="-1"></a>  }</span>
-<span id="cb57-49"><a href="recgen.html#cb57-49" tabindex="-1"></a>  </span>
-<span id="cb57-50"><a href="recgen.html#cb57-50" tabindex="-1"></a>  C <span class="ot">&lt;-</span> B<span class="sc">*</span>M</span>
-<span id="cb57-51"><a href="recgen.html#cb57-51" tabindex="-1"></a>  G <span class="ot">&lt;-</span> (C <span class="sc">*</span> S) <span class="sc">/</span> R <span class="do">## Quantity (in kg) of animal consumed per person in camp during year t</span></span>
-<span id="cb57-52"><a href="recgen.html#cb57-52" tabindex="-1"></a>  A <span class="ot">&lt;-</span> P <span class="sc">*</span> O <span class="sc">*</span> kg <span class="sc">*</span> G <span class="do">## kilograms of meat consumed within a camp by the group</span></span>
-<span id="cb57-53"><a href="recgen.html#cb57-53" tabindex="-1"></a>  W <span class="ot">&lt;-</span> <span class="fu">round</span>((<span class="dv">1000</span> <span class="sc">*</span> A) <span class="sc">/</span> <span class="dv">4</span>) <span class="do">## samples extracted from that meat</span></span>
-<span id="cb57-54"><a href="recgen.html#cb57-54" tabindex="-1"></a>  </span>
-<span id="cb57-55"><a href="recgen.html#cb57-55" tabindex="-1"></a>  <span class="fu">return</span>(W)</span>
-<span id="cb57-56"><a href="recgen.html#cb57-56" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="recgen.html#cb59-1" tabindex="-1"></a><span class="do">## Function 5. Simulate anthropogenic deposition</span></span>
+<span id="cb59-2"><a href="recgen.html#cb59-2" tabindex="-1"></a>A_rates <span class="ot">&lt;-</span> <span class="cf">function</span>(x,</span>
+<span id="cb59-3"><a href="recgen.html#cb59-3" tabindex="-1"></a>                    <span class="at">kcalpers =</span> <span class="dv">2</span>,</span>
+<span id="cb59-4"><a href="recgen.html#cb59-4" tabindex="-1"></a>                    <span class="at">kcalmeat_eat =</span> <span class="fl">0.45</span>,</span>
+<span id="cb59-5"><a href="recgen.html#cb59-5" tabindex="-1"></a>                    <span class="at">kcalmeat_prod =</span> <span class="fl">1.5</span>,</span>
+<span id="cb59-6"><a href="recgen.html#cb59-6" tabindex="-1"></a>                    <span class="at">in_camp_eat =</span> <span class="fl">0.55</span>,</span>
+<span id="cb59-7"><a href="recgen.html#cb59-7" tabindex="-1"></a>                    <span class="at">in_camp_stay =</span> <span class="dv">13</span>,</span>
+<span id="cb59-8"><a href="recgen.html#cb59-8" tabindex="-1"></a>                    <span class="at">kg =</span> <span class="fl">0.07</span>){</span>
+<span id="cb59-9"><a href="recgen.html#cb59-9" tabindex="-1"></a>  </span>
+<span id="cb59-10"><a href="recgen.html#cb59-10" tabindex="-1"></a>  </span>
+<span id="cb59-11"><a href="recgen.html#cb59-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.data.frame</span>(x) <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
+<span id="cb59-12"><a href="recgen.html#cb59-12" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">nrow</span>(x)</span>
+<span id="cb59-13"><a href="recgen.html#cb59-13" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(x) <span class="sc">==</span> <span class="dv">1</span>){</span>
+<span id="cb59-14"><a href="recgen.html#cb59-14" tabindex="-1"></a>    P <span class="ot">&lt;-</span> x</span>
+<span id="cb59-15"><a href="recgen.html#cb59-15" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb59-16"><a href="recgen.html#cb59-16" tabindex="-1"></a>    P <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb59-17"><a href="recgen.html#cb59-17" tabindex="-1"></a>  }</span>
+<span id="cb59-18"><a href="recgen.html#cb59-18" tabindex="-1"></a>  </span>
+<span id="cb59-19"><a href="recgen.html#cb59-19" tabindex="-1"></a>  <span class="co"># Check variable values are within the defined ranges</span></span>
+<span id="cb59-20"><a href="recgen.html#cb59-20" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fl">1.5</span> <span class="sc">&lt;=</span> kcalpers <span class="sc">&amp;</span> kcalpers <span class="sc">&lt;=</span> <span class="fl">2.5</span>){</span>
+<span id="cb59-21"><a href="recgen.html#cb59-21" tabindex="-1"></a>    B <span class="ot">&lt;-</span> kcalpers<span class="sc">*</span><span class="dv">365</span></span>
+<span id="cb59-22"><a href="recgen.html#cb59-22" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb59-23"><a href="recgen.html#cb59-23" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalpers must be within [1.5, 2.5]&#39;</span>)</span>
+<span id="cb59-24"><a href="recgen.html#cb59-24" tabindex="-1"></a>  }</span>
+<span id="cb59-25"><a href="recgen.html#cb59-25" tabindex="-1"></a>  </span>
+<span id="cb59-26"><a href="recgen.html#cb59-26" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> kcalmeat_eat <span class="sc">&amp;</span> kcalmeat_eat <span class="sc">&lt;=</span> <span class="dv">1</span>) {</span>
+<span id="cb59-27"><a href="recgen.html#cb59-27" tabindex="-1"></a>    M <span class="ot">&lt;-</span> kcalmeat_eat</span>
+<span id="cb59-28"><a href="recgen.html#cb59-28" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb59-29"><a href="recgen.html#cb59-29" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_eat must be within [0, 1]&#39;</span>)</span>
+<span id="cb59-30"><a href="recgen.html#cb59-30" tabindex="-1"></a>  }</span>
+<span id="cb59-31"><a href="recgen.html#cb59-31" tabindex="-1"></a>  </span>
+<span id="cb59-32"><a href="recgen.html#cb59-32" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">1</span> <span class="sc">&lt;=</span> kcalmeat_prod <span class="sc">&amp;</span> kcalmeat_prod <span class="sc">&lt;</span> <span class="fl">2.5</span>) {</span>
+<span id="cb59-33"><a href="recgen.html#cb59-33" tabindex="-1"></a>    R <span class="ot">&lt;-</span> kcalmeat_prod</span>
+<span id="cb59-34"><a href="recgen.html#cb59-34" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb59-35"><a href="recgen.html#cb59-35" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;kcalmeat_prod must be within [1, 25]&#39;</span>)</span>
+<span id="cb59-36"><a href="recgen.html#cb59-36" tabindex="-1"></a>  }</span>
+<span id="cb59-37"><a href="recgen.html#cb59-37" tabindex="-1"></a>  </span>
+<span id="cb59-38"><a href="recgen.html#cb59-38" tabindex="-1"></a>  <span class="cf">if</span> (<span class="dv">0</span> <span class="sc">&lt;=</span> in_camp_eat <span class="sc">&amp;</span> in_camp_eat <span class="sc">&lt;=</span> <span class="dv">1</span>){</span>
+<span id="cb59-39"><a href="recgen.html#cb59-39" tabindex="-1"></a>    S <span class="ot">&lt;-</span> in_camp_eat</span>
+<span id="cb59-40"><a href="recgen.html#cb59-40" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb59-41"><a href="recgen.html#cb59-41" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;in_camp_eat must be within [0, 1]&#39;</span>)</span>
+<span id="cb59-42"><a href="recgen.html#cb59-42" tabindex="-1"></a>  }</span>
+<span id="cb59-43"><a href="recgen.html#cb59-43" tabindex="-1"></a>  </span>
+<span id="cb59-44"><a href="recgen.html#cb59-44" tabindex="-1"></a>  <span class="cf">if</span> (in_camp_stay <span class="sc">&lt;=</span> <span class="dv">52</span>){</span>
+<span id="cb59-45"><a href="recgen.html#cb59-45" tabindex="-1"></a>    O <span class="ot">&lt;-</span> <span class="fu">round</span>(in_camp_stay<span class="sc">/</span><span class="dv">52</span>,<span class="dv">2</span>)</span>
+<span id="cb59-46"><a href="recgen.html#cb59-46" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb59-47"><a href="recgen.html#cb59-47" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&#39;A year cannot have more than 52 weeks&#39;</span>)</span>
+<span id="cb59-48"><a href="recgen.html#cb59-48" tabindex="-1"></a>  }</span>
+<span id="cb59-49"><a href="recgen.html#cb59-49" tabindex="-1"></a>  </span>
+<span id="cb59-50"><a href="recgen.html#cb59-50" tabindex="-1"></a>  C <span class="ot">&lt;-</span> B<span class="sc">*</span>M</span>
+<span id="cb59-51"><a href="recgen.html#cb59-51" tabindex="-1"></a>  G <span class="ot">&lt;-</span> (C <span class="sc">*</span> S) <span class="sc">/</span> R <span class="do">## Quantity (in kg) of animal consumed per person in camp during year t</span></span>
+<span id="cb59-52"><a href="recgen.html#cb59-52" tabindex="-1"></a>  A <span class="ot">&lt;-</span> P <span class="sc">*</span> O <span class="sc">*</span> kg <span class="sc">*</span> G <span class="do">## kilograms of meat consumed within a camp by the group</span></span>
+<span id="cb59-53"><a href="recgen.html#cb59-53" tabindex="-1"></a>  W <span class="ot">&lt;-</span> <span class="fu">round</span>((<span class="dv">1000</span> <span class="sc">*</span> A) <span class="sc">/</span> <span class="dv">4</span>) <span class="do">## samples extracted from that meat</span></span>
+<span id="cb59-54"><a href="recgen.html#cb59-54" tabindex="-1"></a>  </span>
+<span id="cb59-55"><a href="recgen.html#cb59-55" tabindex="-1"></a>  <span class="fu">return</span>(W)</span>
+<span id="cb59-56"><a href="recgen.html#cb59-56" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 </div>
 <div id="depth-d-protocol" class="section level3 hasAnchor" number="6.2.3">
@@ -402,8 +410,8 @@ Show code
 <p>At the end, the function <code>Rec_c</code> runs <code>D_along</code> over a period of time, effectively producing an archaeological record. In the function <code>Rec_c</code> the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can use the modeled values (with the functions above) as an input to this function, or introduce them directly, for example, in the case that fix population rates per year were preferred.</p>
 <p>The function <code>D_along</code> captures this process.</p>
 <p>As usual, you can learn all about the parameters of <code>D_rates</code> and <code>Rec_c</code></p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="recgen.html#cb58-1" tabindex="-1"></a>?D_along</span>
-<span id="cb58-2"><a href="recgen.html#cb58-2" tabindex="-1"></a>?Rec_c</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="recgen.html#cb60-1" tabindex="-1"></a>?D_along</span>
+<span id="cb60-2"><a href="recgen.html#cb60-2" tabindex="-1"></a>?Rec_c</span></code></pre></div>
 <p><br></p>
 As before, you can check the code here:
 <details>
@@ -411,87 +419,91 @@ As before, you can check the code here:
 Show code
 </summary>
 <p><strong>Code</strong></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="recgen.html#cb59-1" tabindex="-1"></a><span class="do">## Function 6. Depth protocol deposition</span></span>
-<span id="cb59-2"><a href="recgen.html#cb59-2" tabindex="-1"></a>D_along <span class="ot">&lt;-</span> <span class="cf">function</span>(W_t, r, <span class="at">max_bone_thickness =</span> <span class="fu">c</span>(<span class="st">&quot;m&quot;</span>, <span class="st">&#39;s&#39;</span>, <span class="st">&#39;l&#39;</span>, <span class="st">&#39;vl&#39;</span>),</span>
-<span id="cb59-3"><a href="recgen.html#cb59-3" tabindex="-1"></a>                    <span class="at">prop_buried =</span> .<span class="dv">9999</span>){</span>
-<span id="cb59-4"><a href="recgen.html#cb59-4" tabindex="-1"></a>  </span>
-<span id="cb59-5"><a href="recgen.html#cb59-5" tabindex="-1"></a>  <span class="co"># Define parameter r</span></span>
-<span id="cb59-6"><a href="recgen.html#cb59-6" tabindex="-1"></a>  <span class="cf">if</span>(r <span class="sc">&gt;</span> <span class="fl">0.5</span>) <span class="fu">stop</span>(<span class="st">&quot;values &gt; 0.5 are not accepted for param &#39;r&#39;&quot;</span>)</span>
-<span id="cb59-7"><a href="recgen.html#cb59-7" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">round</span>(r, <span class="dv">1</span>)</span>
-<span id="cb59-8"><a href="recgen.html#cb59-8" tabindex="-1"></a>  <span class="co"># Constraints for parameter Pb</span></span>
-<span id="cb59-9"><a href="recgen.html#cb59-9" tabindex="-1"></a>  <span class="cf">if</span> (prop_buried <span class="sc">&gt;=</span> <span class="dv">1</span>) <span class="fu">stop</span>(<span class="st">&quot;Pb must be lower than 1&quot;</span>)</span>
-<span id="cb59-10"><a href="recgen.html#cb59-10" tabindex="-1"></a>  </span>
-<span id="cb59-11"><a href="recgen.html#cb59-11" tabindex="-1"></a>  <span class="co"># Define parameter Max_bone_thickness (L)</span></span>
-<span id="cb59-12"><a href="recgen.html#cb59-12" tabindex="-1"></a>  max_bone_thickness <span class="ot">=</span> <span class="fu">match.arg</span>(max_bone_thickness)</span>
-<span id="cb59-13"><a href="recgen.html#cb59-13" tabindex="-1"></a>  <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;s&#39;</span>){</span>
-<span id="cb59-14"><a href="recgen.html#cb59-14" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="fl">2.5</span></span>
-<span id="cb59-15"><a href="recgen.html#cb59-15" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;m&#39;</span>){</span>
-<span id="cb59-16"><a href="recgen.html#cb59-16" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb59-17"><a href="recgen.html#cb59-17" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;l&#39;</span>){</span>
-<span id="cb59-18"><a href="recgen.html#cb59-18" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb59-19"><a href="recgen.html#cb59-19" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;vl&#39;</span>){</span>
-<span id="cb59-20"><a href="recgen.html#cb59-20" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb59-21"><a href="recgen.html#cb59-21" tabindex="-1"></a>  }</span>
-<span id="cb59-22"><a href="recgen.html#cb59-22" tabindex="-1"></a>  </span>
-<span id="cb59-23"><a href="recgen.html#cb59-23" tabindex="-1"></a>  <span class="co"># Define tmax</span></span>
-<span id="cb59-24"><a href="recgen.html#cb59-24" tabindex="-1"></a>  tm <span class="ot">&lt;-</span> L<span class="sc">/</span>r</span>
-<span id="cb59-25"><a href="recgen.html#cb59-25" tabindex="-1"></a>  <span class="co"># Estimate lambda</span></span>
-<span id="cb59-26"><a href="recgen.html#cb59-26" tabindex="-1"></a>  l <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> prop_buried) <span class="sc">/</span> tm</span>
-<span id="cb59-27"><a href="recgen.html#cb59-27" tabindex="-1"></a>  </span>
-<span id="cb59-28"><a href="recgen.html#cb59-28" tabindex="-1"></a>  ss <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">round</span>(tm)) <span class="do">## Vector to distribute samples over</span></span>
-<span id="cb59-29"><a href="recgen.html#cb59-29" tabindex="-1"></a>  tl <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># Year where the sample is deposited</span></span>
-<span id="cb59-30"><a href="recgen.html#cb59-30" tabindex="-1"></a>  tu <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># Year when it is covered</span></span>
-<span id="cb59-31"><a href="recgen.html#cb59-31" tabindex="-1"></a>  </span>
-<span id="cb59-32"><a href="recgen.html#cb59-32" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>tm){</span>
-<span id="cb59-33"><a href="recgen.html#cb59-33" tabindex="-1"></a>    Wb <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>(tu<span class="sc">-</span>tl))) <span class="co"># Apply formula for tu</span></span>
-<span id="cb59-34"><a href="recgen.html#cb59-34" tabindex="-1"></a>    Wbprev <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>((tu<span class="dv">-1</span>)<span class="sc">-</span>tl))) <span class="co"># Calculate for previous to tu</span></span>
-<span id="cb59-35"><a href="recgen.html#cb59-35" tabindex="-1"></a>    ss[i] <span class="ot">&lt;-</span> <span class="fu">round</span>(Wb <span class="sc">-</span> Wbprev) <span class="co"># Number of samples for each year</span></span>
-<span id="cb59-36"><a href="recgen.html#cb59-36" tabindex="-1"></a>    tu <span class="ot">&lt;-</span> tu <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb59-37"><a href="recgen.html#cb59-37" tabindex="-1"></a>  }</span>
-<span id="cb59-38"><a href="recgen.html#cb59-38" tabindex="-1"></a>  </span>
-<span id="cb59-39"><a href="recgen.html#cb59-39" tabindex="-1"></a>  <span class="fu">return</span>(ss)</span>
-<span id="cb59-40"><a href="recgen.html#cb59-40" tabindex="-1"></a>}</span>
-<span id="cb59-41"><a href="recgen.html#cb59-41" tabindex="-1"></a></span>
-<span id="cb59-42"><a href="recgen.html#cb59-42" tabindex="-1"></a><span class="do">## 7. Archaeological deposition record</span></span>
-<span id="cb59-43"><a href="recgen.html#cb59-43" tabindex="-1"></a>Rec_c <span class="ot">&lt;-</span> <span class="cf">function</span>(x, area, ts, InitBP, <span class="at">persqm =</span> <span class="cn">FALSE</span>, ...){</span>
-<span id="cb59-44"><a href="recgen.html#cb59-44" tabindex="-1"></a>  </span>
-<span id="cb59-45"><a href="recgen.html#cb59-45" tabindex="-1"></a>  <span class="do">## Whether sqm division must be included or not</span></span>
-<span id="cb59-46"><a href="recgen.html#cb59-46" tabindex="-1"></a>  <span class="cf">if</span> (persqm <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
-<span id="cb59-47"><a href="recgen.html#cb59-47" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">/</span> area</span>
-<span id="cb59-48"><a href="recgen.html#cb59-48" tabindex="-1"></a>  }</span>
-<span id="cb59-49"><a href="recgen.html#cb59-49" tabindex="-1"></a>  </span>
-<span id="cb59-50"><a href="recgen.html#cb59-50" tabindex="-1"></a>  <span class="do">## Spread dates along different depths</span></span>
-<span id="cb59-51"><a href="recgen.html#cb59-51" tabindex="-1"></a>  matdim <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
-<span id="cb59-52"><a href="recgen.html#cb59-52" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span>matdim, <span class="at">ncol=</span>matdim)</span>
-<span id="cb59-53"><a href="recgen.html#cb59-53" tabindex="-1"></a>  </span>
-<span id="cb59-54"><a href="recgen.html#cb59-54" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>matdim){</span>
-<span id="cb59-55"><a href="recgen.html#cb59-55" tabindex="-1"></a>    new <span class="ot">&lt;-</span> <span class="fu">D_along</span>(x[i], ...)</span>
-<span id="cb59-56"><a href="recgen.html#cb59-56" tabindex="-1"></a>    st <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span></span>
-<span id="cb59-57"><a href="recgen.html#cb59-57" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, st), new)</span>
-<span id="cb59-58"><a href="recgen.html#cb59-58" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> pos[<span class="dv">1</span><span class="sc">:</span>matdim]</span>
-<span id="cb59-59"><a href="recgen.html#cb59-59" tabindex="-1"></a>    mat[, i] <span class="ot">&lt;-</span> pos</span>
-<span id="cb59-60"><a href="recgen.html#cb59-60" tabindex="-1"></a>  }</span>
-<span id="cb59-61"><a href="recgen.html#cb59-61" tabindex="-1"></a>  mat[<span class="fu">is.na</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb59-62"><a href="recgen.html#cb59-62" tabindex="-1"></a>  </span>
-<span id="cb59-63"><a href="recgen.html#cb59-63" tabindex="-1"></a>  <span class="do">## Names for columns (each year)</span></span>
-<span id="cb59-64"><a href="recgen.html#cb59-64" tabindex="-1"></a>  years <span class="ot">&lt;-</span> <span class="fu">seq</span>(InitBP, InitBP<span class="sc">-</span>ts)</span>
-<span id="cb59-65"><a href="recgen.html#cb59-65" tabindex="-1"></a>  <span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(years, <span class="st">&quot; BP&quot;</span>)[<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(mat)]</span>
-<span id="cb59-66"><a href="recgen.html#cb59-66" tabindex="-1"></a>  </span>
-<span id="cb59-67"><a href="recgen.html#cb59-67" tabindex="-1"></a>  <span class="do">## Names for rows (each depth)</span></span>
-<span id="cb59-68"><a href="recgen.html#cb59-68" tabindex="-1"></a>  <span class="co"># Extract arguments as a list</span></span>
-<span id="cb59-69"><a href="recgen.html#cb59-69" tabindex="-1"></a>  extract_args <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...){ </span>
-<span id="cb59-70"><a href="recgen.html#cb59-70" tabindex="-1"></a>    extras <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
-<span id="cb59-71"><a href="recgen.html#cb59-71" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">extras=</span>extras)) </span>
-<span id="cb59-72"><a href="recgen.html#cb59-72" tabindex="-1"></a>  }</span>
-<span id="cb59-73"><a href="recgen.html#cb59-73" tabindex="-1"></a>  </span>
-<span id="cb59-74"><a href="recgen.html#cb59-74" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> <span class="fu">extract_args</span>(D_along, ...)</span>
-<span id="cb59-75"><a href="recgen.html#cb59-75" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> dr<span class="sc">$</span>extras<span class="sc">$</span>r</span>
-<span id="cb59-76"><a href="recgen.html#cb59-76" tabindex="-1"></a>  </span>
-<span id="cb59-77"><a href="recgen.html#cb59-77" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">cumsum</span>(<span class="fu">rep</span>(dr, <span class="fu">nrow</span>(mat)))) <span class="do">## computes depths</span></span>
-<span id="cb59-78"><a href="recgen.html#cb59-78" tabindex="-1"></a>  <span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;d = &quot;</span>, d, <span class="st">&quot; cm&quot;</span>)</span>
-<span id="cb59-79"><a href="recgen.html#cb59-79" tabindex="-1"></a>  </span>
-<span id="cb59-80"><a href="recgen.html#cb59-80" tabindex="-1"></a>  <span class="fu">return</span>(mat)</span>
-<span id="cb59-81"><a href="recgen.html#cb59-81" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="recgen.html#cb61-1" tabindex="-1"></a><span class="do">## Function 6. Depth protocol deposition</span></span>
+<span id="cb61-2"><a href="recgen.html#cb61-2" tabindex="-1"></a>D_along <span class="ot">&lt;-</span> <span class="cf">function</span>(W_t, r, <span class="at">max_bone_thickness =</span> <span class="fu">c</span>(<span class="st">&quot;m&quot;</span>, <span class="st">&#39;s&#39;</span>, <span class="st">&#39;l&#39;</span>, <span class="st">&#39;vl&#39;</span>),</span>
+<span id="cb61-3"><a href="recgen.html#cb61-3" tabindex="-1"></a>                    <span class="at">prop_buried =</span> .<span class="dv">9999</span>){</span>
+<span id="cb61-4"><a href="recgen.html#cb61-4" tabindex="-1"></a>  </span>
+<span id="cb61-5"><a href="recgen.html#cb61-5" tabindex="-1"></a>  <span class="co"># Define parameter r</span></span>
+<span id="cb61-6"><a href="recgen.html#cb61-6" tabindex="-1"></a>  <span class="cf">if</span>(r <span class="sc">&gt;</span> <span class="fl">0.5</span>) <span class="fu">stop</span>(<span class="st">&quot;values &gt; 0.5 are not accepted for param &#39;r&#39;&quot;</span>)</span>
+<span id="cb61-7"><a href="recgen.html#cb61-7" tabindex="-1"></a>  r <span class="ot">&lt;-</span> <span class="fu">round</span>(r, <span class="dv">1</span>)</span>
+<span id="cb61-8"><a href="recgen.html#cb61-8" tabindex="-1"></a>  <span class="co"># Constraints for parameter Pb</span></span>
+<span id="cb61-9"><a href="recgen.html#cb61-9" tabindex="-1"></a>  <span class="cf">if</span> (prop_buried <span class="sc">&gt;=</span> <span class="dv">1</span>) <span class="fu">stop</span>(<span class="st">&quot;Pb must be lower than 1&quot;</span>)</span>
+<span id="cb61-10"><a href="recgen.html#cb61-10" tabindex="-1"></a>  </span>
+<span id="cb61-11"><a href="recgen.html#cb61-11" tabindex="-1"></a>  <span class="co"># Define parameter Max_bone_thickness (L)</span></span>
+<span id="cb61-12"><a href="recgen.html#cb61-12" tabindex="-1"></a>  max_bone_thickness <span class="ot">=</span> <span class="fu">match.arg</span>(max_bone_thickness)</span>
+<span id="cb61-13"><a href="recgen.html#cb61-13" tabindex="-1"></a>  <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;s&#39;</span>){</span>
+<span id="cb61-14"><a href="recgen.html#cb61-14" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="fl">2.5</span></span>
+<span id="cb61-15"><a href="recgen.html#cb61-15" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;m&#39;</span>){</span>
+<span id="cb61-16"><a href="recgen.html#cb61-16" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb61-17"><a href="recgen.html#cb61-17" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;l&#39;</span>){</span>
+<span id="cb61-18"><a href="recgen.html#cb61-18" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb61-19"><a href="recgen.html#cb61-19" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (max_bone_thickness <span class="sc">==</span> <span class="st">&#39;vl&#39;</span>){</span>
+<span id="cb61-20"><a href="recgen.html#cb61-20" tabindex="-1"></a>    L <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb61-21"><a href="recgen.html#cb61-21" tabindex="-1"></a>  }</span>
+<span id="cb61-22"><a href="recgen.html#cb61-22" tabindex="-1"></a>  </span>
+<span id="cb61-23"><a href="recgen.html#cb61-23" tabindex="-1"></a>  <span class="co"># Define tmax</span></span>
+<span id="cb61-24"><a href="recgen.html#cb61-24" tabindex="-1"></a>  tm <span class="ot">&lt;-</span> L<span class="sc">/</span>r</span>
+<span id="cb61-25"><a href="recgen.html#cb61-25" tabindex="-1"></a>  <span class="co"># Estimate lambda</span></span>
+<span id="cb61-26"><a href="recgen.html#cb61-26" tabindex="-1"></a>  l <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span> <span class="sc">-</span> prop_buried) <span class="sc">/</span> tm</span>
+<span id="cb61-27"><a href="recgen.html#cb61-27" tabindex="-1"></a>  </span>
+<span id="cb61-28"><a href="recgen.html#cb61-28" tabindex="-1"></a>  ss <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">round</span>(tm)) <span class="do">## Vector to distribute samples over</span></span>
+<span id="cb61-29"><a href="recgen.html#cb61-29" tabindex="-1"></a>  tl <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># Year where the sample is deposited</span></span>
+<span id="cb61-30"><a href="recgen.html#cb61-30" tabindex="-1"></a>  tu <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># Year when it is covered</span></span>
+<span id="cb61-31"><a href="recgen.html#cb61-31" tabindex="-1"></a>  </span>
+<span id="cb61-32"><a href="recgen.html#cb61-32" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>tm){</span>
+<span id="cb61-33"><a href="recgen.html#cb61-33" tabindex="-1"></a>    Wb <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>(tu<span class="sc">-</span>tl))) <span class="co"># Apply formula for tu</span></span>
+<span id="cb61-34"><a href="recgen.html#cb61-34" tabindex="-1"></a>    Wbprev <span class="ot">&lt;-</span> W_t <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>l<span class="sc">*</span>((tu<span class="dv">-1</span>)<span class="sc">-</span>tl))) <span class="co"># Calculate for previous to tu</span></span>
+<span id="cb61-35"><a href="recgen.html#cb61-35" tabindex="-1"></a>    ss[i] <span class="ot">&lt;-</span> <span class="fu">round</span>(Wb <span class="sc">-</span> Wbprev) <span class="co"># Number of samples for each year</span></span>
+<span id="cb61-36"><a href="recgen.html#cb61-36" tabindex="-1"></a>    tu <span class="ot">&lt;-</span> tu <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb61-37"><a href="recgen.html#cb61-37" tabindex="-1"></a>  }</span>
+<span id="cb61-38"><a href="recgen.html#cb61-38" tabindex="-1"></a>  </span>
+<span id="cb61-39"><a href="recgen.html#cb61-39" tabindex="-1"></a>  <span class="fu">return</span>(ss)</span>
+<span id="cb61-40"><a href="recgen.html#cb61-40" tabindex="-1"></a>}</span>
+<span id="cb61-41"><a href="recgen.html#cb61-41" tabindex="-1"></a></span>
+<span id="cb61-42"><a href="recgen.html#cb61-42" tabindex="-1"></a><span class="do">## 7. Archaeological deposition record</span></span>
+<span id="cb61-43"><a href="recgen.html#cb61-43" tabindex="-1"></a>Rec_c <span class="ot">&lt;-</span> <span class="cf">function</span>(x, area, ts, InitBP, <span class="at">persqm =</span> <span class="cn">FALSE</span>, ...){</span>
+<span id="cb61-44"><a href="recgen.html#cb61-44" tabindex="-1"></a>  </span>
+<span id="cb61-45"><a href="recgen.html#cb61-45" tabindex="-1"></a>  <span class="do">## Whether sqm division must be included or not</span></span>
+<span id="cb61-46"><a href="recgen.html#cb61-46" tabindex="-1"></a>  <span class="cf">if</span> (persqm <span class="sc">==</span> <span class="cn">TRUE</span>){</span>
+<span id="cb61-47"><a href="recgen.html#cb61-47" tabindex="-1"></a>    x <span class="ot">&lt;-</span> x <span class="sc">/</span> area</span>
+<span id="cb61-48"><a href="recgen.html#cb61-48" tabindex="-1"></a>  }</span>
+<span id="cb61-49"><a href="recgen.html#cb61-49" tabindex="-1"></a>  </span>
+<span id="cb61-50"><a href="recgen.html#cb61-50" tabindex="-1"></a>  <span class="do">## Spread dates along different depths</span></span>
+<span id="cb61-51"><a href="recgen.html#cb61-51" tabindex="-1"></a>  matdim <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb61-52"><a href="recgen.html#cb61-52" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow=</span>matdim, <span class="at">ncol=</span>matdim)</span>
+<span id="cb61-53"><a href="recgen.html#cb61-53" tabindex="-1"></a>  </span>
+<span id="cb61-54"><a href="recgen.html#cb61-54" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>matdim){</span>
+<span id="cb61-55"><a href="recgen.html#cb61-55" tabindex="-1"></a>    new <span class="ot">&lt;-</span> <span class="fu">D_along</span>(x[i], ...)</span>
+<span id="cb61-56"><a href="recgen.html#cb61-56" tabindex="-1"></a>    st <span class="ot">&lt;-</span> i <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb61-57"><a href="recgen.html#cb61-57" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, st), new)</span>
+<span id="cb61-58"><a href="recgen.html#cb61-58" tabindex="-1"></a>    pos <span class="ot">&lt;-</span> pos[<span class="dv">1</span><span class="sc">:</span>matdim]</span>
+<span id="cb61-59"><a href="recgen.html#cb61-59" tabindex="-1"></a>    mat[, i] <span class="ot">&lt;-</span> pos</span>
+<span id="cb61-60"><a href="recgen.html#cb61-60" tabindex="-1"></a>  }</span>
+<span id="cb61-61"><a href="recgen.html#cb61-61" tabindex="-1"></a>  mat[<span class="fu">is.na</span>(mat)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb61-62"><a href="recgen.html#cb61-62" tabindex="-1"></a>  </span>
+<span id="cb61-63"><a href="recgen.html#cb61-63" tabindex="-1"></a>  <span class="do">## Names for columns (each year)</span></span>
+<span id="cb61-64"><a href="recgen.html#cb61-64" tabindex="-1"></a>  years <span class="ot">&lt;-</span> <span class="fu">seq</span>(InitBP, InitBP<span class="sc">-</span>ts)</span>
+<span id="cb61-65"><a href="recgen.html#cb61-65" tabindex="-1"></a>  nyears <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb61-66"><a href="recgen.html#cb61-66" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>matdim){</span>
+<span id="cb61-67"><a href="recgen.html#cb61-67" tabindex="-1"></a>    nyears[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(years[i], <span class="st">&quot; BP&quot;</span>)</span>
+<span id="cb61-68"><a href="recgen.html#cb61-68" tabindex="-1"></a>  }</span>
+<span id="cb61-69"><a href="recgen.html#cb61-69" tabindex="-1"></a>  <span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> nyears</span>
+<span id="cb61-70"><a href="recgen.html#cb61-70" tabindex="-1"></a>  </span>
+<span id="cb61-71"><a href="recgen.html#cb61-71" tabindex="-1"></a>  <span class="do">## Names for rows (each depth)</span></span>
+<span id="cb61-72"><a href="recgen.html#cb61-72" tabindex="-1"></a>  <span class="co"># Extract arguments as a list</span></span>
+<span id="cb61-73"><a href="recgen.html#cb61-73" tabindex="-1"></a>  extract_args <span class="ot">&lt;-</span> <span class="cf">function</span>(x, ...){ </span>
+<span id="cb61-74"><a href="recgen.html#cb61-74" tabindex="-1"></a>    extras <span class="ot">&lt;-</span> <span class="fu">list</span>(...)</span>
+<span id="cb61-75"><a href="recgen.html#cb61-75" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">extras=</span>extras)) </span>
+<span id="cb61-76"><a href="recgen.html#cb61-76" tabindex="-1"></a>  }</span>
+<span id="cb61-77"><a href="recgen.html#cb61-77" tabindex="-1"></a>  </span>
+<span id="cb61-78"><a href="recgen.html#cb61-78" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> <span class="fu">extract_args</span>(D_along, ...)</span>
+<span id="cb61-79"><a href="recgen.html#cb61-79" tabindex="-1"></a>  dr <span class="ot">&lt;-</span> dr<span class="sc">$</span>extras<span class="sc">$</span>r</span>
+<span id="cb61-80"><a href="recgen.html#cb61-80" tabindex="-1"></a>  </span>
+<span id="cb61-81"><a href="recgen.html#cb61-81" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">cumsum</span>(<span class="fu">rep</span>(dr, <span class="fu">nrow</span>(mat)))) <span class="do">## computes depths</span></span>
+<span id="cb61-82"><a href="recgen.html#cb61-82" tabindex="-1"></a>  <span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;d = &quot;</span>, d, <span class="st">&quot; cm&quot;</span>)</span>
+<span id="cb61-83"><a href="recgen.html#cb61-83" tabindex="-1"></a>  </span>
+<span id="cb61-84"><a href="recgen.html#cb61-84" tabindex="-1"></a>  <span class="fu">return</span>(mat)</span>
+<span id="cb61-85"><a href="recgen.html#cb61-85" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 </div>
 </div>
@@ -504,13 +516,13 @@ Show code
 <li><span class="math inline">\(A\)</span>-protocol. Knowing the population size per year, we apply <code>A_rates</code> to each of them and generate the anthropogenic deposition, and get the number of samples per year.</li>
 <li><span class="math inline">\(D\)</span>-protocol. Knowing how many samples are generates each year, using <code>Rec_c</code>, we distribute them along the depth record.</li>
 </ol>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="recgen.html#cb60-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb60-2"><a href="recgen.html#cb60-2" tabindex="-1"></a><span class="co"># 1. Pop-protocol</span></span>
-<span id="cb60-3"><a href="recgen.html#cb60-3" tabindex="-1"></a>Ps <span class="ot">&lt;-</span> <span class="fu">Pop_stoch</span>(<span class="at">pop_size=</span><span class="dv">100</span>, <span class="at">ts=</span><span class="dv">100</span>, <span class="at">K=</span><span class="dv">150</span>)</span>
-<span id="cb60-4"><a href="recgen.html#cb60-4" tabindex="-1"></a><span class="co"># 2. A-protocol</span></span>
-<span id="cb60-5"><a href="recgen.html#cb60-5" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(Ps, A_rates)) <span class="do">## Extract sample per time steps</span></span>
-<span id="cb60-6"><a href="recgen.html#cb60-6" tabindex="-1"></a><span class="co"># 3. D-protocol</span></span>
-<span id="cb60-7"><a href="recgen.html#cb60-7" tabindex="-1"></a>Rec <span class="ot">&lt;-</span> <span class="fu">Rec_c</span>(samp, <span class="at">InitBP =</span> <span class="dv">7500</span>, <span class="at">ts =</span> <span class="dv">100</span>, <span class="at">r =</span> <span class="fl">0.2</span>, <span class="at">max_bone_thickness =</span> <span class="st">&quot;m&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="recgen.html#cb62-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb62-2"><a href="recgen.html#cb62-2" tabindex="-1"></a><span class="co"># 1. Pop-protocol</span></span>
+<span id="cb62-3"><a href="recgen.html#cb62-3" tabindex="-1"></a>Ps <span class="ot">&lt;-</span> <span class="fu">Pop_stoch</span>(<span class="at">pop_size=</span><span class="dv">100</span>, <span class="at">ts=</span><span class="dv">100</span>, <span class="at">K=</span><span class="dv">150</span>)</span>
+<span id="cb62-4"><a href="recgen.html#cb62-4" tabindex="-1"></a><span class="co"># 2. A-protocol</span></span>
+<span id="cb62-5"><a href="recgen.html#cb62-5" tabindex="-1"></a>samp <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(Ps, A_rates)) <span class="do">## Extract sample per time steps</span></span>
+<span id="cb62-6"><a href="recgen.html#cb62-6" tabindex="-1"></a><span class="co"># 3. D-protocol</span></span>
+<span id="cb62-7"><a href="recgen.html#cb62-7" tabindex="-1"></a>Rec <span class="ot">&lt;-</span> <span class="fu">Rec_c</span>(samp, <span class="at">InitBP =</span> <span class="dv">7500</span>, <span class="at">ts =</span> <span class="dv">100</span>, <span class="at">r =</span> <span class="fl">0.2</span>, <span class="at">max_bone_thickness =</span> <span class="st">&quot;m&quot;</span>)</span></code></pre></div>
 <p>With this we obtain, among other things, the distribution of the samples deposited for each date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example. The user can also check how the model works and its results <a href="https://acortell3.shinyapps.io/archaeo_record_model">here</a>. <em>The total number of population has been adapted for visualisation</em></p>
 <p><img src="_main_files/figure-html/visu-record-1.png" width="672" /><img src="_main_files/figure-html/visu-record-2.png" width="672" /></p>
 <p>Notice the exponential decay in the amount of samples per depth layer for the same year.</p>

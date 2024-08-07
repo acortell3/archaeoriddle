@@ -19,6 +19,7 @@ conflict-and-war
 network-site-size-and-climate-deprecated
 main-simu
 initial-parameters
+preparation
 algorithm
 explore-simulation
 recgen
@@ -38,5 +39,8 @@ usage
 final-output
 using-sites-size-to-generate-deposit
 split-environment-in-a-grid
-archaeoriddle-the-original-challenge
+giving-name-to-the-publicly-available-data
+original-challenge
 generate-and-share-final-simulation
+split-environment-in-a-grid-1
+naming
