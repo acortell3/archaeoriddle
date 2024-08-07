@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - main
+      - test-newloss
 name: renderbook
 jobs:
   bookdown:
