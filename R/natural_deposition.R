@@ -95,12 +95,8 @@ Rec_c <- function(x, area, ts, InitBP, persqm = FALSE, ...){
   mat[is.na(mat)] <- 0
   
   ## Names for columns (each year)
-  years <- seq(InitBP, InitBP-ts)
-  nyears <- c()
-  for (i in 1:matdim){
-    nyears[i] <- paste0(years[i], " BP")
-  }
-  colnames(mat) <- nyears
+  years <- seq(InitBP, InitBP-ts+1)
+  colnames(mat) <- paste(years,"BP")
   
   ## Names for rows (each depth)
   # Extract arguments as a list
