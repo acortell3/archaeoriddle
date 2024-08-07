@@ -340,9 +340,27 @@ source</a></li>
 <span id="cb80-8"><a href="final-output.html#cb80-8" tabindex="-1"></a>    selection<span class="ot">=</span><span class="fu">sample</span>(<span class="fu">seq_along</span>(squares),<span class="dv">4</span>)</span>
 <span id="cb80-9"><a href="final-output.html#cb80-9" tabindex="-1"></a>    inter<span class="ot">=</span><span class="fu">st_intersection</span>(<span class="fu">st_as_sf</span>(foundsites),squares[selection])</span>
 <span id="cb80-10"><a href="final-output.html#cb80-10" tabindex="-1"></a>}</span>
-<span id="cb80-11"><a href="final-output.html#cb80-11" tabindex="-1"></a><span class="fu">plot</span>(squares[selection],<span class="at">add=</span>T,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;blue&quot;</span>,.<span class="dv">3</span>))</span>
-<span id="cb80-12"><a href="final-output.html#cb80-12" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
-<span id="cb80-13"><a href="final-output.html#cb80-13" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(inter<span class="sc">$</span>culture)],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">cex=</span><span class="dv">1</span><span class="sc">+</span>inter<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">10</span>)</span></code></pre></div>
+<span id="cb80-11"><a href="final-output.html#cb80-11" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-12"><a href="final-output.html#cb80-12" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-13"><a href="final-output.html#cb80-13" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-14"><a href="final-output.html#cb80-14" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-15"><a href="final-output.html#cb80-15" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-16"><a href="final-output.html#cb80-16" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-17"><a href="final-output.html#cb80-17" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-18"><a href="final-output.html#cb80-18" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-19"><a href="final-output.html#cb80-19" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-20"><a href="final-output.html#cb80-20" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-21"><a href="final-output.html#cb80-21" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-22"><a href="final-output.html#cb80-22" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-23"><a href="final-output.html#cb80-23" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-24"><a href="final-output.html#cb80-24" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-25"><a href="final-output.html#cb80-25" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-26"><a href="final-output.html#cb80-26" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-27"><a href="final-output.html#cb80-27" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-28"><a href="final-output.html#cb80-28" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-29"><a href="final-output.html#cb80-29" tabindex="-1"></a><span class="fu">plot</span>(squares[selection],<span class="at">add=</span>T,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;blue&quot;</span>,.<span class="dv">3</span>))</span>
+<span id="cb80-30"><a href="final-output.html#cb80-30" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb80-31"><a href="final-output.html#cb80-31" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(inter<span class="sc">$</span>culture)],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">cex=</span><span class="dv">1</span><span class="sc">+</span>inter<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">10</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/getpublicsele-ex-1.png" width="45%" /><img src="_main_files/figure-html/getpublicsele-ex-2.png" width="45%" /></p>
 <div id="giving-name-to-the-publicly-available-data" class="section level3 hasAnchor" number="8.2.1">
 <h3><span class="header-section-number">8.2.1</span> Giving name to the publicly available data<a href="final-output.html#giving-name-to-the-publicly-available-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
