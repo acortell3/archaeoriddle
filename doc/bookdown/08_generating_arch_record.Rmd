@@ -25,7 +25,7 @@ First we get the rasters defining the environment (If you followed the book sinc
 height.ras=rast("data_toshare/dem_raster.tiff")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
-Nts=onesimu$Nts
+Nts=readRDS("data_tmp/popSizeMatrix.RDS")
 plotMap(height.ras,height.wat)
 ```
 
@@ -34,7 +34,7 @@ Using `Rec_c` , `short_loss` and `long_loss`, that we presented in the Chapter \
 
 ```{r doloss-ex,eval=T}
 #All in one:
-alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[,s],A_rates), InitBP = 7500,ts=ncol(Nts),r = 0.2, max_bone_thickness = "m"))
+alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[,s],A_rates), InitBP = 7500,ts=nrow(Nts),r = 0.2, max_bone_thickness = "m"))
 allLosses=lapply(1:length(alldeposit),function(ind){
     Rec=alldeposit[[ind]];                    
     Rec=apply(Rec,2,short_loss,.6)  #apply short loss
@@ -44,7 +44,7 @@ allLosses=lapply(1:length(alldeposit),function(ind){
 rm(alldeposit)
 ```
 
-Once this is done, we have a list with all the date available from all site that have existed during our simulation. Realisticly, not _all_  date will be recovered for a given archaeologicl sites, thus we cap the maximum number of sample available per sites. As you will see in the original challange presented in the Chapter \@ref(original-challenge), we assume that the biggest sites -- the one that will received most funding and attention, will very likely get 30 dates. We thus subsample the number of dates for smaller site given this ration of $\frac{30}{n_{\text{largest}}}$. Here simulation have been greatly shortened, thus sites have way less samples. We thus cap the larges sites to have only 80% of the dates it generate, and sample the other sites using this ratio.
+Once this is done, we have a list with all the potential date available from all site that have existed during our simulation. Realisticly, not _all_  material will be recovered,  and even less will be dated, for a given archaeologicl sites. To reflect that we capped the maximum number of samples available per sites. To do so -- and this was applied as is in the original challange presented in the Chapter \@ref(original-challenge), we assume that the biggest sites -- the one with most media attention, most funding, will very likely get at most 30 dates. We thus subsampled the number of dates for smaller site given this ration of $\frac{30}{n_{\text{largest}}}$. Here simulation have been greatly shortened, thus sites have way less samples. We thus cap the larges sites to have only 80% of the dates it generate, and sample the other sites using this ratio.
 
 ```{r removesmall-ex, eval=T}
 maxSites=max(sapply(allLosses,sum))
@@ -54,11 +54,23 @@ rm(allLosses) #object are big, need to free memory
 ```
 
 
+We then have a sample of date for every sites of our worlds; where the maximum number of dates is 30, for the biggest sites that existed in our simulation. 
 
-```{r getadates-ex,eval=T,out.width="45%",fig.show="hold"}
+Let's looks at where these date are available, we first retrieve all sites saved in the simulation from \@ref(main-simu):
+
+```{r getfakeresults-ex,cache=F}
+
+allsites=vect(file.path(foldtmp,"allsites.shp"))
+if(class(allsites)[1] == "PackedSpatVector")
+    allsites=terra::vect(allsites)
+```
+
+We can see where are the sites with more dates:
+
+```{r getadates-ex,eval=T,out.width="45%",fig.show="hold",fig.cap="left: sites where dates are potentially available, size of the dot represent the number of dates, right: total number of dates by years", }
 expname="exn"
 plotMap(height.ras,height.wat,paste0("final after losses"))
-plot(sites[1:10,],cex=3*(lengths(allRemainingDates)-1)/(29),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture[1:10])])
+plot(allsites,cex=3*(lengths(allRemainingDates)-1)/(29),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(allsites$culture[1:10])])
 
 dates=unique(unlist(allRemainingDates))
 dates=rev(sort(dates[!is.na(dates)]))
@@ -67,22 +79,7 @@ totallDatesRemains=sapply(allRemainingDates,function(i)table(factor(i,levels=dat
 saveRDS(allRemainingDates,file=file.path(foldtmp,paste0(expname,"_dates.RDS")))
 ```
 
-From this we have, for every site, a list of date(s)
 
-This has been done using the script `exploreDate.R` but will be explained here:
-
-
-Loading simulation results, green are the sites who survived, dots are all the site that existed.
-
-```{r getfakeresults-ex,cache=F}
-
-allsites=vect(file.path(foldtmp,"allsites.shp"))
-if(class(allsites)[1] == "PackedSpatVector")
-    allsites=terra::vect(allsites)
-plotMap(height.ras,height.wat)
-plot(allsites,add=T)
-plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60)
-```
 
 Loading dates:
 
@@ -165,24 +162,30 @@ plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],p
 text(st_coordinates(inter),inter$sitesnames,cex=.8)
 ```
 
+### Export and download dates
+
 Export csv and data for each public square
 
-```{r exportpublic-ex,eval=F}
+```{r exportpublic-ex,eval=T}
 
 inter$sitesnames=sitesnames
 for(g in selection){
 curr=inter[inter$ID==g,]
 coords=st_coordinates(curr)
-    write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
+    write.csv(file=file.path("data_toshare",paste0("square_",g,".csv")),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
 
 ```
 
-The csv generate for this specific run of the bookdown can be [downloaded here]('dataset')
+The csvs generate for this specific run of the bookdown can be download for each square:
+```{r create-links,echo=FALSE,results="asis"}
+for (g in selection) cat(paste0("- [square ",g,"](data_toshare/square_",g,".csv)\n"))
+
+```
 
 Export csv and data for all ever square
 
-```{r exportprivate-ex,eval=F}
+```{r exportprivate-ex,eval=T}
 
 allsites=st_intersection(st_as_sf(foundsites),squares[-selection])
 
@@ -198,6 +201,11 @@ inter$start=sapply(ld,max)
 inter$end=sapply(ld,min)
 
 ```
+
+The csvs generate for all squares can be [downloaded here](data_tmp/)
+
+
+## Bonus maps
 
 
 Some maps we use and did for fake papers and social media etc... 

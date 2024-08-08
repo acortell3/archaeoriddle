@@ -1,5 +1,17 @@
 # Archaeoriddle: the original challenge {#original-challenge}
 
+We will here go through the whole steps we presented throught all Chapter \@ref(env) to \@ref(final-output), but in a condensed way and with the parameters use to generate the data shared during the archaeoriddle original challenge. 
+
+We will also discuss some of the proposal submitted for the challenge and you will be able to try the challenge too!
+
+
+
+## Context 
+
+
+## Implementation
+
+
 As I (simon) am stupid I didn't generate seeds for each experiment so we cannot re-run it EXACTLY the same. But I kept lot of informations and output about it.
 
 They are stored in the folder `general_results_selected_simu/`
@@ -159,7 +171,7 @@ Visualise, Record deposit and  loss. for the 5 first sites (see next chapters fo
 alldeposit <- lapply(
   1:5,
   function(i){
-    Rec_c(sapply(Nts[,i], A_rates), InitBP = 15000, ts=ts, r=0.2, max_bone_thickness="m")
+    Rec_c(sapply(Nts[,i], A_rates), InitBP = 15000, ts=nrow(Nts), r=0.2, max_bone_thickness="m")
   }
 )
 maxy <- max(sapply(alldeposit, function(i)max(apply(i,2,sum))))
@@ -198,7 +210,7 @@ points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' cul
 
 
 
-## Generate and share final simulation
+### Generate and share final simulation
 
 No we have the full setup, we want to generate a record people will uses :
 
@@ -480,7 +492,7 @@ plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
 ```
 
-## Split environment in a grid
+### Split environment in a grid
 
 Split the environment in grids and extract date for each grid
 
@@ -662,4 +674,41 @@ text(x = -.5, y = .7, labels = "🍔 ", adj = c(0, 0), cex = 6, col = "black", f
 
 
 ```
+
+## The challenge
+
+### Research Question 
+
+RQ1. The Poppy-chewers and Rabbit-skinners had a hostile relationship.
+RQ2. Poppy-chewers followed an exponential population growth, while Rabbit-Skinners eventually stalled, and as the Poppy-chewers population size started to increase, their population declined (Fig. 3).
+RQ3. The rate of dispersal varied across the landscape, with an average of ~0.62 Km/year, faster for the sea crossing (~1.11 Km/year) and a slight slow-down to ~0.57 Km/year for the Northeastern quadrant of the map.
+
+### Challenge & EAA workshop
+
+
+## Proposals
+
+
+
+### P1
+
+P1 used Agent-Based modelling (ABM) combined with exploratory data analysis. It first studied the land of Rabbithole and calibrated the dates provided, from which they computed trajectories of dispersal and studied site preference using ArcGIS pro and R. The suggested dispersal rates over land and water were close to the Archaeoriddle solution. The proposal then used the results of its analyses to fit the ABM, which was built using NetLogo. For the ABM, moving groups of hunter-gatherers and farmers, as well as the different sites were treated as agents, with starting values obtained from the exploratory data analysis and relevant literature. Additionally, it introduced behavioural rules including movement and site preference, reaction to population threshold or reaction to interaction. After running the model several times with different parameters, it correctly addressed a hostile relation between the two groups and inferred an initial location of the Rabbit-skinners at the Northeast and the Poppy-chewers at the Southwest, detecting their northward movement. The expansion rate was not captured by the initial assumption of logistic growth in the areas already densely inhabited by Poppy-chewers, which makes sense considering the different population trajectories of the two groups. The full proposal can be found here.
+
+
+### P2 
+
+P2 used Point Process Modeling (PPM) to assess the problem. First, it focused on the sampling process and built first-order point process models combining fitness and the available grids to predict potential occupation. It focused on the question of whether there was conflict between the two groups or not. To do this, after building different archaeological phases, it computed the clustering patterns of the groups under the assumption that higher clustering could lead to higher conflict (Field 2003). Following this, it computed the interaction distance between groups of sites of hunter-gatherers and farmers through a Multitype Strauss Model. According to the results, hostilities increased as time passed. In the original model, the rules for hostility were not time-dependent. However, it does make sense that, even if the rules for conflict do not change, as the population grows and sites increase there is more probability of contact and, thus more probability of conflict. The full proposal can be found here.
+
+### P3
+
+P3 (full proposal https://doi.org/10.5281/zenodo.8260754) used Species Distribution Modelling instead. Using R, it proposed a four-stage research design. The first stage focused on determining which additional cells would result in a representative sample of the range variables (elevation and resource quality) present within the data. The second stage focused on data exploration to identify internal temporal, spatial, and farmer-forager patterns within the data. In the third stage, it generated summed probability distributions (SPDs) from the calibrated radiocarbon dates to get relative estimates of population size through time for foragers and farmers. The fourth stage combined these data into a spatiotemporal species distribution model, where both time and space were explicit predictors, to estimate the distribution of farmers and foragers in 100-years intervals. The spatiotemporal species distribution was successful in reproducing the directionality of the farming dispersal (from South to North) as well as the decline of hunter-gatherer populations.
+
+### P4 
+
+P4 first developed a strategy to aid the selection of additional data using a friction calculation considering the distance from a putative origin region, the elevation of the region and the environmental fitness of the region. Also using R, the analyses focused on capturing local complexity in the dispersal of Poppychewers in the study area. To track this, it used a Hierarchical Bayesian Phase Model, informed by all the selected sites (the common ones, and the ones obtained after calculations for additional sampling). This method allowed for the introduction of uncertainty within her outcome. It divided the map of Rabbithole into 25 areas, and calculated the times of arrival of the Poppy-chewers for each of these areas, including their High Probability Density Intervals (HDPI). The full approach can be found at: https://github.com/AlexesMes/Archeaoriddle_RabbitWorld.
+
+
+### P5
+
+P5 used a qualitative approach. In his case, it rather provided a theoretical framework. It considered two cultures A and B initially established in regions R_A and R_B separated by a geographical barrier (the sea from Rabbithole). After this, culture A gains the ability to cross or bypass the barrier entering the region R_B and getting into contact with B. Under the condition that all other parameters are more or less equal (e.g. environmental fitness in both regions, no new pathogens or predators hitherto unbeknown to A), a significantly shorter settlement persistence of distribution of settlements of culture A in R_B as compared with A’s settlement persistence distribution assessed in other regions, implies a hostile relation between A and B.
 
