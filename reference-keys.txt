@@ -1,4 +1,5 @@
 fig:illu-war
+fig:getadates-ex
 introduction
 what-is-archaeoriddle
 what-will-you-find-in-this-bookdown
@@ -40,7 +41,20 @@ final-output
 using-sites-size-to-generate-deposit
 split-environment-in-a-grid
 giving-name-to-the-publicly-available-data
+export-and-download-dates
+bonus-maps
 original-challenge
+context
+implementation-2
 generate-and-share-final-simulation
 split-environment-in-a-grid-1
 naming
+the-challenge
+research-question
+challenge-eaa-workshop
+proposals
+p1
+p2
+p3
+p4
+p5
