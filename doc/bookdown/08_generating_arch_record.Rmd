@@ -4,14 +4,14 @@ Now that all the pieces are in place we need to combine them to generate files t
 
 To summarize what we have so far:
 
-1. we generated a fake environment in Chapter \@ref(env)
-2. we localised sites on the map and defined a population growth process in Chapter \@ref(popgrowth)
-3. we defined rules to decide how population move and enter in conflict when they grow in Chapter \@ref(conflict)
-4. we run simulation these process of grwoth, conflict and migration on the environement for long time in Chapter \@ref(main-simu)
-4. we defined processes that use this simulate growth to generate an archaeological record in Chapter \@ref(recgen)
-5. we defined processes that transform this archaeological record using credible loss \@ref(recgen}
+1. We simulated an artificial environment in Chapter&nbsp;\@ref(env).
+2. We localised sites on the map and defined a population growth process in Chapter&nbsp;\@ref(popgrowth).
+3. We defined rules to describe how population move and engage in conflict as they expand in Chapter&nbsp;\@ref(conflict).
+4. We simulated these process of growth, conflict and migration on the environement we designed, for extend periods of time in Chapter&nbsp;\@ref(main-simu).
+5. We defined processes that use this simulated growth to generate an archaeological record in Chapter&nbsp;\@ref(recgen),
+6. We defined processes that transform this archaeological record using credible loss mechanisms&nbsp;\@ref(recgen).
 
-Here we will use all these previous steps to generate csvs that can be shared. In this chapter we will use the simulation run in the Chapter \@ref(main-simu) ; if you want to generated new 'fake'-dataset, different from the one that have been presented in the original challenge and that will be described in the chapter \@ref(original-challenge), you will want to run longer simulation, and choose among different run on the looks interesting/realistic. We provide a script `./scriptmini.R` that to give some idea about how to automatize these run and how to choose among them.
+Here we will use all these previous steps to generate csvs that can be shared. In this chapter we will use the simulation run in the Chapter&nbsp;\@ref(main-simu) ; if you want to generated new 'fake'-dataset, different from the one that have been presented in the original challenge and that will be described in the chapter&nbsp;\@ref(original-challenge), you will want to run longer simulation, and choose among different run on the looks interesting/realistic. We provide a script `./scriptmini.R` that to give some idea about how to automatize these run and how to choose among them.
 
 
 
@@ -29,7 +29,7 @@ Nts=readRDS("data_tmp/popSizeMatrix.RDS")
 plotMap(height.ras,height.wat)
 ```
 
-Using `Rec_c` , `short_loss` and `long_loss`, that we presented in the Chapter \@ref(recgen) & \@ref(recloss), we generate deposit. This can take long time if the simulation included a lot of sites, spanning over long period of time. Here we first generate all deposit from the matrix `Nts` generated during the simulation of the Chapter \@ref(main-simu) and then apply all loss functions together:
+Using `Rec_c` , `short_loss` and `long_loss`, that we presented in the Chapter&nbsp;\@ref(recgen) &&nbsp;\@ref(recloss), we generate deposit. This can take long time if the simulation included a lot of sites, spanning over long period of time. Here we first generate all deposit from the matrix `Nts` generated during the simulation of the Chapter&nbsp;\@ref(main-simu) and then apply all loss functions together:
 
 
 ```{r doloss-ex,eval=T}
@@ -44,7 +44,7 @@ allLosses=lapply(1:length(alldeposit),function(ind){
 rm(alldeposit)
 ```
 
-Once this is done, we have a list with all the potential date available from all site that have existed during our simulation. Realisticly, not _all_  material will be recovered,  and even less will be dated, for a given archaeologicl sites. To reflect that we capped the maximum number of samples available per sites. To do so -- and this was applied as is in the original challange presented in the Chapter \@ref(original-challenge), we assume that the biggest sites -- the one with most media attention, most funding, will very likely get at most 30 dates. We thus subsampled the number of dates for smaller site given this ration of $\frac{30}{n_{\text{largest}}}$. Here simulation have been greatly shortened, thus sites have way less samples. We thus cap the larges sites to have only 80% of the dates it generate, and sample the other sites using this ratio.
+Once this is done, we have a list with all the potential date available from all site that have existed during our simulation. Realisticly, not _all_  material will be recovered,  and even less will be dated, for a given archaeologicl sites. To reflect that we capped the maximum number of samples available per sites. To do so -- and this was applied as is in the original challange presented in the Chapter&nbsp;\@ref(original-challenge), we assume that the biggest sites -- the one with most media attention, most funding, will very likely get at most 30 dates. We thus subsampled the number of dates for smaller site given this ration of $\frac{30}{n_{\text{largest}}}$. Here simulation have been greatly shortened, thus sites have way less samples. We thus cap the larges sites to have only 80% of the dates it generate, and sample the other sites using this ratio.
 
 ```{r removesmall-ex, eval=T}
 maxSites=max(sapply(allLosses,sum))
@@ -56,7 +56,7 @@ rm(allLosses) #object are big, need to free memory
 
 We then have a sample of date for every sites of our worlds; where the maximum number of dates is 30, for the biggest sites that existed in our simulation. 
 
-Let's looks at where these date are available, we first retrieve all sites saved in the simulation from \@ref(main-simu):
+Let's looks at where these date are available, we first retrieve all sites saved in the simulation from&nbsp;\@ref(main-simu):
 
 ```{r getfakeresults-ex,cache=F}
 
@@ -108,11 +108,11 @@ plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
 ```
 
-## Split environment in a grid
+## Provide survey square and publicly available dates
 
-Split the environment in grids and extract date for each grid
+To then share these date we choose to split the environment in grids and extract date by grid. For each grid, a csv is generated with the sites that have been found and for each site, their geolocalisation and the dates found at the site.
 
-```{r plotallfoundiste-ex,cache=F}
+```{r plotallfoundiste-ex,cache=F,fig.cap="The black dots represent the sites for which dates are available, the size of the circle reflect the amount of dates available. each square represent an area that can be selected by the users."}
 
 leftdates=dates[lengths(dates)>0]
 plotMap(height.ras,height.wat)
@@ -123,16 +123,16 @@ text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
 text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
 ```
 
-Public selection
+In the archaoriddle original challenge we proposed to give the data from 4 grids that we selected oursleve to be sure the participants have a least _some_  interesting information. Here we randomly pick up 4 squares with the only limits that they provide at least 5 settlements. You will want to change and manually population the vector `selection` in the chunk below to cover area with lot of sites and sites from differents cultures, from what can be seen in the Figure&nbsp;\@ref(fig:plotallfoundiste-ex).
 
-```{r getpublicsele-ex,cache=F,out.width="45%",fig.show="hold"}
+```{r getpublicsele-ex,cache=F,out.width="45%",fig.show="hold",fig.cap="Left: square publicly available ; right: sites surveyed within these publicly available squares."}
 plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
 selection=sample(seq_along(squares),4)
-inter=st_intersection(st_as_sf(foundsites),squares[selection])
+inter <- st_intersection(st_as_sf(foundsites),squares[selection])
 while(nrow(inter)<5){
     selection=sample(seq_along(squares),4)
-    inter=st_intersection(st_as_sf(foundsites),squares[selection])
+    inter <- st_intersection(st_as_sf(foundsites),squares[selection])
 }
 plot(squares[selection],add=T,col=adjustcolor("blue",.3))
 plotMap(height.ras,height.wat)
@@ -141,7 +141,7 @@ plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],p
 
 ### Giving name to the publicly available data
 
-On the original challenge we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php) to choose nice, randomly generated  name. You will see in the section \@ref(naming) that we positionned them with cultural relevent group, although this has no impact on the results. Here we took all the name we had for the original challenge to randomly assignate some for you custom world.
+On the original challenge we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php) to choose nice, randomly generated name, to name the sites publicly available. You will see in the section&nbsp;\@ref(naming) that we positionned them with cultural relevent group, although this has no impact on the results. Here we took all the name we had for the original challenge to randomly assignate some for you custom world.
 
 ```{r namesites-ex,cache=F}
 
@@ -159,7 +159,7 @@ sitesnames=sample(potname,nrow(inter))
 inter=cbind(inter,sitesnames)
 plotMap(height.ras,height.wat)
 plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
-text(st_coordinates(inter),inter$sitesnames,cex=.8)
+text(st_coordinates(inter),inter$sitesnames,cex=.8,pos=3)
 ```
 
 ### Export and download dates
@@ -178,9 +178,9 @@ coords=st_coordinates(curr)
 ```
 
 The csvs generate for this specific run of the bookdown can be download for each square:
-```{r create-links,echo=FALSE,results="asis"}
-for (g in selection) cat(paste0("- [square ",g,"](data_toshare/square_",g,".csv)\n"))
 
+```{r create-links,echo=FALSE,results="asis"}
+for (g in selection) cat(paste0("- [square ",g,"](data_toshare/square_",g,".csv)\r\n"))
 ```
 
 Export csv and data for all ever square
@@ -192,7 +192,7 @@ allsites=st_intersection(st_as_sf(foundsites),squares[-selection])
 for(g in (1:length(squares))[-selection]){
 curr=allsites[allsites$ID==g,]
 coords=st_coordinates(curr)
-    write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
+    write.csv(file=file.path("data_tmp",paste0("square_",g,".csv")),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
 
 ld=strsplit(inter$dates," \\| ")
@@ -221,7 +221,6 @@ plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=.8,col=as.factor(inter$culture),alpha=.8)
-box(which="outer")
 
 old=inter[inter$start>7180,]
 ne=inter[inter$start>6800 & inter$end<6900,]
@@ -230,27 +229,23 @@ plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(old),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(old),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(old$culture),alpha=.8)
-box()
 
 
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-box()
 
 
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-box()
 
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(ne),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(ne),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(ne$culture),alpha=.8)
-box()
 ```
 
 More maps for twitter:
@@ -260,7 +255,6 @@ plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-box()
 sel=inter[c(20,2,15,36),]
 text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 text(x = -1, y = .7, labels = "❤️", adj = c(0, 0), cex = 3, col = "black", font = 1)
@@ -278,7 +272,6 @@ plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
 coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
 plot(coastline,add=T,lwd=1.1,col="black")
-box()
 sel=inter[c(20,2,15,36),]
 text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 
@@ -293,7 +286,6 @@ plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
 coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
 plot(coastline,add=T,lwd=1.1,col="black")
-box()
 sel=inter[c(20,2,15,36),]
 text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 #text(x = -1, y = .7, labels = "🍻", adj = c(0, 0), cex = 3, col = "black", font = 1)
