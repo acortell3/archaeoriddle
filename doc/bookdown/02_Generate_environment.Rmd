@@ -79,14 +79,14 @@ If we change k (that dictates the total resolution of the DEM), the size of the 
 
 ```{r explorePerlin}
 
-allsizes <- sapply(1:8,function(k)
+allsizes <- sapply(1:7,function(k)
 {
     print(k)
-    m <- perlin_noise(2, 2, 2^k, 2^k)
-    for ( i in 2:k ) m <- m + 0.6^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
-    object.size(m)  
+    mt <- perlin_noise(2, 2, 2^k, 2^k)
+    for ( i in 2:k ) mt <- mt + 0.6^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
+    object.size(mt)  
 })
-plot(2^(1:8),allsizes/1000,type="b",pch=20,col="red",cex=2,ylab="size of raster (kb)", xlab="resolution")
+plot(2^(1:7),allsizes/1000,type="b",pch=20,col="red",cex=2,ylab="size of raster (kb)", xlab="resolution")
 
 ```
 
