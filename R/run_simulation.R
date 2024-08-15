@@ -182,7 +182,7 @@ warpoints <- function(sites, a, b, Ne, buffersize=300, plot=T, sizewar=2){
   if( length(meetpoints)>0 ){
     p <- terra::spatSample(meetpoints, 1)
     if(plot & length(p)>0){
-      plot(p, add=T, bg="red", pch="🔥", cex=sizewar,
+      plot(p, add=T, bg="red", pch="🔥", cex=sizewar+1,
            col=adjustcolor("yellow", 0.1))
       plot(p, add=T, bg="yellow", pch="⚔️" ,cex=sizewar)
     }
@@ -246,6 +246,7 @@ run_simulation <- function(cultures=NULL,
                            foldervid=NULL,
                            visu=FALSE,
                            visumin=TRUE,
+                           probfight=0.1,
                            log=F,
                            ts=20000,
                            Kbase=c("HG"=35, "F"=120),
@@ -470,11 +471,12 @@ run_simulation <- function(cultures=NULL,
            pch=21, add=T, bg=rainbow(2, alpha=0.6)[as.factor(sites$culture)])
     }
     potentialfighters <- which(sites$culture=="F" & Nts[i,]>50)
-    for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*0.1))){
+    for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*probfight))){
       buff <- bufferatack
       potentialvictims <- which(sites$culture !=sites$culture[s] & Nts[i,]>0) 
       clash <- whotouch(s, sites, Ne=Nts[i,], buffersize=buff)
-      if(length(clash)>0 && !is.na(clash)){
+      clash=clash[!is.na(clash)]
+      if(length(clash)>0 ){
         if(length(clash) == 1){
           attack <- clash
         } else {
@@ -484,8 +486,10 @@ run_simulation <- function(cultures=NULL,
         casualties <- sum(Nts[i, c(s,attack)] - newns[c(s,attack)])
         warcasualties[i] <- casualties
         sizew <- casualties^2/4000
-        warpoints(sites, s, attack, Ne=Nts[i,],
+        if(wplot){ #warplot could be use to deposit evidence of conflicts
+            warpoints(sites, s, attack, Ne=Nts[i,],
                   buffersize=buff, sizewar=sizew+0.5,plot=wplot)
+        }
         
         #effectively kill people in population (should be done taking into account age pyramid to be more realistic)
         Ips[[s]] <- changePopSize(loosingPop=Ips[[s]],
