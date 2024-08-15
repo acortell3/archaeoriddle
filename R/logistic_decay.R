@@ -13,7 +13,7 @@
 #' @return Logistic decay vector
 #' @export
 logisticdecay <- function(pt, rast, L=1, k=0.0001, x0=60000){
-  ds <- distance(rast, pt)
+  ds <- terra::distance(rast, pt)
   logdec = L-L/(1+exp(-k*(ds-x0)))
   return(logdec)
 }

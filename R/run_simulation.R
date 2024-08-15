@@ -180,7 +180,7 @@ warpoints <- function(sites, a, b, Ne, buffersize=300, plot=T, sizewar=2){
     buffer(sites[b], 1+Ne[b] * buffersize)
   )
   if( length(meetpoints)>0 ){
-    p <- spatSample(meetpoints, 1)
+    p <- terra::spatSample(meetpoints, 1)
     if(plot & length(p)>0){
       plot(p, add=T, bg="red", pch="🔥", cex=sizewar,
            col=adjustcolor("yellow", 0.1))
@@ -357,7 +357,7 @@ run_simulation <- function(cultures=NULL,
               sites[s], dem, x=20000*cul_ext[sites$culture[s]]
             )
             w <- (0.7 * d2 + 0.3*ressources) / (0.7*minmax(d2)[2] + 0.3*minmax(ressources)[2])
-            new_site <- spatSample(
+            new_site <- terra::spatSample(
               x=mask(
                 w * logisticdecay(sites[s], dem, k=0.00002,
                                   x=20000*cul_ext[sites$culture[s]]),
