@@ -40,10 +40,11 @@ To use this book you can follow it on the online version at [thearchaeoriddle.or
 If you want to for this to be successful, you will need to install a few additional packages. You can do this by running the following command, which will check if the packages are installed and install them if not, then load them.
 
 ```{r packages-init, message=FALSE}
-needed=c("DiagrammeR","terra","sf","igraph","devtools") 
+needed=c("terra","sf","igraph","devtools") 
 success=sapply(needed,require,character.only=T)
 sapply(needed[!success],install.packages)
 success=sapply(needed,require,character.only=T)
+terra::terraOptions(progress=0) #by default terra show a progress bar when applying function to large raster, this messes with our output so we set it to zero to remove it.
 ```
 
 These packages will very likely need other packages that will depend on your operating system, so check the error messages from the previous commands.
@@ -80,9 +81,10 @@ sapply(needed[!success],install.packages)
 success=sapply(compneeded,require,character.only=T)
 ```
 
-Using `load_all()` instead of install will allow you to modify the source code and reload the package and thus make and integrated change to the core code of the package in order to try your own implementation.
+Using `load_all()` instead of `install(...)` will allow you to modify the source code and reload the package after any change,  thus making test and integration of your own implementation way easier.
 
-You can then render the book locally, note that this may take a long time as it generate full new world and single simulations
+
+Once the package has been loaded or installed, you can then render the book locally. Note that this may take a long time as it generate a full new world, and run a couple of simulations and examples.
 
 ```{r rendering,eval=F}
 bookdown::render_book() #you need to be in the folder 'doc/bookdown/' 
