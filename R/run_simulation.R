@@ -243,7 +243,7 @@ run_simulation <- function(cultures=NULL,
                            dem=NULL,
                            ressources=NULL,
                            water=NULL,
-                           foldervid="pathtofinal",
+                           foldervid=NULL,
                            visu=FALSE,
                            visumin=TRUE,
                            log=F,
@@ -278,9 +278,8 @@ run_simulation <- function(cultures=NULL,
   }
   
   ### visualisation =====
-  if(!dir.exists(foldervid) & visu){
+  if(visu && !is.null(foldervid) && !dir.exists(foldervid))
     dir.create(foldervid)
-  }
   ###
   
   warcasualties <- vector("integer", ts)
@@ -305,8 +304,10 @@ run_simulation <- function(cultures=NULL,
     if (visumin){
       ### visualisation =====
       frame <- frame+1
-      filename <- sprintf("map_%06d.png", frame)
-      png(file.path(foldervid,filename), width=800, height=800, pointsize=20)
+      if(!is.null(foldervid)){
+          filename <- sprintf("map_%06d.png", frame)
+          png(file.path(foldervid,filename), width=800, height=800, pointsize=20)
+      }
       plotMap(dem, water, paste0("year ",i))
       ########
     }
@@ -501,9 +502,8 @@ run_simulation <- function(cultures=NULL,
         }
       }
     }
-    if(visumin){
-      dev.off()
-    }
+    if(visumin && !is.null(foldervid)) dev.off()
+    
   }
   return(list(Nts=Nts, warcasualties=warcasualties, Ips=Ips, sites=sites))
 }
