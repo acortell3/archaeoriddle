@@ -160,7 +160,7 @@ This process incorporates cultural differences, population sizes, and proximity 
 A quick illustration of how the outcome of conflicts between two settlements of varying size:
 
 ```{r illu-war,out.width="45%",fig.cap="Simulation run with population A with 100 people, and populaiton B with a growing populatoin size from 10 to 100, represent fraction of population a from 10% to same population size. Noise has been added to visualise alldata",fig.show="hold"}
-compare=do.call("rbind",lapply(seq(10,100,3),function(b)
+compare <- do.call("rbind",lapply(seq(10,100,3),function(b)
     t(rbind(b/100,replicate(100,c(100,b)-fightbetterloss(c(100,b),1,2))))
  ))
 plot(compare[,1]+runif(100,0,0.01),compare[,2],col=adjustcolor("red",.6),pch=20,main="number of loss",xlab="ratio A/B",ylab="number of loss")

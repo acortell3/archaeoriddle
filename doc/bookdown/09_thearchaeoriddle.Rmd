@@ -1,6 +1,6 @@
 # Archaeoriddle: the original challenge {#original-challenge}
 
-We will here go through the whole steps we presented throught all Chapter \@ref(env) to \@ref(final-output), but in a condensed way and with the parameters use to generate the data shared during the archaeoriddle original challenge. 
+We will here go through the whole steps we presented throught all Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters use to generate the data shared during the archaeoriddle original challenge. 
 
 We will also discuss some of the proposal submitted for the challenge and you will be able to try the challenge too!
 
@@ -521,7 +521,7 @@ plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],p
 
 ### Giving name to the publicly available data {#naming}
 
-The names have bee ngenerated via: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php)
+To name publicly available sites we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php). We manually positionned them with cultural relevent group, although this had no impact on the results. 
 
 ```{r namesites,cache=F}
 
@@ -540,7 +540,7 @@ sitesnames[21:length(sitesnames)]=spain[1:(length(sitesnames)-20)]
 inter=cbind(inter,sitesnames)
 plotMap(height.ras,height.wat)
 plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
-text(st_coordinates(inter),inter$sitesnames,cex=.8)
+text(st_coordinates(inter),inter$sitesnames,cex=.8,pos=3)
 ```
 
 Export csv and data for each public square
@@ -590,7 +590,6 @@ plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=.8,col=as.factor(inter$culture),alpha=.8)
-box(which="outer")
 
 old=inter[inter$start>7180,]
 ne=inter[inter$start>6800 & inter$end<6900,]
@@ -599,27 +598,23 @@ plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(old),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(old),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(old$culture),alpha=.8)
-box()
 
 
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-box()
 
 
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-box()
 
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
 plot(st_geometry(ne),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(ne),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(ne$culture),alpha=.8)
-box()
 ```
 
 More maps for twitter:
@@ -629,7 +624,6 @@ plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-box()
 sel=inter[c(20,2,15,36),]
 text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 text(x = -1, y = .7, labels = "❤️", adj = c(0, 0), cex = 3, col = "black", font = 1)
@@ -647,7 +641,6 @@ plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
 coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
 plot(coastline,add=T,lwd=1.1,col="black")
-box()
 sel=inter[c(20,2,15,36),]
 text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 
@@ -662,7 +655,6 @@ plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
 plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
 coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
 plot(coastline,add=T,lwd=1.1,col="black")
-box()
 sel=inter[c(20,2,15,36),]
 text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 #text(x = -1, y = .7, labels = "🍻", adj = c(0, 0), cex = 3, col = "black", font = 1)
