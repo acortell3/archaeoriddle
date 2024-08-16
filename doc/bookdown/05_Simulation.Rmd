@@ -196,6 +196,7 @@ onesimu <- run_simulation(
   prob_survive=c("HG"=0.8, "F"=0.65), #proba of dying when pop > K
   prob_split=c("HG"=0.5, "F"=0.6), #proba of creating a new settlement when Ne > K
   minimals=c("HG"=0.14,"F"=0.20), #how big the group of migrant should be to create a new city vs migrate to a existing one 
+  probfight=0.5, #this has been added for the bookdown to increase conflict occurences ; it is of 0.1 in the original challenge, it allows to modulate the probability that any settlement in a position of conflict actually goes to war.
   bufferatack=1000, #distance max around which settlement can fight 
   prob_move=c("HG"=0.2, "F"=0.1) #proba of migrating to existing settlement when Ne > K
 )
@@ -263,7 +264,7 @@ max(Nts) #max number of people during the simulation
 We can compare the initial condition with the  ressource to adjust the Ks:
 ```{r explore-ex1-b,out.width="45%",fig.cap="left: sites at initialisation, right: sites at the end of the simulation",fig.show="hold"}
 plot(onesimu$site, cex=(Nts[1,]/max(Nts))*10, pch=21, bg=rainbow(2, alpha=0.6)[as.factor(onesimu$site$culture)])
-plot(onesimu$site, cex=(Nts[ncol(Nts),]/max(Nts))*10, pch=21, bg=rainbow(2, alpha=0.6)[as.factor(onesimu$site$culture)])
+plot(onesimu$site, cex=(Nts[nrow(Nts),]/max(Nts))*10, pch=21, bg=rainbow(2, alpha=0.6)[as.factor(onesimu$site$culture)])
 ```
 
 We can look at the dynamics throught time, here how each individual sites are growings:
@@ -279,7 +280,7 @@ nill <- lapply(1:ncol(Nts),
 
 Population by time and culture
 
-```{r visu-onesime1,out.width="50%"}
+```{r explore-ex1-timeandcult,out.width="45%",fig.cap="",fig.show="hold"}
 plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)),
      xlab="time", ylab="popsize")
 na=lapply(1:ncol(Nts),

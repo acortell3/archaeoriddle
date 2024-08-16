@@ -177,16 +177,12 @@ abline(a=1,b=1,col="green",lwd=3)
 
 The model with generate loss in both sides, but on average less for the biggest populaiton, while stil allowing cases where the smaller settlement win the fight and generate more damage that it receives. These difference get smoothed when the size of the two settlements become similar.
 
-
-
-
 Here is a simplified version of the actual implementation available in `run_simulation`:
 ```{r desc-war, eval=F}
 
-poitentialfighters <- which(sites$culture=="F" & Nts[i,]>50)
-for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*0.1))){
+potentialfighters <- which(sites$culture=="F" & Nts[i,]>50)
+for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*probfight))){
   buff <- bufferatack
-  potentialvictims <- which(sites$culture !=sites$culture[s] & Nts[i,]>0) 
   clash <- whotouch(s, sites, Ne=Nts[i,], buffersize=buff)
   if(length(clash)>0 && !is.na(clash)){
     if(length(clash) == 1){
@@ -211,9 +207,19 @@ for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*0.1))
 }
 ```
 
-## ~~ Network, Site Size And Climate -- DEPRECATED ~~
 
-The following steps were designed but never used ; they can be quite fun and useful.
+- `whotouch` :  is a central elements of the conflict has it return the list of sites that are within the reach of the settlements. A couple of adjustment have been manually done for the original challenge: only Farmer attacks, and they do so only if they have at least 50 individuals. Among the settlement that have the potential to attach another, they will do so with a probability of `probfight`. This has been set to 0.1 in the original challenge in order to ensure that settlement don't fight everyone all the time, which was leading to way to much wars.
+
+
+- `warpoint` : is here used to randomly select a point where the two settlement can potentially meet and thus where the conflict happened. It is so far only used to show conflicts on the map, but could be used to deposity evidences of these conflicts. 
+
+Here are defined lot of the assumptions that will be tested by the research questions proposed in the original challenge described in the Chapter&nbsp;\@ref(original-challenge).
+
+
+
+##  DEPRECATED -- Network, Site Size And Climate   
+
+The following steps were designed but never used ; they can be fun and useful.
 
 ----
 
