@@ -1,5 +1,11 @@
 fig:illu-war
+fig:single-run-ex1
+fig:explore-ex1-b
+fig:multi-run
+fig:explore-mult
 fig:getadates-ex
+fig:plotallfoundiste-ex
+fig:getpublicsele-ex
 introduction
 what-is-archaeoriddle
 what-will-you-find-in-this-bookdown
@@ -17,7 +23,7 @@ conflict
 fission
 migration
 conflict-and-war
-network-site-size-and-climate-deprecated
+deprecated-network-site-size-and-climate
 main-simu
 initial-parameters
 preparation
@@ -39,7 +45,7 @@ implementation-1
 usage
 final-output
 using-sites-size-to-generate-deposit
-split-environment-in-a-grid
+provide-survey-square-and-publicly-available-dates
 giving-name-to-the-publicly-available-data
 export-and-download-dates
 bonus-maps
@@ -47,7 +53,7 @@ original-challenge
 context
 implementation-2
 generate-and-share-final-simulation
-split-environment-in-a-grid-1
+split-environment-in-a-grid
 naming
 the-challenge
 research-question

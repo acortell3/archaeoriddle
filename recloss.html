@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1" data-path="conflict.html"><a href="conflict.html#fission"><i class="fa fa-check"></i><b>4.1</b> Fission</a></li>
 <li class="chapter" data-level="4.2" data-path="conflict.html"><a href="conflict.html#migration"><i class="fa fa-check"></i><b>4.2</b> Migration</a></li>
 <li class="chapter" data-level="4.3" data-path="conflict.html"><a href="conflict.html#conflict-and-war"><i class="fa fa-check"></i><b>4.3</b> Conflict and War</a></li>
-<li class="chapter" data-level="4.4" data-path="conflict.html"><a href="conflict.html#network-site-size-and-climate-deprecated"><i class="fa fa-check"></i><b>4.4</b> ~~ Network, Site Size And Climate – DEPRECATED ~~</a></li>
+<li class="chapter" data-level="4.4" data-path="conflict.html"><a href="conflict.html#deprecated-network-site-size-and-climate"><i class="fa fa-check"></i><b>4.4</b> DEPRECATED – Network, Site Size And Climate</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="main-simu.html"><a href="main-simu.html"><i class="fa fa-check"></i><b>5</b> Main Simulation</a>
 <ul>
@@ -207,7 +207,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="final-output.html"><a href="final-output.html"><i class="fa fa-check"></i><b>8</b> Generate final archaeological record</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="final-output.html"><a href="final-output.html#using-sites-size-to-generate-deposit"><i class="fa fa-check"></i><b>8.1</b> Using sites size to generate deposit</a></li>
-<li class="chapter" data-level="8.2" data-path="final-output.html"><a href="final-output.html#split-environment-in-a-grid"><i class="fa fa-check"></i><b>8.2</b> Split environment in a grid</a>
+<li class="chapter" data-level="8.2" data-path="final-output.html"><a href="final-output.html#provide-survey-square-and-publicly-available-dates"><i class="fa fa-check"></i><b>8.2</b> Provide survey square and publicly available dates</a>
 <ul>
 <li class="chapter" data-level="8.2.1" data-path="final-output.html"><a href="final-output.html#giving-name-to-the-publicly-available-data"><i class="fa fa-check"></i><b>8.2.1</b> Giving name to the publicly available data</a></li>
 <li class="chapter" data-level="8.2.2" data-path="final-output.html"><a href="final-output.html#export-and-download-dates"><i class="fa fa-check"></i><b>8.2.2</b> Export and download dates</a></li>
@@ -220,7 +220,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.2" data-path="original-challenge.html"><a href="original-challenge.html#implementation-2"><i class="fa fa-check"></i><b>9.2</b> Implementation</a>
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="original-challenge.html"><a href="original-challenge.html#generate-and-share-final-simulation"><i class="fa fa-check"></i><b>9.2.1</b> Generate and share final simulation</a></li>
-<li class="chapter" data-level="9.2.2" data-path="original-challenge.html"><a href="original-challenge.html#split-environment-in-a-grid-1"><i class="fa fa-check"></i><b>9.2.2</b> Split environment in a grid</a></li>
+<li class="chapter" data-level="9.2.2" data-path="original-challenge.html"><a href="original-challenge.html#split-environment-in-a-grid"><i class="fa fa-check"></i><b>9.2.2</b> Split environment in a grid</a></li>
 <li class="chapter" data-level="9.2.3" data-path="original-challenge.html"><a href="original-challenge.html#naming"><i class="fa fa-check"></i><b>9.2.3</b> Giving name to the publicly available data</a></li>
 </ul></li>
 <li class="chapter" data-level="9.3" data-path="original-challenge.html"><a href="original-challenge.html#the-challenge"><i class="fa fa-check"></i><b>9.3</b> The challenge</a>
@@ -273,8 +273,8 @@ source</a></li>
 <div id="loss-of-the-record" class="section level4 hasAnchor" number="7.1.2.1">
 <h4><span class="header-section-number">7.1.2.1</span> Loss of the record<a href="recloss.html#loss-of-the-record" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The are two main components for this part of the model. As shown in the graph below, the first one is <em>time-dependent taphonomic loss</em>, usually referring to long term process affecting the record for every <span class="math inline">\(t\)</span> from the moment of its depositions to the present. The second one is <em>direct action</em>, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.</p>
-<div class="grViz html-widget html-fill-item" id="htmlwidget-1d0b421e019618ffffae" style="width:672px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-1d0b421e019618ffffae">{"x":{"diagram":"\ndigraph record_formation {\n\ngraph [layout = dot, ## Set title and layout\n       label = \"Record loss process\",\n       labelloc = \"t\"\n       fontname = Helvetica,\n       fontsize = 30]\n\n# node definitions with substituted label text\nnode [fontname = Helvetica, ## General node definition\n      style = filled,\n      color = MistyRose]\n      \n## Per node definition\na [label = \"Low impact - long term action\",\n   fillcolor = orange]\nb [label = \"High impact - short term action\",\n   fillcolor = orange]\nc [label = \"Remaining archaeological waste\",\n   fillcolor = cadetblue,\n   fixedsize = shape,\n   width = 8.5,\n   height = 1.5,\n   fontsize = 30]\n\n## General edge definition\nedge [color = grey,\n       arrowhead = vee,\n       arrowtail = vee]\n\n## Specific edges\na -> {c}\nb -> {c}\n}\n\n## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-843ef7dadd74e973bb3f" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-843ef7dadd74e973bb3f">{"x":{"diagram":"\ndigraph record_formation {\n\ngraph [layout = dot, ## Set title and layout\n       label = \"Record loss process\",\n       labelloc = \"t\"\n       fontname = Helvetica,\n       fontsize = 30]\n\n# node definitions with substituted label text\nnode [fontname = Helvetica, ## General node definition\n      style = filled,\n      color = MistyRose]\n      \n## Per node definition\na [label = \"Low impact - long term action\",\n   fillcolor = orange]\nb [label = \"High impact - short term action\",\n   fillcolor = orange]\nc [label = \"Remaining archaeological waste\",\n   fillcolor = cadetblue,\n   fixedsize = shape,\n   width = 8.5,\n   height = 1.5,\n   fontsize = 30]\n\n## General edge definition\nedge [color = grey,\n       arrowhead = vee,\n       arrowtail = vee]\n\n## Specific edges\na -> {c}\nb -> {c}\n}\n\n## Label definition","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>These variables are modelled as follows:</p>
 <ul>
 <li><strong>Long-term loss</strong> (<span class="math inline">\(V_l(t)\)</span>: Attending to the proxy we are considering (bones), we understand this variable as the processes which on the short term have little to none impact on bone preservation, but which can have severe consequences in the long term. These can refer, for example to the pH of the soil of the site, temperature and humidity changes, etc, and must be considered by the researcher or the user. We can subsume this information as a single probability <span class="math inline">\(\theta_l\)</span> within a binomial distribution. Then, the number of archaeological samples currently surviving from all the <span class="math inline">\(W(t)\)</span> generated at a time <span class="math inline">\(t\)</span> follows the distribution</li>
@@ -301,8 +301,8 @@ There have been other quantitative approaches to the survival of the archaeologi
 <h2><span class="header-section-number">7.2</span> Implementation<a href="recloss.html#implementation-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are are <code>short_loss</code> and long loss.</p>
 <p>As before, to know more about these functions and their parameters you can look at the manual given in the package:</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="recloss.html#cb65-1" tabindex="-1"></a>?short_loss</span>
-<span id="cb65-2"><a href="recloss.html#cb65-2" tabindex="-1"></a>?long_loss</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="recloss.html#cb67-1" tabindex="-1"></a>?short_loss</span>
+<span id="cb67-2"><a href="recloss.html#cb67-2" tabindex="-1"></a>?long_loss</span></code></pre></div>
 <div id="source-1" class="section level3 unnumbered hasAnchor">
 <h3>Source<a href="recloss.html#source-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 You can check the source code for the short and long-term loss functions here:
@@ -311,29 +311,29 @@ You can check the source code for the short and long-term loss functions here:
 Show code
 </summary>
 <p><strong>Code</strong></p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="recloss.html#cb66-1" tabindex="-1"></a><span class="do">## Function 8. Short term taphonomic loss</span></span>
-<span id="cb66-2"><a href="recloss.html#cb66-2" tabindex="-1"></a>short_loss <span class="ot">&lt;-</span> <span class="cf">function</span>(x, theta_s){</span>
-<span id="cb66-3"><a href="recloss.html#cb66-3" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb66-4"><a href="recloss.html#cb66-4" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)){</span>
-<span id="cb66-5"><a href="recloss.html#cb66-5" tabindex="-1"></a>    res[i] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, x[i], theta_s)</span>
-<span id="cb66-6"><a href="recloss.html#cb66-6" tabindex="-1"></a>  }</span>
-<span id="cb66-7"><a href="recloss.html#cb66-7" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb66-8"><a href="recloss.html#cb66-8" tabindex="-1"></a>}</span>
-<span id="cb66-9"><a href="recloss.html#cb66-9" tabindex="-1"></a></span>
-<span id="cb66-10"><a href="recloss.html#cb66-10" tabindex="-1"></a><span class="do">## Function 9. Long term taphonomic loss</span></span>
-<span id="cb66-11"><a href="recloss.html#cb66-11" tabindex="-1"></a>long_loss <span class="ot">&lt;-</span> <span class="cf">function</span>(x, theta_l, it){</span>
-<span id="cb66-12"><a href="recloss.html#cb66-12" tabindex="-1"></a>  t <span class="ot">&lt;-</span> it<span class="sc">+</span><span class="dv">1950</span></span>
-<span id="cb66-13"><a href="recloss.html#cb66-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(x)){</span>
-<span id="cb66-14"><a href="recloss.html#cb66-14" tabindex="-1"></a>    prob <span class="ot">&lt;-</span> theta_l<span class="sc">^</span>(t<span class="sc">-</span>i)</span>
-<span id="cb66-15"><a href="recloss.html#cb66-15" tabindex="-1"></a>    s <span class="ot">&lt;-</span> x[, i]</span>
-<span id="cb66-16"><a href="recloss.html#cb66-16" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(s)){</span>
-<span id="cb66-17"><a href="recloss.html#cb66-17" tabindex="-1"></a>      s[k] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, s[k], prob)</span>
-<span id="cb66-18"><a href="recloss.html#cb66-18" tabindex="-1"></a>      </span>
-<span id="cb66-19"><a href="recloss.html#cb66-19" tabindex="-1"></a>    }</span>
-<span id="cb66-20"><a href="recloss.html#cb66-20" tabindex="-1"></a>    x[, i] <span class="ot">&lt;-</span> s  </span>
-<span id="cb66-21"><a href="recloss.html#cb66-21" tabindex="-1"></a>  }</span>
-<span id="cb66-22"><a href="recloss.html#cb66-22" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
-<span id="cb66-23"><a href="recloss.html#cb66-23" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="recloss.html#cb68-1" tabindex="-1"></a><span class="do">## Function 8. Short term taphonomic loss</span></span>
+<span id="cb68-2"><a href="recloss.html#cb68-2" tabindex="-1"></a>short_loss <span class="ot">&lt;-</span> <span class="cf">function</span>(x, theta_s){</span>
+<span id="cb68-3"><a href="recloss.html#cb68-3" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb68-4"><a href="recloss.html#cb68-4" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(x)){</span>
+<span id="cb68-5"><a href="recloss.html#cb68-5" tabindex="-1"></a>    res[i] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, x[i], theta_s)</span>
+<span id="cb68-6"><a href="recloss.html#cb68-6" tabindex="-1"></a>  }</span>
+<span id="cb68-7"><a href="recloss.html#cb68-7" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb68-8"><a href="recloss.html#cb68-8" tabindex="-1"></a>}</span>
+<span id="cb68-9"><a href="recloss.html#cb68-9" tabindex="-1"></a></span>
+<span id="cb68-10"><a href="recloss.html#cb68-10" tabindex="-1"></a><span class="do">## Function 9. Long term taphonomic loss</span></span>
+<span id="cb68-11"><a href="recloss.html#cb68-11" tabindex="-1"></a>long_loss <span class="ot">&lt;-</span> <span class="cf">function</span>(x, theta_l, it){</span>
+<span id="cb68-12"><a href="recloss.html#cb68-12" tabindex="-1"></a>  t <span class="ot">&lt;-</span> it<span class="sc">+</span><span class="dv">1950</span></span>
+<span id="cb68-13"><a href="recloss.html#cb68-13" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(x)){</span>
+<span id="cb68-14"><a href="recloss.html#cb68-14" tabindex="-1"></a>    prob <span class="ot">&lt;-</span> theta_l<span class="sc">^</span>(t<span class="sc">-</span>i)</span>
+<span id="cb68-15"><a href="recloss.html#cb68-15" tabindex="-1"></a>    s <span class="ot">&lt;-</span> x[, i]</span>
+<span id="cb68-16"><a href="recloss.html#cb68-16" tabindex="-1"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(s)){</span>
+<span id="cb68-17"><a href="recloss.html#cb68-17" tabindex="-1"></a>      s[k] <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(<span class="dv">1</span>, s[k], prob)</span>
+<span id="cb68-18"><a href="recloss.html#cb68-18" tabindex="-1"></a>      </span>
+<span id="cb68-19"><a href="recloss.html#cb68-19" tabindex="-1"></a>    }</span>
+<span id="cb68-20"><a href="recloss.html#cb68-20" tabindex="-1"></a>    x[, i] <span class="ot">&lt;-</span> s  </span>
+<span id="cb68-21"><a href="recloss.html#cb68-21" tabindex="-1"></a>  }</span>
+<span id="cb68-22"><a href="recloss.html#cb68-22" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb68-23"><a href="recloss.html#cb68-23" tabindex="-1"></a>}</span></code></pre></div>
 </details>
 <p><br></p>
 </div>
@@ -342,24 +342,24 @@ Show code
 <h2><span class="header-section-number">7.3</span> Usage<a href="recloss.html#usage" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>With these functions, it is fairly easy to recompute the remaining record, and show it in the same format as before. Here we computed the record loss with <span class="math inline">\(\theta_s=0.9\)</span> and <span class="math inline">\(\theta_l=0.9997\)</span>. Again, the user can play with these model and parameters using the online shiny app <a href="https://acortell3.shinyapps.io/archaeo_record_model">here</a>.</p>
 <p>We use the Record generated in the <a href="recgen.html#recgen">previous chapter</a> to which we apply the loss functions</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="recloss.html#cb67-1" tabindex="-1"></a>tlRec <span class="ot">&lt;-</span> <span class="fu">apply</span>(Rec, <span class="dv">2</span>, short_loss, th_s)</span>
-<span id="cb67-2"><a href="recloss.html#cb67-2" tabindex="-1"></a>lRec <span class="ot">&lt;-</span> <span class="fu">long_loss</span>(tlRec, th_l, <span class="dv">7500</span>)</span>
-<span id="cb67-3"><a href="recloss.html#cb67-3" tabindex="-1"></a>tlRec <span class="ot">&lt;-</span> <span class="fu">t</span>(lRec)</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="recloss.html#cb69-1" tabindex="-1"></a>tlRec <span class="ot">&lt;-</span> <span class="fu">apply</span>(Rec, <span class="dv">2</span>, short_loss, th_s)</span>
+<span id="cb69-2"><a href="recloss.html#cb69-2" tabindex="-1"></a>lRec <span class="ot">&lt;-</span> <span class="fu">long_loss</span>(tlRec, th_l, <span class="dv">7500</span>)</span>
+<span id="cb69-3"><a href="recloss.html#cb69-3" tabindex="-1"></a>tlRec <span class="ot">&lt;-</span> <span class="fu">t</span>(lRec)</span></code></pre></div>
 <p>We can then visualize the results of these lost using simple <code>barplots</code>:</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="recloss.html#cb68-1" tabindex="-1"></a><span class="fu">barplot</span>(tlRec[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">77</span><span class="sc">:</span><span class="dv">79</span>),], <span class="at">col =</span> <span class="fu">viridis</span>(<span class="dv">10</span>), <span class="at">legend =</span> <span class="fu">colnames</span>(Rec)[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">77</span><span class="sc">:</span><span class="dv">79</span>)],</span>
-<span id="cb68-2"><a href="recloss.html#cb68-2" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Depth&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;nsamples&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Distribution of specific years along depth with population&quot;</span>)</span>
-<span id="cb68-3"><a href="recloss.html#cb68-3" tabindex="-1"></a><span class="fu">lines</span>(Ps<span class="sc">*</span><span class="dv">300</span>, <span class="at">col =</span> <span class="st">&quot;darkred&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="recloss.html#cb70-1" tabindex="-1"></a><span class="fu">barplot</span>(tlRec[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">77</span><span class="sc">:</span><span class="dv">79</span>),], <span class="at">col =</span> <span class="fu">viridis</span>(<span class="dv">10</span>), <span class="at">legend =</span> <span class="fu">colnames</span>(Rec)[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="dv">77</span><span class="sc">:</span><span class="dv">79</span>)],</span>
+<span id="cb70-2"><a href="recloss.html#cb70-2" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Depth&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;nsamples&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Distribution of specific years along depth with population&quot;</span>)</span>
+<span id="cb70-3"><a href="recloss.html#cb70-3" tabindex="-1"></a><span class="fu">lines</span>(Ps<span class="sc">*</span><span class="dv">300</span>, <span class="at">col =</span> <span class="st">&quot;darkred&quot;</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/plot-loss-rec-1.png" width="672" /></p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="recloss.html#cb69-1" tabindex="-1"></a></span>
-<span id="cb69-2"><a href="recloss.html#cb69-2" tabindex="-1"></a><span class="fu">colnames</span>(tlRec) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(tRec)</span>
-<span id="cb69-3"><a href="recloss.html#cb69-3" tabindex="-1"></a><span class="fu">rownames</span>(tlRec) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(tRec)</span>
-<span id="cb69-4"><a href="recloss.html#cb69-4" tabindex="-1"></a></span>
-<span id="cb69-5"><a href="recloss.html#cb69-5" tabindex="-1"></a><span class="fu">barplot</span>(tRec, <span class="at">col =</span> <span class="fu">viridis</span>(<span class="fu">ncol</span>(tRec)), <span class="co">#legend = colnames(Rec),</span></span>
-<span id="cb69-6"><a href="recloss.html#cb69-6" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Depth&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;nsamples&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Distribution of samples for specific years&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="recloss.html#cb71-1" tabindex="-1"></a></span>
+<span id="cb71-2"><a href="recloss.html#cb71-2" tabindex="-1"></a><span class="fu">colnames</span>(tlRec) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(tRec)</span>
+<span id="cb71-3"><a href="recloss.html#cb71-3" tabindex="-1"></a><span class="fu">rownames</span>(tlRec) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(tRec)</span>
+<span id="cb71-4"><a href="recloss.html#cb71-4" tabindex="-1"></a></span>
+<span id="cb71-5"><a href="recloss.html#cb71-5" tabindex="-1"></a><span class="fu">barplot</span>(tRec, <span class="at">col =</span> <span class="fu">viridis</span>(<span class="fu">ncol</span>(tRec)), <span class="co">#legend = colnames(Rec),</span></span>
+<span id="cb71-6"><a href="recloss.html#cb71-6" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Depth&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;nsamples&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Distribution of samples for specific years&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/plot-loss-rec-2.png" width="672" /></p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="recloss.html#cb70-1" tabindex="-1"></a></span>
-<span id="cb70-2"><a href="recloss.html#cb70-2" tabindex="-1"></a><span class="fu">barplot</span>(tlRec, <span class="at">col =</span> <span class="fu">viridis</span>(<span class="fu">ncol</span>(tlRec)), <span class="co">#legend = colnames(Rec),</span></span>
-<span id="cb70-3"><a href="recloss.html#cb70-3" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Depth&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;nsamples&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Distribution of samples for specific years after loss&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="recloss.html#cb72-1" tabindex="-1"></a></span>
+<span id="cb72-2"><a href="recloss.html#cb72-2" tabindex="-1"></a><span class="fu">barplot</span>(tlRec, <span class="at">col =</span> <span class="fu">viridis</span>(<span class="fu">ncol</span>(tlRec)), <span class="co">#legend = colnames(Rec),</span></span>
+<span id="cb72-3"><a href="recloss.html#cb72-3" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">&quot;Depth&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;nsamples&quot;</span>, <span class="at">main =</span> <span class="st">&quot;Distribution of samples for specific years after loss&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/plot-loss-rec-3.png" width="672" /></p>
 
 </div>
