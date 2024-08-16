@@ -75,7 +75,7 @@ And then install the specific packages to render the book.
 
 
 ```{r how-to-render,eval=F}
-compneeded=c("DiagrammeR","bookdown","igraph") 
+compneeded=c("DiagrammeR","bookdown","igraph","gifski") 
 success=sapply(compneeded,require,character.only=T)
 sapply(needed[!success],install.packages)
 success=sapply(compneeded,require,character.only=T)
