@@ -306,3 +306,96 @@ plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot g
 points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
 ```
 
+The dynamics of the simulations will heaivly depend on the initial condition and the parameters. As an exemple, wiht these paraemeters, it is not rare than the Farmers, due to the implementation of the conlfict described in the Chapter&nbsp;\@ref(conflict), will destroy themsleve by going to war too often. This can be avoid with the current implementation by setting a small probfight, to 0.1; but it is important to remember that it could have been done via various way. A more clever one would have been for Farmers to 'estimates' the likelihood for them to loose the battle, maybe buy fighting only _safe_  battles, against way smaller settelements.
+
+In order to find the right simulation, that will show the dynamics you want to challenge your participants to detect, you will want to play with these parameters and run a couple of replication of simulation in order to find the right one. 
+
+
+The script `scriptmini.R` was designed to do so for the original challenge, here we adapted it for a more generic need, to re-run simulation using the world you have generated throughout this book. 
+
+```{r multi-run,out.width="33%",fig.cap="running multiple simulation",fig.show="hold"}
+
+par(mar=c(0,0,0,0))
+height.ras=rast("data_toshare/dem_raster.tiff")
+height.wat=height.ras
+height.wat[height.wat>mean(height.wat[])]=NA
+height.groups=height.ras
+maxh=max(height.ras[],na.rm=T)
+height.groups[height.groups<mean(height.groups[])]=NA
+height.groups[height.groups<(maxh*.7)]=1
+height.groups[height.groups>(maxh*.7)]=200
+height.groups[is.na(height.groups)]=-1
+height.poly=as.polygons(height.groups)
+viable=makeValid(height.poly[2,])
+sites=vect("data_tmp/allsites.shp")
+ts=10
+
+allsim=list()  #we will store te multiplesimulation, in this list to play with it, with a proper setup we stored results in files as simulation are too big to be kept in memory.
+for(expname in paste0("exp",1:10)){
+
+    print(paste0("Starting simulation ",expname))
+
+    onesimu=run_simulation (
+                            sites=sites, viable=viable, dem=height.ras,
+                            ressources=ress,
+                            water=height.wat,
+                            foldervid=NULL,
+                            visu=F, visumin=F,
+                            log=F,
+                            ts=ts, 
+                            Kbase=c("HG"=35, "F"=110), 
+                            cul_ext=c("HG"=7, "F"=6), 
+                            penal_cul=c("HG"=4, "F"=5), 
+                            prob_birth=c("HG"=0.4, "F"=0.75), 
+                            prob_survive=c("HG"=0.8, "F"=0.65), 
+                            prob_split=c("HG"=0.5, "F"=0.6), 
+                            minimals=c("HG"=0.14,"F"=0.20), 
+                            probfight=0.5, 
+                            bufferatack=1000, 
+                            prob_move=c("HG"=0.2, "F"=0.1) 
+    )
+
+    Nts=onesimu$Nts
+    warcasualties=onesimu$warcasualties
+    sites=onesimu$sites
+    i=min(ts,which(apply(Nts,1,sum)==0))
+    saveRDS(file=paste0(expname,"_all.RDS"),onesimu)
+    saveRDS(file=paste0(expname,"_sitesRast.RDS"),onesimu$sites)
+    plotMap(height.ras,height.wat,paste0("year ",i))
+    plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+    text(sites)
+
+    growF=apply(Nts[1:i,sites$culture=="F"],1,sum)
+    growHG=apply(Nts[1:i,sites$culture=="HG"],1,sum)
+    growT=apply(Nts[1:i,],1,sum)
+
+    allsim[[expname]]=cbind.data.frame(growF,growHG,growT,warcasualties[1:i],rep(expname,i))
+}
+```
+
+```{r explore-mult,out.width="33%",fig.cap="Comparing multiple runs",fig.show="hold"}
+    gnmax=max(sapply(allsim,function(i)max(i$growT)))
+    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax))
+    na=lapply(allsim,function(i)lines(i$growT))
+    gnmax=max(sapply(allsim,function(i)max(i[,c("growF","growHG")])))
+    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax))
+    na=lapply(allsim,function(i){lines(i$growHG,col="red");lines(i$growF,col="green")})
+    gnmax=max(sapply(allsim,function(i)max(i$warcasualties)))
+    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax))
+    na=lapply(allsim,function(i)lines(i$warcasualties))
+    #plot(1:i,warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="",xlim=c(0,i))
+    #axis(4)
+    #par(new=T)
+    #plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)),xlim=c(0,i))
+    #points(growHG,col="blue",lwd=2,type="l")
+
+    #plot(warcasualties[1:i-1],lwd=2,col="green",type="h",yaxt="n",ylab="")
+    #axis(4)
+    #par(new=T)
+    #plot(growT,col="black",type="l",lwd=2,ylim=c(0,max(growT)))
+```
+
+
+
+Once you found the right simulation we can use the populations this simulaiton created to generated an archaeological records, based on law we will describe in the next chapter.
+
