@@ -874,11 +874,11 @@ Show code
 place where occupied, the biggest settlement was the settlement <code>which(max(Nts)==Nts,ind.array=T)</code></p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="main-simu.html#cb51-1" tabindex="-1"></a>indmax<span class="ot">=</span><span class="fu">which</span>(<span class="fu">max</span>(Nts)<span class="sc">==</span>Nts,<span class="at">arr.ind =</span> T)</span>
 <span id="cb51-2"><a href="main-simu.html#cb51-2" tabindex="-1"></a>indmax[<span class="dv">1</span>] <span class="co">#timestep when biggest settlement was the biggest</span></span>
-<span id="cb51-3"><a href="main-simu.html#cb51-3" tabindex="-1"></a><span class="do">## [1] 3</span></span>
+<span id="cb51-3"><a href="main-simu.html#cb51-3" tabindex="-1"></a><span class="do">## [1] 130</span></span>
 <span id="cb51-4"><a href="main-simu.html#cb51-4" tabindex="-1"></a>indmax[<span class="dv">2</span>] <span class="co">#id of the biggest settlement </span></span>
-<span id="cb51-5"><a href="main-simu.html#cb51-5" tabindex="-1"></a><span class="do">## [1] 54</span></span>
+<span id="cb51-5"><a href="main-simu.html#cb51-5" tabindex="-1"></a><span class="do">## [1] 13</span></span>
 <span id="cb51-6"><a href="main-simu.html#cb51-6" tabindex="-1"></a><span class="fu">max</span>(Nts) <span class="co">#max number of people during the simulation</span></span>
-<span id="cb51-7"><a href="main-simu.html#cb51-7" tabindex="-1"></a><span class="do">## [1] 130</span></span></code></pre></div>
+<span id="cb51-7"><a href="main-simu.html#cb51-7" tabindex="-1"></a><span class="do">## [1] 342</span></span></code></pre></div>
 <p>We can compare the initial condition with the ressource to adjust the Ks:</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="main-simu.html#cb52-1" tabindex="-1"></a><span class="fu">plot</span>(onesimu<span class="sc">$</span>site, <span class="at">cex=</span>(Nts[<span class="dv">1</span>,]<span class="sc">/</span><span class="fu">max</span>(Nts))<span class="sc">*</span><span class="dv">10</span>, <span class="at">pch=</span><span class="dv">21</span>, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(onesimu<span class="sc">$</span>site<span class="sc">$</span>culture)])</span>
 <span id="cb52-2"><a href="main-simu.html#cb52-2" tabindex="-1"></a><span class="fu">plot</span>(onesimu<span class="sc">$</span>site, <span class="at">cex=</span>(Nts[<span class="fu">nrow</span>(Nts),]<span class="sc">/</span><span class="fu">max</span>(Nts))<span class="sc">*</span><span class="dv">10</span>, <span class="at">pch=</span><span class="dv">21</span>, <span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>, <span class="at">alpha=</span><span class="fl">0.6</span>)[<span class="fu">as.factor</span>(onesimu<span class="sc">$</span>site<span class="sc">$</span>culture)])</span></code></pre></div>
@@ -985,10 +985,11 @@ Figure 5.2: left: sites at initialisation, right: sites at the end of the simula
 <span id="cb57-61"><a href="main-simu.html#cb57-61" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp4&quot;</span></span>
 <span id="cb57-62"><a href="main-simu.html#cb57-62" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp5&quot;</span></span>
 <span id="cb57-63"><a href="main-simu.html#cb57-63" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp6&quot;</span></span>
-<span id="cb57-64"><a href="main-simu.html#cb57-64" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp7&quot;</span></span>
-<span id="cb57-65"><a href="main-simu.html#cb57-65" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp8&quot;</span></span>
-<span id="cb57-66"><a href="main-simu.html#cb57-66" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp9&quot;</span></span>
-<span id="cb57-67"><a href="main-simu.html#cb57-67" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp10&quot;</span></span></code></pre></div>
+<span id="cb57-64"><a href="main-simu.html#cb57-64" tabindex="-1"></a><span class="do">## [1] &quot;problem with population replacement for settlement of size:30 need to loose 31&quot;</span></span>
+<span id="cb57-65"><a href="main-simu.html#cb57-65" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp7&quot;</span></span>
+<span id="cb57-66"><a href="main-simu.html#cb57-66" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp8&quot;</span></span>
+<span id="cb57-67"><a href="main-simu.html#cb57-67" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp9&quot;</span></span>
+<span id="cb57-68"><a href="main-simu.html#cb57-68" tabindex="-1"></a><span class="do">## [1] &quot;Starting simulation exp10&quot;</span></span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:multi-run"></span>
 <img src="_main_files/figure-html/multi-run-1.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-2.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-3.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-4.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-5.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-6.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-7.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-8.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-9.png" alt="running multiple simulation" width="33%" /><img src="_main_files/figure-html/multi-run-10.png" alt="running multiple simulation" width="33%" />
 <p class="caption">
