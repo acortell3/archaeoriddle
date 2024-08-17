@@ -1,6 +1,8 @@
 fig:illu-war
 fig:single-run-ex1
+fig:explore-ex1-trajpersite
 fig:explore-ex1-b
+fig:explore-ex1-timeandcult
 fig:multi-run
 fig:explore-mult
 fig:getadates-ex
