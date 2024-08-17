@@ -238,10 +238,9 @@ fs::file_delete('run_simulation.Rmd')
 </details>
 
 
-## Explore simulation:
+## Explore simulation
 
 The list `onesimu`  contains a few interesting info:
-
 
 ```{r explore-ex1-1}
 Nts <- onesimu$Nts # population at each timestep
@@ -249,8 +248,7 @@ warcasualties <- onesimu$warcasualties #death by war at each time step
 ```
 Nts is a $n \times m$ matrix where n is the number of time step of the simulaiton, and m the total number of sites that appears during the simulation, including the one that diseapers.
 
-We can thus already see a couple of thing: `ncol(Nts)=` `r ncol(Nts)` 
-place where occupied, the biggest settlement was the settlement `which(max(Nts)==Nts,ind.array=T)`
+With this `Nts` matrix we can already see a couple of thing: `ncol(Nts)=` `r ncol(Nts)`, the total number of place occupied and other in the next chunk:
 
 ```{r exploreNts}
 indmax=which(max(Nts)==Nts,arr.ind = T)
@@ -259,61 +257,48 @@ indmax[2] #id of the biggest settlement
 max(Nts) #max number of people during the simulation
 ```
 
+We can also look at the dynamics throught time, and explore how each individual sites are growing:
 
+```{r explore-ex1-trajpersite,fig.show="hold",out.width="45%",fig.cap="left: Growth of each site, right: overall growth"}
+i <- ts
+plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
+nill <- lapply(1:ncol(Nts),function(j)lines(Nts[,j]))
+plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
+```
 
-We can compare the initial condition with the  ressource to adjust the Ks:
+Combing `onesimu$site` with `Nts` we can compare the initial condition with the state of the worldat the end:
+
 ```{r explore-ex1-b,out.width="45%",fig.cap="left: sites at initialisation, right: sites at the end of the simulation",fig.show="hold"}
 plot(onesimu$site, cex=(Nts[1,]/max(Nts))*10, pch=21, bg=rainbow(2, alpha=0.6)[as.factor(onesimu$site$culture)])
 plot(onesimu$site, cex=(Nts[nrow(Nts),]/max(Nts))*10, pch=21, bg=rainbow(2, alpha=0.6)[as.factor(onesimu$site$culture)])
 ```
 
-We can look at the dynamics throught time, here how each individual sites are growings:
+Or look at the dynamics through time but divided by culture, and comparing with the war casualties
 
-```{r explore-ex1-trajpersite,eval=T,messages=F}
-## visualise trajectories for each site
-i <- ts
-plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
-nill <- lapply(1:ncol(Nts),
-       function(j)lines(Nts[,j],col=rainbow(2)[as.factor(sites$culture)[j]])
-)
-```
-
-Population by time and culture
-
-```{r explore-ex1-timeandcult,out.width="45%",fig.cap="",fig.show="hold"}
-plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)),
-     xlab="time", ylab="popsize")
-na=lapply(1:ncol(Nts),
-       function(i)lines(Nts[,i], col=rainbow(2)[as.factor(sites$culture)[i]]))
-legend("topright",legend=c("F","HG"),col= rainbow(2),lwd=1,title="culture")
-plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
-```
-
-Exploring some trajectories of the simulations
-
-```{r, eval=T}
-i <- nrow(Nts)  # Get the number of rows in Nts
-plot(apply(Nts[1:i, sites$culture=="F",drop=F], 1, sum), col="red", type="l",
-     lwd=2, ylim=c(0, max(apply(Nts, 1, sum))))  # Plot sum of 'F' culture values
-points(apply(Nts[1:i, sites$culture=="HG"], 1, sum),
-       col="blue", lwd=2, type="l")  # Add points for 'HG' culture values
+```{r explore-ex1-timeandcult,out.width="",fig.cap="left: Growth of eachsite for both culturles, right: combined growth",fig.show="hold",out.width="45%"}
 plot(warcasualties[1:(i-1)], lwd=2, col="green", type="h", yaxt="n", ylab="")  # Plot war casualties
-axis(4)  # Add an axis on the right side
-par(new=T)  # Allow a new plot to be drawn on the existing plot
+par(new=T) 
+plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
+na=lapply(1:ncol(Nts),
+       function(i)lines(Nts[,i], col=c("red","blue")[as.factor(sites$culture)[i]]))
+plot(warcasualties[1:(i-1)], lwd=2, col="green", type="h", yaxt="n", ylab="")  # Plot war casualties
+par(new=T)
 growF <- apply(Nts[1:(i-1), sites$culture=="F",drop=F], 1, sum)  # Sum of 'F' culture values excluding last row
 growHG <- apply(Nts[1:(i-1), sites$culture=="HG",drop=F], 1, sum)  # Sum of 'HG' culture values excluding last row
 plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot growth of 'F' culture
 points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
+legend("topleft",legend=c("F","HG","war"),col=c("red","blue","green"),lwd=1,title="culture")
 ```
 
-The dynamics of the simulations will heaivly depend on the initial condition and the parameters. As an exemple, wiht these paraemeters, it is not rare than the Farmers, due to the implementation of the conlfict described in the Chapter&nbsp;\@ref(conflict), will destroy themsleve by going to war too often. This can be avoid with the current implementation by setting a small probfight, to 0.1; but it is important to remember that it could have been done via various way. A more clever one would have been for Farmers to 'estimates' the likelihood for them to loose the battle, maybe buy fighting only _safe_  battles, against way smaller settelements.
 
-In order to find the right simulation, that will show the dynamics you want to challenge your participants to detect, you will want to play with these parameters and run a couple of replication of simulation in order to find the right one. 
+The dynamics of the simulations will heavily depend on the initial conditions and the parameters. As an example, with these parameters, it is not rare that the Farmers, due to the conflict mechanisms that we described in Chapter&nbsp;\@ref(conflict), will destroy themselves by going to war too often, as one can see in the Figure&nbsp;\@ref(fig:explore-mult) below. This can be avoided with the current implementation by setting a small `probfight` value to 0.1; however, it is important to remember that this could have been achieved in various ways. A more clever approach would have been for Farmers to 'estimate' the likelihood of them losing the battle, perhaps by fighting only _safe_ battles, against much smaller settlements.
+
+In order to find the right simulation, the one that will show the dynamics you want your participants to detect, you will need to play with these parameters and run several replications of the simulation in order to find the right one.
 
 
 The script `scriptmini.R` was designed to do so for the original challenge, here we adapted it for a more generic need, to re-run simulation using the world you have generated throughout this book. 
 
-```{r multi-run,out.width="33%",fig.cap="running multiple simulation",fig.show="hold"}
+```{r multi-run,out.width="33%",fig.cap="Final state of multiple simulations with the exact same parameters.",fig.show="hold"}
 
 par(mar=c(0,0,0,0))
 height.ras=rast("data_toshare/dem_raster.tiff")
@@ -331,7 +316,7 @@ sites=vect("data_tmp/allsites.shp")
 ts=10
 
 allsim=list()  #we will store te multiplesimulation, in this list to play with it, with a proper setup we stored results in files as simulation are too big to be kept in memory.
-for(expname in paste0("exp",1:10)){
+for(expname in paste0("exp",1:9)){
 
     print(paste0("Starting simulation ",expname))
 
@@ -363,8 +348,6 @@ for(expname in paste0("exp",1:10)){
     saveRDS(file=paste0(expname,"_sitesRast.RDS"),onesimu$sites)
     plotMap(height.ras,height.wat,paste0("year ",i))
     plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
-    text(sites)
-
     growF=apply(Nts[1:i,sites$culture=="F"],1,sum)
     growHG=apply(Nts[1:i,sites$culture=="HG"],1,sum)
     growT=apply(Nts[1:i,],1,sum)
@@ -375,24 +358,14 @@ for(expname in paste0("exp",1:10)){
 
 ```{r explore-mult,out.width="33%",fig.cap="Comparing multiple runs",fig.show="hold"}
     gnmax=max(sapply(allsim,function(i)max(i$growT)))
-    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax))
+    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax),type="n",main="Overal growth",ylab="number of individual",xlab="time")
     na=lapply(allsim,function(i)lines(i$growT))
     gnmax=max(sapply(allsim,function(i)max(i[,c("growF","growHG")])))
-    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax))
+    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax),type="n",main="Growth per culture",ylab="number of individual",xlab="time")
     na=lapply(allsim,function(i){lines(i$growHG,col="red");lines(i$growF,col="green")})
     gnmax=max(sapply(allsim,function(i)max(i$warcasualties)))
-    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax))
+    plot(1,i,xlim=c(0,10),ylim=c(0,gnmax),type="n",main="War Casualties",ylab="number of individual",xlab="time")
     na=lapply(allsim,function(i)lines(i$warcasualties))
-    #plot(1:i,warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="",xlim=c(0,i))
-    #axis(4)
-    #par(new=T)
-    #plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)),xlim=c(0,i))
-    #points(growHG,col="blue",lwd=2,type="l")
-
-    #plot(warcasualties[1:i-1],lwd=2,col="green",type="h",yaxt="n",ylab="")
-    #axis(4)
-    #par(new=T)
-    #plot(growT,col="black",type="l",lwd=2,ylim=c(0,max(growT)))
 ```
 
 
