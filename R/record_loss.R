@@ -10,11 +10,7 @@
 #' @return `numeric` with reduced values due to the short-term taphonomic loss
 #' @export
 short_loss <- function(x, theta_s){
-  res <- c()
-  for (i in 1:length(x)){
-    res[i] <- rbinom(1, x[i], theta_s)
-  }
-  return(res)
+    rbinom(length(x), x, theta_s)
 }
 
 ## Function 9. Long term taphonomic loss
@@ -32,12 +28,7 @@ long_loss <- function(x, theta_l, it){
   t <- it+1950
   for (i in 1:ncol(x)){
     prob <- theta_l^(t-i)
-    s <- x[, i]
-    for (k in 1:length(s)){
-      s[k] <- rbinom(1, s[k], prob)
-      
-    }
-    x[, i] <- s  
+    x[, i] <- rbinom(length(x[,i]), x[,i], prob)
   }
   return(x)
 }
