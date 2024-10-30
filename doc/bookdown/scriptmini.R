@@ -2,7 +2,6 @@
 ##Rscript scriptmini.R testfolder
 
 
-
 library(terra)
 library(sf)
 source("tools.R")
