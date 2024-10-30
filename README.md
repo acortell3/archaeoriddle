@@ -8,9 +8,9 @@ The Archaeoriddle Project is a project that has been carried over almost 3 years
 
 This repository gather together  the elements developed throughout this project ; which can be divided in three main components that are all detailed later in this file.
 
-1. [The Bookdown](the-bookdown) : compiled online version [here](www.thearchaeoriddle.com). It's a standalone document detailngs every aspect of the project, allowing they reproduction and modification.[:file_folder: ./doc/bookdown/](./doc/bookdown/)
-2. [The Original Challenge](the-original-challenge) one instance of archaeoriddlś simulation, including the website, and 5 participants contribution [:file_folder: ./doc/shinyapp/](./doc/shinyapp/) & [:file_folder: ./doc/bookdown/data_original/](./doc/bookdown/data_original/)
-2. [The R package](the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation [:file_folder: ./](./); 
+1. [The Bookdown](?tab=readme-ov-file#the-bookdown-bd) : compiled online version [here](www.thearchaeoriddle.com). It's a standalone document detailngs every aspect of the project, allowing they reproduction and modification (files in: [:file_folder: ./doc/bookdown/](./doc/bookdown/)).
+2. [The Original Challenge](the-original-challenge) one instance of archaeoriddlś simulation, including the website, and 5 participants contribution (in fold: [:file_folder: ./doc/shinyapp/](./doc/shinyapp/) & [:file_folder: ./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
+2. [The R package](the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation ([:file_folder: ./](./))
 
 
 *Note:* The version v0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "ASSESSING THE INFERENTIAL POWER OF QUANTITATIVE METHODS IN ARCHAEOLOGY VIA SIMULATED DATASETS: THE ARCHAEORIDDLE CHALLENGE", written by:
@@ -37,13 +37,13 @@ bookdown::render_book(".", output_dir = "/var/www/html/archaeoriddle/")
 ```
 
 
-## The Original Challenge {#oc}
+## The Original Challenge 
 
 The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a serie of data sets publicly shared with archaeologist, in an attempt to :
 
 
 
-## The R-Package {#rp}
+## The R-Package 
 
 This repository is meant to be installed as a package; thus using `devtools::install_github("acortell3/archaeoriddle")` (until we, maybe one day, make it to CRAN?)
 
