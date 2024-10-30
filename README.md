@@ -4,11 +4,11 @@ If you don't know where to start, you may want to have a look at [thearchaeoridd
 
 ## Preamble
 
-The Archaeoriddle Project is a project that has been carried over almost 3 years, led by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute at the university of Cambridge. It has been made possible mainly thanks to a Small Grant from the British Library (BL/), but would not have been possible without the support of the Marie Slobodwska-Curie (H2020-MSCA-IF No. 101020631/ArchBiMod), and the ENCOUNTER project.
+The Archaeoriddle Project is a project that has implemented and developed by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute at the university of Cambridge, following ideas by Enrico Crema and Xavier Rubio-Campillo. It has been made possible mainly thanks to a grant from the British Academy (BL/), but would not have been possible without the support of the Marie Slobodwska-Curie (H2020-MSCA-IF No. 101020631/ArchBiMod), and the ENCOUNTER project.
 
-This repository gather together all the elements developed throughout this project; which can be divided in three main components that are all detailed later in this file.
+This repository compile together all the elements developed throughout this project. These  can be divided in three main components, that are all detailed later in this file.
 
-1. [The Bookdown](?tab=readme-ov-file#the-bookdown) : compiled online version [here](www.thearchaeoriddle.com). It's a standalone document detailngs every aspect of the project, allowing they reproduction and modification (:file_folder: [./doc/bookdown/](./doc/bookdown/)).
+1. [The Bookdown](?tab=readme-ov-file#the-bookdown) : compiled online version [here](www.thearchaeoriddle.com). This standalone document details every aspect of the project. It should allow the reproduction and exploration of every aspect of the project (:file_folder: [./doc/bookdown/](./doc/bookdown/)).
 2. [The Original Challenge](?tab=readme-ov-file#the-original-challenge) one instance of archaeoriddle's simulation, including the website, and 5 participants contribution (:file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
 2. [The R package](?tab=readme-ov-file#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation (:file_folder: [./](./))
 
