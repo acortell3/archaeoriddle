@@ -1,16 +1,16 @@
 # The Archaeoriddle
 
+If you don't know where to start, you may want to have a look at [thearchaeoriddle.com](https://thearchaeoriddle.org/)
 
 ## Preamble
 
-The Archaeoriddle Project is a project that has been carried over almost 3 years, led by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute at the university of Cambridge. It has been made possible mainly thanks to a Small Grant from the British Library, but would not have been possible without the support of the Marie Slobodwska-Curie (H2020-MSCA-IF No. 101020631/ArchBiMod), and the ENCOUNTER project.
+The Archaeoriddle Project is a project that has been carried over almost 3 years, led by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute at the university of Cambridge. It has been made possible mainly thanks to a Small Grant from the British Library (BL/), but would not have been possible without the support of the Marie Slobodwska-Curie (H2020-MSCA-IF No. 101020631/ArchBiMod), and the ENCOUNTER project.
 
+This repository gather together all the elements developed throughout this project; which can be divided in three main components that are all detailed later in this file.
 
-This repository gather together  the elements developed throughout this project ; which can be divided in three main components that are all detailed later in this file.
-
-1. [The Bookdown](?tab=readme-ov-file#the-bookdown-bd) : compiled online version [here](www.thearchaeoriddle.com). It's a standalone document detailngs every aspect of the project, allowing they reproduction and modification (files in: [:file_folder: ./doc/bookdown/](./doc/bookdown/)).
-2. [The Original Challenge](the-original-challenge) one instance of archaeoriddlś simulation, including the website, and 5 participants contribution (in fold: [:file_folder: ./doc/shinyapp/](./doc/shinyapp/) & [:file_folder: ./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
-2. [The R package](the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation ([:file_folder: ./](./))
+1. [The Bookdown](?tab=readme-ov-file#the-bookdown) : compiled online version [here](www.thearchaeoriddle.com). It's a standalone document detailngs every aspect of the project, allowing they reproduction and modification (:file_folder: [./doc/bookdown/](./doc/bookdown/)).
+2. [The Original Challenge](?tab=readme-ov-file#the-original-challenge) one instance of archaeoriddle's simulation, including the website, and 5 participants contribution (:file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
+2. [The R package](?tab=readme-ov-file#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation (:file_folder: [./](./))
 
 
 *Note:* The version v0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "ASSESSING THE INFERENTIAL POWER OF QUANTITATIVE METHODS IN ARCHAEOLOGY VIA SIMULATED DATASETS: THE ARCHAEORIDDLE CHALLENGE", written by:
@@ -39,45 +39,69 @@ bookdown::render_book(".", output_dir = "/var/www/html/archaeoriddle/")
 
 ## The Original Challenge 
 
-The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a serie of data sets publicly shared with archaeologist, in an attempt to :
-
-
-
-## The R-Package 
-
-This repository is meant to be installed as a package; thus using `devtools::install_github("acortell3/archaeoriddle")` (until we, maybe one day, make it to CRAN?)
-
-
-The general structure of the repository is that of a normal R package, but it contains a few more things.
-
-- `doc/`
-- `pop_id.Rmd`
-- `tex_files/`
-- `interactive_brain_map.md`
-- `Explanation_of_ideas_brain_map.md`
-- `div/`
-- `man/`
-- `DESCRIPTION`
-- `archaeoriddle.Rproj`
-- `NAMESPACE`
-- `R/`
-- `README.md`
-
-more specifically in `doc`:
-
-
-## `doc`
-
-Doc contains various things developed through [the archaeoriddle project](https://theia.arch.cam.ac.uk/archaeoriddle). The archaeordile project is a CDAL project funded by the European Commission (H2020-MSCA-IF No. 101020631/ArchBiMod) and the British Academy.
-
-- `doc/bookdown/` : the code for a  bookdown describing the code and the methods behind the simulation used in the project
-- `doc/shinyapp/` : the code of  shiny app (the one behind the site available [here](https://theia.arch.cam.ac.uk/archaeoriddle))
-- `doc/fake_papers/` :  latex code for sever fake papers and poster presented in conferences
-
+The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a serie of data sets publicly shared with archaeologist.
 
 Then you can start the server using:
+
+Files & folder used for this:
+
+- [:file_folder: doc/shinyapp/]() : the code of  shiny app (the one behind the site available [here](https://theia.arch.cam.ac.uk/archaeoriddle))
+- [📄 doc/shinyapp/README.md]() : README explaininghow to recreate the shiny app
+- [:file_folder: ./doc/fake_papers/README.md]() :  latex code for sever fake papers and poster presented in conferences where the Original Challenge was presented.
 
 ```bash
 Rscript  -e  "shiny::runApp('.',port=1234)"
 ```
+
+
+## The R-Package 
+
+This overal structure of this repository is a R package. 
+To install it, the most simple way will be by using `devtools` function `github_install()` by doing: `devtools::install_github("acortell3/archaeoriddle")`.
+Most of the functions defined in the package are described in details in [the bookdown](https://www.thearchaeoriddle).
+
+This will be used if you want to follow the  allows to easily use the function defined in  thus using `devtools::install_github("acortell3/archaeoriddle")` 
+
+
+
+
+## Full file Structure:
+
+- [:file_folder: doc/](./doc/):
+- [:file_folder: div/](./div/):
+- [:file_folder: man/](./man/):
+- [:file_folder: R/](.R/):
+- [:📄: DESCRIPTION]():
+- [:📄: archaeoriddle.Rproj]():
+- [:📄: NAMESPACE]():
+- [:📄: README.md]():
+
+
+### `doc/`
+
+- [:file_folder: doc/bookdown/](./doc/bookdown/): cf 
+- [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf
+- [:file_folder: doc/tex_files/](./doc/tex_files/): a few `tex` file used to layout ideas
+- [:📄: brain_map_colabm.png]() : image representing an early reflection about the project
+- [:📄: Explanation_of_ideas_brain_map.md]() :
+- [:📄: foo]() :
+- [:📄: interactive_brain_map.md]() :
+- [:📄: pop_id.Rmd]() :
+
+### `man/`
+- [:📄: A_rates.Rd]
+
+### `R/`
+
+- [:📄: anthropogenic_deposition.R]() :
+- [:📄: climate.R]() :
+- [:📄: init_simulation.R]() :
+- [:📄: logistic_decay.R]() :
+- [:📄: natural_deposition.R]() :
+- [:📄: perlin_noise.R]() :
+- [:📄: population.R]() :
+- [:📄: record_loss.R]() :
+- [:📄: run_simulation.R]() :
+- [:📄: tools.R]() :
+
 
