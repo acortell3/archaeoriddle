@@ -79,9 +79,9 @@ This will be used if you want to follow the  allows to easily use the function d
 
 ### `doc/`
 
-- [:file_folder: doc/bookdown/](./doc/bookdown/./doc/bookdown/): cf 
-- [:file_folder: doc/shinyapp/](./doc/shinyapp/./doc/shinyapp/): cf
-- [:file_folder: doc/tex_files/](./doc/tex_files/./doc/tex_files/): a few `tex` file used to layout ideas
+- [:file_folder: doc/bookdown/](./doc/bookdown/): cf section [The Bookdown](?tab=readme-ov-file#the-bookdown)
+- [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf section [The Bookdown](?tab=readme-ov-file#the-original-challenge)
+- [:file_folder: doc/tex_files/](./doc/tex_files//): a few `tex` file used to layout ideas
 - [📄 brain_map_colabm.png](./brain_map_colabm.png) : image representing an early reflection about the project
 - [📄 Explanation_of_ideas_brain_map.md](./Explanation_of_ideas_brain_map.md) :
 - [📄 foo](./foo) :
@@ -93,15 +93,14 @@ This will be used if you want to follow the  allows to easily use the function d
 
 ### `R/`
 
-- [📄 anthropogenic_deposition.R](./anthropogenic_deposition.R) :
-- [📄 climate.R](./climate.R) :
-- [📄 init_simulation.R](./init_simulation.R) :
-- [📄 logistic_decay.R](./logistic_decay.R) :
-- [📄 natural_deposition.R](./natural_deposition.R) :
-- [📄 perlin_noise.R](./perlin_noise.R) :
-- [📄 population.R](./population.R) :
-- [📄 record_loss.R](./record_loss.R) :
-- [📄 run_simulation.R](./run_simulation.R) :
-- [📄 tools.R](./tools.R) :
-
+- [📄 anthropogenic_deposition.R](./R/anthropogenic_deposition.R): Simulates anthropogenic bone deposition rates at a site.
+- [📄 climate.R](./R/climate.R): Generates power law noise and simulates environmental fluctuations.
+- [📄 init_simulation.R](./R/init_simulation.R): Initializes carrying capacities, population matrices, and site lists for simulations.
+- [📄 logistic_decay.R](./R/logistic_decay.R): Applies logistic decay to resources around points in a raster.
+- [📄 natural_deposition.R](./R/natural_deposition.R): Models deposition and post-deposition effects of archaeological materials.
+- [📄 perlin_noise.R](./R/perlin_noise.R): Creates Perlin noise for 2-D slope and elevation autocorrelation.
+- [📄 population.R](./R/population.R): Manages stochastic population dynamics, growth, and mortality.
+- [📄 record_loss.R](./R/record_loss.R): Simulates taphonomic losses in archaeological records.
+- [📄 run_simulation.R](./R/run_simulation.R): Runs a simulation of cultural interactions, migration, and conflicts.
+- [📄 tools.R](./R/tools.R): Utility functions for visualization, data extraction, and map plotting.
 
