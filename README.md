@@ -67,41 +67,41 @@ This will be used if you want to follow the  allows to easily use the function d
 
 ## Full file Structure:
 
-- [:file_folder: doc/](./doc/):
-- [:file_folder: div/](./div/):
-- [:file_folder: man/](./man/):
-- [:file_folder: R/](.R/):
-- [:📄: DESCRIPTION]():
-- [:📄: archaeoriddle.Rproj]():
-- [:📄: NAMESPACE]():
-- [:📄: README.md]():
+- [:file_folder: doc/](./doc/./doc/):
+- [:file_folder: div/](./div/./div/):
+- [:file_folder: man/](./man/./man/):
+- [:file_folder: R/](./R/.R/):
+- [📄 DESCRIPTION](./DESCRIPTION):
+- [📄 archaeoriddle.Rproj](./archaeoriddle.Rproj):
+- [📄 NAMESPACE](./NAMESPACE):
+- [📄 README.md](./README.md):
 
 
 ### `doc/`
 
-- [:file_folder: doc/bookdown/](./doc/bookdown/): cf 
-- [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf
-- [:file_folder: doc/tex_files/](./doc/tex_files/): a few `tex` file used to layout ideas
-- [:📄: brain_map_colabm.png]() : image representing an early reflection about the project
-- [:📄: Explanation_of_ideas_brain_map.md]() :
-- [:📄: foo]() :
-- [:📄: interactive_brain_map.md]() :
-- [:📄: pop_id.Rmd]() :
+- [:file_folder: doc/bookdown/](./doc/bookdown/./doc/bookdown/): cf 
+- [:file_folder: doc/shinyapp/](./doc/shinyapp/./doc/shinyapp/): cf
+- [:file_folder: doc/tex_files/](./doc/tex_files/./doc/tex_files/): a few `tex` file used to layout ideas
+- [📄 brain_map_colabm.png](./brain_map_colabm.png) : image representing an early reflection about the project
+- [📄 Explanation_of_ideas_brain_map.md](./Explanation_of_ideas_brain_map.md) :
+- [📄 foo](./foo) :
+- [📄 interactive_brain_map.md](./interactive_brain_map.md) :
+- [📄 pop_id.Rmd](./pop_id.Rmd) :
 
 ### `man/`
-- [:📄: A_rates.Rd]
+- [📄 A_rates.Rd]
 
 ### `R/`
 
-- [:📄: anthropogenic_deposition.R]() :
-- [:📄: climate.R]() :
-- [:📄: init_simulation.R]() :
-- [:📄: logistic_decay.R]() :
-- [:📄: natural_deposition.R]() :
-- [:📄: perlin_noise.R]() :
-- [:📄: population.R]() :
-- [:📄: record_loss.R]() :
-- [:📄: run_simulation.R]() :
-- [:📄: tools.R]() :
+- [📄 anthropogenic_deposition.R](./anthropogenic_deposition.R) :
+- [📄 climate.R](./climate.R) :
+- [📄 init_simulation.R](./init_simulation.R) :
+- [📄 logistic_decay.R](./logistic_decay.R) :
+- [📄 natural_deposition.R](./natural_deposition.R) :
+- [📄 perlin_noise.R](./perlin_noise.R) :
+- [📄 population.R](./population.R) :
+- [📄 record_loss.R](./record_loss.R) :
+- [📄 run_simulation.R](./run_simulation.R) :
+- [📄 tools.R](./tools.R) :
 
 
