@@ -82,11 +82,10 @@ This will be used if you want to follow the  allows to easily use the function d
 - [:file_folder: doc/bookdown/](./doc/bookdown/): cf section [The Bookdown](?tab=readme-ov-file#the-bookdown)
 - [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf section [The Bookdown](?tab=readme-ov-file#the-original-challenge)
 - [:file_folder: doc/tex_files/](./doc/tex_files//): a few `tex` file used to layout ideas
-- [📄 brain_map_colabm.png](./brain_map_colabm.png) : image representing an early reflection about the project
-- [📄 Explanation_of_ideas_brain_map.md](./Explanation_of_ideas_brain_map.md) :
-- [📄 foo](./foo) :
-- [📄 interactive_brain_map.md](./interactive_brain_map.md) :
-- [📄 pop_id.Rmd](./pop_id.Rmd) :
+- [📄 brain_map_colabm.png](./doc/brain_map_colabm.png) : image representing an early reflection about the project
+- [📄 Explanation_of_ideas_brain_map.md](./doc/Explanation_of_ideas_brain_map.md): Markdown file detailing programming languages, world options, and more.
+- [📄 interactive_brain_map.md](./doc/interactive_brain_map.md): Markdown guide for using Markmap visualization; contains programming language options and more.
+- [📄 pop_id.Rmd](./doc/pop_id.Rmd): R Markdown file about population ideas and environmental qualities for hunting/farming.
 
 ### `man/`
 - [📄 A_rates.Rd]
@@ -103,4 +102,5 @@ This will be used if you want to follow the  allows to easily use the function d
 - [📄 record_loss.R](./R/record_loss.R): Simulates taphonomic losses in archaeological records.
 - [📄 run_simulation.R](./R/run_simulation.R): Runs a simulation of cultural interactions, migration, and conflicts.
 - [📄 tools.R](./R/tools.R): Utility functions for visualization, data extraction, and map plotting.
+
 
