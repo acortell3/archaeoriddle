@@ -9,8 +9,8 @@ The Archaeoriddle Project is a project that has implemented and developed by the
 This repository compile together all the elements developed throughout this project. They can be divided in three main components, that are all detailed later in this file.
 
 1. [The Bookdown](#the-bookdown) : a compiled version is available online [here](www.thearchaeoriddle.com). This standalone document details every aspect of the project. It should allow the reproduction and exploration of every aspect of the project (:file_folder: [./doc/bookdown/](./doc/bookdown/)).
-2. [The Original Challenge](?tab=readme-ov-file#the-original-challenge) one instance of archaeoriddle's simulation, including the website, data and 5 participants contribution (:file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
-2. [The R package](?tab=readme-ov-file#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation (:file_folder: [./](./))
+2. [The Original Challenge](#the-original-challenge) one instance of archaeoriddle's simulation, including the website, data and 5 participants contribution (:file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
+2. [The R package](#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation (:file_folder: [./](./))
 
 
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own archaeoriddle.
@@ -22,29 +22,89 @@ This version includes the modifications asked by the reviewers and is the one ar
 
 ## The Bookdown
 
-The bookdown is available online at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) to allow anyone interested to discuss about the probject, problems encountered, and inferances in archaeology in general to interact.
+The bookdown is available online at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) to allow anyone interested to discuss about the project, the problems encountered while using the package, and inference in archaeology in general to interact.
 
 The source for the bookdown are stored in `doc/bookdown/`.
-This folder contains all the files and documents needed to compile the Archaeoriddle's bookdown. It also houses both the output and original files for the original Archaeoriddle's challenge.
+The folder contains all files and documents needed to compile the Archaeoriddle's bookdown. It also houses the output and original files shared for the original Archaeoriddle's challenge.
 
-If you want to compile bookdown yourself, we invite you to read [thischapter](https://thearchaeoriddle.org/index.html#compiling-the-book) of the bookdown.
+If you want to compile the bookdown yourself, we invite you to read [thischapter](https://thearchaeoriddle.org/index.html#compiling-the-book) of the bookdown.
 
+### Useful files & folders for this component:
+
+- [:file_folder: doc/bookdown/](./doc/bookdown/) : the main folder
+    - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challeng (cf below)
+    - [:file_folder: data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
+        - [🌐 allsites.shp](./doc/bookdown/data_tmp/allsites.shp) : shapefilewith the positions of all sites
+        - [📄 square_1.csv](./doc/bookdown/data_tmp/square_1.csv) to [square_65.csv](./doc/bookdown/data_tmp/square_1.csv): CSV listing the dates generated for all squares
+        - [💾 popSizeMatrix.RDS](./doc/bookdown/data_tmp/popSizeMatrix.RDS) : `RDS` storing a matrix with population size for all sites for all time step for one simulation.
+        - [💾 popStructList.RDS](./doc/bookdown/data_tmp/popStructList.RDS) : `RDS`  storing a list representing the population structure for all sites at all time step for one simulation.
+        - [💾 wardeath.RDS](./doc/bookdown/data_tmp/wardeath.RDS) : `RDS` file with a vector storing the total death per time step in the example simulation
+    - [:file_folder: data_toshare](./doc/bookdown/data_toshare/) : folder with data that will be share with participant 
+        - [🌐 costline.shp ](./doc/bookdown/data_toshare/coastline.shp) : shapefile defining the coastline of the world
+        - [🗺️ east_narnia4x.tiff](./doc/bookdown/data_toshare/dem_raster.tiff) : DEM raster with elevation of Rabbithole
+        - [🗺️ resources.tiff](./doc/bookdown/data_toshare/resources.tiff) : raster with the ecological fitness of the environment
 
 ## The Original Challenge 
 
-The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a serie of data sets publicly shared with archaeologist.
+The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a series of data sets publicly shared with archaeologists.
 
-Yoyou can start the server using:
+Three research questions where then asked, everyone had access to 4 squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request 5 more zone to survey, and received datasets covering the zones they picked. 
 
-Files & folder used for this:
+The original challenge received 5 proposal that can be explore via the links below:
 
-- [:file_folder: doc/shinyapp/]() : the code of  shiny app (the one behind the site available [here](https://theia.arch.cam.ac.uk/archaeoriddle))
-- [📄 doc/shinyapp/README.md]() : README explaininghow to recreate the shiny app
-- [:file_folder: ./doc/fake_papers/README.md]() :  latex code for sever fake papers and poster presented in conferences where the Original Challenge was presented.
 
-```bash
-Rscript  -e  "shiny::runApp('.',port=1234)"
-```
+### P1 By Deborah Priss and Kahlenberg
+
+Authors used agent-based modeling combined with exploratory data analysis to study dispersal and site preference in Rabbithole, using ArcGIS Pro and R for calibration and trajectory computation, resulting in an ABM built with NetLogo that correctly predicted group interactions and movements but revealed discrepancies in expansion rates due to differing population trajectories.
+
+**Source:** https://github.com/dpriss/Archaeoriddle_Kahlenberg_Priss
+**Citation:**
+
+
+### P2 by Xuan Zhang
+
+The author employed point-process modeling to predict potential occupation and assess conflict between groups, finding increased hostilities and mortality over time due to growing populations and settlements, despite non-time-dependent hostility rules.
+
+**Source:** https://github.com/Xuan-Zhang-arc/Archaeoriddle_PPM_HG_F_relationship/
+**Citation:** Xuan Zhang. (2024). Using Point Process Modelling to detect cooperation vs competition (Archaeoriddle RQ1) (Archaeoriddle). Zenodo. https://doi.org/10.5281/zenodo.12803445
+
+### P3 by Peter Yaworsky
+
+The author utilized species-distribution modeling in R to develop a four-stage approach that successfully modeled historical population distributions and dispersal patterns of farmers and foragers, highlighting a southerly to northerly farming dispersal and a decline in hunter-gatherer populations.
+
+**Source:** https://doi.org/10.5281/zenodo.8260754
+**Citation:** Yaworsky, P. (2023). Archeo-Riddle Submission 2023. Zenodo. https://doi.org/10.5281/zenodo.8260754
+
+
+### P4 by Alexes Mes:
+
+The author employed a friction-based strategy and hierarchical Bayesian phase modeling in R to analyze and successfully predict the complex dispersal patterns and expansion rates of Poppy-chewers in Rabbithole, incorporating spatial and environmental factors.
+source: (https://github.com/AlexesMes/Archeaoriddle_RabbitWorld) 
+
+
+### P5 by Daniel Hromada
+
+The author used a qualitative analysis to infer hostility between cultures A and B by comparing the shorter settlement persistence of culture A in region R_B, separated by a sea, to its persistence in other regions under equal conditions.
+
+
+The original challenge is detailed in [this chapter](https://thearchaeoriddle.org/original-challenge.html) of the bookdown.
+
+
+### Useful files & folders for this component:
+
+- [:file_folder: doc/shinyapp/](./doc/shinyapp/) : the code of  shiny app (the one behind the site available [here](https://theia.arch.cam.ac.uk/archaeoriddle))
+- [📄 doc/shinyapp/README.md](./doc/shinyapp/README.m) : README explaining how to recreate the shiny app and detailing the files available in the folder
+- [:file_folder: doc/fake_papers/](./doc/fake_papers/) :  latex code for sever fake papers and poster presented in conferences where the Original Challenge was presented.
+- [:file_folder: doc/bookdown/data_original/](./doc/bookdown/data_original/) : folder will all orignal
+    - [:file_folder: general_results_selected_simu/](./doc/bookdown/data_original/general_results_selected_simu/) :
+        - [💾 buffattack300_K110_PSU065_3_all.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS) : RDS file store most of the selected simulation
+        - [💾 buffattack300_K110_PSU065_3_sitesRast.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS) : RDS file storing a raster with the positions of the sites
+        - [💾 buffattack300_K110_PSU065_3_dates.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS) : RDS file storing all dates generated for all sites generated.
+    - [:file_folder: sitesinitialposition/](./doc/bookdown/data_original/sitesinitialposition/) : Folder with file needed to read shapefile
+        - [🌐 sitesinitialposition.shp](./doc/bookdown/data_original/sitesinitialposition/sitesinitialposition.shp) : shapefile with the position of the initial sites.
+    - [🌐 costline.shp ](./doc/bookdown/data_original/coastline.shp) : shapefile defining the coastline of the world
+    - [🗺️ east_narnia4x.tiff](./doc/bookdown/data_original/east_narnia4x.tif) : DEM raster with elevation of Rabbithole
+    - [🗺️ resources.tiff](./doc/bookdown/data_original/resources.tiff/) : raster with the ecological fitness of the environment
 
 
 ## The R-Package 
@@ -53,7 +113,9 @@ This overal structure of this repository is a R package.
 To install it, the most simple way will be by using `devtools` function `github_install()` by doing: `devtools::install_github("acortell3/archaeoriddle")`.
 Most of the functions defined in the package are described in details in [the bookdown](https://www.thearchaeoriddle).
 
-This will be used if you want to follow the  allows to easily use the function defined in  thus using `devtools::install_github("acortell3/archaeoriddle")` 
+The package will be used if you want to follow the bookdown or recompile it. It will also allows you to easily re-use the functions defined in the package to re-explore the proposal of the original challenge, create your own model of interaction, explore and modify the underlying model used throughout the Archaeoriddle project.
+
+To install the package, the easiest is probably to use `devtools` function `install_github`: `devtools::install_github("acortell3/archaeoriddle")` 
 
 
 ## Full file structure:
