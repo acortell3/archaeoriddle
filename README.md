@@ -147,7 +147,7 @@ To install the package, the easiest is probably to use `devtools` function `inst
 ### `doc/`
 
 - [:file_folder: doc/bookdown/](./doc/bookdown/): cf section [The Bookdown](#the-bookdown)
-- [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf section [The Bookdown](?tab=readme-ov-file#the-original-challenge)
+- [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf section [The Original Challenge](#the-original-challenge)
 - [:file_folder: doc/tex_files/](./doc/tex_files//): a few `tex`s file used to layout ideas
 - [🖼️  brain_map_colabm.png](./doc/brain_map_colabm.png) : image representing early reflections about the project
 - [📄 Explanation_of_ideas_brain_map.md](./doc/Explanation_of_ideas_brain_map.md): Markdown file detailing programming languages, world options, and more.
