@@ -44,11 +44,17 @@ If you want to compile the bookdown yourself, we invite you to read [thischapter
     - [📄 smallscript.md](./doc/bookdown/smallscript.md) : describe a few one liners to run multiple simulations to explore them before selecting a good one
     - [💾 testsites.RDS](./doc/bookdown/testsites.RDS) : Not used
     - [📄 tools.R](./doc/bookdown/tools.R) : serie of function, to be deleted as they should be all in `./R/`
+
+If you compile the bookdown yourself, folder will be generate (`data_tmp` and `data_toshare`) that will used to store file generated during the compilation (the new world, csv outputs, etc...).
+
+
 ## The Original Challenge 
 
 The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a series of data sets publicly shared with archaeologists.
 
 Three research questions where then asked, everyone had access to 4 squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request 5 more zone to survey, and received datasets covering the zones they picked. 
+
+<img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="300">
 
 The original challenge received 5 proposal that can be explore via the links below:
 
@@ -168,5 +174,4 @@ To install the package, the easiest is probably to use `devtools` function `inst
 - [📄 record_loss.R](./R/record_loss.R): Simulates taphonomic losses in archaeological records.
 - [📄 run_simulation.R](./R/run_simulation.R): Runs a simulation of cultural interactions, migration, and conflicts.
 - [📄 tools.R](./R/tools.R): Utility functions for visualization, data extraction, and map plotting.
-
 
