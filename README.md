@@ -4,7 +4,7 @@ If you don't know where to start, you may want to have a look at [thearchaeoridd
 
 ## Preamble
 
-The Archaeoriddle Project is a project that has implemented and developed by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute at the university of Cambridge, following ideas by Enrico Crema and Xavier Rubio-Campillo. It has been made possible mainly thanks to a grant from the British Academy (BA/), but would not have been possible without the support of the Marie Slobodwska-Curie (H2020-MSCA-IF No. 101020631/ArchBiMod), and the ENCOUNTER project.
+The Archaeoriddle Project is a project that has implemented and developed by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute at the university of Cambridge, following ideas by Enrico Crema and Xavier Rubio-Campillo. It has been made possible mainly thanks to a grant from the British Academy (SRG2223\230262), but would not have been possible without the support of the Marie Slobodwska-Curie (H2020-MSCA-IF No. 101020631/ArchBiMod), and the ENCOUNTER project (ERC grant agreement No 801953).
 
 This repository compile together all the elements developed throughout this project. They can be divided in three main components, that are all detailed later in this file.
 
