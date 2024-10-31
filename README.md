@@ -54,7 +54,7 @@ The Original Challenge correspond to a specific instance of the archaeoriddle, c
 
 Three research questions where then asked, everyone had access to 4 squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request 5 more zone to survey, and received datasets covering the zones they picked. 
 
-<img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="300">
+<center>  <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="300"> </center>
 
 The original challenge received 5 proposal that can be explore via the links below:
 
