@@ -32,18 +32,18 @@ If you want to compile the bookdown yourself, we invite you to read [thischapter
 ### Useful files & folders for this component:
 
 - [:file_folder: doc/bookdown/](./doc/bookdown/) : the main folder
-    - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challeng (cf below)
-    - [:file_folder: data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
-        - [🌐 allsites.shp](./doc/bookdown/data_tmp/allsites.shp) : shapefilewith the positions of all sites
-        - [📄 square_1.csv](./doc/bookdown/data_tmp/square_1.csv) to [square_65.csv](./doc/bookdown/data_tmp/square_1.csv): CSV listing the dates generated for all squares
-        - [💾 popSizeMatrix.RDS](./doc/bookdown/data_tmp/popSizeMatrix.RDS) : `RDS` storing a matrix with population size for all sites for all time step for one simulation.
-        - [💾 popStructList.RDS](./doc/bookdown/data_tmp/popStructList.RDS) : `RDS`  storing a list representing the population structure for all sites at all time step for one simulation.
-        - [💾 wardeath.RDS](./doc/bookdown/data_tmp/wardeath.RDS) : `RDS` file with a vector storing the total death per time step in the example simulation
-    - [:file_folder: data_toshare](./doc/bookdown/data_toshare/) : folder with data that will be share with participant 
-        - [🌐 costline.shp ](./doc/bookdown/data_toshare/coastline.shp) : shapefile defining the coastline of the world
-        - [🗺️ east_narnia4x.tiff](./doc/bookdown/data_toshare/dem_raster.tiff) : DEM raster with elevation of Rabbithole
-        - [🗺️ resources.tiff](./doc/bookdown/data_toshare/resources.tiff) : raster with the ecological fitness of the environment
-
+    - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challenge ([cf below](the-original-challenge)
+    - [:file_folder: fakedata/](./doc/bookdown/fakedata/): legacy folder with all csvs of the original challenge
+    - [📄 01_Introduction.Rmd](./doc/bookdown/01_Introduction.Rmd) to [09_thearchaeoriddle.Rmd](./doc/bookdown/09_thearchaeoriddle.Rmd): RMarkdown file with each chapter of the bookdown.
+    - [📄 README.md](./doc/bookdown/README.md) : README specific for the bookdown
+    - [📄 dateGeneration.R](./doc/bookdown/dateGeneration.R) : R script to automatically generate dates from record of population size through time
+    - [📄 exploreDate.R](./doc/bookdown/exploreDate.R) : R script for exploring and analyzing date-related data.
+    - [📄 index.Rmd](./doc/bookdown/index.Rmd) : Preface of the bookdown, initialise a few thing, load needed package,...
+    - [📄 packages.bib](./doc/bookdown/packages.bib) : Bibliography listing reference and package used for the bookdown.
+    - [📄 scriptmini.R](./doc/bookdown/scriptmini.R) : minimal exemple of how to rune one simulation and save the results.
+    - [📄 smallscript.md](./doc/bookdown/smallscript.md) : describe a few one liners to run multiple simulations to explore them before selecting a good one
+    - [💾 testsites.RDS](./doc/bookdown/testsites.RDS) : Not used
+    - [📄 tools.R](./doc/bookdown/tools.R) : serie of function, to be deleted as they should be all in `./R/`
 ## The Original Challenge 
 
 The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a series of data sets publicly shared with archaeologists.
@@ -99,7 +99,6 @@ The author used a qualitative analysis to infer hostility between cultures A and
 
 The original challenge is detailed in [this chapter](https://thearchaeoriddle.org/original-challenge.html) of the bookdown.
 
-
 ### Useful files & folders for this component:
 
 - [:file_folder: doc/shinyapp/](./doc/shinyapp/) : the code of  shiny app (the one behind the site available [here](https://theia.arch.cam.ac.uk/archaeoriddle))
@@ -148,7 +147,7 @@ To install the package, the easiest is probably to use `devtools` function `inst
 
 - [:file_folder: doc/bookdown/](./doc/bookdown/): cf section [The Bookdown](#the-bookdown)
 - [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf section [The Original Challenge](#the-original-challenge)
-- [:file_folder: doc/tex_files/](./doc/tex_files//): a few `tex`s file used to layout ideas
+- [:file_folder: doc/tex_files/](./doc/tex_files//): a few `tex` files used to layout ideas
 - [🖼️  brain_map_colabm.png](./doc/brain_map_colabm.png) : image representing early reflections about the project
 - [📄 Explanation_of_ideas_brain_map.md](./doc/Explanation_of_ideas_brain_map.md): Markdown file detailing programming languages, world options, and more.
 - [📄 interactive_brain_map.md](./doc/interactive_brain_map.md): Markdown guide for using Markmap visualization; contains programming language options and more.
