@@ -52,40 +52,49 @@ Three research questions where then asked, everyone had access to 4 squares repr
 
 The original challenge received 5 proposal that can be explore via the links below:
 
+### Proposals
 
-### P1 By Deborah Priss and Kahlenberg
+#### P1 By Deborah Priss and Kahlenberg
 
 Authors used agent-based modeling combined with exploratory data analysis to study dispersal and site preference in Rabbithole, using ArcGIS Pro and R for calibration and trajectory computation, resulting in an ABM built with NetLogo that correctly predicted group interactions and movements but revealed discrepancies in expansion rates due to differing population trajectories.
 
 **Source:** https://github.com/dpriss/Archaeoriddle_Kahlenberg_Priss
+
 **Citation:**
 
 
-### P2 by Xuan Zhang
+#### P2 by Xuan Zhang
 
 The author employed point-process modeling to predict potential occupation and assess conflict between groups, finding increased hostilities and mortality over time due to growing populations and settlements, despite non-time-dependent hostility rules.
 
 **Source:** https://github.com/Xuan-Zhang-arc/Archaeoriddle_PPM_HG_F_relationship/
+
 **Citation:** Xuan Zhang. (2024). Using Point Process Modelling to detect cooperation vs competition (Archaeoriddle RQ1) (Archaeoriddle). Zenodo. https://doi.org/10.5281/zenodo.12803445
 
-### P3 by Peter Yaworsky
+#### P3 by Peter Yaworsky
 
 The author utilized species-distribution modeling in R to develop a four-stage approach that successfully modeled historical population distributions and dispersal patterns of farmers and foragers, highlighting a southerly to northerly farming dispersal and a decline in hunter-gatherer populations.
 
 **Source:** https://doi.org/10.5281/zenodo.8260754
+
 **Citation:** Yaworsky, P. (2023). Archeo-Riddle Submission 2023. Zenodo. https://doi.org/10.5281/zenodo.8260754
 
 
-### P4 by Alexes Mes:
+#### P4 by Alexes Mes:
 
 The author employed a friction-based strategy and hierarchical Bayesian phase modeling in R to analyze and successfully predict the complex dispersal patterns and expansion rates of Poppy-chewers in Rabbithole, incorporating spatial and environmental factors.
-source: (https://github.com/AlexesMes/Archeaoriddle_RabbitWorld) 
+
+**Source:** https://github.com/AlexesMes/Archeaoriddle_RabbitWorld
+**Citation:** https://github.com/AlexesMes/Archeaoriddle_RabbitWorld
 
 
-### P5 by Daniel Hromada
+#### P5 by Daniel Hromada
 
 The author used a qualitative analysis to infer hostility between cultures A and B by comparing the shorter settlement persistence of culture A in region R_B, separated by a sea, to its persistence in other regions under equal conditions.
 
+**Source:**
+
+**Citation:**
 
 The original challenge is detailed in [this chapter](https://thearchaeoriddle.org/original-challenge.html) of the bookdown.
 
