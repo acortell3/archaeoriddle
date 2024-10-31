@@ -160,7 +160,7 @@ plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(orig
 
 i <- nrow(Nts)
 plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
-lapply(1:ncol(Nts),
+nill <- lapply(1:ncol(Nts),
        function(j)lines(Nts[,j],col=rainbow(2)[as.factor(original.sites$culture)[j]])
 )
 
@@ -184,7 +184,7 @@ Population by time and culture
 ```{r,eval=T}
 plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)),
      xlab="time", ylab="popsize")
-lapply(1:ncol(Nts),
+nill  <- lapply(1:ncol(Nts),
        function(i)lines(Nts[,i], col=rainbow(2)[as.factor(original.sites$culture)[i]]))
 plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
 
@@ -669,10 +669,12 @@ text(x = -.5, y = .7, labels = "🍔 ", adj = c(0, 0), cex = 6, col = "black", f
 
 ## The challenge
 
-### Research Question 
+### Research Questions
 
 RQ1. The Poppy-chewers and Rabbit-skinners had a hostile relationship.
+
 RQ2. Poppy-chewers followed an exponential population growth, while Rabbit-Skinners eventually stalled, and as the Poppy-chewers population size started to increase, their population declined (Fig. 3).
+
 RQ3. The rate of dispersal varied across the landscape, with an average of ~0.62 Km/year, faster for the sea crossing (~1.11 Km/year) and a slight slow-down to ~0.57 Km/year for the Northeastern quadrant of the map.
 
 ### Challenge & EAA workshop
