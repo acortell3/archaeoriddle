@@ -85,6 +85,7 @@ The author utilized species-distribution modeling in R to develop a four-stage a
 The author employed a friction-based strategy and hierarchical Bayesian phase modeling in R to analyze and successfully predict the complex dispersal patterns and expansion rates of Poppy-chewers in Rabbithole, incorporating spatial and environmental factors.
 
 **Source:** https://github.com/AlexesMes/Archeaoriddle_RabbitWorld
+
 **Citation:** https://github.com/AlexesMes/Archeaoriddle_RabbitWorld
 
 
