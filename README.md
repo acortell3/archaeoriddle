@@ -48,6 +48,8 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
     - [📄 tools.R](./doc/bookdown/tools.R) : serie of function, to be deleted as they should be all in `./R/`
 
 If you compile the bookdown yourself, some folder will be generated (`data_tmp` and `data_toshare`) that will be used to store file generated during the compilation (the new world, csv outputs, etc...). Here a quick overview of what they will look like:
+
+<sub>
     - [:file_folder: data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
         - [🌐 allsites.shp](./doc/bookdown/data_tmp/allsites.shp) : shapefilewith the positions of all sites
         - [📄 square_1.csv](./doc/bookdown/data_tmp/square_1.csv) to [square_65.csv](./doc/bookdown/data_tmp/square_65.csv): CSV listing the dates generated for all squares (exact number can change
@@ -64,6 +66,7 @@ If you compile the bookdown yourself, some folder will be generated (`data_tmp` 
         - [📄 square_1.csv](./doc/bookdown/data_toshare/square_1.csv) to [square_5.csv](./doc/bookdown/data_toshare/square_5.csv): randomly selected square share publicly 
 (reminder: these file _are not_ tracked by git, they appear _only_ if you decide to compile the bookdown)
 
+</sub>
 
 
 ## The Original Challenge 
@@ -140,7 +143,7 @@ The original challenge is detailed in [this chapter](https://thearchaeoriddle.or
 ### Useful files & folders for this component:
 
 - [:file_folder: doc/shinyapp/](./doc/shinyapp/) : the code of  shiny app (the one behind the site available [here](https://theia.arch.cam.ac.uk/archaeoriddle))
-- [📄 doc/shinyapp/README.md](./doc/shinyapp/README.m) : README explaining how to recreate the shiny app and detailing the files available in the folder
+    - [📄 README.md](./doc/shinyapp/README.m) : README explaining how to recreate the shiny app and detailing the files available in the folder
 - [:file_folder: doc/fake_papers/](./doc/fake_papers/) :  latex code for sever fake papers and poster presented in conferences where the Original Challenge was presented.
 - [:file_folder: doc/bookdown/data_original/](./doc/bookdown/data_original/) : folder will all orignal
     - [:file_folder: general_results_selected_simu/](./doc/bookdown/data_original/general_results_selected_simu/) :
