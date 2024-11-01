@@ -17,7 +17,7 @@ jobs:
         run: Rscript -e 'install.packages(c("bookdown","DiagrammeR","terra","sf","igraph","devtools","gifski"))'
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("doc/bookdown/")'
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v4
         with:
           name: _book
           path: doc/bookdown/_book/
