@@ -49,21 +49,20 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
 
 If you compile the bookdown yourself, some folder will be generated (`data_tmp` and `data_toshare`) that will be used to store file generated during the compilation (the new world, csv outputs, etc...). Here a quick overview of what they will look like:
 
-
-    - [:file_folder: data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
-        - [🌐 allsites.shp](./doc/bookdown/data_tmp/allsites.shp) : shapefilewith the positions of all sites
-        - [📄 square_1.csv](./doc/bookdown/data_tmp/square_1.csv) to [square_65.csv](./doc/bookdown/data_tmp/square_65.csv): CSV listing the dates generated for all squares (exact number can change
-        - [💾 popSizeMatrix.RDS](./doc/bookdown/data_tmp/popSizeMatrix.RDS) : `RDS` storing a matrix with population size for all sites for all time step for one simulation.
-        - [💾 popStructList.RDS](./doc/bookdown/data_tmp/popStructList.RDS) : `RDS`  storing a list representing the population structure for all sites at all time step for one simulation.
-        - [💾 wardeath.RDS](./doc/bookdown/data_tmp/wardeath.RDS) : `RDS` file with a vector storing the total death per time step in the example simulation
-        - [💾 exn_dates.RDS](./doc/bookdown/data_tmp/exn_dates.RDS): `RDS` file with dates generated in the exact simulations.
-        - [💾 exp1_all.RDS](./doc/bookdown/data_tmp/exp1_all.RDS) to [exp8_all.RDS](./doc/bookdown/data_tmp/exp8_all.RDS)  : `RDS` file with results of 8 different run in your new world.
-        - [💾 exp1_sitesRast.RDS](./doc/bookdown/data_tmp/exp1_sitesRast.RDS) to [exp8_sitesRast.RDS](./doc/bookdown/data_tmp/exp8_sitesRast.RDS)  : `RDS` file sites position  of 8 different run in your new world.
-    - [:file_folder: data_toshare](./doc/bookdown/data_toshare/) : folder with data that will be share with participant 
-        - [🌐 costline.shp ](./doc/bookdown/data_toshare/coastline2.shp) : shapefile defining the coastline of the world
-        - [🗺️ dem_raster.tiff](./doc/bookdown/data_toshare/dem_raster.tiff) : DEM raster with elevation of your new wolrd 
-        - [🗺️ resources.tiff](./doc/bookdown/data_toshare/resources.tiff) : raster with the ecological fitness of the environment
-        - [📄 square_1.csv](./doc/bookdown/data_toshare/square_1.csv) to [square_5.csv](./doc/bookdown/data_toshare/square_5.csv): randomly selected square share publicly 
+- [:file_folder: doc/bookdown/data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
+    - [🌐 allsites.shp](./doc/bookdown/data_tmp/allsites.shp) : shapefilewith the positions of all sites
+    - [📄 square_1.csv](./doc/bookdown/data_tmp/square_1.csv) to [square_65.csv](./doc/bookdown/data_tmp/square_65.csv): CSV listing the dates generated for all squares (exact number can change
+    - [💾 popSizeMatrix.RDS](./doc/bookdown/data_tmp/popSizeMatrix.RDS) : `RDS` storing a matrix with population size for all sites for all time step for one simulation.
+    - [💾 popStructList.RDS](./doc/bookdown/data_tmp/popStructList.RDS) : `RDS`  storing a list representing the population structure for all sites at all time step for one simulation.
+    - [💾 wardeath.RDS](./doc/bookdown/data_tmp/wardeath.RDS) : `RDS` file with a vector storing the total death per time step in the example simulation
+    - [💾 exn_dates.RDS](./doc/bookdown/data_tmp/exn_dates.RDS): `RDS` file with dates generated in the exact simulations.
+    - [💾 exp1_all.RDS](./doc/bookdown/data_tmp/exp1_all.RDS) to [exp8_all.RDS](./doc/bookdown/data_tmp/exp8_all.RDS)  : `RDS` file with results of 8 different run in your new world.
+    - [💾 exp1_sitesRast.RDS](./doc/bookdown/data_tmp/exp1_sitesRast.RDS) to [exp8_sitesRast.RDS](./doc/bookdown/data_tmp/exp8_sitesRast.RDS)  : `RDS` file sites position  of 8 different run in your new world.
+- [:file_folder: data_toshare](./doc/bookdown/data_toshare/) : folder with data that will be share with participant 
+    - [🌐 costline.shp ](./doc/bookdown/data_toshare/coastline2.shp) : shapefile defining the coastline of the world
+    - [🗺️ dem_raster.tiff](./doc/bookdown/data_toshare/dem_raster.tiff) : DEM raster with elevation of your new wolrd 
+    - [🗺️ resources.tiff](./doc/bookdown/data_toshare/resources.tiff) : raster with the ecological fitness of the environment
+    - [📄 square_1.csv](./doc/bookdown/data_toshare/square_1.csv) to [square_5.csv](./doc/bookdown/data_toshare/square_5.csv): randomly selected square share publicly 
 <sub>
 (reminder: these file _are not_ tracked by git, they appear _only_ if you decide to compile the bookdown)
 </sub>
