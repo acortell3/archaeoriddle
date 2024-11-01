@@ -16,10 +16,10 @@ This repository compile together all the elements developed throughout this proj
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own archaeoriddle.
 
 
-*Note:* The version v0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
+*Note:* The version v 0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
 Cortell-Nicolau,  Carrignon, S., Rodíguez-Palomo, I, Hromada,  Kahlenberg, R , Mes, A Priß, D, Yaworsky, P, Zhang, X, Brainerd, L, Lewis, J, Redhouse, D, Simmons, C, Coto-Sarmiento, M, Daems, D, Deb, A, Lawrence D, O’Brien, M, Riede, F, Rubio-Campillo, X, Crema, E.
 
-This version includes the modifications asked by the reviewers and is the one archived on zenodo with the DOI: . 
+This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: [10.5281/zenodo.14024548](10.5281/zenodo.14024548]).
 
 ## The Bookdown
 
@@ -75,7 +75,7 @@ Via the website, everyone had access to fou squares representing 4 zones of 'Rab
 
 ### Proposals
 
-The original challenge received 5 proposals that can be explore via the links below:
+The original challenge received 5 proposals that can be explore via the links below. A snapshot of the proposals the way they were provided by the authors after the revision process are also provided on the [zenodo repository](https://doi.org/10.5281/zenodo.14024548). We here briefly summarize the proposal and give links to the original source of them.
 
 #### P1 by Deborah Priß and Raphael Kahlenberg
 
