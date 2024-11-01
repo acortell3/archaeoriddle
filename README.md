@@ -67,7 +67,8 @@ Via the website, everyone had access to fou squares representing 4 zones of 'Rab
   <figure>
     <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="45%">
     <img src="doc/bookdown/data_original/map_rh.png" alt="Map of rabbithole with square" width="45%">
-    <figcaption>Map of Rabbithole, on the left with name of the settlement, on the right with the square available</figcaption>
+<br>
+    <figcaption style="font-size:5pt"> Map of Rabbithole, on the left with name of the settlement, on the right with the square available</figcaption>
   </figure>
 </div>
 The original challenge received 5 proposals that can be explore via the links below:
