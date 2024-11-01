@@ -53,13 +53,24 @@ If you compile the bookdown yourself, some folder will be generated (`data_tmp` 
 
 ## The Original Challenge 
 
-The Original Challenge correspond to a specific instance of the archaeoriddle, call 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. The output of the simulation has been used to generate a series of data sets publicly shared with archaeologists.
+The Original Challenge correspond to a specific instance of the archaeoriddle, called 'Rabbithole'. This includes : a landscape, an 'ecological map', a set of parameters that have been used to carry set of simulations among which  _one_ has been chosen. From the outcome of the simulation, carbon deposit have been generated and csv with list of C14 dates create. The map of the landscape and the ecological raster, togethe with a select set of csv file among these generated where shared  publicly with archaeologists via an online website. The website is still available [here](https://theia.arch.cam.ac.uk/archaeoriddle/) on the 1st of November 2024, but will probably disappear anytime soon ; but the source to generate the website are provided in this repository [here](./doc/shinyapp/).
 
-Three research questions where then asked, everyone had access to 4 squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request 5 more zone to survey, and received datasets covering the zones they picked. 
+On the website, three research questions were asked:
 
-<div style="text-align: center;"> <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="600"> </div>
+- RQ1. What was the relationship between the two groups? Was it peaceful or hostile?
+- RQ2. What was the population trajectory of each group?
+- RQ3. What was the rate of dispersal of poppy chewers?
 
-The original challenge received 5 proposal that can be explore via the links below:
+Via the website, everyone had access to fou squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request five additional zones that will be 'excavated' for them and they then received datasets covering the zones they picked. 
+
+<div style="text-align: center;">
+  <figure>
+    <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="600">
+    <img src="doc/bookdown/data_original/map_rh.png" alt="Map of rabbithole with square" width="600">
+    <figcaption>Map of Rabbithole, on the left with name of the settlement, on the right with the square available</figcaption>
+  </figure>
+</div>
+The original challenge received 5 proposals that can be explore via the links below:
 
 ### Proposals
 
@@ -78,7 +89,7 @@ The author employed point-process modeling to predict potential occupation and a
 
 **Source:** https://github.com/Xuan-Zhang-arc/Archaeoriddle_PPM_HG_F_relationship/
 
-**Citation:** Xuan Zhang. (2024). Using Point Process Modelling to detect cooperation vs competition (Archaeoriddle RQ1) (Archaeoriddle). Zenodo. https://doi.org/10.5281/zenodo.12803445
+**Citation:** Xuan Zhang. (2024). _Using Point Process Modelling to detect cooperation vs competition (Archaeoriddle RQ1) (Archaeoriddle)._ Zenodo. https://doi.org/10.5281/zenodo.12803445
 
 #### P3 by Peter Yaworsky
 
@@ -86,7 +97,7 @@ The author utilized species-distribution modeling in R to develop a four-stage a
 
 **Source:** https://doi.org/10.5281/zenodo.8260754
 
-**Citation:** Yaworsky, P. (2023). Archeo-Riddle Submission 2023. Zenodo. https://doi.org/10.5281/zenodo.8260754
+**Citation:** Yaworsky, P. (2023). _Archeo-Riddle Submission 2023._ Zenodo. https://doi.org/10.5281/zenodo.8260754
 
 
 #### P4 by Alexes Mes:
