@@ -50,6 +50,7 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
 If you compile the bookdown yourself, some folder will be generated (`data_tmp` and `data_toshare`) that will be used to store file generated during the compilation (the new world, csv outputs, etc...). Here a quick overview of what they will look like:
 
 <sub>
+
     - [:file_folder: data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
         - [🌐 allsites.shp](./doc/bookdown/data_tmp/allsites.shp) : shapefilewith the positions of all sites
         - [📄 square_1.csv](./doc/bookdown/data_tmp/square_1.csv) to [square_65.csv](./doc/bookdown/data_tmp/square_65.csv): CSV listing the dates generated for all squares (exact number can change
