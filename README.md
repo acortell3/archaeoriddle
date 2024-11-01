@@ -64,7 +64,6 @@ If you compile the bookdown yourself, some folder will be generated (`data_tmp` 
     - [🗺️ dem_raster.tiff](./doc/bookdown/data_toshare/dem_raster.tiff) : DEM raster with elevation of your new wolrd 
     - [🗺️ resources.tiff](./doc/bookdown/data_toshare/resources.tiff) : raster with the ecological fitness of the environment
     - [📄 square_1.csv](./doc/bookdown/data_toshare/square_1.csv) to [square_5.csv](./doc/bookdown/data_toshare/square_5.csv): randomly selected square share publicly 
-
 (reminder: these file _are not_ tracked by git, they appear _only_ if you decide to compile the bookdown)
 </sub>
 
