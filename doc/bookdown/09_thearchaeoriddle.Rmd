@@ -1,29 +1,54 @@
 # Archaeoriddle: the original challenge {#original-challenge}
 
-We will here go through the whole steps we presented throught all Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters use to generate the data shared during the archaeoriddle original challenge. 
+We will here go through the whole steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the archaeoriddle original challenge. 
 
-We will also discuss some of the proposal submitted for the challenge and you will be able to try the challenge too!
-
-
+We will also discuss some of the proposal submitted for the challenge and you will be able to try the challenge too.
 
 ## Context 
+
+After discussion within the member of the CDAL, we decided that a challenge-like event, with a cash-prize, would be the best way to convince people to participate. After the B/A grant has been awarded to Simon Carrignon, Alfredo Cortell and Enrico Crema, we thus decided to announce this challenge through various social media video and a website: https://theia.arch.cam.ac.uk/archaeoriddle/
+
+As this website will disappear anytime soon, here is the first page:
+
+
+The source to reproduce the website are also available in the github Archaeoriddle repository [here](https://github.com/acortell3/archaeoriddle/tree/main/doc/shinyapp).
 
 
 ## Implementation
 
+The Challenge is basically built on top of a manually selected environment, generated using the tools describe in the previous chapter, on top of which a bunch of simulation have been run, and one has been selected.
 
-As I (simon) am stupid I didn't generate seeds for each experiment so we cannot re-run it EXACTLY the same. But I kept lot of informations and output about it.
+But as [Simon Carrinon](sc.fram.io) has do a poor job when he did the simulation he didn't generate seeds, nor stored them, for each experiment ; so we cannot re-run it EXACTLY the same. But he kept a lot of informations and output about it which, are stored in the folder `general_results_selected_simu/`
 
-They are stored in the folder `general_results_selected_simu/`
+This should be enough to allow anyone to reconstruct most of what happened. Thus, a quick recap of the implementation of the original challenge:
 
-and will allow us to reconstruct most of what happened. We basically run thousands of simulations and choose the one who looked the cool 😆. We used the script `scriptmini.R` that allow to run one simulation and ran in in parallel as described in `smallscript.md`.
+From all the function developped and describ previously in this book:
 
+1. Generate an environment that look cools
+2. Choose a series of parameters and
+3. Run hundreds of simulations and choose the one who looked the coolest 😆.
+  
+We used the script [scriptmini.R](https://github.com/acortell3/archaeoriddle/blob/main/doc/bookdown/scriptmini.R) to run one simulation, and then used a very simple and inelegant bash loop to parallelise muleiple run:
 
-This summarise all the previous steps but using the original map and sites.
+```bash
+for t in {1..5} ; do Rscript scriptmini.R newset_$t > log_new_set$t 2> log_new_set$t.err &  done
+```
 
-The original raster:
+On can see, on line 52 until the end of the `scriptmini.R`. that some graph are saved. This will be used to quickly compare the different simulation and choose the good one.
 
-```{r}
+The simulation are also run with the parameter: `visumin=TRUE `, which allow to save time serie of image at every time step while the model is running.
+
+```bash
+for i in test*_? ; do ffmpeg -i "$i/map_000%3d.png" "${i}_out.mp4" ; done
+```
+
+## Reminder
+
+Here we will summarise all the previous steps but using the original map and sites.
+
+Load the original raster:
+
+```{r originalrast,fig.show="hold"}
 
 original.ras <- rast("data_original/east_narnia4x.tif")
 plot(original.ras, col=col_ramp(20), legend=F, reset=F)
@@ -44,9 +69,9 @@ coastline <- st_as_sf(as.polygons(above_level))[2,]
 plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
 ```
 
-Adding ressource
+Adding ressource to it using original geolocalistaiont
 
-```{r}
+```{r originalress,fig.show="hold"}
 ##ressource geolocalisation set manually
 goodresources <- vect(
   cbind(
@@ -83,14 +108,14 @@ plot(original.ress)
 
 This, should be exactly what is stored in `data_original/resources.tiff`
 
-```{r comptiff,out.width="45%" }
+```{r comptiff,out.width="45%",fig.show="gold" }
 plot(original.ress)
 plot(rast("data_original/resources.tiff"))
 ```
 
-We then take back the sites position defined for the original archaeoriddle:
+We then take back the sites position defined for the original archaeoriddle and all the original parameters:
 
-```{r}
+```{r originalinit}
 original.sites=vect("data_original/sitesinitialposition/")
 
 
@@ -113,17 +138,19 @@ minimals <- c("HG"=0.14, "F"=0.20)
 prob_move <- c("HG"=0.2,"F"=0.1)
 ```
 
-Let's check again our raster and the sites and there cutlures etc...
-```{r}
+This is `Rabbithole`  home of the Poppychewer and Rabbitskinner!
+`
+
+```{r rabbithole}
 plotMap(original.ras,original.wat,paste0("year ", 0))
 points(crds(original.sites), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(original.sites$culture)],col=1)
 text(original.sites,pos=3)
 ```
 
 
-Let's run one simple simulation on the archaeoriddle:
+Let's run one simple simulation on Rabbithole:
 
-```{r,eval=T}
+```{r exsimurh,eval=T}
 
 ts <- 100
 
@@ -148,7 +175,7 @@ onesimu <- run_simulation(
 )
 ```
 
-```{r,cache=F}
+```{r plotsimurh,cache=F}
 Nts <- onesimu$Nts # population at each timestep
 warcasualties <- onesimu$warcasualties #death by war at each time step
 plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(original.sites$culture)])
@@ -167,6 +194,7 @@ nill <- lapply(1:ncol(Nts),
 ```
 
 Visualise, Record deposit and  loss. for the 5 first sites (see next chapters for `A_rates`).
+
 ```{r,out.width="25%"}
 alldeposit <- lapply(
   1:5,
@@ -190,7 +218,6 @@ plot(apply(Nts, 1, sum)[1:i], xlab="time", ylab="popsize")
 
 ```
 
-
 Exploring some trajectories of the simulations
 
 ```{r, eval=T}
@@ -212,7 +239,7 @@ points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' cul
 
 ### Generate and share final simulation
 
-No we have the full setup, we want to generate a record people will uses :
+Now we have the full setup, we want to generate a record people will uses :
 
 
 1. We first load the maps and the sites:
@@ -619,7 +646,7 @@ plot(st_geometry(ne),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(ne$culture),alpha
 
 More maps for twitter:
 
-```{r randommaps2}
+```{r randommaps2,out.width="50%",fig.show="hold"}
 plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
@@ -631,10 +658,11 @@ text(x = -1, y = 1.2, labels = "🔥 ", adj = c(0, 0), cex = 3, col = "black", f
 text(x = -1, y = 1.2, labels = "⚔️ ", adj = c(0, 0), cex = 3, col = "black", font = 1)
 text(x = -1.2, y = 1.8/2, labels = "???? ", adj=c(0,0), cex = 3, col = "black", font = 1)
 ```
+
 More maps!! (the coolest)
 
 
-```{r randommaps3}
+```{r randommaps3,out.width="50%",fig.show="hold"}
 plotMap(height.ras,height.wat)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
 plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
@@ -647,7 +675,7 @@ text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
 ```
 
 
-```{r}
+```{r randommaps4,out.width="50%",fig.show="hold"}
 
 plotMap(height.ras,height.wat)
 contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
@@ -663,8 +691,6 @@ text(x = -1.8, y = .7, labels = "👍 ", adj = c(0, 0), cex = 8, col = "black", 
 text(x = -.5, y = .7, labels = "🍔 ", adj = c(0, 0), cex = 6, col = "black", font = 1)
 #text(x = -1, y = 1.2, labels = "⚔️ ", adj = c(0, 0), cex = 3, col = "black", font = 1)
 #text(x = -1.2, y = 1.8/2, labels = "???? ", adj=c(0,0), cex = 3, col = "black", font = 1)
-
-
 ```
 
 ## The challenge

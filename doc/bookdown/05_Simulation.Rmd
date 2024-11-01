@@ -344,8 +344,8 @@ for(expname in paste0("exp",1:9)){
     warcasualties=onesimu$warcasualties
     sites=onesimu$sites
     i=min(ts,which(apply(Nts,1,sum)==0))
-    saveRDS(file=paste0(expname,"_all.RDS"),onesimu)
-    saveRDS(file=paste0(expname,"_sitesRast.RDS"),onesimu$sites)
+    saveRDS(file=file.path(foldtmp,paste0(expname,"_all.RDS")),onesimu)
+    saveRDS(file=file.path(foldtmp,paste0(expname,"_sitesRast.RDS")),onesimu$sites)
     plotMap(height.ras,height.wat,paste0("year ",i))
     plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
     growF=apply(Nts[1:i,sites$culture=="F"],1,sum)
