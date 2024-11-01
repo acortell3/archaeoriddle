@@ -8,3 +8,6 @@
 doc/bookdown/_book*
 doc/bookdown/_main*
 doc/bookdown/packages.bib
+doc/bookdown/data_tmp/*
+doc/bookdown/data_toshare/*
+

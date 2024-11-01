@@ -17,17 +17,20 @@ This repository has the structure of an R package. This allows each sub-componen
 
 
 *Note:* The version v0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
-Cortell-Nicolau,  Carrignon, S., Rodíguez-Palomo, I, Hromada,  Kahlenberg, , Mes, A Priss, D, Yaworsky, P, Zhang, X, Brainerd, L, Lewis, J, Redhouse, D, Simmons, C, Coto-Sarmiento, M, Daems, D, Deb, A, Lawrence D, O’Brien, M, Riede, F, Rubio-Campillo, X, Crema, E.
+Cortell-Nicolau,  Carrignon, S., Rodíguez-Palomo, I, Hromada,  Kahlenberg, R , Mes, A Priß, D, Yaworsky, P, Zhang, X, Brainerd, L, Lewis, J, Redhouse, D, Simmons, C, Coto-Sarmiento, M, Daems, D, Deb, A, Lawrence D, O’Brien, M, Riede, F, Rubio-Campillo, X, Crema, E.
+
 This version includes the modifications asked by the reviewers and is the one archived on zenodo with the DOI: . 
 
 ## The Bookdown
 
-The bookdown is available online at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) to allow anyone interested to discuss about the project, the problems encountered while using the package, and inference in archaeology in general to interact.
+The bookdown is available online at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) that allows anyone interested to discuss the project, address issues encountered while using the package or simply curious to explore and exchange about inference in archaeology in general,
 
-The source for the bookdown are stored in `doc/bookdown/`.
-The folder contains all files and documents needed to compile the Archaeoriddle's bookdown. It also houses the output and original files shared for the original Archaeoriddle's challenge.
+The Archaeoriddle bookdown guides you through the entire Archaeoriddle project, allowing you to follow everything that has been done, which models have been chosen at different level and why. Coupled with the functions provided by [the R package](#the-r-package), you will be able to use the provided code chunks to reproduce every element yourself, and create your own world, with its unique mountains, seas, and islands. You will be able generate settlements, with populations that fluctuate based on parameters you will choose. The bookdown also facilitates recreating your own [challenge](#the-original-challenge),  to generate your own radiocarbon deposits and create output files to share with students or colleagues and find out who can infer your original parameters.
 
-If you want to compile the bookdown yourself, we invite you to read [thischapter](https://thearchaeoriddle.org/index.html#compiling-the-book) of the bookdown.
+The source for the bookdown is stored in `doc/bookdown/`. This folder contains all the files and documents needed to compile the Archaeoriddle's bookdown. It also houses the output and original files shared for the original Archaeoriddle's challenge.
+
+If you want to compile the bookdown yourself, we invite you to read [this chapter](https://thearchaeoriddle.org/index.html#compiling-the-book) of the bookdown.
+
 
 ### Useful files & folders for this component:
 
@@ -45,7 +48,7 @@ If you want to compile the bookdown yourself, we invite you to read [thischapter
     - [💾 testsites.RDS](./doc/bookdown/testsites.RDS) : Not used
     - [📄 tools.R](./doc/bookdown/tools.R) : serie of function, to be deleted as they should be all in `./R/`
 
-If you compile the bookdown yourself, folder will be generate (`data_tmp` and `data_toshare`) that will used to store file generated during the compilation (the new world, csv outputs, etc...).
+If you compile the bookdown yourself, some folder will be generated (`data_tmp` and `data_toshare`) that will be used to store file generated during the compilation (the new world, csv outputs, etc...).
 
 
 ## The Original Challenge 
@@ -54,13 +57,13 @@ The Original Challenge correspond to a specific instance of the archaeoriddle, c
 
 Three research questions where then asked, everyone had access to 4 squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request 5 more zone to survey, and received datasets covering the zones they picked. 
 
-<center>  <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="600"> </center>
+<div style="text-align: center;"> <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="600"> </div>
 
 The original challenge received 5 proposal that can be explore via the links below:
 
 ### Proposals
 
-#### P1 By Deborah Priss and Kahlenberg
+#### P1 by Deborah Priß and Raphael Kahlenberg
 
 Authors used agent-based modeling combined with exploratory data analysis to study dispersal and site preference in Rabbithole, using ArcGIS Pro and R for calibration and trajectory computation, resulting in an ABM built with NetLogo that correctly predicted group interactions and movements but revealed discrepancies in expansion rates due to differing population trajectories.
 
