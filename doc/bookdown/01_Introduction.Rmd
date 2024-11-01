@@ -12,36 +12,28 @@ output:
 Archaeoriddle is a collaborative project at the Computational and Digital Archaeology Laboratory (CDAL) from the Department of Archaeology, University of Cambridge. The project started with an idea to develop an ABM to simulate an interaction process in the imaginary world of *Rabbithole* between two fictitious groups: the hunter-gatherers called *rabbitskinners* and the farmers called *poppychewers*. Through this world, the project could explore archaeological use of data and methods in a controlled environment to learn more about the act of research. The project has also produced a large amount of media content for dissemination and engagement, most of which can be found on the various social accounts linked to the project ([here](https://twitter.com/archaeoriddle/) or [here](https://fediscience.org/@archaeoriddle)). 
 
 
-There, you will also find all of the information related to the project (or most of it anyway). In brief, the idea was to create a virtual world were *we*, as developers, know the full extent of what happened in the archaeological past, but those outside the project would be limited to a partial view of the data, reflecting real life where the archaeological record is incomplete. Given this limited dataset, interested participants were given questions to answer with their own chosen methods. We created a map with 100 grids of which only 5 are shared commonly, and each participant has the right to request 5 more of their own preference. All these data has additionally gone through processes of creation and loss emulating the archaeological record. The idea is that each researcher tries to understand what happened so that the results of the different methodologies proposed can be compared.
-
-
 There you will also find all of the information related to the project (or most of it anyway), but in brief, the idea behind it is to create a virtual world where *we*, as developers, know what happened, but where only  partial data are available to the public. With this, there are then some questions which interested participants have to answer with their own methods. In particular, we have created a map with 100 grid squares, of which only five were shared commonly, and each participant had the right to request five more squares of their own preference. Additionally, all data had gone through processes of creation and loss, emulating the archaeological record. The aim was that each researcher tried to understand what happened so that the results of the different proposed methodologies could be compared.
 
 
-The project has been a great success, and the team presented at several conferences (dedicated presentations at [CAA](https://uk.caa-international.org/) conferences 2022 and 2023, as well as several others), culminating with a thought-provoking discussion at the dedicated workshop in the European Association of Archaeologists conference in Belfast (2023) where interested participants presented their proposals. The full project is explained in more detail at the website referred to above. We are continuing to produce more documentation, which will explain even more, but this general picture is what you need to know to use this bookdown document. 
+The project has been presented at several conferences (dedicated presentations at [CAA](https://uk.caa-international.org/) conferences 2022 and 2023, as well as mentioned in several others), culminating with a thought-provoking discussion at the dedicated workshop in the European Association of Archaeologists conference in Belfast (2023) where interested participants presented their proposals. 
 
 
 ## What will you find in this bookdown?
+
 This bookdown document provides an explanation of the model used in the creation of the project. Everything has been developed using R. By downloading the package "archaeoriddle" from GitHub, you can reproduce the world of the *Rabbithole* or adapt it to create your own using the code provided in this bookdown document. This might be useful not only to create a virtual world from scratch while attending to different archaeological constraints, but also provides an excellent exercise to practice making R-based ABMs. Finally, all the data, this includes the data that we produceed (including what's on the website) or the one that you produce from this is free, and you are free modify to suit your differing needs. We have structured the following chapters as follows:
 
--   Landscape & resources: functions and methods to create 'realistic' artificial environments.
-
--   Population structure & growth: functions & methods to initialise sites location, population structure and growth.
-  
--   Migration & conflicts: functions & methods that handle movements of populations and their interactions.
-
--   Main simulation: the main function that wrap together the previous elements to simulate the interactions processes.
-
--   Record formation: functions and methods that generate archaeological record given the population of each site generated during the main simulation.
-
--   Record loss: functions and methods to simulate loss of the record through time.
-
--   Generate Final archaeological record: functions and methods that wrap together the main simulation, the record formation and loss, and generate shareable files for people to explore
-
-- Archaoriddle: the original:  The full description of the parameters, runs and data generated, as well as the 5 proposal gather for the original challenges
+1. [Introduction](#introduction): this introduction
+2. Chapter [Landscape & resources:](#env) functions and methods to create 'realistic' artificial environments.
+3. Chapter [Population structure & growth:](#popgrowth) functions & methods to initialise sites location, population structure and growth.
+4. Chapter [Migration & conflicts:](#conflict) functions & methods that handle movements of populations and their interactions.
+5. Chapter [Main simulation:](#main-simu) the main function that wrap together the previous elements to simulate the interactions processes.
+6. Chapter [Record formation:](#recgen) functions and methods that generate archaeological record given the population of each site generated during the main simulation.
+7. Chapter [Record loss:](#recloss) functions and methods to simulate loss of the record through time.
+8. Chapter [Generate Final archaeological record:](#final-output) functions and methods that wrap together the main simulation, the record formation and loss, and generate shareable files for people to explore
+9. Chapter [Archaoriddle: the original challenge:](#orignal-challenge)  The full description of the parameters, runs and data generated, as well as the 5 proposal gather for the original challenge
 
 ## What can you do with this?
-Well, many things! We have mentioned the data already generated (which can be freely downloaded) can be used for your own research purposes or as an educational tool. We encourage you to use the code in this bookdown to generate your own *Rabbithole* and pose your own research questions with synthetic data. Additionally, this book is also a good document for the development of ABMs in R. 
+Well, many things! We have mentioned that the data generated in the original challenge (which can be freely downloaded [here]()) can be used for your own research purposes or as an educational tool. We encourage you to use the code in this bookdown to generate your own *Rabbithole* and pose your own research questions with synthetic data. Additionally, this book is also a good document for the development of ABMs in R. 
 
 
 All in all, our purpose is not only to bring awareness to the strengths and weaknesses of archaeological methodology, but also to provide material (e.g. methods, theory, and code) for interested researchers so that they can reproduce their own virtual worlds and do their own experiments. Thus, we are proposing a tool that can be used for research, but which is also an excellent testing ground for educational and training purposes. Download things and toy around! Don't worry, you won't break anything!!
