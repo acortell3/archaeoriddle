@@ -68,9 +68,10 @@ Via the website, everyone had access to fou squares representing 4 zones of 'Rab
     <img src="doc/bookdown/data_original/map_rh.png" alt="Map of rabbithole with square" width="40%">
     <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="40%">
   </figure>
+<br>
+<sub>Map of publicly available sites of Rabbithole: On the left, the squares available; on the right, the names and cultures of the settlements.</sub>
 </div>
 
-<sub>Map of publicly available sites of Rabbithole: On the left, the squares available; on the right, the names and cultures of the settlements.</sub>
 
 ### Proposals
 
