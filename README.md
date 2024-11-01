@@ -4,7 +4,7 @@ If you don't know where to start, you may want to have a look at [thearchaeoridd
 
 ## Preamble
 
-The Archaeoriddle Project is a project that has implemented and developed by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute at the university of Cambridge, following ideas by Enrico Crema and Xavier Rubio-Campillo. It has been made possible mainly thanks to a grant from the British Academy (SRG2223\230262), but would not have been possible without the support of the Marie Slobodwska-Curie (H2020-MSCA-IF No. 101020631/ArchBiMod), and the ENCOUNTER project (ERC grant agreement No 801953).
+The Archaeoriddle Project has been implemented and developed by the [Computational and Digital Archaeology Lab](https://www.arch.cam.ac.uk/research/laboratories/cdal) at the McDonald Institute, University of Cambridge, based on ideas from Enrico Crema and Xavier Rubio-Campillo. It is primarily funded by a grant from the British Academy (SRG2223\230262) and the Marie Skłodowska-Curie Actions (H2020-MSCA-IF No. 101020631/ArchBiMod), but would not have been possible without support from the ENCOUNTER project (ERC grant agreement No. 801953).
 
 This repository compile together all the elements developed throughout this project. They can be divided in three main components, that are all detailed later in this file.
 
@@ -13,24 +13,23 @@ This repository compile together all the elements developed throughout this proj
 2. [The R package](#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation ( :file_folder: [./](./))
 
 
-This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own archaeoriddle.
+This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own Archaeoriddle world.
 
 
-*Note:* The version v 0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
-Cortell-Nicolau,  Carrignon, S., Rodíguez-Palomo, I, Hromada,  Kahlenberg, R , Mes, A Priß, D, Yaworsky, P, Zhang, X, Brainerd, L, Lewis, J, Redhouse, D, Simmons, C, Coto-Sarmiento, M, Daems, D, Deb, A, Lawrence D, O’Brien, M, Riede, F, Rubio-Campillo, X, Crema, E.
+*Note:* The version v0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
+Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
 This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](10.5281/zenodo.14024548]).
 
 ## The Bookdown
 
-The bookdown is available online at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) that allows anyone interested to discuss the project, address issues encountered while using the package or simply curious to explore and exchange about inference in archaeology in general.
+This is the main outcome of the Archaeoriddle project, detailing all the other sub-components. An online version is available at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) intended to be a place where anyone can come to discuss the project, issues encountered while using the package or simply curious to explore and exchange about inference in archaeology in general.
 
-The Archaeoriddle bookdown guides you through the entire Archaeoriddle project, allowing you to follow everything that has been done, which models have been chosen at different level and why. Coupled with the functions provided by [the R package](#the-r-package), you will be able to use the provided code chunks to reproduce every element yourself, and create your own world, with its unique mountains, seas, and islands. You will be able generate settlements, with populations that fluctuate based on parameters you will choose. The bookdown also facilitates recreating your own [challenge](#the-original-challenge),  to generate your own radiocarbon deposits and create output files to share with students or colleagues and find out who can infer your original parameters.
+The Archaeoriddle bookdown guides you through the Archaeoriddle project, allowing you to follow everything step and decision taken ; which models have been chosen at different level and why. Coupled with the functions provided by [the R package](#the-r-package), you will be able to use code chunks to reproduce elements of interest yourself, create your own world, with its unique mountains, seas, and islands. You will be able to generate settlements, distribute populations that fluctuate based on parameters you will choose. The bookdown also facilitates recreating your own [challenge](#the-original-challenge). It will take you through all steps to generate your own radiocarbon deposits and create output files to share with students or colleagues and find out who can infer your original parameters.
 
 The source for the bookdown is stored in `doc/bookdown/`. This folder contains all the files and documents needed to compile the Archaeoriddle's bookdown. It also houses the output and original files shared for the original Archaeoriddle's challenge.
 
 If you want to compile the bookdown yourself, we invite you to read [this chapter](https://thearchaeoriddle.org/index.html#compiling-the-book) of the bookdown.
-
 
 ### Useful files & folders for this component:
 
@@ -48,7 +47,23 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
     - [💾 testsites.RDS](./doc/bookdown/testsites.RDS) : Not used
     - [📄 tools.R](./doc/bookdown/tools.R) : serie of function, to be deleted as they should be all in `./R/`
 
-If you compile the bookdown yourself, some folder will be generated (`data_tmp` and `data_toshare`) that will be used to store file generated during the compilation (the new world, csv outputs, etc...).
+If you compile the bookdown yourself, some folder will be generated (`data_tmp` and `data_toshare`) that will be used to store file generated during the compilation (the new world, csv outputs, etc...). Here a quick overview of what they will look like:
+    - [:file_folder: data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
+        - [🌐 allsites.shp](./doc/bookdown/data_tmp/allsites.shp) : shapefilewith the positions of all sites
+        - [📄 square_1.csv](./doc/bookdown/data_tmp/square_1.csv) to [square_65.csv](./doc/bookdown/data_tmp/square_65.csv): CSV listing the dates generated for all squares (exact number can change
+        - [💾 popSizeMatrix.RDS](./doc/bookdown/data_tmp/popSizeMatrix.RDS) : `RDS` storing a matrix with population size for all sites for all time step for one simulation.
+        - [💾 popStructList.RDS](./doc/bookdown/data_tmp/popStructList.RDS) : `RDS`  storing a list representing the population structure for all sites at all time step for one simulation.
+        - [💾 wardeath.RDS](./doc/bookdown/data_tmp/wardeath.RDS) : `RDS` file with a vector storing the total death per time step in the example simulation
+        - [💾 exn_dates.RDS](./doc/bookdown/data_tmp/exn_dates.RDS): `RDS` file with dates generated in the exact simulations.
+        - [💾 exp1_all.RDS](./doc/bookdown/data_tmp/exp1_all.RDS) to [exp8_all.RDS](./doc/bookdown/data_tmp/exp8_all.RDS)  : `RDS` file with results of 8 different run in your new world.
+        - [💾 exp1_sitesRast.RDS](./doc/bookdown/data_tmp/exp1_sitesRast.RDS) to [exp8_sitesRast.RDS](./doc/bookdown/data_tmp/exp8_sitesRast.RDS)  : `RDS` file sites position  of 8 different run in your new world.
+    - [:file_folder: data_toshare](./doc/bookdown/data_toshare/) : folder with data that will be share with participant 
+        - [🌐 costline.shp ](./doc/bookdown/data_toshare/coastline2.shp) : shapefile defining the coastline of the world
+        - [🗺️ dem_raster.tiff](./doc/bookdown/data_toshare/dem_raster.tiff) : DEM raster with elevation of your new wolrd 
+        - [🗺️ resources.tiff](./doc/bookdown/data_toshare/resources.tiff) : raster with the ecological fitness of the environment
+        - [📄 square_1.csv](./doc/bookdown/data_toshare/square_1.csv) to [square_5.csv](./doc/bookdown/data_toshare/square_5.csv): randomly selected square share publicly 
+(reminder: these file _are not_ tracked by git, they appear _only_ if you decide to compile the bookdown)
+
 
 
 ## The Original Challenge 
