@@ -1,5 +1,3 @@
-
-
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14024548.svg)](https://doi.org/10.5281/zenodo.14024548)
 
 
@@ -13,7 +11,7 @@ The Archaeoriddle Project has been implemented and developed by the [Computation
 
 This repository compile together all the elements developed throughout this project. They can be divided in three main components, that are all detailed later in this file.
 
-1. [The Bookdown](#the-bookdown) : a compiled version is available online [here](www.thearchaeoriddle.com). This standalone document details every aspect of the project. It should allow the reproduction and exploration of every aspect of the project ( :file_folder: [./doc/bookdown/](./doc/bookdown/)).
+1. [The Bookdown](#the-bookdown) : a compiled version is available online [here](htt://www.thearchaeoriddle.com). This standalone document details every aspect of the project. It should allow the reproduction and exploration of every aspect of the project ( :file_folder: [./doc/bookdown/](./doc/bookdown/)).
 2. [The Original Challenge](#the-original-challenge) one instance of archaeoriddle's simulation, including the website, data and 5 participants contribution ( :file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
 2. [The R package](#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation ( :file_folder: [./](./))
 
