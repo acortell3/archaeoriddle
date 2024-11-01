@@ -114,13 +114,14 @@ To then share these date we choose to split the environment in grids and extract
 
 ```{r plotallfoundiste-ex,cache=F,fig.cap="The black dots represent the sites for which dates are available, the size of the circle reflect the amount of dates available. each square represent an area that can be selected by the users."}
 
-leftdates=dates[lengths(dates)>0]
+leftdates <- dates[lengths(dates)>0]
 plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+.1,pch=21,bg=1,add=T)
-squares=st_make_grid(height.ras,.5)
-plot(squares,add=T,col=adjustcolor(rainbow(length(squares)),.35))
-text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
-text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
+squares <- st_make_grid(height.ras,.5)
+squares <- st_bind_cols(squares,ID=1:length(squares))
+plot(squares,add=T,col=adjustcolor(rainbow(nrow(squares)),.35))
+text(st_coordinates(st_centroid(squares)),label=squares$ID,col="white")
+text(st_coordinates(st_centroid(squares)),label=squares$ID,col="white")
 ```
 
 In the archaoriddle original challenge we proposed to give the data from 4 grids that we selected oursleve to be sure the participants have a least _some_  interesting information. Here we randomly pick up 4 squares with the only limits that they provide at least 5 settlements. You will want to change and manually population the vector `selection` in the chunk below to cover area with lot of sites and sites from differents cultures, from what can be seen in the Figure&nbsp;\@ref(fig:plotallfoundiste-ex).
@@ -128,13 +129,13 @@ In the archaoriddle original challenge we proposed to give the data from 4 grids
 ```{r getpublicsele-ex,cache=F,out.width="45%",fig.show="hold",fig.cap="Left: square publicly available ; right: sites surveyed within these publicly available squares."}
 plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
-selection=sample(seq_along(squares),4)
-inter <- st_intersection(st_as_sf(foundsites),squares[selection])
+selection=sample(1:nrow(squares),4)
+inter <- st_intersection(st_as_sf(foundsites),squares[selection,])
 while(nrow(inter)<5){
-    selection=sample(seq_along(squares),4)
-    inter <- st_intersection(st_as_sf(foundsites),squares[selection])
+    selection=sample(1:nrow(squares),4)
+    inter <- st_intersection(st_as_sf(foundsites),squares[selection,])
 }
-plot(squares[selection],add=T,col=adjustcolor("blue",.3))
+plot(squares[selection,],add=T,col=adjustcolor("blue",.3))
 plotMap(height.ras,height.wat)
 plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
 ```
@@ -168,10 +169,9 @@ Export csv and data for each public square
 
 ```{r exportpublic-ex,eval=T}
 
-inter$sitesnames=sitesnames
 for(g in selection){
-curr=inter[inter$ID==g,]
-coords=st_coordinates(curr)
+    curr=inter[inter$ID==g,]
+    coords=st_coordinates(curr)
     write.csv(file=file.path("data_toshare",paste0("square_",g,".csv")),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
 
@@ -187,11 +187,11 @@ Export csv and data for all ever square
 
 ```{r exportprivate-ex,eval=T}
 
-allsites=st_intersection(st_as_sf(foundsites),squares[-selection])
+allsites=st_intersection(st_as_sf(foundsites),squares[-selection,])
 
-for(g in (1:length(squares))[-selection]){
-curr=allsites[allsites$ID==g,]
-coords=st_coordinates(curr)
+for(g in (1:nrow(squares))[-selection]){
+    curr=allsites[allsites$ID==g,]
+    coords=st_coordinates(curr)
     write.csv(file=file.path("data_tmp",paste0("square_",g,".csv")),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
 
