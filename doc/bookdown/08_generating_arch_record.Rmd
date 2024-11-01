@@ -22,10 +22,10 @@ This has been done using file `dateGeneration.R`, we will describe it here now.
 First we get the rasters defining the environment (If you followed the book since the beginning they should be already in memory but in case you didn't we we reload them here:
 
 ```{r getRaster-ex,eval=T,cache=F}
-height.ras=rast("data_toshare/dem_raster.tiff")
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-Nts=readRDS("data_tmp/popSizeMatrix.RDS")
+height.ras <- rast(file.path("data_toshare","dem_raster.tiff")
+height.wat <- height.ras
+height.wat[height.wat>mean(height.wat[])] <- NA
+Nts <- readRDS("data_tmp/popSizeMatrix.RDS")
 plotMap(height.ras,height.wat)
 ```
 
