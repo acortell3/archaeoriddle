@@ -67,14 +67,17 @@ Via the website, everyone had access to fou squares representing 4 zones of 'Rab
     <img src="doc/bookdown/data_original/map_rh.png" alt="Map of rabbithole with square" width="40%">
     <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="40%">
   </figure>
+
+<br>
     <sub> Map of publicly avalaible sites of Rabbithole: On the left with  the square available, on the right with names and cultures of the settlement.</sub>
-The original challenge received 5 proposals that can be explore via the links below:
 
 ### Proposals
 
+The original challenge received 5 proposals that can be explore via the links below:
+
 #### P1 by Deborah Priß and Raphael Kahlenberg
 
-Authors used agent-based modeling combined with exploratory data analysis to study dispersal and site preference in Rabbithole, using ArcGIS Pro and R for calibration and trajectory computation, resulting in an ABM built with NetLogo that correctly predicted group interactions and movements but revealed discrepancies in expansion rates due to differing population trajectories.
+> Authors used agent-based modeling combined with exploratory data analysis to study dispersal and site preference in Rabbithole, using ArcGIS Pro and R for calibration and trajectory computation, resulting in an ABM built with NetLogo that correctly predicted group interactions and movements but revealed discrepancies in expansion rates due to differing population trajectories.
 
 **Source:** https://github.com/dpriss/Archaeoriddle_Kahlenberg_Priss
 
@@ -83,7 +86,7 @@ Authors used agent-based modeling combined with exploratory data analysis to stu
 
 #### P2 by Xuan Zhang
 
-The author employed point-process modeling to predict potential occupation and assess conflict between groups, finding increased hostilities and mortality over time due to growing populations and settlements, despite non-time-dependent hostility rules.
+> The author employed point-process modeling to predict potential occupation and assess conflict between groups, finding increased hostilities and mortality over time due to growing populations and settlements, despite non-time-dependent hostility rules.
 
 **Source:** https://github.com/Xuan-Zhang-arc/Archaeoriddle_PPM_HG_F_relationship/
 
@@ -91,7 +94,7 @@ The author employed point-process modeling to predict potential occupation and a
 
 #### P3 by Peter Yaworsky
 
-The author utilized species-distribution modeling in R to develop a four-stage approach that successfully modeled historical population distributions and dispersal patterns of farmers and foragers, highlighting a southerly to northerly farming dispersal and a decline in hunter-gatherer populations.
+> The author utilized species-distribution modeling in R to develop a four-stage approach that successfully modeled historical population distributions and dispersal patterns of farmers and foragers, highlighting a southerly to northerly farming dispersal and a decline in hunter-gatherer populations.
 
 **Source:** https://doi.org/10.5281/zenodo.8260754
 
@@ -100,7 +103,7 @@ The author utilized species-distribution modeling in R to develop a four-stage a
 
 #### P4 by Alexes Mes:
 
-The author employed a friction-based strategy and hierarchical Bayesian phase modeling in R to analyze and successfully predict the complex dispersal patterns and expansion rates of Poppy-chewers in Rabbithole, incorporating spatial and environmental factors.
+> The author employed a friction-based strategy and hierarchical Bayesian phase modeling in R to analyze and successfully predict the complex dispersal patterns and expansion rates of Poppy-chewers in Rabbithole, incorporating spatial and environmental factors.
 
 **Source:** https://github.com/AlexesMes/Archeaoriddle_RabbitWorld
 
@@ -109,7 +112,7 @@ The author employed a friction-based strategy and hierarchical Bayesian phase mo
 
 #### P5 by Daniel Hromada
 
-The author used a qualitative analysis to infer hostility between cultures A and B by comparing the shorter settlement persistence of culture A in region R_B, separated by a sea, to its persistence in other regions under equal conditions.
+> The author used a qualitative analysis to infer hostility between cultures A and B by comparing the shorter settlement persistence of culture A in region R_B, separated by a sea, to its persistence in other regions under equal conditions.
 
 **Source:**
 
