@@ -8,9 +8,9 @@ The Archaeoriddle Project is a project that has implemented and developed by the
 
 This repository compile together all the elements developed throughout this project. They can be divided in three main components, that are all detailed later in this file.
 
-1. [The Bookdown](#the-bookdown) : a compiled version is available online [here](www.thearchaeoriddle.com). This standalone document details every aspect of the project. It should allow the reproduction and exploration of every aspect of the project (:file_folder: [./doc/bookdown/](./doc/bookdown/)).
-2. [The Original Challenge](#the-original-challenge) one instance of archaeoriddle's simulation, including the website, data and 5 participants contribution (:file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
-2. [The R package](#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation (:file_folder: [./](./))
+1. [The Bookdown](#the-bookdown) : a compiled version is available online [here](www.thearchaeoriddle.com). This standalone document details every aspect of the project. It should allow the reproduction and exploration of every aspect of the project ( :file_folder: [./doc/bookdown/](./doc/bookdown/)).
+2. [The Original Challenge](#the-original-challenge) one instance of archaeoriddle's simulation, including the website, data and 5 participants contribution ( :file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
+2. [The R package](#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation ( :file_folder: [./](./))
 
 
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own archaeoriddle.
@@ -19,11 +19,11 @@ This repository has the structure of an R package. This allows each sub-componen
 *Note:* The version v 0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
 Cortell-Nicolau,  Carrignon, S., Rodíguez-Palomo, I, Hromada,  Kahlenberg, R , Mes, A Priß, D, Yaworsky, P, Zhang, X, Brainerd, L, Lewis, J, Redhouse, D, Simmons, C, Coto-Sarmiento, M, Daems, D, Deb, A, Lawrence D, O’Brien, M, Riede, F, Rubio-Campillo, X, Crema, E.
 
-This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: [10.5281/zenodo.14024548](10.5281/zenodo.14024548]).
+This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](10.5281/zenodo.14024548]).
 
 ## The Bookdown
 
-The bookdown is available online at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) that allows anyone interested to discuss the project, address issues encountered while using the package or simply curious to explore and exchange about inference in archaeology in general,
+The bookdown is available online at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) that allows anyone interested to discuss the project, address issues encountered while using the package or simply curious to explore and exchange about inference in archaeology in general.
 
 The Archaeoriddle bookdown guides you through the entire Archaeoriddle project, allowing you to follow everything that has been done, which models have been chosen at different level and why. Coupled with the functions provided by [the R package](#the-r-package), you will be able to use the provided code chunks to reproduce every element yourself, and create your own world, with its unique mountains, seas, and islands. You will be able generate settlements, with populations that fluctuate based on parameters you will choose. The bookdown also facilitates recreating your own [challenge](#the-original-challenge),  to generate your own radiocarbon deposits and create output files to share with students or colleagues and find out who can infer your original parameters.
 
