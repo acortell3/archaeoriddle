@@ -47,6 +47,7 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
     - [💾 testsites.RDS](./doc/bookdown/testsites.RDS) : Not used
     - [📄 tools.R](./doc/bookdown/tools.R) : serie of function, to be deleted as they should be all in `./R/`
 
+<sub>
 If you compile the bookdown yourself, some folder will be generated (`data_tmp` and `data_toshare`) that will be used to store file generated during the compilation (the new world, csv outputs, etc...). Here a quick overview of what they will look like:
 
 - [:file_folder: doc/bookdown/data_tmp/](./doc/bookdown/data_tmp/) : folder with data generated during the compilation of the bookdown.
@@ -63,7 +64,7 @@ If you compile the bookdown yourself, some folder will be generated (`data_tmp` 
     - [🗺️ dem_raster.tiff](./doc/bookdown/data_toshare/dem_raster.tiff) : DEM raster with elevation of your new wolrd 
     - [🗺️ resources.tiff](./doc/bookdown/data_toshare/resources.tiff) : raster with the ecological fitness of the environment
     - [📄 square_1.csv](./doc/bookdown/data_toshare/square_1.csv) to [square_5.csv](./doc/bookdown/data_toshare/square_5.csv): randomly selected square share publicly 
-<sub>
+
 (reminder: these file _are not_ tracked by git, they appear _only_ if you decide to compile the bookdown)
 </sub>
 
