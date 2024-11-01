@@ -63,13 +63,14 @@ On the website, three research questions were asked:
 
 Via the website, everyone had access to fou squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request five additional zones that will be 'excavated' for them and they then received datasets covering the zones they picked. 
 
+<div style="font-size: 8pt;text-align: center;">
   <figure>
     <img src="doc/bookdown/data_original/map_rh.png" alt="Map of rabbithole with square" width="40%">
     <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="40%">
   </figure>
+</div>
 
-<br>
-    <sub> Map of publicly avalaible sites of Rabbithole: On the left with  the square available, on the right with names and cultures of the settlement.</sub>
+<sub>Map of publicly available sites of Rabbithole: On the left, the squares available; on the right, the names and cultures of the settlements.</sub>
 
 ### Proposals
 
