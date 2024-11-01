@@ -65,8 +65,8 @@ Via the website, everyone had access to fou squares representing 4 zones of 'Rab
 
 <div style="text-align: center;">
   <figure>
-    <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="600">
-    <img src="doc/bookdown/data_original/map_rh.png" alt="Map of rabbithole with square" width="600">
+    <img src="doc/bookdown/data_original/map_ex.png" alt="Map of rabbithole" width="45%">
+    <img src="doc/bookdown/data_original/map_rh.png" alt="Map of rabbithole with square" width="45%">
     <figcaption>Map of Rabbithole, on the left with name of the settlement, on the right with the square available</figcaption>
   </figure>
 </div>
