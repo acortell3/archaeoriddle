@@ -1,9 +1,8 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14024548.svg)](https://doi.org/10.5281/zenodo.14024548)
 
-
 # The Archaeoriddle
 
-If you don't know where to start, you may want to have a look at [thearchaeoriddle.com](https://thearchaeoriddle.org/)
+If you don't know where to start, you may want to have a look at [thearchaeoriddle.com](https://thearchaeoriddle.org/)!
 
 ## Preamble
 
