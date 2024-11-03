@@ -290,7 +290,7 @@ We can look again at the site at the beginning
 
 ```{r plotinitialcondition-oc,cache=F}
 
-sites.oc=vect("data_original/sites.ocinitialposition/")
+sites.oc=vect("data_original/sitesinitialposition/")
 height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
@@ -373,13 +373,14 @@ Although the seed used for the sampling hasn't be saved, the output of this step
 
 ```{r getfakedates-oc}
 dates.oc=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
+sites.oc=vect("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS")
 ```
 
 After our previous sub-sampling, some sites wont have any date  so we remove them from the list of available dates, that becomes:
 
-```{r extractdates-oc,cache=F}
-foundsites.oc=sites.oc[lengths(dates)>0,]
-foundsites.oc$numdates=unlist(lengths(dates[lengths(dates)>0]))
+```{r extractdates-oc}
+foundsites.oc=sites.oc[lengths(dates.oc)>0,]
+foundsites.oc$numdates=unlist(lengths(dates.oc[lengths(dates.oc)>0]))
 founddates.oc=dates.oc[lengths(dates.oc)>0]
 ```
 
@@ -396,20 +397,20 @@ plotMap(height.ras,height.wat)
 plot(foundsites.oc,cex=foundsites.oc$numdates/20+1,pch=21,bg=as.factor(foundsites.oc$culture),add=T)
 ```
 
-Again, this is stochastic (the selection of the fake standard variation added is radom), so the exact results can't be reproduced exactly, although in that case this steps doesn't change anything, the outcome of this steps is available in the folder [data_original/all_squares/](./data_original/all_squares/).
+Again, this is stochastic (the selection of the fake standard variation added is radom), so the exact results can't be reproduced exactly, although in that case this steps doesn't change anything, the outcome of this steps is available in the folder [data_original/all_squares.oc/](./data_original/all_squares.oc/).
 
 ### Grid generation and sharing
 
 Split the environment in grids and extract date for each grid
 
-```{r plotallfoundiste-oc,cache=F}
+```{r plotallfoundiste-oc}
 leftdates=dates.oc[lengths(dates.oc)>0]
 plotMap(height.ras,height.wat)
 plot(foundsites.oc,cex=foundsites.oc$numdates/20+.1,pch=21,bg=1,add=T)
-squares=st_make_grid(height.ras,.5)
-plot(squares,add=T,col=adjustcolor(rainbow(length(squares)),.35))
-text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
-text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
+squares.oc=st_make_grid(height.ras,.5)
+plot(squares.oc,add=T,col=adjustcolor(rainbow(length(squares.oc)),.35))
+text(st_coordinates(st_centroid(squares.oc)),label=1:length(squares.oc),col="white")
+text(st_coordinates(st_centroid(squares.oc)),label=1:length(squares.oc),col="white")
 ```
 
 The original selection was :
@@ -417,23 +418,23 @@ The original selection was :
 ```{r getpublicsele-oc}
 plotMap(height.ras,height.wat)
 plot(foundsites.oc,cex=foundsites.oc$numdates/20+1,pch=21,bg=as.factor(foundsites.oc$culture),add=T)
-selection=c(14,30,45,65,66)
-plot(squares[selection],add=T,col=adjustcolor("blue",.3))
-inter=st_intersection(st_as_sf(foundsites.oc),squares[selection])
+selection.oc=c(14,30,45,65,66)
+plot(squares.oc[selection.oc],add=T,col=adjustcolor("blue",.3))
+inter.oc=st_intersection(st_as_sf(foundsites.oc),squares.oc[selection.oc])
 plotMap(height.ras,height.wat)
-plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
+plot(st_geometry(inter.oc),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter.oc$culture)],pch=21,cex=1+inter.oc$numdates/10)
 ```
 
 ### Giving name to the publicly available data {#naming}
 
 For the original challange we wanted sites to have a name for the sites publicly available. To do so we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php). We manually positionned to generate some culturally relevant group depending on their geographical position, in a way slightly inspired by the reality ;  although this has no impact on the results. 
 
-```{r namesites,cache=F}
+```{r namesites-oc}
 
-site_dist=st_distance(inter)
+site_dist=st_distance(inter.oc)
 #min(site_dist[as.numeric(site_dist)>units(0)])
 
-sitesnames=1:nrow(inter)
+sitesnames=1:nrow(inter.oc)
 
 sitesnames[c(1:4, 20)]=c("Farwallow" ,"Bearcall" ,"Dustscar" ,"Clearreach" ,"Rabbithole")
 
@@ -442,26 +443,26 @@ sitesnames[5:19]=fr[1:(19-4)]
 spain=c("Zava" ,"Catadrid" ,"Tegon" ,"Alicia" ,"Mulid" ,"Zararbella" ,"Malid" ,"Cásca" ,"Granalejos" ,"Segorez" ,"Terteixo" ,"Astumanca" ,"Galle" ,"Talona" ,"Girovega" ,"Albanada" ,"Nadoba" ,"Senca" ,"Vallanca" ,"Taville")
 
 sitesnames[21:length(sitesnames)]=spain[1:(length(sitesnames)-20)]
-inter=cbind(inter,sitesnames)
+inter.oc=cbind(inter.oc,sitesnames)
 plotMap(height.ras,height.wat)
-plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
-text(st_coordinates(inter),inter$sitesnames,cex=.8,pos=3)
+plot(st_geometry(inter.oc),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter.oc$culture)],pch=21,cex=1+inter.oc$numdates/10)
+text(st_coordinates(inter.oc),inter.oc$sitesnames,cex=.8,pos=3)
 ```
 
 We can then export `csv`s and data for each public square, and the non-public one. We here simply follow what was presented in Chapter&nbsp;\@ref(final-output#provide-survey-square-and-publicly-available-dates):
 
 ```{r exportpublic,eval=F}
 
-inter$sitesnames=sitesnames
-for(g in selection){
-	curr=inter[inter$ID==g,]
+inter.oc$sitesnames=sitesnames
+for(g in selection.oc){
+	curr=inter.oc[inter.oc$ID==g,]
 	coords=st_coordinates(curr)
 	write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
 
-remainingsites.oc=st_intersection(st_as_sf(foundsites.oc),squares[-selection])
+remainingsites.oc=st_intersection(st_as_sf(foundsites.oc),squares.oc[-selection.oc])
 
-for(g in (1:length(squares))[-selection]){
+for(g in (1:length(squares.oc))[-selection.oc]){
 	curr=remainingsites.oc[remainingsites.oc$ID==g,]
 	coords=st_coordinates(curr)
 	write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
