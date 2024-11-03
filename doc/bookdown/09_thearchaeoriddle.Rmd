@@ -183,22 +183,20 @@ plot(rast("data_original/resources.tiff"))
 ```
 
 And this is `Rabbithole`  home of the Poppychewer and Rabbitskinner!
-
+We can take back the sites' positions, defined for the original Archaeoriddle and see all sites at the beginning of the simulation:
 
 ```{r rabbithole}
+original.sites=vect("data_original/sitesinitialposition/")
 plotMap(original.ras,original.wat,paste0("year ", 0))
 points(crds(original.sites), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(original.sites$culture)],col=1)
 text(original.sites,pos=3)
 ```
 
-We then take back the sites' position defined for the original Archaeoriddle and all the original parameters:
+And below are the original set of parameters.
 
 ```{r originalinit}
-original.sites=vect("data_original/sitesinitialposition/")
 
-
-Kbase=c("HG"=45,"F"=120) #difference in K for the two cultures
-
+Kbase=c("HG"=35,"F"=120) #difference in K for the two cultures
 # spatial penality to extent: lower, bigger penality
 cul_ext <- c("HG"=7, "F"=6)
 # penality of occupational area: low, other sites can come close
@@ -206,7 +204,7 @@ penal_cul <- c("HG"=4, "F"=5)
 # proba to give birth every year
 prob_birth <- c("HG"=0.3, "F"=0.5)
 # proba to die when pop > K
-prob_survive <- c("HG"=0.8, "F"=0.6)
+prob_survive <- c("HG"=0.8, "F"=0.65)
 # proba to create new settlement when Ne > K
 prob_split <- c("HG"=0.2, "F"=0.6)
 # how big the group of migrant should be to create a new city vs
@@ -216,9 +214,9 @@ minimals <- c("HG"=0.14, "F"=0.20)
 prob_move <- c("HG"=0.2,"F"=0.1)
 ```
 
-And run one simple simulation on Rabbithole:
+We can play with that, and run one simple simulation on Rabbithole:
 
-```{r exsimurh,eval=T}
+```{r exsimu-oc,eval=T}
 
 ts <- 100
 
@@ -245,7 +243,7 @@ onesimu <- run_simulation(
 
 And explore the output:
 
-```{r plotsimurh,fig.show="hold",out.width="45%"}
+```{r plotsimu-oc,fig.show="hold",out.width="45%"}
 Nts <- onesimu$Nts # population at each timestep
 warcasualties <- onesimu$warcasualties #death by war at each time step
 plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(original.sites$culture)])
@@ -279,11 +277,10 @@ Nonetheless, even if we can't replicate it from scratch, we still have informati
 ### Generate and share final simulation
 
 
-Let's load again the maps and the sites of the original challenge:
+Let's load again the maps, matrix storing all population changes and war casualites
 
 
 ```{r loadressources-oc}
-sites=vect("data_original/sitesinitialposition/")
 theoriginalchallenge=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
 Nts=theoriginalchallenge$Nts
 warcasualties=theoriginalchallenge$warcasualties
@@ -293,14 +290,14 @@ We can look again at the site at the beginning
 
 ```{r plotinitialcondition-oc,cache=F}
 
-sites=vect("data_original/sitesinitialposition/")
+sites.oc=vect("data_original/sites.ocinitialposition/")
 height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 year=1 
 plotMap(height.ras,height.wat,paste0("year ",year,", when it all begins"))
-plot(sites,cex=(as.integer(Nts[year,]>0)*0.5+Nts[year,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
-text(sites[Nts[year,]>0],pos=3)
+plot(sites.oc,cex=(as.integer(Nts[year,]>0)*0.5+Nts[year,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites.oc$culture)])
+text(sites.oc[Nts[year,]>0],pos=3)
 
 ```
 
@@ -313,8 +310,8 @@ plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",yaxt="n",ylab="",x
 axis(4)
 mtext("# dead",4,2.5)
 par(new=T)
-growF=apply(Nts[1:i,sites$culture=="F"],1,sum)
-growHG=apply(Nts[1:i,sites$culture=="HG"],1,sum)
+growF=apply(Nts[1:i,sites.oc$culture=="F"],1,sum)
+growHG=apply(Nts[1:i,sites.oc$culture=="HG"],1,sum)
 plot(growF,col="orange",type="l",lwd=5,ylim=c(0,max(growF,growHG)),xlim=c(0,i),ylab="pop",xlab="")
 points(growHG,col="blue",lwd=5,type="l")
 ```
@@ -375,29 +372,28 @@ saveRDS(allRemainingDates,file=paste0(expname,"_dates.RDS"))
 Although the seed used for the sampling hasn't be saved, the output of this steps been saved and get be loaded back.
 
 ```{r getfakedates-oc}
-dates=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
+dates.oc=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
 ```
 
 After our previous sub-sampling, some sites wont have any date  so we remove them from the list of available dates, that becomes:
 
-```{r extractdates,cache=F}
-
-foundsites=allsites[lengths(dates)>0,]
-foundsites$numdates=unlist(lengths(dates[lengths(dates)>0]))
-founddates=dates[lengths(dates)>0]
+```{r extractdates-oc,cache=F}
+foundsites.oc=sites.oc[lengths(dates)>0,]
+foundsites.oc$numdates=unlist(lengths(dates[lengths(dates)>0]))
+founddates.oc=dates.oc[lengths(dates.oc)>0]
 ```
 
 We then make it a bit annoying by removing BP to the dates, we add useless and meaningless different standard deviation:
 
-```{r addstdev}
+```{r addstdev-oc}
 stdpool=c(20,30,40,50,60,80,100,120)
-founddates=lapply(founddates,sort)
-founddates=lapply(founddates,gsub,pattern=" BP",replacement="")
-founddates=lapply(founddates,rev)
-founddates=lapply(founddates,function(i)paste0(i," ± ",sample(stdpool,length(i),replace=T,prob=c(3,3,3,3,2,2,1,1))," BP"))
-foundsites$dates=sapply(founddates,paste0,collapse=" | ")
+founddates.oc=lapply(founddates.oc,sort)
+founddates.oc=lapply(founddates.oc,gsub,pattern=" BP",replacement="")
+founddates.oc=lapply(founddates.oc,rev)
+founddates.oc=lapply(founddates.oc,function(i)paste0(i," ± ",sample(stdpool,length(i),replace=T,prob=c(3,3,3,3,2,2,1,1))," BP"))
+foundsites.oc$dates=sapply(founddates.oc,paste0,collapse=" | ")
 plotMap(height.ras,height.wat)
-plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
+plot(foundsites.oc,cex=foundsites.oc$numdates/20+1,pch=21,bg=as.factor(foundsites.oc$culture),add=T)
 ```
 
 Again, this is stochastic (the selection of the fake standard variation added is radom), so the exact results can't be reproduced exactly, although in that case this steps doesn't change anything, the outcome of this steps is available in the folder [data_original/all_squares/](./data_original/all_squares/).
@@ -406,11 +402,10 @@ Again, this is stochastic (the selection of the fake standard variation added is
 
 Split the environment in grids and extract date for each grid
 
-```{r plotallfoundiste,cache=F}
-
-leftdates=dates[lengths(dates)>0]
+```{r plotallfoundiste-oc,cache=F}
+leftdates=dates.oc[lengths(dates.oc)>0]
 plotMap(height.ras,height.wat)
-plot(foundsites,cex=foundsites$numdates/20+.1,pch=21,bg=1,add=T)
+plot(foundsites.oc,cex=foundsites.oc$numdates/20+.1,pch=21,bg=1,add=T)
 squares=st_make_grid(height.ras,.5)
 plot(squares,add=T,col=adjustcolor(rainbow(length(squares)),.35))
 text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
@@ -421,10 +416,10 @@ The original selection was :
 
 ```{r getpublicsele-oc}
 plotMap(height.ras,height.wat)
-plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
+plot(foundsites.oc,cex=foundsites.oc$numdates/20+1,pch=21,bg=as.factor(foundsites.oc$culture),add=T)
 selection=c(14,30,45,65,66)
 plot(squares[selection],add=T,col=adjustcolor("blue",.3))
-inter=st_intersection(st_as_sf(foundsites),squares[selection])
+inter=st_intersection(st_as_sf(foundsites.oc),squares[selection])
 plotMap(height.ras,height.wat)
 plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],pch=21,cex=1+inter$numdates/10)
 ```
@@ -464,10 +459,10 @@ for(g in selection){
 	write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
 
-allsites=st_intersection(st_as_sf(foundsites),squares[-selection])
+remainingsites.oc=st_intersection(st_as_sf(foundsites.oc),squares[-selection])
 
 for(g in (1:length(squares))[-selection]){
-	curr=allsites[allsites$ID==g,]
+	curr=remainingsites.oc[remainingsites.oc$ID==g,]
 	coords=st_coordinates(curr)
 	write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
