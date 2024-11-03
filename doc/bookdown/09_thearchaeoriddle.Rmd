@@ -1,28 +1,97 @@
 # Archaeoriddle: the original challenge {#original-challenge}
 
-We will here go through the whole steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the archaeoriddle original challenge. 
+In this chapter we will here go through the whole steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the Archaeoriddle original challenge. But before that we will we retrace the journey from the first discussions in the courtyard of the McDonald Institute in Cambridge to the final workshop in Belfast.
 
-We will also discuss some of the proposal submitted for the challenge and you will be able to try the challenge too.
+We will then end the chapater by briefly  discuss  the proposal submitted for the challenge.
 
 ## Context 
 
+Here a bit of how all that happen, and the majors steps.
+
+### Original idea and first reflections
+
+
+### Birth of a Challenge
+
 After discussion within the member of the CDAL, we decided that a challenge-like event, with a cash-prize, would be the best way to convince people to participate. After the B/A grant has been awarded to Simon Carrignon, Alfredo Cortell and Enrico Crema, we thus decided to announce this challenge through various social media video and a website: https://theia.arch.cam.ac.uk/archaeoriddle/
 
-As this website will disappear anytime soon, here is the first page:
+### The British Academy Grant -- November 2022
+
+### CAA Oxford -- June 2023
+
+> Paper ID: 295
+> Paper Title: Archaeoriddle: A collaborative game to improve archaeological inference
+> Abstract:
+> Archaeoriddle is a collaborative research project aimed to improve archaeological hypothesis building by comparing different methodological proposals within a crowd-sourced and interactive working framework. To achieve this, we created a virtual world through computational simulation, emulating an interaction process between a hypothetical group of incumbent hunter-gatherers and a group of spreading farmers. This virtual world and its associated virtual archaeological datasets have been developed by members of the Computational and Digital Archaeology Laboratory (CDAL) of the University of Cambridge and can be consulted here (https://acortell3.shinyapps.io/Archaeo_riddle/).
+> Archaeologists are well aware of the problems and limitations posed by its data.  Methodological and theoretical advances have been made to tackle these challenges over the years. These include a wide range of multidisciplinary approaches, where key insights from chemistry or geology, but also mathematics and data science, are employed in order to improve and transcend the current limitations posed by the archaeological record. In particular, techniques based on statistical modelling and computational simulation, have known an exponential growth during these last years. Nevertheless, the robustness of these techniques are rarely evaluated formally, and their effective ability to reconstruct the human past is unknown. The limited samples available, and the destructive process of archaeological excavation further limits our ability to properly evaluate confounding factors such as research design and post-depositional processes, all of this contributing to archaeological uncertainty.
+> In short, archaeologists are constrained by the data they have, and are very rarely able to reproduce large scale studies with significant sample sizes, able to offer a data poll where the development of current formal inferential methods can be reliably applied and contrasted.
+> But this awareness is not enough. If we want to take archaeological formal inference one step further, we must make sure that the methods that are currently being used and developed are effective within our specific research field. This is the key objective of archaeoriddle: to offer a virtual platform and a shared dataset where different methodologies can be compared against each other, with the unique opportunity to be able to assess their ability to reconstruct the human past.
+> This collaborative enterprise will provide an unique chance to (1) help understand and compare different methods applied to archaeology, and (2) propose a general and necessary reflection on archaeological methodology, as a foundation for promoting solid and shared methodological standards.
+> Since the virtual interaction process has been created virtually, we know the exact parameters behind the farming expansion. However, interested participants are given only a very limited and indirect set of data and information about what happened. Using their preferred methods, we propose a game, following ideas by Axelrod (1980) and Rendell et al. (2010), where participants have to answer a series of questions related to this virtual expansion process. In this way, archaeoriddle is thought of as a game, but which also seeks for international collaboration to understand how different current theoretical and methodological proposals behave under a controlled and testable environment.
+> The project was initially presented in the past CAA (in Oxford) and, therefore, this paper aims at briefly updating the project during a 5 min talk. In this edition of the CAA, we intend to focus on how tactical simulation and collaborative research can help improving methodological approaches to archaeological uncertainty.
+> 
+>  References:
+> Axelrod, R. (1980) “Effective choice in the Prisoner’s Dilemma”, Journal of Conflict
+> Resolution, 24(1), pp. 3-25. DOI: https://doi.org/10.1177/002200278002400101
+> Rendell, L., Boyd, R., Cownden, D. Enquist, M., Eriksson, K., Feldman, M. W.,
+> Fogarty, L., Ghirlanda, S., Lillicrap, T., Laland, K. N. (2010). “Why copy others?
+> Insights from the Social Learning Strategies tournament”, Science, 328(5975), pp.
+> 208-213. DOI: http://doi.org/10.1126/science.1184719  
+> 
+> Created on: Mon, 31 Oct 2022 18:04:39 GMT
+> 
+> Last Modified: Mon, 12 Dec 2022 15:04:16 GMT
+> 
+> Authors:
+> 
+>      - ac2320@cam.ac.uk 
+>      - sc2297@cam.ac.uk 
+>      - lmb211@cam.ac.uk 
+>      - cbs41@cam.ac.uk 
+>      - jl2094@cam.ac.uk 
+>      - erc62@cam.ac.uk 
 
 
-The source to reproduce the website are also available in the github Archaeoriddle repository [here](https://github.com/acortell3/archaeoriddle/tree/main/doc/shinyapp).
+### The EAA call for proposal -- August 2023
 
+> Dear colleague,
+> 
+> We hope this e-mail finds you well. We are writing to you because we would like you to know on the Archaeoriddle project, a project directed to improve methods in Archaeology and Cultural Evolution. All of the information about it is here (https://theia.arch.cam.ac.uk/archaeoriddle/), but very briefly for now, in this project we have simulated an interaction process between groups of foragers and farmers and generated a "virtual" archaeological record and we now propose a game where participants will have to answer some of the questions proposed in the website with the data provided. Because we do know the actual answer, we believe this is a great way to test the inferential power of archaeological methods.
+> 
+> This project will come to an end in a dedicated workshop in the next EAA Conference in Belfast (https://www.e-a-a.org/EAA2023) in late August - early September, where every participant will be able to present their results and proposed methods. We will finance £650 to the best ten proposals that we receive, with a non-extendable deadline on 16th June. This money can be used to attend to the conference or in any other way the ‘winner’ would prefer. The only requisite is that the winners of the award will have to present their proposal at the workshop. Finally, after the workshop, we will invite all participants (awardees and not) to contribute on a joint publication. You can have detailed information at the link above, under the tab “How to participate?”. Please, consider sending your proposal to us, either yourself, or by transmitting this to any other potential researcher who could be interested. We’d love to have you there and chat about how can we improve archaeological methods!!
+> 
+> Best wishes
+> Alfredo Cortell-Nicolau, Simon Carrignon, Xavier Rubio-Campillo and Enrico R. Crema
+ 
+
+On top of allowing participants to download the public dataset, and to select new square to survey, the website mentioned in the call listed a series of research questions aimed to guide participants in their endeavours.
+
+#### Research Questions
+
+- *RQ1.*  The Poppy-chewers and Rabbit-skinners had a hostile relationship.
+
+- *RQ2.*  Poppy-chewers followed an exponential population growth, while Rabbit-Skinners eventually stalled, and as the Poppy-chewers population size started to increase, their population declined (Fig. 3).
+- *RQ3.*  The rate of dispersal varied across the landscape, with an average of ~0.62 Km/year, faster for the sea crossing (~1.11 Km/year) and a slight slow-down to ~0.57 Km/year for the Northeastern quadrant of the map.
+
+
+The website where these research question will disappear anytime soon, so here is a snapshot of the first page:
+
+
+But in case this disappear, the source to reproduce the website are also available in the github Archaeoriddle repository [here](https://github.com/acortell3/archaeoriddle/tree/main/doc/shinyapp).
+
+The call was issued in April 2023, after acceptance of the workshop at EAA, and 5 proposals were submitted. 
+
+During the actual workshop, the whole project was summarised, the 5 proposal described by there respective authors, and the exact simulation reveiled.
 
 ## Implementation
 
 The Challenge is basically built on top of a manually selected environment, generated using the tools describe in the previous chapter, on top of which a bunch of simulation have been run, and one has been selected.
 
-But as [Simon Carrinon](sc.fram.io) has do a poor job when he did the simulation he didn't generate seeds, nor stored them, for each experiment ; so we cannot re-run it EXACTLY the same. But he kept a lot of informations and output about it which, are stored in the folder `general_results_selected_simu/`
+But as [Simon Carrinon](sc.fram.io) has done a poor job when he did the simulation he didn't generate seeds, nor stored them, for each experiment; so we cannot re-run the original one EXACTLY as it happened. But he kept a lot of informations and output about it which, are stored in the folder `general_results_selected_simu/`
 
 This should be enough to allow anyone to reconstruct most of what happened. Thus, a quick recap of the implementation of the original challenge:
 
-From all the function developped and describ previously in this book:
+Using all the functions developed and described previously in this book, we :
 
 1. Generate an environment that look cools
 2. Choose a series of parameters and
@@ -34,17 +103,17 @@ We used the script [scriptmini.R](https://github.com/acortell3/archaeoriddle/blo
 for t in {1..5} ; do Rscript scriptmini.R newset_$t > log_new_set$t 2> log_new_set$t.err &  done
 ```
 
-On can see, on line 52 until the end of the `scriptmini.R`. that some graph are saved. This will be used to quickly compare the different simulation and choose the good one.
+One can see, on line 52 until the end of the `scriptmini.R`, that some graphes are saved. This will be used to quickly compare the different simulation and choose the good one.
 
-The simulation are also run with the parameter: `visumin=TRUE `, which allow to save time serie of image at every time step while the model is running.
+The simulation are also run with the parameter: `visumin=TRUE `, which allow to save images of population growth and settlement creation at every time step while the model is running, which can then be used to generate video of the whole process using simple script like:
 
 ```bash
 for i in test*_? ; do ffmpeg -i "$i/map_000%3d.png" "${i}_out.mp4" ; done
 ```
 
-## Reminder
+## Let's rewind the tape
 
-Here we will summarise all the previous steps but using the original map and sites.
+Here we will summarise all the previous steps described in the book, but using the map, sites position and parameters used in the original Challenge.
 
 Load the original raster:
 
@@ -69,7 +138,7 @@ coastline <- st_as_sf(as.polygons(above_level))[2,]
 plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
 ```
 
-Adding ressource to it using original geolocalistaiont
+Adding resources, using the original coordinates, which were manually selected to correspond to interesting parts of the map 
 
 ```{r originalress,fig.show="hold"}
 ##ressource geolocalisation set manually
@@ -106,14 +175,14 @@ original.ress <- mask(original.ress,original.viable)
 plot(original.ress)
 ```
 
-This, should be exactly what is stored in `data_original/resources.tiff`
+This, should also exactly correspond to what is stored in `data_original/resources.tiff`
 
 ```{r comptiff,out.width="45%",fig.show="gold" }
 plot(original.ress)
 plot(rast("data_original/resources.tiff"))
 ```
 
-We then take back the sites position defined for the original archaeoriddle and all the original parameters:
+We then take back the sites' position defined for the original Archaeoriddle and all the original parameters:
 
 ```{r originalinit}
 original.sites=vect("data_original/sitesinitialposition/")
@@ -175,25 +244,21 @@ onesimu <- run_simulation(
 )
 ```
 
-```{r plotsimurh,cache=F}
+How does it looks like
+
+```{r plotsimurh,fig.show="hold",out.width="45%"}
 Nts <- onesimu$Nts # population at each timestep
 warcasualties <- onesimu$warcasualties #death by war at each time step
 plot(sites, cex=(1+Nts[1,]/100), pch=21, bg=rainbow(2, alpha=0.6)[as.factor(original.sites$culture)])
-```
-
-
-
-```{r,eval=T,messages=F}
 
 i <- nrow(Nts)
 plot(1, 1, type="n", xlim=c(0,i), ylim=c(0,max(Nts)), xlab="time", ylab="popsize")
 nill <- lapply(1:ncol(Nts),
-       function(j)lines(Nts[,j],col=rainbow(2)[as.factor(original.sites$culture)[j]])
+   function(j)lines(Nts[,j],col=rainbow(2)[as.factor(original.sites$culture)[j]])
 )
 
 ```
 
-Visualise, Record deposit and  loss. for the 5 first sites (see next chapters for `A_rates`).
 
 ```{r,out.width="25%"}
 alldeposit <- lapply(
@@ -203,7 +268,6 @@ alldeposit <- lapply(
   }
 )
 maxy <- max(sapply(alldeposit, function(i)max(apply(i,2,sum))))
-
 nill <- lapply(alldeposit, function(depo)barplot(t(depo), col=viridis(ts+1), ylim=c(0,maxy)))
 ```
 
@@ -235,129 +299,43 @@ plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot g
 points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
 ```
 
+We can now apply the record deposit and the loss function as described in Chapter&nbsp;\@ref(final-output), and generate a fake archaeological record to share with others. This would give a fake archaeological recordd for one simulation, ran using the same initial conditions and parameters as those used during the original challenge. However, these results won't exactly replicate what occurred during the original challenge.
 
+Unfortunately, as we briefly mentioned earlier, we can't recreate _exactly_ the same run from scratch because every interaction between settlements (migration, wars) and within settlements (birth and death) is stochastic. To replicate the same outcomes, we would need to use the same seed to ensure every random draw is identical. However, we can indeed run _multiple_ simulations, as we did in Chapter \@ref(explore-simulation), to estimate what typically happens under these conditions.
+
+Nonetheless, even if we can't replicate it from scratch, we still have information about what happened step by step, stored in `data_original/general_results_selected_simu/`. We will leave a larger-scale exploration of these specific parameters as an exercise for those who would like to explore them in more detail during the original challenge.
 
 ### Generate and share final simulation
 
-Now we have the full setup, we want to generate a record people will uses :
+
+1. Let's load again the maps and the sites of the original challenge:
 
 
-1. We first load the maps and the sites:
-
-```{r loadressources}
+```{r loadressources-oc}
 sites=vect("data_original/sitesinitialposition/")
+theoriginalchallenge=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
+Nts=theoriginalchallenge$Nts
+warcasualties=theoriginalchallenge$warcasualties
 ```
 
-2. run one simulation
+We can look again at the site at the beginning
 
-
-```{r fakesimu,eval=F}
-
-ts=1000
-expname="basar"
-print(paste0("Starting simulation ",expname))
-
-onesimu=run_simulation (
-                           sites=sites,
-                           viable=viable,
-                           dem=height.ras,
-                           ressources=rast("data_original/resources.tiff"),
-                           water=height.wat,
-                           foldervid=expname,
-                           visu=F,visumin=TRUE,
-                           ts=ts,#length of simulation in year
-                           Kbase=c("HG"=35,"F"=110),#difference in K for the two cultures
-                           cul_ext=c("HG"=7,"F"=6),#spatial penality to extent: lower, bigger penality
-                           penal_cul=c("HG"=4,"F"=5),#penality of occupational area: low, other sites can cam close
-                           prob_birth=c("HG"=0.3,"F"=0.5),#proba to give birth every year
-                           prob_survive=c("HG"=0.8,"F"=0.65),#proba to die when pop > K
-                           prob_split=c("HG"=.5,"F"=.6),#proba to create new settlement when Ne > K
-                           minimals=c("HG"=.14,"F"=.20),#how big the group of migrant should be to create a new city vs migrate to a existing one 
-                           bufferatack=300,#distance max around which settlement can fight
-                           prob_move=c("HG"=0.2,"F"=0.1) #proba to migrate to existing settlement when Ne > K
-                           )
-```
-
-
-2. generate a few output, including a video that helps to select the good simulation, these things are also done by `scriptmini.R`:
-
-```{r getfakeres,eval=F}
-
-
-Nts=onesimu$Nts
-warcasualties=onesimu$warcasualties
-sites=onesimu$sites
-i=min(ts,which(apply(Nts,1,sum)==0))
-pdf(paste0(expname,"_mapFinal.pdf"))
-plotMap(height.ras,height.wat,paste0("year ",i))
-plot(sites,cex=(as.integer(Nts[i,]>0)*0.3+Nts[i,]/200),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
-text(sites)
-dev.off()
-
-
-pdf(paste0(expname,"growth_utils.pdf"))
-plot(2:i,warcasualties[1:(i-1)],lwd=2,col="green",type="h",yaxt="n",ylab="",xlim=c(0,i))
-axis(4)
-par(new=T)
-growF=apply(Nts[1:i,sites$culture=="F"],1,sum)
-growHG=apply(Nts[1:i,sites$culture=="HG"],1,sum)
-plot(growF,col="red",type="l",lwd=2,ylim=c(0,max(growF,growHG)),xlim=c(0,i))
-points(growHG,col="blue",lwd=2,type="l")
-dev.off()
-
-pdf(paste0(expname,"growth_tot.pdf"))
-plot(warcasualties[1:i-1],lwd=2,col="green",type="h",yaxt="n",ylab="")
-axis(4)
-par(new=T)
-growT=apply(Nts[1:i,],1,sum)
-plot(growT,col="black",type="l",lwd=2,ylim=c(0,max(growT)))
-dev.off()
-```
-
-Let's redo that with the selected simulation:
-
-
-```{r initialcondition}
-
-onesimu=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")
-#Nts=readRDS("nts")
-#warcasualties=readRDS("war")
-#sites=terra::vect(readRDS("general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS"))
-Nts=onesimu$Nts
-warcasualties=onesimu$warcasualties
-
-```
-
-Plot the sites at the beginning 
-
-```{r plotinitialcondition,cache=F}
-# source("tools.R")
-
-#expname="general_results_selected_simu/buffattack300_K110_PSU065_3"
-#sites=vect(readRDS(paste0(expname,"_sitesRast.RDS")))
+```{r plotinitialcondition-oc,cache=F}
 
 sites=vect("data_original/sitesinitialposition/")
 height.ras=rast("data_original/east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
-
-i=1
-plotMap(height.ras,height.wat,paste0("year ",i,", when it all begins"))
-plot(sites,cex=(as.integer(Nts[1,]>0)*0.5+Nts[1,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
-text(sites[Nts[1,]>0],pos=3)
+year=1 
+plotMap(height.ras,height.wat,paste0("year ",year,", when it all begins"))
+plot(sites,cex=(as.integer(Nts[year,]>0)*0.5+Nts[year,]/100),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)])
+text(sites[Nts[year,]>0],pos=3)
 
 ```
 
-We can look at the war and the number of deaths for each battle
+We can look at the war and the number of deaths for each battle for the first 1000 years And compare it to the total population growth of each culture:
 
-```{r plotwar}
-i=1000
-plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",ylab="# dead",xlim=c(0,i))
-```
-
-Comparison to the total population growth of each culture
-
-```{r plotwarWRTgrowths}
+```{r plotwar-oc}
 i=1000
 par(mar=c(5,5,1,5))
 plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",yaxt="n",ylab="",xlim=c(0,i),xlab="time")
@@ -371,7 +349,8 @@ points(growHG,col="blue",lwd=5,type="l")
 ```
 
 If we look at the total population size, we can see how the clashes slowed down the population growth:
-```{r plotwarTotgrowths}
+
+```{r plotwarTotgrowths-oc}
 par(mar=c(5,5,1,5))
 plot(2:i,warcasualties[1:(i-1)],lwd=2,col="dark red",type="h",yaxt="n",ylab="",xlim=c(0,i),xlab="time")
 axis(4)
@@ -379,71 +358,41 @@ mtext("# dead",4,2.5)
 par(new=T)
 growT=apply(Nts,1,sum)
 plot(growT,col="black",type="l",lwd=5,ylim=c(0,max(growT)),xlim=c(0,i),ylab="pop",xlab="")
-
 ```
 
-This show if we looka at the growth rate:
+We can also look at how the growth rates change:
 
 ```{r rategrowth}
 plot(diff(growT,lag=100),type="l")
 ```
 
 
-Replaying all that will give this:
+We can replaying all that will give this:
 
 
 ```{r finalvideo,echo=F,results="asis"}
 cat('<video controls> <source  src="interfinal.mp4" type="video/mp4"></video>')
 ```
 
-
-```{r getRaster,eval=T,cache=F}
-height.ras=rast("data_toshare/dem_raster.tiff")
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-height.groups=height.ras
-maxh=max(height.ras[],na.rm=T)
-height.groups[height.groups<mean(height.groups[])]=NA
-height.groups[height.groups<(maxh*.7)]=1
-height.groups[height.groups>(maxh*.7)]=200
-height.groups[is.na(height.groups)]=-1
-height.poly=as.polygons(height.groups)
-viable=makeValid(height.poly[2,])
-expname="data_original/general_results_selected_simu/buffattack300_K110_PSU065_3"
-onesimu=readRDS(paste0(expname,"_all.RDS"))
-sites=readRDS(paste0(expname,"_sitesRast.RDS"))
-if(class(sites)[1] == "PackedSpatVector")
-    sites=terra::vect(sites)
-Nts=onesimu$Nts
-#alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[1:i,s],A_rates), InitBP = 7500,ts=ts,r = 0.2, Max_bone_thickness = "m"))
-#allShortLoss=lapply(1:10,function(ind){Rec=alldeposit[[ind]];print(paste0("settlement #",ind));apply(Rec,2,short_loss,.6)})
-#allShortLoss=lapply(allShortLoss,function(Rec)long_loss(Rec,.9997,7500))
-```
-
-Using `Rec_c` , `short_loss` and `long_loss` we generate deposit. Generating everything can take long time but  it's basically done like this:
+Using `Rec_c` , `short_loss` and `long_loss` we generated deposit from the record of the run selected from the original challenge.  This takes long time when applied for all sites for all the time of simulations but can be done:
 
 
-```{r doloss,eval=F}
+```{r doloss-oc,eval=F}
 
-#All in one:
 alldeposit=lapply(1:ncol(Nts),function(s)Rec_c(sapply(Nts[,s],A_rates), InitBP = 7500,ts=ncol(Nts),r = 0.2, Max_bone_thickness = "m"))
 allLosses=lapply(1:length(alldeposit),function(ind){
-                 st=Sys.time()
-                    print(paste0("settlement #",ind));
-                    Rec=alldeposit[[ind]];                    
-                    Rec=apply(Rec,2,short_loss,.6)  #apply short loss
-                    Rec=long_loss(Rec,.9997,7500) #apply long loss
-                    print(Sys.time()-st)
-                    return(Rec)
+    print(paste0("settlement #",ind));
+    Rec=alldeposit[[ind]];                    
+    Rec=apply(Rec,2,short_loss,.6)  #apply short loss
+    Rec=long_loss(Rec,.9997,7500) #apply long loss
+    return(Rec)
 })
-rm(alldeposit)
+rm(alldeposit) #we suggest you to remove the deposit object, which can be large and isn't used after
 ```
 
-Remove where to small
+Whe then limited then amont of sample available, we the assumption that if the biggest site was to be excavated asmuch as possible, we won't have more than 30 dates from, thus we randomly sampled after normalised by this max amount.
 
 ```{r removesmall, eval=F}
-
-
 maxSites=max(sapply(allLosses,sum))
 nsample=round(sapply(allLosses,sum)*30/maxSites)
 allRemainingDates=lapply(seq_along(allLosses),function(r)extractDates(allLosses[[r]],n=nsample[r]))
@@ -451,53 +400,23 @@ rm(allLosses) #object are big, need to free memory
 
 ```
 
+After that, some sites wont have dae  so we remove them from the list of available dates, that becomes:
 
 
 ```{r getadates,eval=F}
-
-#pdf(paste0(expname,"_mapFound.pdf"))
-#plotMap(height.ras,height.wat,paste0("final after losses"))
-#plot(sites[1:10,],cex=3*(lengths(allRemainingDates)-1)/(29),pch=21,add=T,bg=rainbow(2,alpha=.6)[as.factor(sites$culture[1:10])])
-#dev.off()
-
 dates=unique(unlist(allRemainingDates))
 dates=rev(sort(dates[!is.na(dates)]))
-plot(table(unlist(allRemainingDates)))
 totallDatesRemains=sapply(allRemainingDates,function(i)table(factor(i,levels=dates)))
 saveRDS(allRemainingDates,file=paste0(expname,"_dates.RDS"))
-
 ```
 
-From this we have, for every site, a list of date(s)
+Although the seed used for the sampling hasn't be saved, the output of this steps been saved and get be loaded back.
 
-This has been done using the script `exploreDate.R` but will be explained here:
-
-
-Loading simulation results, green are the sites who survived, dots are all the site that existed.
-
-```{r getfakeresults,cache=F}
-height.ras=rast("data_original/east_narnia4x.tif")
-height.wat=height.ras
-height.wat[height.wat>mean(height.wat[])]=NA
-
-
-Nts=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS")$Nts
-ress=rast("data_original/resources.tiff")
-allsites=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS")
-if(class(allsites)[1] == "PackedSpatVector")
-    allsites=terra::vect(allsites)
-plotMap(height.ras,height.wat)
-plot(allsites,add=T)
-plot(allsites[Nts[nrow(Nts),]>0,],add=T,pch=21,bg="green",cex=Nts[nrow(Nts),]/60)
-```
-
-Loading dates:
-
-```{r getfakedates,cache=F}
+```{r getfakedates-oc}
 dates=readRDS("data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS")
 ```
 
-Keep sites with foundable dates
+We first remove the sites with no dates:
 
 ```{r extractdates,cache=F}
 
@@ -506,9 +425,9 @@ foundsites$numdates=unlist(lengths(dates[lengths(dates)>0]))
 founddates=dates[lengths(dates)>0]
 ```
 
-Remove BP to the dates, add some random variation
+We then make it a bit ennoyin by removing BP to the dates, add some random variation
 
-```{r addstdev,cache=F}
+```{r addstdev}
 stdpool=c(20,30,40,50,60,80,100,120)
 founddates=lapply(founddates,sort)
 founddates=lapply(founddates,gsub,pattern=" BP",replacement="")
@@ -518,8 +437,9 @@ foundsites$dates=sapply(founddates,paste0,collapse=" | ")
 plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
 ```
+Again, this is stochastic (the selection of the fake standard variation added is radom), so the exact results can't be reproduced exactly, but the outcome of this sites is available in all csv from data_o
 
-### Split environment in a grid
+### Grid generation and sharing
 
 Split the environment in grids and extract date for each grid
 
@@ -534,9 +454,9 @@ text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
 text(st_coordinates(st_centroid(squares)),label=1:length(squares),col="white")
 ```
 
-Public selection
+The original selection was :
 
-```{r getpublicsele,cache=F}
+```{r getpublicsele-oc}
 plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
 selection=c(14,30,45,65,66)
@@ -548,7 +468,7 @@ plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],p
 
 ### Giving name to the publicly available data {#naming}
 
-To name publicly available sites we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php). We manually positionned them with cultural relevent group, although this had no impact on the results. 
+For the original challange we wanted sites to have a name for the sites publicly available. To do so we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php). We manually positionned them with cultural relevent group, depending on there geographical position, although this had no impact on the results. 
 
 ```{r namesites,cache=F}
 
@@ -570,141 +490,28 @@ plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],p
 text(st_coordinates(inter),inter$sitesnames,cex=.8,pos=3)
 ```
 
-Export csv and data for each public square
+We can then export `csv`s and data for each public square, and the non-public one. We here simply follow what was presented in Chapter&nbsp;\@ref(final-output#provide-survey-square-and-publicly-available-dates):
 
 ```{r exportpublic,eval=F}
 
-
 inter$sitesnames=sitesnames
 for(g in selection){
-curr=inter[inter$ID==g,]
-coords=st_coordinates(curr)
-    write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
+	curr=inter[inter$ID==g,]
+	coords=st_coordinates(curr)
+	write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(sitename=curr$sitesnames,lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
-
-```
-
-Export csv and data for all ever square
-
-```{r exportprivate,eval=F}
 
 allsites=st_intersection(st_as_sf(foundsites),squares[-selection])
 
 for(g in (1:length(squares))[-selection]){
-curr=allsites[allsites$ID==g,]
-coords=st_coordinates(curr)
-    write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
+	curr=allsites[allsites$ID==g,]
+	coords=st_coordinates(curr)
+	write.csv(file=paste0("square_",g,".csv"),cbind.data.frame(lon=coords[,1],lat=coords[,2],dates=curr$dates,economy=curr$culture))
 }
 
-ld=strsplit(inter$dates," \\| ")
-ld=lapply(ld,function(i)gsub(" ± .*","",i))
-inter$start=sapply(ld,max)
-inter$end=sapply(ld,min)
-
-```
-
-
-Some maps we use and did for fake papers and social media etc... 
-
-
-```{r randommaps,out.width="30%",fig.show="hold"}
-
-## plotting oldschool map
-
-par(mar=c(0,0,0,0),oma=c(0,0,0,0))
-
-plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
-plot(st_geometry(inter),pch=4,add=T,lwd=.3)
-plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=.8,col=as.factor(inter$culture),alpha=.8)
-
-old=inter[inter$start>7180,]
-ne=inter[inter$start>6800 & inter$end<6900,]
-
-plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
-plot(st_geometry(old),pch=4,add=T,lwd=.5,cex=3)
-plot(st_geometry(old),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(old$culture),alpha=.8)
-
-
-plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
-plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
-plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-
-
-plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
-plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
-plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-
-plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.1,labels="",bg="light blue",add=T)
-plot(st_geometry(ne),pch=4,add=T,lwd=.5,cex=3)
-plot(st_geometry(ne),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(ne$culture),alpha=.8)
-```
-
-More maps for twitter:
-
-```{r randommaps2,out.width="50%",fig.show="hold"}
-plot(height.wat,col=adjustcolor("light blue",.4),reset=F,legend=F,axes=F)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
-plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
-plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-sel=inter[c(20,2,15,36),]
-text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
-text(x = -1, y = .7, labels = "❤️", adj = c(0, 0), cex = 3, col = "black", font = 1)
-text(x = -1, y = 1.2, labels = "🔥 ", adj = c(0, 0), cex = 3, col = "black", font = 1)
-text(x = -1, y = 1.2, labels = "⚔️ ", adj = c(0, 0), cex = 3, col = "black", font = 1)
-text(x = -1.2, y = 1.8/2, labels = "???? ", adj=c(0,0), cex = 3, col = "black", font = 1)
-```
-
-More maps!! (the coolest)
-
-
-```{r randommaps3,out.width="50%",fig.show="hold"}
-plotMap(height.ras,height.wat)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
-plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
-plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
-plot(coastline,add=T,lwd=1.1,col="black")
-sel=inter[c(20,2,15,36),]
-text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
-
-```
-
-
-```{r randommaps4,out.width="50%",fig.show="hold"}
-
-plotMap(height.ras,height.wat)
-contour(height.ras,levels=seq(5,300,15),axes=F,ann=F,lwd=.2,labels="",bg="light blue",add=T)
-plot(st_geometry(inter),pch=4,add=T,lwd=.5,cex=3)
-plot(st_geometry(inter),pch=20,add=T,lwd=.2,cex=1.8,col=as.factor(inter$culture),alpha=.8)
-coastline=st_cast(st_as_sf(as.polygons(height.ras>mean(height.ras[])))[2,],"MULTILINESTRING")
-plot(coastline,add=T,lwd=1.1,col="black")
-sel=inter[c(20,2,15,36),]
-text(st_coordinates(sel),sel$sitesnames,cex=.8,pos=c(1,2,2,4))
-#text(x = -1, y = .7, labels = "🍻", adj = c(0, 0), cex = 3, col = "black", font = 1)
-text(x = -3.4, y = .7, labels = "🍻 ", adj = c(0, 0), cex = 10, col = "black", font = 1)
-text(x = -1.8, y = .7, labels = "👍 ", adj = c(0, 0), cex = 8, col = "black", font = 1)
-text(x = -.5, y = .7, labels = "🍔 ", adj = c(0, 0), cex = 6, col = "black", font = 1)
-#text(x = -1, y = 1.2, labels = "⚔️ ", adj = c(0, 0), cex = 3, col = "black", font = 1)
-#text(x = -1.2, y = 1.8/2, labels = "???? ", adj=c(0,0), cex = 3, col = "black", font = 1)
 ```
 
 ## The challenge
-
-### Research Questions
-
-RQ1. The Poppy-chewers and Rabbit-skinners had a hostile relationship.
-
-RQ2. Poppy-chewers followed an exponential population growth, while Rabbit-Skinners eventually stalled, and as the Poppy-chewers population size started to increase, their population declined (Fig. 3).
-
-RQ3. The rate of dispersal varied across the landscape, with an average of ~0.62 Km/year, faster for the sea crossing (~1.11 Km/year) and a slight slow-down to ~0.57 Km/year for the Northeastern quadrant of the map.
-
-### Challenge & EAA workshop
-
 
 ## Proposals
 
