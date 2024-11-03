@@ -36,7 +36,7 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
 ### Useful files & folders for this component:
 
 - [:file_folder: doc/bookdown/](./doc/bookdown/) : the main folder
-    - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challenge ([cf below](the-original-challenge)
+    - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challenge ([cf below](the-original-challenge))
     - [📄 01_Introduction.Rmd](./doc/bookdown/01_Introduction.Rmd) to [09_thearchaeoriddle.Rmd](./doc/bookdown/09_thearchaeoriddle.Rmd): RMarkdown file with each chapter of the bookdown.
     - [📄 README.md](./doc/bookdown/README.md) : README specific for the bookdown
     - [📄 dateGeneration.R](./doc/bookdown/dateGeneration.R) : R script to automatically generate dates from record of population size through time
