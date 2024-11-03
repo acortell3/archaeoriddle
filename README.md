@@ -37,7 +37,6 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
 
 - [:file_folder: doc/bookdown/](./doc/bookdown/) : the main folder
     - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challenge ([cf below](the-original-challenge)
-    - [:file_folder: fakedata/](./doc/bookdown/fakedata/): legacy folder with all csvs of the original challenge
     - [📄 01_Introduction.Rmd](./doc/bookdown/01_Introduction.Rmd) to [09_thearchaeoriddle.Rmd](./doc/bookdown/09_thearchaeoriddle.Rmd): RMarkdown file with each chapter of the bookdown.
     - [📄 README.md](./doc/bookdown/README.md) : README specific for the bookdown
     - [📄 dateGeneration.R](./doc/bookdown/dateGeneration.R) : R script to automatically generate dates from record of population size through time
@@ -145,6 +144,8 @@ The original challenge is detailed in [this chapter](https://thearchaeoriddle.or
     - [📄 README.md](./doc/shinyapp/README.m) : README explaining how to recreate the shiny app and detailing the files available in the folder
 - [:file_folder: doc/fake_papers/](./doc/fake_papers/) :  latex code for sever fake papers and poster presented in conferences where the Original Challenge was presented.
 - [:file_folder: doc/bookdown/data_original/](./doc/bookdown/data_original/) : folder will all orignal
+    - [:file_folder: all_squares/](./doc/bookdown/data_original/all_squares/): folder with all csvs of the original challenge
+		- [📄 square_1.csv](./doc/bookdown/data_original/all_squares/square_1.csv) to [📄 square_100.csv](./doc/bookdown/data_original/all_squares/square_100.csv) : `CSV` file storing all dates available for all the squares of the original challenge.
     - [:file_folder: general_results_selected_simu/](./doc/bookdown/data_original/general_results_selected_simu/) :
         - [💾 buffattack300_K110_PSU065_3_all.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS) : RDS file store most of the selected simulation
         - [💾 buffattack300_K110_PSU065_3_sitesRast.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS) : RDS file storing a raster with the positions of the sites
