@@ -1,6 +1,6 @@
 --- 
-title: "Methods Riddles, the ultimate revelations"
-author: "CDAL"
+title: "Archaeoriddle, the bookdown"
+author: "by the Computational and Digital Archaeology Laboratory from Cambridge University"
 date:  "`r format(Sys.time(), '%Y-%m-%d %H:%M:%S')`"
 site: bookdown::bookdown_site
 output:
@@ -29,15 +29,16 @@ knitr::write_bib(c("DiagrammeR","terra","sf","igraph","rayshader", 'bookdown'), 
 ```
 
 This bookdown has two main objectives:
-1. documents all the steps, models, functions and results done during the 
-2. generate your own fakeworld with specific parameters and generate a fake archaeological records
+
+1. documents all the steps, models, functions and results done during the archaeoriddle project
+2. generate your own fake world with specific parameters and a fake archaeological records
 
 
-To use this book you can follow it on the online version at [thearchaeoriddle.org](https://thearchaeoriddle.org) and copy paste the chunks on your local computer,  or you can clone the source at the git repository [here](https://github.com/acortell3/archaeoriddle/) and compile the bookdown on your local machine.
+To use this book you can follow it on this online version and copy paste the chunks on your local computer,  or you can clone the source at the git repository [here](https://github.com/acortell3/archaeoriddle/) and compile the bookdown on your local machine.
 
 #### Dependencies {-}
 
-If you want to for this to be successful, you will need to install a few additional packages. You can do this by running the following command, which will check if the packages are installed and install them if not, then load them.
+If you want this to be successful, you will need to install a few additional packages by running the command in the chunk below, which will check if all packages are installed, install them if not and then load them.
 
 ```{r packages-init, message=FALSE}
 needed=c("terra","sf","igraph","devtools") 
