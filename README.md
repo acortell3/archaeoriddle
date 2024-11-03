@@ -145,7 +145,7 @@ The original challenge is detailed in [this chapter](https://thearchaeoriddle.or
 - [:file_folder: doc/fake_papers/](./doc/fake_papers/) :  latex code for sever fake papers and poster presented in conferences where the Original Challenge was presented.
 - [:file_folder: doc/bookdown/data_original/](./doc/bookdown/data_original/) : folder will all orignal
     - [:file_folder: all_squares/](./doc/bookdown/data_original/all_squares/): folder with all csvs of the original challenge
-		- [📄 square_1.csv](./doc/bookdown/data_original/all_squares/square_1.csv) to [📄 square_100.csv](./doc/bookdown/data_original/all_squares/square_100.csv) : `CSV` file storing all dates available for all the squares of the original challenge.
+		- [📄 square_1.csv](./doc/bookdown/data_original/all_squares/square_1.csv) to [square_100.csv](./doc/bookdown/data_original/all_squares/square_100.csv) : `CSV` file storing all dates available for all the squares of the original challenge.
     - [:file_folder: general_results_selected_simu/](./doc/bookdown/data_original/general_results_selected_simu/) :
         - [💾 buffattack300_K110_PSU065_3_all.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS) : RDS file store most of the selected simulation
         - [💾 buffattack300_K110_PSU065_3_sitesRast.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS) : RDS file storing a raster with the positions of the sites
