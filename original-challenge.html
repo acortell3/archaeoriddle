@@ -348,11 +348,26 @@ Alfredo Cortell-Nicolau, Simon Carrignon, Xavier Rubio-Campillo and Enrico R. Cr
 <div class="sourceCode" id="cb90"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb90-1"><a href="original-challenge.html#cb90-1" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="dt">{</span><span class="dv">1</span><span class="dt">..</span><span class="dv">5</span><span class="dt">}</span> <span class="kw">;</span> <span class="cf">do</span> <span class="ex">Rscript</span> scriptmini.R newset_<span class="va">$t</span> <span class="op">&gt;</span> log_new_set<span class="va">$t</span> <span class="dv">2</span><span class="op">&gt;</span> log_new_set<span class="va">$t</span>.err <span class="kw">&amp;</span>  <span class="cf">done</span></span></code></pre></div>
 <p>One can see, on line 52 until the end of the <code>scriptmini.R</code>, that some graphes are saved. This will be used to quickly compare the different simulation and choose the good one.</p>
 <p>The simulation are also run with the parameter: <code>visumin=TRUE</code>, which allow to save images of population growth and settlement creation at every time step while the model is running, which can then be used to generate video of the whole process using simple script like:</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb91-1"><a href="original-challenge.html#cb91-1" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> test<span class="pp">*</span>_<span class="pp">?</span> <span class="kw">;</span> <span class="cf">do</span> <span class="ex">ffmpeg</span> <span class="at">-i</span> <span class="st">&quot;</span><span class="va">$i</span><span class="st">/map_000%3d.png&quot;</span> <span class="st">&quot;</span><span class="va">${i}</span><span class="st">_out.mp4&quot;</span> <span class="kw">;</span> <span class="cf">done</span></span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb91-1"><a href="original-challenge.html#cb91-1" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> test<span class="pp">*</span>_<span class="pp">?</span> <span class="kw">;</span> <span class="cf">do</span> <span class="ex">ffmpeg</span> <span class="at">-i</span> <span class="st">&quot;</span><span class="va">$i</span><span class="st">/map_000%3d.png&quot;</span> <span class="st">&quot;</span><span class="va">${i}</span><span class="st">_out.mp4&quot;</span> <span class="kw">;</span> <span class="cf">done</span></span>
+<span id="cb91-2"><a href="original-challenge.html#cb91-2" tabindex="-1"></a><span class="co">#need better option for web display: for i in buffattack*.mp4 ; do ffmpeg -i $i -c:v libx264 -crf 23 -preset medium -vf format=yuv420p -c:a copy -movflags +faststart web_$i ; done</span></span></code></pre></div>
+<p>where <code>test*</code> will the folder storing all output of simulation. We provide the simulation that were generated during this preliminary phase in the zenodo folder associated to the first paper published fomr the Archaeoriddle project in <a href="https://zenodo.org/records/14024548/files/run_selection.tar.gz">this archive</a> (wrning, its 1.2GB).</p>
+<p>Here videos showing a selection of some of the scenario discarded while choosing the ultimate run:</p>
+<video controls>
+<source  src="data_original/run_selection/web_buffattack300_K110_PSU065_1_out.mp4" type="video/mp4">
+</video>
+<video controls>
+<source  src="data_original/run_selection/web_buffattack300_K110_3_out.mp4" type="video/mp4">
+</video>
+<video controls>
+<source  src="data_original/run_selection/web_buffattack300_1_out.mp4" type="video/mp4">
+</video>
+<video controls>
+<source  src="data_original/run_selection/web_buffattack300_3_out.mp4" type="video/mp4">
+</video>
 </div>
 <div id="lets-rewind-the-tape" class="section level2 hasAnchor" number="9.3">
 <h2><span class="header-section-number">9.3</span> Let’s rewind the tape<a href="original-challenge.html#lets-rewind-the-tape" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Here we will summarise all the previous steps described in the book, but using the map, sites position and parameters used in the original Challenge.</p>
+<p>Here we will summarise all the steps described in the book, but using the map, sites position and parameters used in the original Challenge.</p>
 <p>Load the original raster:</p>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="original-challenge.html#cb92-1" tabindex="-1"></a></span>
 <span id="cb92-2"><a href="original-challenge.html#cb92-2" tabindex="-1"></a>original.ras <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data_original/east_narnia4x.tif&quot;</span>)</span>
@@ -531,7 +546,7 @@ We can take back the sites’ positions, defined for the original Archaeoriddle 
 <p><img src="_main_files/figure-html/rategrowth-1.png" width="672" /></p>
 <p>And replaying all of that, on the map, will give this:</p>
 <video controls>
-<source  src="interfinal.mp4" type="video/mp4">
+<source  src="data_original/run_selection/web_buffattack300_K110_PSU065_3_out.mp4" type="video/mp4">
 </video>
 <p>Using <code>Rec_c</code> , <code>short_loss</code> and <code>long_loss</code> we generated deposit from the record of the run selected from the original challenge. This takes long time when applied for all sites for all the time of simulations but can be done:</p>
 <div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="original-challenge.html#cb105-1" tabindex="-1"></a></span>
