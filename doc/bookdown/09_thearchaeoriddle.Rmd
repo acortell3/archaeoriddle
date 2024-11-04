@@ -109,11 +109,25 @@ The simulation are also run with the parameter: `visumin=TRUE `, which allow to 
 
 ```bash
 for i in test*_? ; do ffmpeg -i "$i/map_000%3d.png" "${i}_out.mp4" ; done
+#need better option for web display: for i in buffattack*.mp4 ; do ffmpeg -i $i -c:v libx264 -crf 23 -preset medium -vf format=yuv420p -c:a copy -movflags +faststart web_$i ; done
 ```
+
+where `test*` will the folder storing all output of simulation. We provide the simulation that were generated during this preliminary phase in the zenodo folder associated to the first paper published fomr the Archaeoriddle project in [this archive](https://zenodo.org/records/14024548/files/run_selection.tar.gz) (wrning, its 1.2GB).
+
+Here videos showing a selection of some of the scenario discarded while choosing the ultimate run:
+
+```{r comparvid,echo=F,out.width='40%',results="asis"}
+
+cat('<video controls> <source  src="data_original/run_selection/web_buffattack300_K110_PSU065_1_out.mp4" type="video/mp4"></video>')
+cat('<video controls> <source  src="data_original/run_selection/web_buffattack300_K110_3_out.mp4" type="video/mp4"></video>')
+cat('<video controls> <source  src="data_original/run_selection/web_buffattack300_1_out.mp4" type="video/mp4"></video>')
+cat('<video controls> <source  src="data_original/run_selection/web_buffattack300_3_out.mp4" type="video/mp4"></video>')
+```
+
 
 ## Let's rewind the tape
 
-Here we will summarise all the previous steps described in the book, but using the map, sites position and parameters used in the original Challenge.
+Here we will summarise all the steps described in the book, but using the map, sites position and parameters used in the original Challenge.
 
 Load the original raster:
 
@@ -337,7 +351,7 @@ plot(diff(growT,lag=100),type="l")
 And replaying  all of that, on the map, will give this:
 
 ```{r finalvideo,echo=F,results="asis"}
-cat('<video controls> <source  src="interfinal.mp4" type="video/mp4"></video>')
+cat('<video controls> <source  src="data_original/run_selection/web_buffattack300_K110_PSU065_3_out.mp4" type="video/mp4"></video>')
 ```
 
 Using `Rec_c` , `short_loss` and `long_loss` we generated deposit from the record of the run selected from the original challenge.  This takes long time when applied for all sites for all the time of simulations but can be done:
