@@ -1,0 +1,129 @@
+---
+title: "Exploring Surveys results"
+site: bookdown::bookdown_site
+output:
+    html_document:
+      code_folding: show
+      toc: true
+      toc_float: true
+      toc_collapsed: true
+      number_sections: true
+#bibliography: ref.bib  
+toc_depth: 3
+number_sections: true
+#link-citations: true
+
+---
+
+
+
+```{r setup, include=FALSE}
+library(knitr)
+
+## Global options
+options(max.print = "120")
+knitr::opts_chunk$set(
+  cache = FALSE, prompt = FALSE,
+  tidy = FALSE, comment = NA,fig.align='center',
+  message = FALSE, warning = FALSE
+)
+opts_knit$set(width = 75)
+```
+
+# Intro
+
+In order to know better who engaged with the archaeoriddle project and the original challenge, we circulated a survey:
+
+```{r loaddata}
+results <- read.csv("archaeoriddle_survey_s1.csv",check.names=F)
+```
+
+We received n=`r nrow(results)` answers to the survey which prevents us to do mainy statistical analysis of the results but we thinkg they still give us an interesting overview of the people interested in our project
+
+# Manual Exploration
+
+On of the clearest pattern, sadly not unexpected, is the gender unbalance.
+
+```{r,fig.width=4}
+par(mar=c(0,4,4,8))
+gender <- trimws(tolower(results$Gender))
+gender <- gender[gender != ""]
+barplot(as.matrix(table(gender)),col=c('#1E8F89','#EE5A45'),legend=T,args.legend = list(bg="white",inset=c(-1,0),x="topright"))
+```
+
+
+
+People agreed that the questions were important
+
+
+```{r}
+column=colnames(results)[[4]]
+plot(table(factor(results[[column]],levels=0:5)),type="h",ylab="number of answers",main="From 0 to 5, is the issue we tried to address an important one",xlab="",lwd=10,col="dark red")
+```
+
+But they mainly could find time to participate:
+
+```{r}
+column="Why, then, did you not finally participate?"
+reason=results[[column]]
+reason=reason[reason != ""]
+grouped <- gsub("^Other.*", "other", reason)
+counts=as.data.frame(table(grouped))
+par(mar=c(1,0,3,0))
+pie( x = counts$Freq, labels = counts[,1], main = paste(column), col = rainbow(nrow(counts)),cex=.9)
+mtext(paste0("N=",length(reason)),1,0)
+```
+
+
+The audience was mainly already quantitative oriented, non of the interviewed people answered no to the question 
+"Have you ever worked with statistical/quantitative tools to analyze your data?"
+
+```{r,fig.width=3}
+par(mar=c(2,4,2,6))
+column="Have you ever worked with statistical/quantitative tools to analyze your data?"
+quant=results[[column]]
+quant[quant == ""]="NA"
+barplot(as.matrix(table(factor(quant,levels=c("Yes","No","NA")))),legend=T,col=c("blue","red","white"),args.legend=list(bg="white",x="topright", inset=c(-1,0)))
+```
+
+
+The language used are also very biased toward R and R studio
+
+```{r programl}
+column="Which softwares do you use in your work?"
+language=results[[column]]
+cleaned <- sapply(language,tolower)
+cleaned <- sapply(unlist(strsplit(cleaned,split=",")),trimws)
+grouped <- gsub("^r$|^rstudio$|^r/rstudio$", "r/rstudio", cleaned)
+counts <- as.data.frame(table(grouped))
+
+par(mar=c(2,0,3,0))
+pie( x = counts$Freq, labels = counts[,1], main = paste(column), col = rainbow(nrow(counts)),main.cex=.8)
+mtext(paste0("N=",length(grouped), "\n (different software mentionned, multiple choices allowed)"),1,0,cex=.8)
+```
+
+# Automatic Exploration
+
+```{r autogene,results="asis",fig.width=4,fig.height=4}
+# Loop through each column in the DataFrame
+par(cex=.8 )
+for(column_name in names(results)) {
+  column_data <- trimws(tolower(results[[column_name]]))
+  no_answer_count <- sum(column_data == "", na.rm = TRUE)
+  unique_answer_counts <- table(column_data[column_data != ""])
+  cat("## ", column_name, "\n")
+  cat(" \n\r")
+  cat("Number of people who didn't answer:", no_answer_count, "\n\n")
+  cat("Unique answers count:\n")
+  cat(" \n\r")
+  
+  entries_df <- as.data.frame(unique_answer_counts)
+  labels <- entries_df$Var1
+  frequencies <- entries_df$Freq
+  try(  pie( x = frequencies, labels = labels, main = column_name, col = rainbow(length(frequencies)),cex=.7))
+  cat(" \n\r")
+  cat(" \n\r")
+}
+
+```
+
