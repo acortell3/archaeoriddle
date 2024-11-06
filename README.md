@@ -18,7 +18,7 @@ This repository compile together all the elements developed throughout this proj
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own Archaeoriddle world.
 
 
-*Note:* The version v0.1 of this repository is the version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
+*Note:* The version v0.1.XX  of this repository is the final version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
 This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](10.5281/zenodo.14024548]).
@@ -36,7 +36,7 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
 ### Useful files & folders for this component:
 
 - [:file_folder: doc/bookdown/](./doc/bookdown/) : the main folder
-    - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challenge ([cf below](the-original-challenge))
+    - [:file_folder: data_original/](./doc/bookdown/data_original/) : folder with data of the original challenge ([cf section original challenge](#the-original-challenge))
     - [📄 01_Introduction.Rmd](./doc/bookdown/01_Introduction.Rmd) to [09_thearchaeoriddle.Rmd](./doc/bookdown/09_thearchaeoriddle.Rmd): RMarkdown file with each chapter of the bookdown.
     - [📄 README.md](./doc/bookdown/README.md) : README specific for the bookdown
     - [📄 dateGeneration.R](./doc/bookdown/dateGeneration.R) : R script to automatically generate dates from record of population size through time
@@ -143,6 +143,7 @@ The original challenge is detailed in [this chapter](https://thearchaeoriddle.or
 - [:file_folder: doc/shinyapp/](./doc/shinyapp/) : the code of  shiny app (the one behind the site available [here](https://theia.arch.cam.ac.uk/archaeoriddle))
     - [📄 README.md](./doc/shinyapp/README.m) : README explaining how to recreate the shiny app and detailing the files available in the folder
 - [:file_folder: doc/fake_papers/](./doc/fake_papers/) :  latex code for sever fake papers and poster presented in conferences where the Original Challenge was presented.
+- [:file_folder: doc/survey_archaeoriddle/](./doc/survey_archaeoriddle/) : result and analysis of a survey made to know more about the people who were interested in the project. A quick analysis is available [here](file:///home/simon/projects/archaeoriddle/doc/survey_archaeoriddle/survey_analysis.html).
 - [:file_folder: doc/bookdown/data_original/](./doc/bookdown/data_original/) : folder will all orignal
     - [:file_folder: all_squares/](./doc/bookdown/data_original/all_squares/): folder with all csvs of the original challenge
 		- [📄 square_1.csv](./doc/bookdown/data_original/all_squares/square_1.csv) to [square_100.csv](./doc/bookdown/data_original/all_squares/square_100.csv) : `CSV` file storing all dates available for all the squares of the original challenge.
