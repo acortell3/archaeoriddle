@@ -1,6 +1,6 @@
 --- 
 title: "Archaeoriddle, the bookdown"
-author: "by the Computational and Digital Archaeology Laboratory from Cambridge University"
+author: "the Computational and Digital Archaeology Laboratory (University of Cambridge)"
 date:  "last compiled: `r format(Sys.time(), '%Y-%m-%d %H:%M:%S')`"
 site: bookdown::bookdown_site
 output:
