@@ -463,7 +463,7 @@ plot(st_geometry(inter.oc),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter.oc$cultu
 text(st_coordinates(inter.oc),inter.oc$sitesnames,cex=.8,pos=3)
 ```
 
-We can then export `csv`s and data for each public square, and the non-public one. We here simply follow what was presented in Chapter&nbsp;\@ref(final-output#provide-survey-square-and-publicly-available-dates):
+We can then export `csv`s and data for each public square, and the non-public one. We here simply follow what was presented in Chapter&nbsp;\@ref(public-data):
 
 ```{r exportpublic,eval=F}
 

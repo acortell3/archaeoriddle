@@ -108,7 +108,7 @@ plotMap(height.ras,height.wat)
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$culture),add=T)
 ```
 
-## Provide survey square and publicly available dates
+## Provide survey square and publicly available dates {#public-data}
 
 To then share these date we choose to split the environment in grids and extract date by grid. For each grid, a csv is generated with the sites that have been found and for each site, their geolocalisation and the dates found at the site.
 
