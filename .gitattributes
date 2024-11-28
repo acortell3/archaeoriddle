@@ -1,0 +1,5 @@
+doc/proposal/P5-HROMADA.zip filter=lfs diff=lfs merge=lfs -text
+doc/proposal/P1-KAHLENBERG-PRISS.zip filter=lfs diff=lfs merge=lfs -text
+doc/proposal/P2-ZHANG.zip filter=lfs diff=lfs merge=lfs -text
+doc/proposal/P3-YAWORSKY.zip filter=lfs diff=lfs merge=lfs -text
+doc/proposal/P4-MES.zip filter=lfs diff=lfs merge=lfs -text

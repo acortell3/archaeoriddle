@@ -18,7 +18,7 @@ This repository compile together all the elements developed throughout this proj
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own Archaeoriddle world.
 
 
-*Note:* The version v0.1.XX  of this repository is the final version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
+*Note:* The version v0.1.2  of this repository is the last version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
 This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](10.5281/zenodo.14024548]).
@@ -99,7 +99,7 @@ The original challenge received 5 proposals that can be explore via the links be
 
 **Source:** https://github.com/dpriss/Archaeoriddle_Kahlenberg_Priss
 
-**Citation:**
+**Citation:** Priß, D., & Kahlenberg, R. (2024). _dpriss/Archaeoriddle_Kahlenberg_Priss: Archaeoriddle Kahlenberg and Priß (v1_Archaeoriddle)._ Zenodo. https://doi.org/10.5281/zenodo.14062675
 
 
 #### P2 by Xuan Zhang
@@ -125,16 +125,16 @@ The original challenge received 5 proposals that can be explore via the links be
 
 **Source:** https://github.com/AlexesMes/Archeaoriddle_RabbitWorld
 
-**Citation:** https://github.com/AlexesMes/Archeaoriddle_RabbitWorld
+**Citation:** Alexes, M. (2024). _Archeaoriddle RabbitWorld._ Zenodo. https://doi.org/10.5281/zenodo.14218979
 
 
 #### P5 by Daniel Hromada
 
-> The author used a qualitative analysis to infer hostility between cultures A and B by comparing the shorter settlement persistence of culture A in region R_B, separated by a sea, to its persistence in other regions under equal conditions.
+> The author used a qualitative analysis to infer hostility between Poppy-chewers and Rabbit-skinners by comparing the shorter settlement persistence of Rabbit-sinner in the region Poppy-chewers exist, separated by a sea, to its persistence in other regions under equal conditions.
 
-**Source:**
+**Source:** [here](https://zenodo.org/records/14207474) and [here](http://dx.doi.org/10.13140/RG.2.2.10753.47207)
 
-**Citation:**
+**Citation:** Hromada, D. (2024). _Exploring the 'Hostile vs. Peaceful' Archaeoriddle Dilemma Using the NALANA Method._ 10.13140/RG.2.2.10753.47207. 
 
 The original challenge is detailed in [this chapter](https://thearchaeoriddle.org/original-challenge.html) of the bookdown.
 
