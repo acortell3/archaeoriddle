@@ -20,7 +20,7 @@
   <meta name="twitter:description" content="First draft of Rbookdown to describe how data have been generated" />
   
 
-<meta name="author" content="by the Computational and Digital Archaeology Laboratory from Cambridge University" />
+<meta name="author" content="the Computational and Digital Archaeology Laboratory (University of Cambridge)" />
 
 
 
@@ -207,7 +207,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="final-output.html"><a href="final-output.html"><i class="fa fa-check"></i><b>8</b> Generate final archaeological record</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="final-output.html"><a href="final-output.html#using-sites-size-to-generate-deposit"><i class="fa fa-check"></i><b>8.1</b> Using sites size to generate deposit</a></li>
-<li class="chapter" data-level="8.2" data-path="final-output.html"><a href="final-output.html#provide-survey-square-and-publicly-available-dates"><i class="fa fa-check"></i><b>8.2</b> Provide survey square and publicly available dates</a>
+<li class="chapter" data-level="8.2" data-path="final-output.html"><a href="final-output.html#public-data"><i class="fa fa-check"></i><b>8.2</b> Provide survey square and publicly available dates</a>
 <ul>
 <li class="chapter" data-level="8.2.1" data-path="final-output.html"><a href="final-output.html#giving-name-to-the-publicly-available-data"><i class="fa fa-check"></i><b>8.2.1</b> Giving name to the publicly available data</a></li>
 <li class="chapter" data-level="8.2.2" data-path="final-output.html"><a href="final-output.html#export-and-download-dates"><i class="fa fa-check"></i><b>8.2.2</b> Export and download dates</a></li>
@@ -632,7 +632,7 @@ We can take back the sites’ positions, defined for the original Archaeoriddle 
 <span id="cb113-16"><a href="original-challenge.html#cb113-16" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter.oc),<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(inter.oc<span class="sc">$</span>culture)],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">cex=</span><span class="dv">1</span><span class="sc">+</span>inter.oc<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">10</span>)</span>
 <span id="cb113-17"><a href="original-challenge.html#cb113-17" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">st_coordinates</span>(inter.oc),inter.oc<span class="sc">$</span>sitesnames,<span class="at">cex=</span>.<span class="dv">8</span>,<span class="at">pos=</span><span class="dv">3</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/namesites-oc-1.png" width="672" /></p>
-<p>We can then export <code>csv</code>s and data for each public square, and the non-public one. We here simply follow what was presented in Chapter @ref(final-output#provide-survey-square-and-publicly-available-dates):</p>
+<p>We can then export <code>csv</code>s and data for each public square, and the non-public one. We here simply follow what was presented in Chapter <a href="final-output.html#public-data">8.2</a>:</p>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="original-challenge.html#cb114-1" tabindex="-1"></a></span>
 <span id="cb114-2"><a href="original-challenge.html#cb114-2" tabindex="-1"></a>inter.oc<span class="sc">$</span>sitesnames<span class="ot">=</span>sitesnames</span>
 <span id="cb114-3"><a href="original-challenge.html#cb114-3" tabindex="-1"></a><span class="cf">for</span>(g <span class="cf">in</span> selection.oc){</span>

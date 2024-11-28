@@ -47,7 +47,7 @@ implementation-1
 usage
 final-output
 using-sites-size-to-generate-deposit
-provide-survey-square-and-publicly-available-dates
+public-data
 giving-name-to-the-publicly-available-data
 export-and-download-dates
 bonus-maps
