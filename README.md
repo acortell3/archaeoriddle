@@ -21,7 +21,7 @@ This repository has the structure of an R package. This allows each sub-componen
 *Note:* The version v0.1.2  of this repository is the last version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
-This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](10.5281/zenodo.14024548]), as well as a [:file_folder: doc/figure_paper/](./doc/figure_paper/), that store the scripts used to generate the figure found in the paper.
+This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](10.5281/zenodo.14024548]), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/), that store the scripts used to generate the figures found in the paper.
 
 ## The Bookdown
 
@@ -190,7 +190,7 @@ To install the package, the easiest is probably to use `devtools` function `inst
 - [:file_folder: doc/bookdown/](./doc/bookdown/): cf section [The Bookdown](#the-bookdown)
 - [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf section [The Original Challenge](#the-original-challenge)
 - [:file_folder: doc/tex_files/](./doc/tex_files//): a few `tex` files used to layout ideas
-- [:file_folder: doc/figure_paper/](./doc/figure_paper/): scripts used to generate the figure found in the paper.
+- [:file_folder: doc/figures_paper/](./doc/figures_paper/): scripts used to generate the figures found in the paper.
 
 - [🖼️  brain_map_colabm.png](./doc/brain_map_colabm.png) : image representing early reflections about the project
 - [📄 Explanation_of_ideas_brain_map.md](./doc/Explanation_of_ideas_brain_map.md): Markdown file detailing programming languages, world options, and more.
