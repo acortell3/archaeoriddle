@@ -21,7 +21,7 @@ This repository has the structure of an R package. This allows each sub-componen
 *Note:* The version v0.1.2  of this repository is the last version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
-This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](10.5281/zenodo.14024548]), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/), that store the scripts used to generate the figures found in the paper.
+This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](https://doi.org/10.5281/zenodo.14024547), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/), that store the scripts used to generate the figures found in the paper.
 
 ## The Bookdown
 
