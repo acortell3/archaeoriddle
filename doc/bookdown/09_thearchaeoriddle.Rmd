@@ -1,6 +1,6 @@
 # Archaeoriddle: the original challenge {#original-challenge}
 
-In this chapter we will here go through the whole steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the Archaeoriddle original challenge. But before that we will we retrace the journey from the first discussions in the courtyard of the McDonald Institute in Cambridge to the final workshop in Belfast.
+In this chapter we will here go through all the steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the Archaeoriddle original challenge. But before that we will we retrace the journey from the first discussions in the courtyard of the McDonald Institute in Cambridge to the final workshop in Belfast.
 
 We will then end the chapater by briefly  discuss  the proposal submitted for the challenge.
 
