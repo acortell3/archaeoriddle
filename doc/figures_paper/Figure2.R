@@ -84,6 +84,10 @@ Popsim <- function(init,K,g,t,legs=NULL,smoothing=NULL){
   return(pop)
 }
 
+## Load viridis for colour palette
+#install.packages("viridis")
+library(viridis)
+
 set.seed(1)
 
 ## Build three occupation phases
@@ -110,7 +114,7 @@ for (i in 1:sum(time)){
                   in_camp_eat = in_camp_eat[i], in_camp_stay = in_camp_stay[i], kg = kg[i])
 }
 ## Assume equal deposition rates and bone thickness for simplicity
-l <- Rec_c(W, ts = 1000, InitBP = 7500,  r = 0.2 ) 
+l <- Rec_c(W, ts = 1000, InitBP = 7500,  r = 0.2, max_bone_thickness = "m") 
 
 ## Apply archaeological loss
 Sl <- apply(l, 2, short_loss, 0.5)
@@ -156,7 +160,7 @@ lines(x=c(time[1],time[1]),y=c(0,sum(tLl[,time[1]])), lty = 3, lwd = 0.7, col = 
 lines(x=c(time[1]+time[2],time[1]+time[2]),y=c(0,sum(tLl[,time[1]+time[2]])), lty = 3, lwd = 0.7, col = "gray28")
 
 ## After loss
-barplot(tLl[c(90:110),c(90:110)], col = c(viridis(1),"tomato3",viridis(19)), xlab = "Depth", ylab = "nsamples", main = "Single date", 
+barplot(tLl[c(90:110),c(90:110)], col = c(cividis(1),"tomato3",cividis(19)), xlab = "Depth", ylab = "nsamples", main = "Single date", 
         font.lab = 2, space = 0, border = NA, yaxt = "n", xaxt = "n")
 
 ## Build vector for x axis
