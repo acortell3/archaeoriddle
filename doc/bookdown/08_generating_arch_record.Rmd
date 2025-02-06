@@ -7,19 +7,19 @@ To summarize what we have so far:
 1. We simulated an artificial environment in Chapter&nbsp;\@ref(env).
 2. We localised sites on the map and defined a population growth process in Chapter&nbsp;\@ref(popgrowth).
 3. We defined rules to describe how population move and engage in conflict as they expand in Chapter&nbsp;\@ref(conflict).
-4. We simulated these process of growth, conflict and migration on the environement we designed, for extend periods of time in Chapter&nbsp;\@ref(main-simu).
+4. We simulated these processes of growth, conflict and migration on the environment we designed, for extended periods of time in Chapter&nbsp;\@ref(main-simu).
 5. We defined processes that use this simulated growth to generate an archaeological record in Chapter&nbsp;\@ref(recgen),
 6. We defined processes that transform this archaeological record using credible loss mechanisms&nbsp;\@ref(recgen).
 
-Here we will use all these previous steps to generate csvs that can be shared. In this chapter we will use the simulation run in the Chapter&nbsp;\@ref(main-simu) ; if you want to generated new 'fake'-dataset, different from the one that have been presented in the original challenge and that will be described in the chapter&nbsp;\@ref(original-challenge), you will want to run longer simulation, and choose among different run on the looks interesting/realistic. We provide a script `./scriptmini.R` that to give some idea about how to automatize these run and how to choose among them.
+Here we will use all these previous steps to generate csvs that can be shared. In this chapter we will use the simulation run in the Chapter&nbsp;\@ref(main-simu) ; if you want to generate new 'fake'-dataset, different from the one that has been presented in the original challenge and that will be described in the chapter&nbsp;\@ref(original-challenge), you will want to run longer simulation, and choose among different runs the ones that look interesting/realistic. We provide a script `./scriptmini.R` to give some idea about how to automatize these runs and how to choose among them.
 
 
 
 ## Using sites size to generate deposit
 
-This has been done using file `dateGeneration.R`, we will describe it here now.
+This has been done using file `dateGeneration.R`, and we will describe it here now.
 
-First we get the rasters defining the environment (If you followed the book since the beginning they should be already in memory but in case you didn't we we reload them here:
+First we get the rasters defining the environment (If you followed the book since the beginning they should be already in memory but in case you didn't we we reload them here):
 
 ```{r getRaster-ex,eval=T,cache=F}
 height.ras <- rast(file.path("data_toshare","dem_raster.tiff"))
@@ -29,7 +29,7 @@ Nts <- readRDS("data_tmp/popSizeMatrix.RDS")
 plotMap(height.ras,height.wat)
 ```
 
-Using `Rec_c` , `short_loss` and `long_loss`, that we presented in the Chapter&nbsp;\@ref(recgen) &&nbsp;\@ref(recloss), we generate deposit. This can take long time if the simulation included a lot of sites, spanning over long period of time. Here we first generate all deposit from the matrix `Nts` generated during the simulation of the Chapter&nbsp;\@ref(main-simu) and then apply all loss functions together:
+Using `Rec_c` , `short_loss` and `long_loss`, that we presented in the Chapter&nbsp;\@ref(recgen) &&nbsp;\@ref(recloss), we generate the deposit. This can take a long time if the simulation included a lot of sites, spanning over a long period of time. Here we first generate all the deposit from the matrix `Nts` generated during the simulation of the Chapter&nbsp;\@ref(main-simu) and then apply all loss functions together:
 
 
 ```{r doloss-ex,eval=T}
@@ -44,7 +44,7 @@ allLosses=lapply(1:length(alldeposit),function(ind){
 rm(alldeposit)
 ```
 
-Once this is done, we have a list with all the potential dates available from all sites that have existed during our simulation. Realisticly, for any given site, not _all_  the material will be recovered and even less of this material will be dated. To reflect that, we capped the maximum number of samples available per sites. To do so -- and this was applied as is in the original challange presented in the Chapter&nbsp;\@ref(original-challenge), we assume that the biggest sites -- the one with most media attention, most funding, will very likely get at most 30 dates. We thus subsampled the number of dates for smaller site given this ration of $\frac{30}{n_{\text{largest}}}$. Here simulation have been greatly shortened, thus sites have way less samples. We thus cap the larges sites to have only 80% of the dates it generate, and sample the other sites using this ratio.
+Once this is done, we have a list with all the potential dates available from all sites that have existed during our simulation. Realistically, for any given site, not _all_  the material will be recovered and even less of this material will be dated. To reflect that, we capped the maximum number of samples available per sites. To do so -- and this was applied as is in the original challenge presented in the Chapter&nbsp;\@ref(original-challenge), we assume that the biggest sites -- the ones with most media attention, most funding, will very likely get at most 30 dates. We thus subsampled the number of dates for smaller sites given this ratio of $\frac{30}{n_{\text{largest}}}$. Here the simulation has been greatly shortened, thus sites have way less samples. We thus cap the large sites to have only 80% of the dates they generate, and sample from the other sites using this ratio.
 
 ```{r removesmall-ex, eval=T}
 maxSites=max(sapply(allLosses,sum))
@@ -54,9 +54,9 @@ rm(allLosses) #object are big, need to free memory
 ```
 
 
-We then have a sample of date for every sites of our worlds; where the maximum number of dates is 30, for the biggest sites that existed in our simulation. 
+We then have date samples for every site in our worlds; where the maximum number of dates is 30 for the biggest sites that existed in our simulation. 
 
-Let's looks at where these date are available, we first retrieve all sites saved in the simulation from&nbsp;\@ref(main-simu):
+Let's look at where these date are available, we first retrieve all sites saved in the simulation from&nbsp;\@ref(main-simu):
 
 ```{r getfakeresults-ex,cache=F}
 
@@ -110,9 +110,9 @@ plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=as.factor(foundsites$cult
 
 ## Provide survey square and publicly available dates {#public-data}
 
-To then share these date we choose to split the environment in grids and extract date by grid. For each grid, a csv is generated with the sites that have been found and for each site, their geolocalisation and the dates found at the site.
+To then share these date we choose to split the environment in grids and extract dates by grid. For each grid, a csv is generated with the sites that have been found and for each site, their geolocalisation and the dates found at the site.
 
-```{r plotallfoundiste-ex,cache=F,fig.cap="The black dots represent the sites for which dates are available, the size of the circle reflect the amount of dates available. each square represent an area that can be selected by the users."}
+```{r plotallfoundiste-ex,cache=F,fig.cap="The black dots represent the sites for which dates are available, the size of the circle reflects the amount of dates available. Each square represents an area that can be selected by the users."}
 
 leftdates <- dates[lengths(dates)>0]
 plotMap(height.ras,height.wat)
@@ -124,7 +124,7 @@ text(st_coordinates(st_centroid(squares)),label=squares$ID,col="white")
 text(st_coordinates(st_centroid(squares)),label=squares$ID,col="white")
 ```
 
-In the archaoriddle original challenge we proposed to give the data from 4 grids that we selected oursleve to be sure the participants have a least _some_  interesting information. Here we randomly pick up 4 squares with the only limits that they provide at least 5 settlements. You will want to change and manually population the vector `selection` in the chunk below to cover area with lot of sites and sites from differents cultures, from what can be seen in the Figure&nbsp;\@ref(fig:plotallfoundiste-ex).
+In the archaoriddle original challenge we proposed to give the data from 4 grids that we selected ourselves to be sure the participants have a least _some_  interesting information. Here we randomly pick up 4 squares with the only limits that they provide at least 5 settlements. You will want to change and manually the vector `selection` in the chunk below to cover areas with lot of sites and sites from different cultures, from what can be seen in the Figure&nbsp;\@ref(fig:plotallfoundiste-ex).
 
 ```{r getpublicsele-ex,cache=F,out.width="45%",fig.show="hold",fig.cap="Left: square publicly available ; right: sites surveyed within these publicly available squares."}
 plotMap(height.ras,height.wat)
@@ -142,7 +142,7 @@ plot(st_geometry(inter),add=T,bg=rainbow(2,alpha=.6)[as.factor(inter$culture)],p
 
 ### Giving name to the publicly available data
 
-On the original challenge we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php) to choose nice, randomly generated name, to name the sites publicly available. You will see in the section&nbsp;\@ref(naming) that we positionned them with cultural relevent group, although this has no impact on the results. Here we took all the name we had for the original challenge to randomly assignate some for you custom world.
+On the original challenge we used: [fantasynamegenerators.com](https://www.fantasynamegenerators.com/fantasy-town-names.php) to choose nice, randomly generated names, to name the sites publicly available. You will see in the section&nbsp;\@ref(naming) that we positioned them with culturally relevant groups, although this has no impact on the results. Here we took all the names we had for the original challenge to randomly assign some for you custom world.
 
 ```{r namesites-ex,cache=F}
 
@@ -177,13 +177,13 @@ for(g in selection){
 
 ```
 
-The csvs generate for this specific run of the bookdown can be download for each square:
+The csvs generated for this specific run of the bookdown can be downloaded for each square:
 
 ```{r create-links,echo=FALSE,results="asis"}
 for (g in selection) cat(paste0("- [square ",g,"](data_toshare/square_",g,".csv)\r\n"))
 ```
 
-Export csv and data for all ever square
+Export csv and data for every square
 
 ```{r exportprivate-ex,eval=T}
 
