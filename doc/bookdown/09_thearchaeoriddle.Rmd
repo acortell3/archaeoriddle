@@ -1,8 +1,8 @@
 # Archaeoriddle: the original challenge {#original-challenge}
 
-In this chapter we will here go through all the steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the Archaeoriddle original challenge. But before that we will we retrace the journey from the first discussions in the courtyard of the McDonald Institute in Cambridge to the final workshop in Belfast.
+In this chapter we will go through all the steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way, and with the parameters used to generate the data shared during the Archaeoriddle original challenge. Before doing so we will we retrace the journey from the first discussions in the courtyard of the McDonald Institute in Cambridge, to the final workshop in Belfast.
 
-We will then end the chapater by briefly  discuss  the proposal submitted for the challenge.
+We will end the chapter by briefly discuss each proposal submitted for the original challenge.
 
 ## Context 
 
@@ -87,7 +87,7 @@ During the actual workshop, the whole project was summarised, the 5 proposal des
 
 The Challenge is basically built on top of a manually selected environment, generated using the tools describe in the previous chapter, on top of which a bunch of simulation have been run, and one has been selected.
 
-But as [Simon Carrinon](sc.fram.io) has done a poor job when he did the simulation he didn't generate seeds, nor stored them, for each experiment; so we cannot re-run the original one EXACTLY as it happened. But he kept a lot of informations and output about it which, are stored in the folder `general_results_selected_simu/`
+But as [Simon Carrignon](https://randomdrift.info) has done a poor job when he did the simulation he didn't generate seeds, nor stored them, for each experiment; so we cannot re-run the original one EXACTLY as it happened. But he kept a lot of informations and output about it which, are stored in the folder `general_results_selected_simu/`
 
 This should be enough to allow anyone to reconstruct most of what happened. Thus, a quick recap of the implementation of the original challenge:
 
