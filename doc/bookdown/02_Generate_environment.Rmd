@@ -8,14 +8,14 @@ output:
 
 
 To simulate the interaction between two groups, we need an environment in which they can interact. This chapter walks you through how to generate a landscape and an environment for your simulated groups to explore.
-An important part of the simulation is to generate a landscape and an environment. Environmental variables are often autocorrelated. For example, The temperature at a given time is never _extremly_  different to the temperature slightly before and slightly after this time. Same is true with the slope, or the elevation of a place. 
+An important part of the simulation is to generate a landscape and an environment. Environmental variables are often auto-correlated. For example, the temperature at a given time is never _extremely_  different to the temperature slightly before and slightly after this time. Similarly, the slope or elevation at a location is never _extremely_  different at spatially-adjacent locations.
 
 ## Autocorrelated noise generation
 
 
-An interesting way to generate such auto-correlated variable is to use [coloured noise](https://en.wikipedia.org/wiki/Colors_of_noise). This uses a specific distribution to define the relation between frequencies found in your signal with the power of these frequencies. In [pink noise](https://en.wikipedia.org/wiki/Pink_noise) (or $\frac{1}{f}$-noise) for example, the power of each frequency will be invertedly proportional to the frequencies (_ie_ you will have, low frequencies with high power, high frequencies with low ones).  We defined an `environment` function, which in turns uses `TK95` to generate a power law noise.
+An interesting way to generate such an auto-correlated variable is to use [coloured noise](https://en.wikipedia.org/wiki/Colors_of_noise). This uses a specific distribution to define the relation between frequencies found in your signal with the power of these frequencies. In [pink noise](https://en.wikipedia.org/wiki/Pink_noise) (or $\frac{1}{f}$-noise) for example, the power of each frequencis will be inversely proportional to the frequencies (_ie_ you will have, low frequencies with high power, high frequencies with low ones).  We defined an `environment` function, which in turns uses `TK95` to generate a power law noise.
 
-To generate a single auto-correlated variable (like temperature), who's spectrum decomposition (power wrt frequency) has a slope of -3 and a standard deviation of 1.5:
+To generate a single auto-correlated variable (like temperature), whose spectrum decomposition (power wrt frequency) has a slope of -3 and a standard deviation of 1.5:
 
 ```{r generateFakeClimate}
 tstep <- 1000
@@ -23,7 +23,7 @@ faketemp <- environment(tstep, omega=3, delta=1.5) + 1.5
 plot(faketemp, type="l", ylab="temperature change", xlab="time",lwd=3)   
 ```
 
-You can inspect the code of `environment` and `TK95` functions here:
+You can inspect the code of the `environment` and `TK95` functions here:
 <details><summary>Show code</summary>
 **Code**
 
@@ -74,7 +74,7 @@ for ( i in 2:k )
   m <- m + a^i * perlin_noise(2^i, 2^i, 2^k, 2^k)
 ```
 
-If we change k (that dictates the total resolution of the DEM), the size of the raster could grow exponentially and quickly become hard to manage.
+If we change k (that dictates the total resolution of the DEM), the size of the raster grows explonentially and would quickly become hard to manage.
 
 
 ```{r explorePerlin}
@@ -102,9 +102,9 @@ height[height<min(height)*.25] <- min(height)*.25
 ```
 
 
-We can then visualise the result as a 2D raster. We setup the total extent of the raster to define exactly where it is on our GIS using a latlon projection.
+We can then visualise the result as a 2D raster. We set up the total extent of the raster to define exactly where it is on our GIS using a latlon projection.
 
-We also define the mean high as the water level, below which everything is considered under water.
+We also define the mean height as the water level : All the cells below are then considered under water.
 
 ```{r 2dVisu}
 height.ras <- rast(height, extent=c(-3.5, 0.5, -0.5, 3.5), crs="+proj=latlon")
@@ -155,9 +155,8 @@ plot_3d(
 
 ## Environmental resources
 
-We have generated zones of higher resources/fitness that attract settlements and support higher carrying capacities _ie_ population size.
-The resources are located at given hotspots with an area around in which they decay
-with a logistic function. We provide a very basic function `logisticdecay` which allows to define multiple sources with different decay arrays around them.
+We will generate zones of higher resources/fitness that will attract settlements and support higher carrying capacity _ie_ population size.
+The resources will be located at given hotspots with an area around in which they decay according to a logistic function. We provide a very basic function `logisticdecay` which allows you to define multiple sources with different decay arrays around them.
 
 
 ```{r, echo=FALSE, message=FALSE}
@@ -201,10 +200,10 @@ crs(goodresources) <- crs(original.ras)
 
 The function `logisticdecay` generates individual rasters for all the identified hotspots, which are then merged to create an aggregate raster referred to as 'resources'.
 
-When considering the selection of hotspots, one may choose to retain the one utilized for the _archaeoriddle_ but to adjust these resources according to your own topography one can use `locator()` to find the coordinates of the hotspot by clicking on the map. An example of that is given in [this  section of the chapter](#manual-selection)
+When considering the selection of hotspots, you may choose to retain the one utilized for the _archaeoriddle_ but to adjust these resources center to your own topography ;  one can use `locator()` to find the coordinates of the hotspot by clicking on the map. An example of that is given in [this  section of the chapter](#manual-selection)
 
 These resources span along all the map but we want to restrict them to places where people will be able to settle.
-Given this new landscape we can now generate sites in specific locations. We first need to define _where_ the sites _can_ appear (not in water nor too high in the mountains), so we first create a raster 'viable' which will give a binary map where groups of humans can leave or not.
+Given this new landscape we can now generate sites in specific locations. We first need to define _where_ the sites _can_ appear (not in water nor too high in the mountains) ; so we first create a raster 'viable' which will give a binary map where groups of human can live or not.
 
 ```{r}
 height.groups <- height.ras # taking back the raster created before
@@ -240,7 +239,7 @@ allna <- sapply(allres, function(i)any(is.na(values(i))))
 allres <- allres[!allna]
 ```
 
-And then we add the resources raster, which gives us a final `ress` raster as below:
+And then we add all the resource rasters, which gives us a final `ress` raster as below:
 
 ```{r showresrouce}
 ress <- allres[[1]]
@@ -256,7 +255,7 @@ plot(ress)
 
 ## Manually Select Resources {#manual-selection}
 
-Below some useful code to manually select the resource origins on the map (by clicking on the screen) and explore different decays around them:
+Below is some useful code to manually select the resource origins on the map (by clicking on the screen) and explore different decays around them
 
 ```{r, eval=F}
 plotMap(height.ras, height.wat, paste0("year ", 0))
