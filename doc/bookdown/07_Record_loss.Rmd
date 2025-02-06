@@ -12,15 +12,15 @@ output:
 
 ### General purpose
 
-Our main interest is showing and testing the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be insufficient and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given preference. 
+Our main interest is to show and test the effect of post-depositional processes on the archaeological record. The most obvious consequence of these effects relates to the direct loss of the record, while other implications can result in vertical and horizontal movements. Such movements, in turn, distort our comprehension of an archaeological site. Although the horizontal disposition of archaeological waste is important to understand different aspects, such as the activities deployed in a site, the function of that site, or it can even bring information on demographic processes, it will not be taken into account here. The reason for this is that modelling horizontal post-depositional movements (1) requires specific types of information which are frequently not available for field researchers, (2) adds complexity layers, the payoff of which, given its cost in terms of computation and comprehension of the model, may be minimal and (3) as the focus of this model is on the reliability of 14C dates, vertical movements, which can obscure the construction of consistent stratigraphies, have been given priority. 
 
-However, we understand that horizontal movement is a key aspect of the record formation. For example, it is frequent that hydric, gullying or sloping processes concentrate the archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally, but also vertically. This *record loss* model assumes and normalises this when $W(t)$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be taken into account both if the user wants to introduce the values for $W(t)$, and for the analysis with real archaeological data. There is not a single solution to control for this, as it largely depends on the excavated area and whether this is representative for the complete site or not. For example, many surveys spread across a site could actually be representative of that site's record, whereas a single small survey in that same site is likely prone to present some specific bias due to post-depostional conditions. In this case, and in order to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always bearing in mind that the model will work over the variable $W(t)$ (*waste produced*), and can be computed to be expressed by $m^2$.
+However, we understand that horizontal movement is a key aspect of record formation. For example, hydric, gullying or sloping processes frequently concentrate archaeological waste in specific parts of the site. This would bias our perception of record concentration both horizontally and vertically. This *record loss* model assumes and normalises this when $W(t)$ is retrieved from the previous *record formation* model. Nevertheless, this needs to be considered both if the user wants to introduce the values for $W(t)$, and for the analysis with real archaeological data. There is not a single solution to control this, as it largely depends on the excavated area and whether this is representative of the complete site or not. For example, many surveys spread across a site could be representative of that site's record, whereas a single small survey on that same site is likely prone to present some specific bias due to post-depositional conditions. In this case, and to propose a correct variable, the user needs to make the proper calculations according to the site under study, but always bearing in mind that the model will work over the variable $W(t)$ (*waste produced*), and can be computed to be expressed by $m^2$.
 
 ### Model layers
-Although in the future we will introduce additional layers which account for how the record moves vertically along the sequence, at this point, we are only considering the processes of record loss.
+In the future we plan to introduce additional layers which account for how the record moves vertically along the sequence, but in this current implementation, we are only considering the processes of record loss.
 
 #### Loss of the record
-The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term processes affecting the record for every $t$ from the moment of its deposition to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long-term processes affecting the record for every $t$ from the moment of its deposition to the present. The second one is *direct action*, which considers high-impact, short-term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.
 
 ```{r diagram, echo = FALSE,cache=FALSE}
 require(DiagrammeR) #this should be already loaded but in case you have restarted you R session do forget to load it!
@@ -70,7 +70,7 @@ b -> {c}
 
 These variables are modelled as follows:
 
-* **Long-term loss** ($V_l(t)$: Attending to the proxy we are considering (bones), we understand this variable as the processes which on the short term have little to none impact on bone preservation, but which can have severe consequences in the long term. These can refer, for example to the pH of the soil of the site, temperature and humidity changes, etc, and must be considered by the researcher or the user. We can subsume this information as a single probability $\theta_l$ within a binomial distribution. Then, the number of archaeological samples currently surviving from all the $W(t)$ generated at a time $t$ follows the distribution
+* **Long-term loss** ($V_l(t)$: Given the proxy we are considering (bones), we understand this variable as the processes which on the short term have little to none impact on bone preservation, but which can have severe consequences in the long term. These can refer, for example to the pH of the soil of the site, temperature and humidity changes, etc, and must be considered by the researcher or the user. We can subsume this information as a single probability $\theta_l$ within a binomial distribution. Then, the number of archaeological samples currently surviving from all the $W(t)$ generated at a time $t$ follows the distribution
 
 $$V_l(t) \sim Bi(W(t), \theta_l) \tag{1}$$
 Although mathematically this computation is straightforward, it can be quite expensive computationally. Therefore, because we can assume independence of the effect altering the sample for each $t$, and for computational efficiency, we compute $\theta_l$ as
@@ -83,7 +83,7 @@ Where $\theta_l$ is the considered probability, $t$ is the time period before pr
 
 $$V_s(t+1)\sim Bi(W(t),\theta_s)$$
 
-where $\theta_s$ is the probability that the record survives. Again, this probability must be estimated according to previous information such as, for exemple, whether there has been human reoccupation or animal action at the site at $t +1$. In this case, one good way to measure this is considering that for $\theta_s = 0.5$, half the record would be lost after this first year.
+where $\theta_s$ is the probability that the record survives. Again, this probability must be estimated according to previous information, such as, for example, whether there has been human reoccupation or animal action at the site at $t +1$. In this case, one good way to measure this is considering that for $\theta_s = 0.5$, half the record would be lost after this first year.
 
 All in all, if we put together these variables, then the remaining record for a site could be defined as
 
@@ -157,7 +157,7 @@ cor.test(Ss,Th_ss)
 
 
 ## Implementation
-This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are  are `short_loss` and long loss.
+This layer of the model is less complex than the previous one. In this case, we only need to apply the loss of the record on the already created sample, according to the different loss probabilities. The functions for this are `short_loss` and `long_loss`.
 
 As before, to know more about these functions and their parameters you can look at the manual given in the package:
 
@@ -190,7 +190,7 @@ fs::file_delete('record_loss.Rmd')
 
 ## Usage 
 
-With these functions, it is fairly easy to recompute the remaining record, and show it in the same format as before. Here we computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can play with these model and parameters using the online shiny app [here](https://acortell3.shinyapps.io/archaeo_record_model). 
+With these functions, it is fairly easy to recompute the remaining record and show it in the same format as before. Here, we computed the record loss with $\theta_s=0.9$ and $\theta_l=0.9997$. Again, the user can play with these model and parameters using the online shiny app [here](https://acortell3.shinyapps.io/archaeo_record_model). 
 
 We use the Record generated in the [previous chapter](#recgen) to which we apply the loss functions
 

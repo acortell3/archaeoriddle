@@ -73,9 +73,9 @@ grViz("
 
 ```
 
-The above graph depicts a very schematic way to represent the formation of the archaeological record ($W/m^2$). In this case, we are interested in radiocarbon dating, focusing on bone samples; that is the number (and range) of potential 14C dates produced in a site, and this is key to understand the way in which we produced the model. We are aware that generating a specific archaeological palimpsest depends on a large quantity of variables, some of which may be controlled by field archaeologists and some of which may not (or are not). Therefore, the graph above must be read as follows. Asides from the outcome variable, the exposure variables, *Pop (group size)*, *Anthropogenic deposition rates* and *Natural deposition rates* (depicted in orange), are designed in a way that they can be activated for the model to infer them, they can be provided by the archaeologist, or they can be simply ignored. In the most elementary case, the archaeologist could introduce directly the outcome variable ($W/m^2$) without taking into account anything else, if she/he is confident to provide an accurate value.
+The above graph depicts a very schematic way to represent the formation of the archaeological record ($W/m^2$). In this case, we are interested in radiocarbon dating, focusing on bone samples; that is the number (and range) of potential 14C dates produced in a site, and this is key to understand the way in which we produced the model. We are aware that generating a specific archaeological palimpsest depends on a large number of variables, some of which may be controlled by field archaeologists and some of which may not (or are not). Therefore, the graph above must be read as follows. Asides from the outcome variable, the exposure variables, *Pop (group size)*, *Anthropogenic deposition rates* and *Natural deposition rates* (depicted in orange), are designed in a way that they can be activated for the model to infer them, they can be provided by the archaeologist, or they can be simply ignored. In the most elementary case, the archaeologist could introduce directly the outcome variable ($W/m^2$) without taking into account anything else, if she/he is confident to provide an accurate value.
 
-However, in most cases, this information will not be known to the field researcher, and in this situation, these variables can be modeled to different extents of complexity. For example, in the case of the most simple simulation, the field archaeologist could ignore deposition rates. In this case, and because we are only considering 14C dates, then the quantity of the sample becomes broadly proportional to the number of people present in a site, and thus it could be modeled like this.
+However, in most cases, this information will not be known to the field researcher, and in this situation, these variables can be modelled to different extents of complexity. For example, in the case of the most simple simulation, the field archaeologist could ignore deposition rates. In this case, and because we are only considering 14C dates, then the quantity of the sample becomes broadly proportional to the number of people present in a site, and thus it could be modelled like this.
 
 ```{r, echo = FALSE, out.width="50%"}
 grViz("
@@ -119,7 +119,7 @@ grViz("
 
 ```
 
-However, deposition rates are difficult to ignore if we want to account for the formation process of the archaeological record. If these are known to the archaeologists that developed fieldwork, then this would be the behaviour of the model for creating $W/m^2$.
+However, deposition rates are difficult to ignore if we want to account for the formation process of the archaeological record. If these are known to the archaeologists who carried out the fieldwork, then this would be the behaviour of the model for creating $W/m^2$.
 
 ```{r, echo = FALSE, out.width="60%"}
 grViz("
@@ -167,7 +167,7 @@ grViz("
 
 ```
 
-Finally, if these are not known to the archaeologist, but they want to model them, then we would go back to the first DAG. In this case, keep reading for the specificities of the model.
+Finally, if these are not known to the archaeologists, but they want to model them, then we would go back to the first DAG. In this case, keep reading for the specificities of the model.
 
 This is how each variable works specifically:
 
@@ -179,7 +179,7 @@ We have considered this a discrete variable (number of potential samples) with r
 
 The variables time ($T$) and depth ($D$) must also be defined. Thus
 
--   **T** describes the time, discretely, in years, of existence of the site. For the simulation, this time will be known. Thus, in the simulation $T_{birth}=(T=0)$ and $T_{max}=T_{death}$. Values of $T$ are represented by $t$.
+-   **T** describes the time, discretely, in years, of the existence of the site. For the simulation, this time will be known. Thus, in the simulation $T_{birth}=(T=0)$ and $T_{max}=T_{death}$. Values of $T$ are represented by $t$.
 -   **D** is the depth, in cms, where each specific sample is deposited at a time $t$. This is a continuous variable with range $[0,\infty]$, and for any $t$, we know that $0\leq D(t)\leq d_0$ and that
 
 $$D(t)=max\{D(t-1)-r,0\} \tag{1},\\ t=1,2,...,T_{max},$$
@@ -188,21 +188,21 @@ where $r$ is the natural deposition rates.
 
 -   **Population (group size)** ($P$): Discrete variable with range $[0,\sim K]$. Population group size is key to determine anthropogenic deposition rates (which in turn determine $W$) but it can also be used as a proxy to determine $W$ in case deposition rates are not accounted for since, in any case, $W \propto Pop$. The model includes the possibility to create a stochastic demographic process (see below), but the user can also set fix values for population or set the parameters in a way that the stochastic process is constrained. In any case, the user does have to provide a value for the carrying capacity ($K$) as this will limit population growth. *Defined in code as* `Pop`.
 -   **Anthropogenic deposition** ($A$): Amount of bone kilogram/year deposited by each group at a time $t$. This is a continuous variable, with range $[0,\infty]$, measured in *Kg*. See *Anthropogenic deposition protocol* for full definition.
--   **Natural deposition rates** ($r$): This is a continuous variable, with range $[0,0.5]$, measured in *cm/year*. Because, under normal circumstances, bones are thicker than any possible amount of earth deposited per year, even in a perfectly uncorrupted archaeological sequence (which is what is being modelled here), those would occupy microstrats belonging to different years. This variable is one of the responsibles for how many microstrats will each bone be occupying. See *Depth protocol* to understand how it works. *Defined in code as* `r`.
--   **Site function**: Has not been considered as a variable *per se* but, rather, as a group of variables, which are defined by the functionality of the site, and that condition the outcome of $A$. See *Anthropogenic deposition protocol* to understand how these are modelled.
+-   **Natural deposition rates** ($r$): This is a continuous variable, with range $[0,0.5]$, measured in *cm/year*. Because, under normal circumstances, bones are thicker than any possible amount of earth deposited per year, even in a perfectly uncorrupted archaeological sequence (which is what is being modelled here), those would occupy microstrats belonging to different years. This variable is one of the processes responsible for how many microstates each bone occupies. See *Depth protocol* to understand how it works. *Defined in code as* `r`.
+-   **Site function**: Has not been considered as a variable *per se* but, rather, as a group of variables, which are defined by the site's functionality, and that condition the outcome of $A$. See *Anthropogenic deposition protocol* to understand how these are modelled.
 -   **Site type**: Site type (whether a site is a cave, a rockshelter or an open-air camp) can heavily condition the deposition rates at any archaeological location. However, in order to reduce uncertainty and not make an overcomplex model, we have decided to embed this condition, and the possible expert knowledge related to it, within the definition of the variable $r$.
 
 ## Implementation
 
 This simulation for the creation of the archaeological record has been divided in three phases, or protocols.  
 
-The first one has been described in the [previous chapter](#popgrowth), where we populated the site, according to a stochastic demographic process on top of which migration and war events occurred. Here we focus on how these populations generate waste, and how this waste will be stored in the archaeological record and where. This is done in two steps: we first generate a sample of waste for each time $t$ and, in the second step, we distribute the amount of waste for each depth $d$.
+The first one was described in the [previous chapter](#popgrowth), where we populated the site according to a stochastic demographic process, on top of which migration and war events occurred. Here we focus on how these populations generate waste, and how this waste will be stored in the archaeological record and where. This is done in two steps: we first create a sample of waste for each time $t$ and, in the second step, we distribute the amount of waste for each depth $d$.
 
-In order to fully understand the process, first we go through the protocols and functions used. 
+To fully understand the process, first we go through the protocols and functions used. 
 
 ### Population $Pop$-protocol
 
-Before anything, in order to account for the chronological occupation of the site, a demographic process must be produced _ie_ sites need to be occupied. From these occupations a record sample is generated accordingly. This is what his done and described in the [previous chapter](#popgrowth), but here we will use the function `Pop_stoch`  to generate a simple stochastic growth and apply our loss function to it in order to describe and test the other protocols.
+Before anything, in order to account for the chronological occupation of the site, a demographic process must be produced _ie_ sites need to be occupied. From these occupations a record sample is generated accordingly. This is what has been done and described in the [previous chapter](#popgrowth), but here we will use the function `Pop_stoch`  to generate a simple stochastic growth and apply our loss function to it in order to describe and test the other protocols.
 
 ```{r, eval=FALSE}
 ?Pop_stoch
@@ -234,15 +234,15 @@ Where:
 
 -   $R(t)$ is the quantity of kilocalories produced for each kilogram of meat. This is a continuous with range $[1,2.5]$. Total kilocalories have been divided by 1000 for easier computation.
 
--   And $C(t)$ is the quantity of kilocalories, extracted from meat, consumed by person for each time $t$. It is in turn defined as $C(t)=B(t) \times M(t)$, where
+- And $C(t)$ is the amount of kilocalories extracted from meat consumed by a person for each time $t$. It is in turn defined as $C(t)=B(t) \times M(t)$, where
 
-    -   $B(t)$ is the quantity of kilocalories consumed by an individual for each $t$, and it has a range $[1.5,2.5]\times 365$. For easier computation, the actual average of kilocalories consumed per person/day has been divided by 1000.
+    -   $B(t)$ is the amount of kilocalories consumed by an individual for each $t$, and it has a range $[1.5,2.5]\times 365$. For easier computation, the average kilocalories consumed per person/day has been divided by 1000.
 
-    -   $M(t)$ is the proportion of kilocalories coming from meat relating to the total calories consumed per each individual. $[0,1]$.
+    -   $M(t)$ is the proportion of kilocalories from meat relating to the total calories consumed per individual. $[0,1]$.
 
 As it can be seen, the above definitions embed the functionality of the site, which can be considered by the user. In practice, setting the variables $O(t) = 1$ and $S(t) = 1$ would eliminate site functionality. This would assume that a site is inhabited by the full group during the full year, and that this group consumes all the food in the site.
 
-Up to now, we have obtained the value for the variable $A$, which is the amount of kilograms of bone produced at each time $t$. If we consider 4 grams of non-heated bones per sample, we can extract the number of samples at time $t$, which we cal $W(t)$
+Up to now, we have obtained the value for the variable $A$, which is the number of kilograms of bone produced at each time $t$. If we consider 4 grams of non-heated bones per sample, we can extract the number of samples at time $t$, which we cal $W(t)$
 
 $$W(t)=\mbox{Integer part of } \Bigg(\frac{1000 \times A(t)}{4} \Bigg) \tag{4}$$
 
@@ -267,9 +267,9 @@ fs::file_delete('anthropogenic_deposition.Rmd')
 
 ### Depth $D$-protocol
 
-This protocol is designed to respond to the fact that, despite a bone is deposited at time $t$, it can occupy the estratigraphic space of many subsequent years until it is fully buried. The amount of years it takes to be fully buried depends on the thickness of the bone and the natural deposition rates $r$.
+This protocol is designed to emulate the fact that, although a bone is being deposited at time $t$, it can occupy the stratigraphic space of many subsequent years until it is fully buried. The number of years it takes to be fully buried depends on the thickness of the bone and the natural deposition rates $r$.
 
-Since the thickest bones are usually the minority within a sample, while the majority is usually conformed of smaller bones, we have considered that bone presence decreases exponentially from $t_0$, the year when it was deposited. Thus, this process is modeled as follows:
+Since the thickest bones are usually the minority within a sample, while the majority is generally composed of smaller bones, we have considered that bone presence decreases exponentially from $t_0$, the year when it was deposited. Thus, this process is modelled as follows:
 
 $$W_b(t_u,t_l)=W(t=t_l)\times(1-e^{-\lambda(t_u-t_l)}),\ t_u < t_l \tag{5}$$
 
@@ -286,13 +286,13 @@ $t_{u_{max}}$ depends on two factors:
 -   $L$ is maximum thickness of the thickest bone in the direction of the deposition, in cm.
 -   $r$ is the natural deposition rate, in $\mbox{cm/year}$. For this model, we have considered the values 0.1, 0.2, 0.3, 0.4 and 0.5
 
-Thus we can calculate the time it takes for a sample to be fully buried as
+Thus, we can calculate the time it takes for a sample to be fully buried as
 
 $$r = \frac{L}{t_{u_{max}}} \Rightarrow t_{u_{max}}=\frac{L}{r} \tag{6}$$
 
 **Estimation of** $\lambda$
 
-Now we need to estimate the exponential rate $\lambda$ in equation $(5)$. In order to do so, we consider the state of the model when $t_l=0$ and $t_u=t_{u_{max}}$, which marks the time at which the first samples deposited are completely buried. And consider the following
+We need to estimate the exponential rate $\lambda$ in equation $(5)$. To do so, we consider the state of the model when $t_l=0$ and $t_u=t_{u_{max}}$, which marks the time at which the first samples deposited are entirely buried. And consider the following
 
 $$\frac{W_b(t_u,t_l)}{W(t=t_l)} \tag{7}$$
 
@@ -300,7 +300,7 @@ is the proportion of buried samples in $t_{u}$ from the ones that were deposited
 
 $$\frac{W_b(t_u=t_{u_{max}},t_l)}{W(t_l=1)}=1-e^{-t_{u_{max}}\lambda} \tag{8}$$
 
-However, since we consider that all of the samples are buried in $t_{u_{max}}$, then the proportion on the left hand side is 1, and in this situation $\lambda \rightarrow \infty$ so we cannot use the equation. We can especify an error margin, $\theta_e$ to the proportion of buried samples in $t_{u_{max}}$, say $99\%$. In this case, $\lambda$ can be easily computed as follows
+However, since we consider that all of the samples are buried in $t_{u_{max}}$, then the proportion on the left hand side is 1, and in this situation $\lambda \rightarrow \infty$ so we cannot use the equation. We can specify an error margin, $\theta_e$, to the proportion of buried samples in $t_{u_{max}}$, say $99\%$. In this case, $\lambda$ can be easily computed as follows
 
 $$\theta_e=1-e^{-\lambda t_{u_{max}}}$$
 
@@ -311,7 +311,7 @@ $$\lambda=\frac{-log(1-\theta_e)}{t_{u_{max}}} \tag{9}$$
 Where $\theta_b<1$ is the proportion of buried samples in $t_{u_{max}}$, which is calculated in equation 6.
 
 
-At the end, the function `Rec_c` runs `D_along` over a period of time, effectively producing an archaeological record. In the function `Rec_c` the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can use the modeled values (with the functions above) as an input to this function, or introduce them directly, for example, in the case that fix population rates per year were preferred.
+At the end, the function `Rec_c` runs `D_along` over a period of time, effectively producing an archaeological record. In the function `Rec_c` the user can consider whether to divide the total sample by the area of the site, or not. In addition, the user can use the modelled values (with the functions above) as an input to this function or introduce them directly, for example, in the case that fixed population rates per year were preferred.
 
 The function `D_along` captures this process.
 
@@ -343,9 +343,9 @@ fs::file_delete('natural_deposition.Rmd')
 
 ## Minimal example and simulation
 
-With the above functions, the user can apply to any generative demographic process: (1) how many samples would a group of people produce in a site, according to different constraints and (2) how those dates distribute along the depth of a site under the assumption that there has not been any kind of record loss or post-depositional process (this will be modelled in a second layer of modelling).
+With the above functions, the user can apply to any generative demographic process: (1) how many samples would a group of people produce in a site, according to different constraints and (2) how those dates distribute along the depth of a site under the assumption that there has not been any record loss or post-depositional process (this will be modelled in a second layer of modelling).
 
-We can create a very basic and simple simulation to illustrate these processes following the parameters seen below (or defaults in function definitions above) following these steps:
+We can create a very basic simulation to illustrate these processes following the parameters seen below (or defaults in function definitions above) following these steps:
 
 1.  $Pop$-protocol. Using `Pop_stoch`, we generate a stochastic population dynamic that will give us the number of individuals for each year.
 2.  $A$-protocol. Knowing the population size per year, we apply `A_rates` to each of them and generate the anthropogenic deposition, and get the number of samples per year.
@@ -361,7 +361,7 @@ samp <- unlist(lapply(Ps, A_rates)) ## Extract sample per time steps
 Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, max_bone_thickness = "m")
 ```
 
-With this we obtain, among other things, the distribution of the samples deposited for each date along the depth of the site, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example. The user can also check how the model works and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). *The total number of population has been adapted for visualisation*
+With this, we obtain, among other things, the distribution of the samples deposited for each date along the depth of the site and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below but only some of them as an example. The user can also check how the model works and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). *The total number of population has been adapted for visualisation*
 
 ```{r visu-record, echo = FALSE, message=FALSE}
 

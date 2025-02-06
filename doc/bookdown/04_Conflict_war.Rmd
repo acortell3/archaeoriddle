@@ -4,15 +4,15 @@
 
 Although the protocol described in the [previous chapter](#popgrowth) tends to keep the population of a site close to its carrying capacity, it often happens that the population size still exceeds the carrying capacity. When this occurs, the surplus individuals have the opportunity to migrate and establish a new settlement. This process is influenced by two culture-dependent parameters:
 + `minimals`: This defines the minimum number of individuals, in relation to the carrying capacity, needed to create a new settlement.
-+ `prob_split`: This defines the probability that, given the minimum number of individuals is reached, the group will actually split and relocate. It is also culture-dependent.
++ `prob_split`: This defines the probability that, given the minimum number of individuals is reached, the group will actually fission and relocate. 
 
 When this occurs, the group will search for a suitable location to relocate. The selection of this space depends on its availability, its proximity to the original settlement, and the resources available at the new location.
 
-The criteria for available space are determined by areas on the map that are neither too elevated, submerged in water, nor within the vicinity of pre-existing settlements. This vicinity range is also influenced by cultural factors—reflecting the cultural differences in terms of mobility—and by the population size of the settlement. The latter reflects the settlement's capability to dispatch individuals to defend its territory and its increasing needs for resources.
+The criteria for available space are determined by areas on the map that are neither too elevated, submerged in water, nor within the vicinity of pre-existing settlements. This proximity range is also culture-dependent, reflecting differences in mobility and the population size of the settlement. The latter reflects the settlement's capability to dispatch individuals to defend its territory and its increasing need for resources.
 
-Once all the available spaces have been identified, a friction surface is created. This surface determines the probability of moving to any square of the raster. This probability is defined as a function of the distance from the original settlement and the availability of resources.
+A friction surface is created once all available spaces have been identified. This surface determines the probability of moving to any square of the raster. This probability is defined as a function of the distance from the original settlement and the availability of resources.
 
-To do so we create a friction surface using a logistic decay function defined as:
+To achieve this we create a friction surface using a logistic decay function defined as:
 $$
 \text{logdec}(ds,k,L) = L - \frac{L}{1 + e^{-k(ds - x_0)}}
 $$
@@ -23,7 +23,7 @@ where:
 - $ds$: raster representing the distance to the focal settlement 
 - $x_0$: The midpoint of the logistic function, set as 20000, ie 20km from the origin, modulated by `cult_ext`, a culture-dependent parameters reflecting the technological abilities of the culture to move.
 
-We then combine this first friction surface with the ressource raster to compute another friction map representing weighted average probability, where the distance to origin accounts for 70% of the final probability and available resources 30%.
+We then combine this first friction surface with the resource raster to compute another friction map representing weighted average probability, where the distance to origin accounts for 70% of the final probability and available resources 30%.
 
 This final friction surface can be summarised as:
 $$
@@ -34,12 +34,12 @@ where:
 
 - $d_2$ is the result of the logistic decay function applied to a given site and its parameters.
 - `ressources` represents available resources.
-- `max`() returns the maximal value of a raster, to normalise value as probabilites (it's implemented by `terra::minmax()` function)
+- `max`() returns the maximal value of a raster, to normalise value as probabilities (it's implemented by `terra::minmax()` function)
 
-When a site position is chosen, a new settlement is created, using the functions described in the previous chapter, to generate the carrying capacity of the new settlement and it's new population structure
+When a site position is chosen, a new settlement is created, using the functions described in the previous chapter to generate the carrying capacity of the new settlement and its new population structure
 
 
-This is wrapped within the function `run_simulation`, that will be described in detail in the [next chapter](#main-simu). Here is a simplified version of the section of the code that handles these migration events:
+This is wrapped within the function `run_simulation`, which will be described in detail in the [next chapter](#main-simu). Here is a simplified version of the section of the code that handles these migration events:
 
 ```{r code-migration, eval=F}
 migrants <- newN - round(Ks[[s]]*0.9) #possible migrants,
@@ -91,7 +91,7 @@ This uses a couple of internal functions, some already described, like:
 - `initpopstruc`
 - `initKs`
 
-and specific one like:
+and specific ones like:
 - `changePopSize`: Changes population size by moving population from one site to another; or remove a group of people.
 
 
@@ -124,13 +124,13 @@ Nts[i,city] <- Nts[i-1,city] + migrants
 ## Conflict and War
 
 
-During each time step of the simulation, each settlement has the opportunity to fight against another settlement. This again, will depend on multiple factor such as the culture of the settlements and their population sizes. Here is a breakdown of how war is simulated according to the provided code snippet:
+During each time step of the simulation, each settlement may engage in a fight against another settlement. This again, will depend on multiple factor such as the culture of the settlements and their population sizes. Here is a breakdown of how warfare is simulated according to the provided code snippet:
 
 1. **Identification of Aggressors**:
-    - In the archaeoriddle simulation, only farmers have a aggressive behavior and engage in conflict. Thus during a first step, farmer settlements with a population size greater than 50 are identified as potential aggressors (`potentialfighters`). From this subset of the farmer's settlements,10% of them will actually try to engage in warfare.
+    - In the archaeoriddle simulation, only farmers behave aggressively and engage in conflict. Thus, in a given time step, farmer settlements with a population size greater than 50 are identified as potential aggressors (`potentialfighters`). From this subset of the farmer's settlements,10% of them will actually try to engage in warfare.
 
 5. **Selecting the Target for Attack**:
-    - Settlements within a radius from the agressor and with a different culture  are identified as potential victims. The radius is defined by theparameters `bufferatack`.
+    - Settlements within a radius of the aggressor and with a different culture are identified as potential victims. The radius is defined by the parameter `bufferatack`.
     Then:
     
     - If there is only one clash candidate, that candidate is selected as the target.
@@ -138,23 +138,23 @@ During each time step of the simulation, each settlement has the opportunity to 
 
 6. **Conducting the Battle and Calculating Losses**:
     - The battle is simulated through the `fightbetterloss` function, which calculates the new population sizes for both the aggressor and the victim after the conflict.
-    - The casualties from the battle are calculated, and these are used to determine the size of the war event.
+    - The casualties from the battle are calculated and used to determine the size of the war event.
 
-To calculate who win and what are the losses we defined a function `fightbetterloss` that simulates a battle between two settlements and calculates their post-conflict population sizes based on their initial population sizes. The outcome of who wins the battle is determined probabilistically, influenced by the relative sizes of each settlement's population, assuming no major technological differences. 
+To calculate who wins and what the losses are, we defined a function called `fightbetterloss` that simulates a battle between two settlements and calculates their post-conflict population sizes based on their initial population sizes. The outcome of who wins the battle is determined probabilistically, influenced by the relative sizes of each settlement's population, assuming no significant technological differences. 
 
 The battle outcome between two settlements, A and B, is determined by:
 
 $$ P(\text{Victory for A}) = \frac{N_A}{N_A + N_B} $$
 
-where \(N_A\) and \(N_B\) are the population sizes of settlements A and B, respectively. This probability is used to decide who the victor (v) is and who the loser (l) is. The new population sizes of the victor and the loser after the battle are determined by binomial distributions, reflecting the randomness of conflict outcomes:
+where \(N_A\) and \(N_B\) are the population sizes of settlements A and B, respectively. This probability is used to decide who the winner (v) is and who the loser (l) is. The new population sizes of the winner and the loser after the battle are determined by binomial distributions, reflecting the randomness of conflict outcomes:
 
-For the victor (\(v\)):
+For the winner (\(v\)):
 $$ N_{v,\text{new}} = \text{Binomial}\left(n = N_v, p = 1 - \frac{N_l}{N_v + N_l}\right) $$
 
 For the loser (\(l\)):
 $$ N_{l,\text{new}} = \text{Binomial}\left(n = N_l, p = 1 - \frac{N_v}{N_v + N_l}\right) $$
 
-In these equations, \(N_{v,\text{new}}\) and \(N_{l,\text{new}}\) are the new population sizes for the victor and the loser; \(n\) is the size parameter of the binomial distribution, which is the pre-battle population size; and \(p\) is the success probability of surviving the battle. The success probability for each side inversely depends on the ratio of the opponent’s population size to the total population involved in the conflict, reflecting the idea that the larger the population, the higher the casualties it will inflict, and the lower the casualties it will suffer.
+In these equations, \(N_{v,\text{new}}\) and \(N_{l,\text{new}}\) are the new population sizes for the winner and the loser; \(n\) is the size parameter of the binomial distribution, which is the pre-battle population size; and \(p\) is the success probability of surviving the battle. The success probability for each side inversely depends on the ratio of the opponent’s population size to the total population involved in the conflict, reflecting the idea that the larger the population, the higher the casualties it will inflict, and the lower the casualties it will suffer.
 
 This process incorporates cultural differences, population sizes, and proximity to dictate when and how wars occur between settlements, simulating the nuanced and multifaceted nature of conflict in a simplified manner.
 
@@ -176,7 +176,7 @@ legend("bottomrigh",legend=names(cls)[seq(1,length(cls),length.out=9)],fill=cls[
 abline(a=1,b=1,col="green",lwd=3)
 ```
 
-The model with generate losses on both sides, but on average less for the biggest population, while still allowing cases where the smaller settlement wins the fight and generates more damage than it receives. These differences are smoothed when the size of the two settlements become similar.
+The model generates losses on both sides, but on average, this is smaller for the larger population while still allowing cases where the smaller settlement may win the battle, causing more damage than it receives. These differences are smoothed when the size of the two settlements becomes similar.
 
 Here is a simplified version of the actual implementation available in `run_simulation`:
 ```{r desc-war, eval=F}
@@ -209,12 +209,12 @@ for (s in sample(x=potentialfighters, size=round(length(potentialfighters)*probf
 ```
 
 
-- `whotouch` :  is a central element of the conflict, and it returns the list of sites that are within the reach of the settlements. A couple of adjustments have been manually done for the original challenge: only farmers attack, and they do so only if they have at least 50 individuals. Among the settlements that have the potential to attack another, they will do so with a probability of `probfight`. This has been set to 0.1 in the original challenge in order to ensure that settlements do not fight everyone all the time, which was leading to way too much wars.
+- `whotouch` :  is a central element of the conflict, and it returns the list of sites within the reach of the settlements. A couple of adjustments have been manually made for the original challenge: only farmers attack, and they do so only if they have at least 50 individuals. Among the settlements that have the potential to attack another, they will do so with a probability of `probfight`. This has been set to 0.1 in the original challenge to ensure that settlements do not fight everyone all the time, which was leading to way too much wars.
 
 
 - `warpoint` : is here used to randomly select a point where the two settlements can potentially meet and thus where the conflict happened. It is so far only used to show conflicts on the map, but could be used to deposit evidences of these conflicts. 
 
-Here are defined lot of the assumptions that will be tested by the research questions proposed in the original challenge described in the Chapter&nbsp;\@ref(original-challenge).
+Here are we define most of the assumptions that will be tested by the research questions proposed in the original challenge described in the Chapter&nbsp;\@ref(original-challenge).
 
 
 
@@ -300,7 +300,7 @@ for(i in seq(1, tstep, length.out=100)){
 }
 ```
 
-Population will then grow, for years and years. This implies multiple things: population needs resources and a way to grow with regard to these resources and their own technologies. We initialised the resource layer in the previous chapter 
-in [the  section about resources](#env). In the following sections we will use this ressource raster to initialise site size and define how resources are used by the different cultures.
+Population will then grow, for years and years. This implies multiple things: populations need resources and a way to grow given available resources and their own technologies. We initialised the resource layer in the previous chapter 
+in [the  section about resources](#env). In the following sections, we will use this resource raster to initialise site size and define how the different cultures use resources.
 
 
