@@ -15,36 +15,36 @@ height.ras=rast(here::here("doc","bookdown","data_original","east_narnia4x.tif")
 height.wat=height.ras
 height.wat[height.wat>mean(height.wat[])]=NA
 
-png("dem.png",bg="transparent")
+png("Figure1/A_dem.png",bg="transparent")
 plot(height.ras,col=topo.colors(50),alpha=.5,axes=F,xlim=c(-4,1),ylim=c(-1,4),legend=F,mar=rep(0,4),oma=rep(0,4))
 box(which="figure")
 dev.off()
 
-png("map.png",bg="transparent")
+png("Figure1/B_map.png",bg="transparent")
 plotMap(height.ras,height.wat,axes=F,xlim=c(-4,1),ylim=c(-1,4),alpha=.8,mar=rep(0,4),oma=rep(0,4))
 box(which="figure")
 dev.off()
 
-png("siteI.png",bg="transparent")
+png("Figure1/C_siteI.png",bg="transparent")
 plot(sites,cex=(as.integer(Nts[1,]>0)*0.5+Nts[1,]/100),pch=21,axes=F,bg=rainbow(2,alpha=.6)[as.factor(sites$culture)],xlim=c(-4,1),ylim=c(-1,4),mar=rep(0,4),oma=rep(0,4))
 text(sites[Nts[1,]>0],pos=3)
 legend("topright",legend=c("hunter gather", "farmer"),pch=21,pt.bg=rainbow(2,alpha=.6))
 box(which="figure")
 dev.off()
 
-png("siteF.png",bg="transparent")
+png("Figure1/D_siteF.png",bg="transparent")
 par(mar=c(0,0,0,0),oma=c(0,0,0,0))
 plot(sitesF,cex=(as.integer(Nts[nrow(Nts),]>0)*0.5+Nts[nrow(Nts),]/100),pch=21,axes=F,bg=rainbow(2,alpha=.6)[as.factor(sitesF$culture)],xlim=c(-4,1),ylim=c(-1,4),mar=rep(0,4),oma=rep(0,4))
 box(which="figure")
 dev.off()
 
 ressources=rast(here::here("doc","bookdown","data_original","resources.tiff"))
-png("ress.png",bg="transparent")
+png("Figure1/E_ress.png",bg="transparent")
 plot(ressources,axes=F,xlim=c(-4,1),ylim=c(-1,4),legend=F,alpha=.6,mar=rep(0,4),oma=rep(0,4))
 box(which="figure")
 dev.off()
 
-png("square.png",bg="transparent")
+png("Figure1/F_square.png",bg="transparent")
 squares=st_make_grid(height.ras,.5)
 par(mar=rep(0,4),oma=rep(0,4))
 plot(squares,add=F,col=adjustcolor(rainbow(length(squares)),.35),xlim=c(-4,1),ylim=c(-1,4),mar=rep(0,4),oma=rep(0,4),setParUsrBB=T)
@@ -64,11 +64,11 @@ founddates=lapply(founddates,function(i)paste0(i," ± ",sample(stdpool,length(i)
 foundsites$dates=sapply(founddates,paste0,collapse=" | ")
 leftdates=dates[lengths(dates)>0]
 
-png("foundSites.png",bg="transparent")
+png("Figure1/G_foundSites.png",bg="transparent")
 plot(foundsites,cex=foundsites$numdates/20+1,pch=21,bg=rainbow(2,alpha=.6)[as.factor(foundsites$culture)],add=F,xlim=c(-4,1),ylim=c(-1,4),mar=rep(0,4),oma=rep(0,4))
 dev.off()
 
-png("squareavai.png",bg="transparent")
+png("Figure1/H_squareavai.png",bg="transparent")
 selection=c(14,30,45,65,66)
 par(mar=rep(0,4),oma=rep(0,4))
 plot(squares,xlim=c(-4,1),ylim=c(-1,4),mar=rep(0,4),oma=rep(0,4),setParUsrBB=T)
