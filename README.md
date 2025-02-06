@@ -11,8 +11,8 @@ The Archaeoriddle Project has been implemented and developed by the [Computation
 This repository compile together all the elements developed throughout this project. They can be divided in three main components, that are all detailed later in this file.
 
 1. [The Bookdown](#the-bookdown) : a compiled version is available online [here](https://www.thearchaeoriddle.org). This standalone document details every aspect of the project. It should allow the reproduction and exploration of every aspect of the project ( :file_folder: [./doc/bookdown/](./doc/bookdown/)).
-2. [The Original Challenge](#the-original-challenge) one instance of archaeoriddle's simulation, including the website, data and 5 participants contribution ( :file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
-2. [The R package](#the-r-package) : contains all the above and the underlying R-functions, tests and associated documentation ( :file_folder: [./](./))
+2. [The Original Challenge](#the-original-challenge) : one instance of archaeoriddle's simulation, including the website, data and 5 participants contribution ( :file_folder: [./doc/shinyapp/](./doc/shinyapp/) & [./doc/bookdown/data_original/](./doc/bookdown/data_original/)).
+2. [The R package](#the-r-package) : contains all of the above and the underlying R functions, tests and associated documentation ( :file_folder: [./](./))
 
 
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different part of the project. It also greatly simplify the use of the different functions used throughout the bookdown for anyone who would like to play and recreate its own Archaeoriddle world.
@@ -21,13 +21,13 @@ This repository has the structure of an R package. This allows each sub-componen
 *Note:* The version v0.1.2  of this repository is the last version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
-This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](https://doi.org/10.5281/zenodo.14024547), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/), that store the scripts used to generate the figures found in the paper.
+This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](https://doi.org/10.5281/zenodo.14024547), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/), that stores the scripts used to generate the figures found in the paper.
 
 ## The Bookdown
 
 This is the main outcome of the Archaeoriddle project, detailing all the other sub-components. An online version is available at: [www.thearchaeoriddle.org](https://www.thearchaeoriddle.org). It is associated with a [forum](https://www.thearchaeoriddle.org/forum) intended to be a place where anyone can come to discuss the project, issues encountered while using the package or simply curious to explore and exchange about inference in archaeology in general.
 
-The Archaeoriddle bookdown guides you through the Archaeoriddle project, allowing you to follow everything step and decision taken ; which models have been chosen at different level and why. Coupled with the functions provided by [the R package](#the-r-package), you will be able to use code chunks to reproduce elements of interest yourself, create your own world, with its unique mountains, seas, and islands. You will be able to generate settlements, distribute populations that fluctuate based on parameters you will choose. The bookdown also facilitates recreating your own [challenge](#the-original-challenge). It will take you through all steps to generate your own radiocarbon deposits and create output files to share with students or colleagues and find out who can infer your original parameters.
+The Archaeoriddle bookdown guides you through the Archaeoriddle project, allowing you to follow everything step and decision taken ; which models have been chosen at different level and why. Coupled with the functions provided by [the R package](#the-r-package), you will be able to use code chunks to reproduce elements of interest yourself, create your own world, with its unique mountains, seas, and islands. You will be able to generate settlements, distribute populations that fluctuate based on parameters you will choose. The bookdown also facilitates recreating your own [challenge](#the-original-challenge). It will take you through all the steps to generate your own radiocarbon deposits and create output files to share with students or colleagues and find out who can infer your original parameters.
 
 The source for the bookdown is stored in `doc/bookdown/`. This folder contains all the files and documents needed to compile the Archaeoriddle's bookdown. It also houses the output and original files shared for the original Archaeoriddle's challenge.
 
@@ -77,7 +77,7 @@ On the website, three research questions were asked:
 - RQ2. What was the population trajectory of each group?
 - RQ3. What was the rate of dispersal of poppy chewers?
 
-Via the website, everyone had access to fou squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request five additional zones that will be 'excavated' for them and they then received datasets covering the zones they picked. 
+Via the website, everyone had access to four squares representing 4 zones of 'Rabbithole' from which data about occupation was given. People who wanted to participate were then able to request five additional zones that will be 'excavated' for them and they then received datasets covering the zones they picked. 
 
 <div style="font-size: 8pt;text-align: center;">
   <figure>
@@ -91,7 +91,7 @@ Via the website, everyone had access to fou squares representing 4 zones of 'Rab
 
 ### Proposals
 
-The original challenge received 5 proposals that can be explore via the links below. A snapshot of the proposals the way they were provided by the authors after the revision process are also provided on the [zenodo repository](https://doi.org/10.5281/zenodo.14024548). We here briefly summarize the proposal and give links to the original source of them.
+The original challenge received 5 proposals that can be explore via the links below. A snapshot of the proposals the way they were provided by the authors after the revision process is also provided on the [zenodo repository](https://doi.org/10.5281/zenodo.14024548). We here briefly summarize the proposal and give links to the original source of them.
 
 #### P1 by Deborah Priß and Raphael Kahlenberg
 
@@ -130,7 +130,7 @@ The original challenge received 5 proposals that can be explore via the links be
 
 #### P5 by Daniel Hromada
 
-> The author used a qualitative analysis to infer hostility between Poppy-chewers and Rabbit-skinners by comparing the shorter settlement persistence of Rabbit-sinner in the region Poppy-chewers exist, separated by a sea, to its persistence in other regions under equal conditions.
+> The author used a qualitative analysis to infer hostility between Poppy-chewers and Rabbit-skinners by comparing the shorter settlement persistence of Rabbit-skinners in the region where Poppy-chewers exist, separated by a sea, to its persistence in other regions under equal conditions.
 
 **Source:** [here](https://zenodo.org/records/14207474) and [here](http://dx.doi.org/10.13140/RG.2.2.10753.47207)
 
@@ -166,7 +166,7 @@ Most of the functions defined in the package are described in details in [the bo
 
 The package will be used if you want to follow the bookdown or recompile it. It will also allows you to easily re-use the functions defined in the package to re-explore the proposal of the original challenge, create your own model of interaction, explore and modify the underlying model used throughout the Archaeoriddle project.
 
-To install the package, the easiest is probably to use `devtools` function `install_github`: `devtools::install_github("acortell3/archaeoriddle")` 
+To install the package, it is probably easiest to use `devtools` function `install_github`: `devtools::install_github("acortell3/archaeoriddle")` 
 
 
 ## Full file structure:
