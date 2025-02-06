@@ -86,6 +86,9 @@ Popsim <- function(init,K,g,t,legs=NULL,smoothing=NULL){
 
 
 
+check  <-  require(archaeoridlle,quietly=T)
+if(!check && !exists('K_lim')) cat("You haven't installed the archaeoridlle package, you'll need to install it \n \t - \033[1;34m`devtools::install_github(\"acortell3/archaeoriddle\")`\033[0m\n or load it  \n \t - \033[1;34m`devtools::load_all('.')`\033[0m \n")
+
 set.seed(1)
 
 ## Build three occupation phases

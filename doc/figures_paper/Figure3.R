@@ -1,9 +1,16 @@
+##check if you have the pacages/functions needed
+check  <-  require(archaeoridlle,quietly=T)
+if(!check && !exists('K_lim')) cat("You haven't installed the archaeoridlle package, you'll need to install it \n \t - \033[1;34m`devtools::install_github(\"acortell3/archaeoriddle\")`\033[0m\n or load it  \n \t - \033[1;34m`devtools::load_all('.')`\033[0m \n")
+
+
 library(terra)
+
+
 onesimu=readRDS(here::here("doc","bookdown","data_original","general_results_selected_simu","buffattack300_K110_PSU065_3_all.RDS"))
 Nts=onesimu$Nts
 warcasualties=onesimu$warcasualties
 sites=vect(here::here("doc","bookdown","data_original","sitesinitialposition"))
-#Figure3
+#Figure3 ####
 pdf("Figure3.pdf",width=8,height=6)
 i=1000
 par(mar=c(5,5,1,5))

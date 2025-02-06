@@ -1,5 +1,8 @@
+##check if you have the pacages/functions needed
+check  <-  require(archaeoridlle,quietly=T)
+if(!check && !exists('K_lim')) cat("You haven't installed the archaeoridlle package, you'll need to install it \n \t - \033[1;34m`devtools::install_github(\"acortell3/archaeoriddle\")`\033[0m\n or load it  \n \t - \033[1;34m`devtools::load_all('.')`\033[0m \n")
+
 ### Figure 1 ==== Below all the layers used in the figure One
-devtools::load_all('.')
 library(terra)
 library(sf)
 onesimu=readRDS(here::here("doc","bookdown","data_original","general_results_selected_simu","buffattack300_K110_PSU065_3_all.RDS"))
