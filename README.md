@@ -162,7 +162,7 @@ The original challenge is detailed in [this chapter](https://thearchaeoriddle.or
 
 This overal structure of this repository is a R package. 
 To install it, the most simple way will be by using `devtools` function `github_install()` by doing: `devtools::install_github("acortell3/archaeoriddle")`.
-Most of the functions defined in the package are described in details in [the bookdown](https://www.thearchaeoriddle).
+Most of the functions defined in the package are described in details in [the bookdown](https://www.thearchaeoriddle.org).
 
 The package will be used if you want to follow the bookdown or recompile it. It will also allows you to easily re-use the functions defined in the package to re-explore the proposal of the original challenge, create your own model of interaction, explore and modify the underlying model used throughout the Archaeoriddle project.
 
