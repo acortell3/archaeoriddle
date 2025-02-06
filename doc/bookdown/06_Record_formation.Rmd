@@ -75,7 +75,7 @@ grViz("
 
 The above graph depicts a very schematic way to represent the formation of the archaeological record ($W/m^2$). In this case, we are interested in radiocarbon dating, focusing on bone samples; that is the number (and range) of potential 14C dates produced in a site, and this is key to understand the way in which we produced the model. We are aware that generating a specific archaeological palimpsest depends on a large quantity of variables, some of which may be controlled by field archaeologists and some of which may not (or are not). Therefore, the graph above must be read as follows. Asides from the outcome variable, the exposure variables, *Pop (group size)*, *Anthropogenic deposition rates* and *Natural deposition rates* (depicted in orange), are designed in a way that they can be activated for the model to infer them, they can be provided by the archaeologist, or they can be simply ignored. In the most elementary case, the archaeologist could introduce directly the outcome variable ($W/m^2$) without taking into account anything else, if she/he is confident to provide an accurate value.
 
-However, in most cases, this information will not be known to the field researcher, and in this situation, these variables can be modeled to different extents of complexity. While, for example, in the case of the most simple simulation, the field archaeologist could ignore deposition rates. In this case, and because we are only considering 14C dates, then the quantity of the sample becomes broadly proportional to the number of people present in a site, and thus it could be modeled like this.
+However, in most cases, this information will not be known to the field researcher, and in this situation, these variables can be modeled to different extents of complexity. For example, in the case of the most simple simulation, the field archaeologist could ignore deposition rates. In this case, and because we are only considering 14C dates, then the quantity of the sample becomes broadly proportional to the number of people present in a site, and thus it could be modeled like this.
 
 ```{r, echo = FALSE, out.width="50%"}
 grViz("
@@ -196,13 +196,13 @@ where $r$ is the natural deposition rates.
 
 This simulation for the creation of the archaeological record has been divided in three phases, or protocols.  
 
-The first one has been described in the [previous chapter](#popgrowth), where we populated the site, according to a stochastic demographic process on top of which migration and war events occurred. Here we focus on how these populations generate waste, and how this waste will be stored in the archaeological record and where. This is done in two steps ; we first generate a sample of waste for each time $t$ and, in second step, we distribute the amount of waste for each depth $d$.
+The first one has been described in the [previous chapter](#popgrowth), where we populated the site, according to a stochastic demographic process on top of which migration and war events occurred. Here we focus on how these populations generate waste, and how this waste will be stored in the archaeological record and where. This is done in two steps: we first generate a sample of waste for each time $t$ and, in the second step, we distribute the amount of waste for each depth $d$.
 
 In order to fully understand the process, first we go through the protocols and functions used. 
 
 ### Population $Pop$-protocol
 
-Before anything, in order to account for the chronological occupation of the site, a demographic process must be produced _ie_ sites need to be occupied. From these occupation a record sample is generated accordingly. This is what his done and described in the [previous chapter](#popgrowth), but here we will use the function `Pop_stoch`  to generate a simple stochastic growth and apply our loss function to it in order to describe and test the other protocols.
+Before anything, in order to account for the chronological occupation of the site, a demographic process must be produced _ie_ sites need to be occupied. From these occupations a record sample is generated accordingly. This is what his done and described in the [previous chapter](#popgrowth), but here we will use the function `Pop_stoch`  to generate a simple stochastic growth and apply our loss function to it in order to describe and test the other protocols.
 
 ```{r, eval=FALSE}
 ?Pop_stoch
@@ -234,13 +234,13 @@ Where:
 
 -   $R(t)$ is the quantity of kilocalories produced for each kilogram of meat. This is a continuous with range $[1,2.5]$. Total kilocalories have been divided by 1000 for easier computation.
 
--   And $C(t)$ is the quantity of kilocalories, extracted from meat, consumed by person for each time $t$. It is in turned is defined as $C(t)=B(t) \times M(t)$, where
+-   And $C(t)$ is the quantity of kilocalories, extracted from meat, consumed by person for each time $t$. It is in turn defined as $C(t)=B(t) \times M(t)$, where
 
     -   $B(t)$ is the quantity of kilocalories consumed by an individual for each $t$, and it has a range $[1.5,2.5]\times 365$. For easier computation, the actual average of kilocalories consumed per person/day has been divided by 1000.
 
     -   $M(t)$ is the proportion of kilocalories coming from meat relating to the total calories consumed per each individual. $[0,1]$.
 
-As it can be seen, the above definitions embed the functionality of the site, which can be considered by the user. In practice, setting the variables $O(t) = 1$ and $S(t) = 1$ would eliminate site functionality. This would assume that a site is inhabited by all the group during the full year, and that this group consumes all the food in the site.
+As it can be seen, the above definitions embed the functionality of the site, which can be considered by the user. In practice, setting the variables $O(t) = 1$ and $S(t) = 1$ would eliminate site functionality. This would assume that a site is inhabited by the full group during the full year, and that this group consumes all the food in the site.
 
 Up to now, we have obtained the value for the variable $A$, which is the amount of kilograms of bone produced at each time $t$. If we consider 4 grams of non-heated bones per sample, we can extract the number of samples at time $t$, which we cal $W(t)$
 
@@ -300,7 +300,7 @@ is the proportion of buried samples in $t_{u}$ from the ones that were deposited
 
 $$\frac{W_b(t_u=t_{u_{max}},t_l)}{W(t_l=1)}=1-e^{-t_{u_{max}}\lambda} \tag{8}$$
 
-However, since we consider that all of the samples buried in $t_{u_{max}}$, then the proportion on the left hand side is 1, and in this situation $\lambda \rightarrow \infty$ so we cannot use the equation. We can especify an error margin, $\theta_e$ to the proportion of buried samples in $t_{u_{max}}$, say $99\%$. In this case, $\lambda$ can be easily computed as follows
+However, since we consider that all of the samples are buried in $t_{u_{max}}$, then the proportion on the left hand side is 1, and in this situation $\lambda \rightarrow \infty$ so we cannot use the equation. We can especify an error margin, $\theta_e$ to the proportion of buried samples in $t_{u_{max}}$, say $99\%$. In this case, $\lambda$ can be easily computed as follows
 
 $$\theta_e=1-e^{-\lambda t_{u_{max}}}$$
 
@@ -349,7 +349,7 @@ We can create a very basic and simple simulation to illustrate these processes f
 
 1.  $Pop$-protocol. Using `Pop_stoch`, we generate a stochastic population dynamic that will give us the number of individuals for each year.
 2.  $A$-protocol. Knowing the population size per year, we apply `A_rates` to each of them and generate the anthropogenic deposition, and get the number of samples per year.
-3.  $D$-protocol. Knowing how many samples are generates each year, using `Rec_c`, we distribute them along the depth record.
+3.  $D$-protocol. Knowing how many samples are generated each year, using `Rec_c`, we distribute them along the depth record.
 
 ```{r mini-simu}
 set.seed(1234)
@@ -361,7 +361,7 @@ samp <- unlist(lapply(Ps, A_rates)) ## Extract sample per time steps
 Rec <- Rec_c(samp, InitBP = 7500, ts = 100, r = 0.2, max_bone_thickness = "m")
 ```
 
-With this we obtain, among other things, the distribution of the samples deposited for each date along the depth of the sit, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example. The user can also check how the model works and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). *The total number of population has been adapted for visualisation*
+With this we obtain, among other things, the distribution of the samples deposited for each date along the depth of the site, and its comparison to the total population. For better comprehension, we have decided not to include all of the dates in the plot below, but only some of them as an example. The user can also check how the model works and its results [here](https://acortell3.shinyapps.io/archaeo_record_model). *The total number of population has been adapted for visualisation*
 
 ```{r visu-record, echo = FALSE, message=FALSE}
 
