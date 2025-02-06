@@ -20,7 +20,7 @@ However, we understand that horizontal movement is a key aspect of the record fo
 Although in the future we will introduce additional layers which account for how the record moves vertically along the sequence, at this point, we are only considering the processes of record loss.
 
 #### Loss of the record
-The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term process affecting the record for every $t$ from the moment of its depositions to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.
+The are two main components for this part of the model. As shown in the graph below, the first one is *time-dependent taphonomic loss*, usually referring to long term processes affecting the record for every $t$ from the moment of its deposition to the present. The second one is *direct action*, which consider high-impact short term processes, such as human or animal action. These two variables can be applied together (advised), separately or not at all.
 
 ```{r diagram, echo = FALSE,cache=FALSE}
 require(DiagrammeR) #this should be already loaded but in case you have restarted you R session do forget to load it!
@@ -200,7 +200,7 @@ lRec <- long_loss(tlRec, th_l, 7500)
 tlRec <- t(lRec)
 ```
 
-We can then visualize  the results of these lost using simple `barplots`:
+We can then visualize the results of these loss functions using simple `barplots`:
 
 ```{r plot-loss-rec, message=FALSE}
 barplot(tlRec[c(1:4,77:79),], col = viridis(10), legend = colnames(Rec)[c(1:4,77:79)],
