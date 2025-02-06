@@ -90,3 +90,9 @@ plotMap <- function(height, water, maintitle="",...){
 viridis <- function(n) {
   hcl.colors(n, "viridis")
 }
+
+cividis <- function(n) {
+  hcl.colors(n, "cividis")
+}
+
+
