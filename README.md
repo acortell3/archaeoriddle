@@ -190,8 +190,8 @@ To install the package, it is probably easiest to use `devtools` function `insta
 - [:file_folder: doc/bookdown/](./doc/bookdown/): cf section [The Bookdown](#the-bookdown)
 - [:file_folder: doc/shinyapp/](./doc/shinyapp/): cf section [The Original Challenge](#the-original-challenge)
 - [:file_folder: doc/tex_files/](./doc/tex_files//): a few `tex` files used to layout ideas
-- [:file_folder: doc/figures_paper/](./doc/figures_paper/): scripts used to generate the figures found in the paper and output of the script 
-    - [:file_folder: doc/figures_paper/Figure1/](./doc/figures_paper/Figure1/): a :file_folder: storing all layers used in Figure 1. Layers have then been manually grouped together using [Inkscape version 1.2.2 (b0a8486541, 2022-12-01)](http://inkscape.org))
+- [:file_folder: doc/figures_paper/](./doc/figures_paper/): scripts used to generate the figures found in the paper and output of the scripts 
+    - [:file_folder: doc/figures_paper/Figure1/](./doc/figures_paper/Figure1/): a :file_folder: storing all layers used in Figure 1. Layers have then been manually grouped together using [Inkscape version 1.2.2 (b0a8486541, 2022-12-01)](http://inkscape.org)).
 - [🖼️  brain_map_colabm.png](./doc/brain_map_colabm.png) : image representing early reflections about the project
 - [📄 Explanation_of_ideas_brain_map.md](./doc/Explanation_of_ideas_brain_map.md): Markdown file detailing programming languages, world options, and more.
 - [📄 interactive_brain_map.md](./doc/interactive_brain_map.md): Markdown guide for using Markmap visualization; contains programming language options and more.
