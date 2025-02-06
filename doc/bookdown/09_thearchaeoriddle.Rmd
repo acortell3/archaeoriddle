@@ -1,8 +1,8 @@
 # Archaeoriddle: the original challenge {#original-challenge}
 
-In this chapter we will here go through all the steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the Archaeoriddle original challenge. But before that we will we retrace the journey from the first discussions in the courtyard of the McDonald Institute in Cambridge to the final workshop in Belfast.
+In this chapter we will here go through all the steps we presented throughout Chapter&nbsp;\@ref(env) to&nbsp;\@ref(final-output), but in a condensed way and with the parameters used to generate the data shared during the Archaeoriddle original challenge. But before that we will retrace the journey from the first discussions in the courtyard of the McDonald Institute in Cambridge to the final workshop in Belfast.
 
-We will then end the chapater by briefly  discuss  the proposal submitted for the challenge.
+We will then end the chapter by briefly discussing  the proposal submitted for the challenge.
 
 ## Context 
 
@@ -13,7 +13,7 @@ Here a bit of how all that happen, and the majors steps.
 
 ### Birth of a Challenge
 
-After discussion within the member of the CDAL, we decided that a challenge-like event, with a cash-prize, would be the best way to convince people to participate. After the B/A grant has been awarded to Simon Carrignon, Alfredo Cortell and Enrico Crema, we thus decided to announce this challenge through various social media video and a website: https://theia.arch.cam.ac.uk/archaeoriddle/
+After discussion with the members of the CDAL, we decided that a challenge-like event, with a cash prize, would be the best way to convince people to participate. After the B/A grant has been awarded to Simon Carrignon, Alfredo Cortell and Enrico Crema, we thus decided to announce this challenge through various social media videos and a website: https://theia.arch.cam.ac.uk/archaeoriddle/
 
 ### The British Academy Grant -- November 2022
 
@@ -81,31 +81,31 @@ But in case this disappear, the source to reproduce the website are also availab
 
 The call was issued in April 2023, after acceptance of the workshop at EAA, and 5 proposals were submitted. 
 
-During the actual workshop, the whole project was summarised, the 5 proposal described by there respective authors, and the exact simulation reveiled.
+During the actual workshop, the whole project was summarised, the five proposals described by their respective authors, and the exact simulation was revealed.
 
 ## Implementation
 
-The Challenge is basically built on top of a manually selected environment, generated using the tools describe in the previous chapter, on top of which a bunch of simulation have been run, and one has been selected.
+The Challenge is basically built on top of a manually selected environment, generated using the tools described in the previous chapter, on top of which a bunch of simulations have been run, and one has been selected.
 
-But as [Simon Carrinon](sc.fram.io) has done a poor job when he did the simulation he didn't generate seeds, nor stored them, for each experiment; so we cannot re-run the original one EXACTLY as it happened. But he kept a lot of informations and output about it which, are stored in the folder `general_results_selected_simu/`
+But as [Simon Carrinon](sc.fram.io) has done a poor job when he did the simulation, he didn't generate seeds, nor store them, for each experiment, so we cannot re-run the original one EXACTLY as it happened. But he kept a lot of information and output about it which are stored in the folder `general_results_selected_simu/`
 
 This should be enough to allow anyone to reconstruct most of what happened. Thus, a quick recap of the implementation of the original challenge:
 
 Using all the functions developed and described previously in this book, we :
 
-1. Generate an environment that look cools
+1. Generate an environment that looks cool
 2. Choose a series of parameters and
 3. Run hundreds of simulations and choose the one who looked the coolest 😆.
   
-We used the script [scriptmini.R](https://github.com/acortell3/archaeoriddle/blob/main/doc/bookdown/scriptmini.R) to run one simulation, and then used a very simple and inelegant bash loop to parallelise muleiple run:
+We used the script [scriptmini.R](https://github.com/acortell3/archaeoriddle/blob/main/doc/bookdown/scriptmini.R) to run one simulation and then used a very simple and inelegant bash loop to parallelise multiple run:
 
 ```bash
 for t in {1..5} ; do Rscript scriptmini.R newset_$t > log_new_set$t 2> log_new_set$t.err &  done
 ```
 
-One can see, on line 52 until the end of the `scriptmini.R`, that some graphes are saved. This will be used to quickly compare the different simulation and choose the good one.
+One can see, on line 52 until the end of the `scriptmini.R`, that some graphs are saved. This will be used to quickly compare the different simulation runs and choose the good one.
 
-The simulation are also run with the parameter: `visumin=TRUE `, which allow to save images of population growth and settlement creation at every time step while the model is running, which can then be used to generate video of the whole process using simple script like:
+The simulations are also executed with the parameter: `visumin=TRUE `, which save images of population growth and settlement creation at every time step while the model is running, which can then be used to generate a video of the whole process using a simple script like:
 
 ```bash
 for i in test*_? ; do ffmpeg -i "$i/map_000%3d.png" "${i}_out.mp4" ; done
@@ -282,16 +282,16 @@ plot(growF, col="red", type="l", lwd=2, ylim=c(0, max(growF, growHG)))  # Plot g
 points(growHG, col="blue", lwd=2, type="l")  # Add points for growth of 'HG' culture
 ```
 
-We could then apply the record deposit and the loss function as described in Chapter&nbsp;\@ref(final-output), and generate a fake archaeological record to share with others. This would give a fake archaeological record for one simulation, ran using the same initial conditions and parameters as those used during the original challenge. However, these results won't exactly replicate what occurred during the original challenge.
+We could then apply the record deposit and the loss function as described in Chapter&nbsp;\@ref(final-output), and generate an artifical archaeological record to share with others. This would give a synthetic archaeological record for one simulation, ran using the same initial conditions and parameters as those used during the original challenge. However, these results won't exactly replicate what occurred during the original challenge.
 
-Unfortunately, as we briefly mentioned earlier, we can't recreate _exactly_ the same run from scratch because every interaction between settlements (migration, wars) and within settlements (birth and death) is stochastic. To replicate the same outcomes, we would need to use the same seed to ensure every random draw is identical. However, we can indeed run _multiple_ simulations, as we did in Chapter \@ref(explore-simulation), to estimate what typically happens under these conditions.
+Unfortunately, as mentioned earlier, we can't recreate _exactly_ the same run from scratch because every interaction between settlements (migration, wars) and within settlements (birth and death) is stochastic. To replicate the same outcomes, we would need to use the same seed to ensure every random draw is identical. However, we can indeed run _multiple_ simulations, as we did in Chapter \@ref(explore-simulation), to estimate what typically happens under these conditions.
 
 Nonetheless, even if we can't replicate it from scratch, we still have information about what happened step by step, stored in `data_original/general_results_selected_simu/`. We will leave a larger-scale exploration of these specific parameters as an exercise for those who would like to explore them in more detail during the original challenge.
 
 ### Generate and share final simulation
 
 
-Let's load again the maps, matrix storing all population changes and war casualites
+Let's load again the maps, matrix storing all population changes and war casualties
 
 
 ```{r loadressources-oc}
@@ -411,7 +411,7 @@ plotMap(height.ras,height.wat)
 plot(foundsites.oc,cex=foundsites.oc$numdates/20+1,pch=21,bg=as.factor(foundsites.oc$culture),add=T)
 ```
 
-Again, this is stochastic (the selection of the fake standard variation added is radom), so the exact results can't be reproduced exactly, although in that case this steps doesn't change anything, the outcome of this steps is available in the folder [data_original/all_squares.oc/](./data_original/all_squares.oc/).
+Again, this is stochastic (the selection of the fake standard variation added is radom), so the exact results can't be reproduced exactly, although in that case this steps doesn't change anything, the outcome of these steps is available in the folder [data_original/all_squares.oc/](./data_original/all_squares.oc/).
 
 ### Grid generation and sharing
 
@@ -493,18 +493,18 @@ P1 (https://github.com/dpriss/Archaeoriddle_Kahlenberg_Priss) was based on agent
 
 ### P2 
 
-P2 (https://doi.org/10.5281/zenodo.12803445) used point-process modelling focused initially on the sampling process to build first-order models combining fitness and the available cells to predict potential occupation. It then focused on the question of whether there was conflict between the two groups. After building different archaeological phases, it computed the clustering patterns of the groups under the assumption that higher clustering could lead to higher conflict (Field, 2004). Following this, it computed the interaction distance between groups of settlements of hunter–gatherers and farmers through a multitype Strauss model. According to the results, hostilities increased over time. In the original model, the rules for hostility were not time dependent, but we have seen that, even if the rules for conflict did not change, as the population grew and the number of settlements increased, there was more probability of contact and thus more probability of conflict, which finally resulted in an increased mortality.
+P2 (https://doi.org/10.5281/zenodo.12803445) used point-process modelling focused initially on the sampling process to build first-order models combining fitness and the available cells to predict potential occupation. It then focused on the question of whether there was conflict between the two groups. After building different archaeological phases, it computed the clustering patterns of the groups under the assumption that higher clustering could lead to higher conflict (Field, 2004). Following this, the interaction distance between groups of settlements of hunter-gatherers and farmers was computed through a multitype Strauss model. According to the results, hostilities increased over time. In the original model, the rules for hostility were not time-dependent, but we have seen that, even if the rules for conflict did not change, as the population grew and the number of settlements increased, there was more probability of contact and thus more probability of conflict, which finally resulted in increased mortality.
 
 ### P3 
 
-P3 (https://doi.org/10.5281/zenodo.8260754) used species-distribution modelling in R to develop a four-stage research design. The first stage focused on determining which additional cells would result in a representative sample of the range variables (elevation and resource quality) present within the data. The second stage focused on data exploration to identify internal temporal, spatial and farmer and forager patterns. In the third stage, it generated summed probability distributions from the calibrated radiocarbon dates to generate relative estimates of population size through time for foragers and farmers. The fourth stage combined these data into a spatiotemporal species-distribution model, where both time and space were explicit predictors used to estimate the distribution of farmers and foragers in 100-year intervals. The spatiotemporal species distribution was successful in reproducing the directionality of the farming dispersal (from south to north) as well as the decline in hunter–gatherer populations.
+P3 (https://doi.org/10.5281/zenodo.8260754) used species-distribution modelling in R to develop a four-stage research design. The first stage focused on determining which additional cells would result in a representative sample of the range variables (elevation and resource quality) present within the data. The second stage focused on data exploration to identify internal temporal, spatial and farmer and forager patterns. In the third stage, summed probability distributions from the calibrated radiocarbon dates were generated to infer relative estimates of population size through time for foragers and farmers. The fourth stage combined these data into a spatiotemporal species-distribution model, where both time and space were explicit predictors used to estimate the distribution of farmers and foragers in 100-year intervals. The spatiotemporal species distribution was successful in reproducing the directionality of the farming dispersal (from south to north) as well as the decline in hunter-gatherer populations.
 
 
 ### P4
 
-P4 (https://github.com/AlexesMes/Archeaoriddle_RabbitWorld) first developed a strategy to aid in the selection of additional data using a friction calculation that considered the distance from a putative origin region, the elevation of the region and its environmental suitability. Using R, analysis focused on capturing local complexity in the dispersal of Poppy-chewers in the study area. To track this, it used a hierarchical Bayesian phase model that was informed by all the selected settlements, both the ones held in common with other proposals and the ones obtained after calculations for additional sampling. This method allowed uncertainty to be introduced. It divided Rabbithole into 25 subareas and calculated the times of arrival of the Poppy-chewers for each area, including their high-probability density intervals, resulting in a successful approach to expansion rates. 
+P4 (https://github.com/AlexesMes/Archeaoriddle_RabbitWorld) first developed a strategy to aid in the selection of additional data using a friction calculation that considered the distance from a putative origin region, the elevation of the region and its environmental suitability. Using R, analysis focused on capturing local complexity in the dispersal of Poppy-chewers in the study area. To track this, it used a hierarchical Bayesian phase model that was informed by all the selected settlements, both the ones held in common with other proposals and the ones obtained after calculations for additional sampling. This method allowed uncertainty to be introduced. It divided Rabbithole into 25 subareas and calculated the times of arrival of the Poppy-chewers for each area, including their high probability density intervals, resulting in a successful approach to expansion rates. 
 
 
 ### P5 
 
-P5 used a qualitative approach (no code involved) that considered two cultures, A and B, initially established in regions R_A and R_B separated by a sea. Culture A eventually gained the ability to cross or bypass the barrier and to enter the region R_B and to make contact with B. Under the condition that all other parameters were equal (e.g. environmental fitness in both regions and no new pathogens or predators unknown to A), a significantly shorter settlement persistence of culture A in R_B, when compared with A’s settlement persistence assessed in other regions implies a hostile relation between A and B.
+P5 used a qualitative approach (no code involved) that considered two cultures, A and B, initially established in regions R_A and R_B separated by a sea. Culture A eventually gained the ability to cross or bypass the barrier and to enter the region R_B, and to make contact with B. Under the condition that all other parameters were equal (e.g. environmental fitness in both regions and no new pathogens or predators unknown to A), a significantly shorter settlement persistence of culture A in R_B, when compared with A’s settlement persistence assessed in other regions implies a hostile relation between A and B.
