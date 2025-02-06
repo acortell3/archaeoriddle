@@ -30,11 +30,11 @@ knitr::write_bib(c("DiagrammeR","terra","sf","igraph","rayshader", 'bookdown'), 
 
 This bookdown has two main objectives:
 
-1. documents all the steps, models, functions and results done during the archaeoriddle project
+1. document all the steps, models, functions and results done during the archaeoriddle project
 2. generate your own fake world with specific parameters and a fake archaeological records
 
 
-To use this book you can follow it on this online version and copy paste the chunks on your local computer,  or you can clone the source at the git repository [here](https://github.com/acortell3/archaeoriddle/) and compile the bookdown on your local machine.
+To use this book you can follow it on this online version then copy and paste the chunks on your local computer,  or you can clone the source at the git repository [here](https://github.com/acortell3/archaeoriddle/) and compile the bookdown on your local machine.
 
 #### Dependencies {-}
 
@@ -85,7 +85,7 @@ success=sapply(compneeded,require,character.only=T)
 Using `load_all()` instead of `install(...)` will allow you to modify the source code and reload the package after any change,  thus making test and integration of your own implementation way easier.
 
 
-Once the package has been loaded or installed, you can then render the book locally. Note that this may take a long time as it generate a full new world, and run a couple of simulations and examples.
+Once the package has been loaded or installed, you can then render the book locally. Note that this may take a long time as it generates a full new world, and runs a couple of simulations and examples.
 
 ```{r rendering,eval=F}
 bookdown::render_book() #you need to be in the folder 'doc/bookdown/' 
