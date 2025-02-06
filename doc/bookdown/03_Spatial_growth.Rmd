@@ -23,7 +23,7 @@ coastline <- st_as_sf(as.polygons(above_level))[2,]
 plot(coastline, col=NA, bgc=adjustcolor("cyan", 0.1), add=T)
 ```
 
-In the context of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/), the files that describe this newly generated environment (the DEM and the coastline) as well as the resources raster,  needs to be given to the participant. This can be done as:
+In the context of [the archaeoriddle challenge](https://theia.arch.cam.ac.uk/archaeoriddle/), the files that describe this newly generated environment (the DEM and the coastline) as well as the resources raster,  need to be given to the participant. This can be done as:
 
 ```{r writeSharedRessources}
 foldname="data_toshare" #We will store all data that can/will be shared with participant in data_toshare
@@ -38,9 +38,9 @@ The original data, saved and shared for the _archaeoriddle_ are stored in `data_
 
 ## Initializing Site Population and Culture {#initsize}
 
-Each site is then assigned as either belonging to the hunter-gather (HG) or farmer (F) culture.
+Each site is then assigned as either belonging to the *Rabbitskinners* (Hunter-gatherers) or the *Poppychewers* (Farmers).
 
-To generate a more realistic distribution, all sites are initially, designated as hunter-gatherer sites, except for the one located in the most southwest position. Please note that this decision was based on the specific shape of the initial archaeoriddle's challenge. If needed, you may want to manually select the site culture for this specific location.
+To generate a more realistic distribution, all sites are initially designated as hunter-gatherer sites, except for the ones located in the most southwest position. Please note that this decision was based on the specific shape of the initial archaeoriddle's challenge. If needed, you may want to manually select the site culture for any specific location.
 
 
 ```{r setcultures,eval=T}
@@ -64,7 +64,7 @@ Kbase <- c("HG"=45,"F"=120) #difference in base-K for the two cultures
 sites$Ks <- initKs(Kbase, sites, ress, sizeexp="F")
 ```
 
-Using these carrying capacities, we then set initial number of people, and the population structure for each sites:
+Using these carrying capacities, we then set initial number of people, and the population structure for each site:
 
 ```{r computeIN}
 # Population size at initialisation, a number close to Ks
@@ -113,19 +113,19 @@ fs::file_delete('init_simulation.Rmd')
 
 ## Population Growth : $Pop$-protocol {#base-pop-growth}
 
-This is a central aspect of the model, and defines several parameters to control how population growth and reach a maximum population $\sim K$. It is based on three functions: The first function, `Gpd()`, is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
+This is a central aspect of the model, and defines several parameters to control how population grows and reaches a maximum population $\sim K$ ($K$ is the carrying capacity). It is based on three functions: The first function, `Gpd()`, is the core of the protocol. It receives a population `matrix` or `data.frame` with a specific number of individuals (`nrow`), their age (`df[,1]`) and their sex (`df[,2]`) and produces another object with the same format but with a different population based on the current one. Introduced in a loop, this function produces a time series of population, which ensures the Markov property of the stochastic process $p(x_n+1|x_n)$.
 
 However, this function also relies on two the other functions: `death()` and `K_lim()`. `death()` is the process of people dying each year. It is based on an age-structured probability matrix, where infants and old people have more probabilities of deceasing. The matrix is provided, but the user can set its own. `K_lim()` limits the population when it reaches $K$. The user should specify the appropriate value for $K$ according to the size of the site, its type, the group economy, etc. Also, the user can change the probability that exceeding people dies with parameter `prob`. Default is 0.8.
 
 
 
 
-These base function will then be used in higher level functions to update the population size given the size and ages defined and described in the previous [section](#initsize). 
+These base functions will then be used in higher level functions to update the population size given the size and ages defined and described in the previous [section](#initsize). 
 
-A simple function  `Pop_stoch` implement a simple stochastic growth that uses these functions without the migrations and war mechanismes describe in this chapter. 
+A simple function  `Pop_stoch` implements a simple stochastic growth that uses these functions without the migrations and war mechanisms described in this chapter. 
 
 
-We can then use it to check and see the type of growth are generate given the default parameters (prob define the probability of people dying when the population has reached carrying capacity)
+We can then use it to check and see the type of growth that is generated given the default parameters (prob defines the probability of people dying when the population has reached carrying capacity)
 
 ```{r test-popstoch,message=F}
 set.seed(1234)
@@ -143,7 +143,7 @@ To know more about these functions and how their parameters are used, you can lo
 ?Pop_stoch
 ```
 
-You can also use this [shiny app online]() to explore how these parameters interact to generate different growth curves.
+You can also use this [shiny app online](https://acortell3.shinyapps.io/archaeo_record_model/) to explore how these parameters interact to generate different growth curves.
 
 ### Source {-} 
 
