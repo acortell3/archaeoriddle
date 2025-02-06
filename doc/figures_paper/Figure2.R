@@ -84,9 +84,7 @@ Popsim <- function(init,K,g,t,legs=NULL,smoothing=NULL){
   return(pop)
 }
 
-## Load viridis for colour palette
-#install.packages("viridis")
-library(viridis)
+
 
 set.seed(1)
 
