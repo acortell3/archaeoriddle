@@ -48,7 +48,7 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
     - [💾 testsites.RDS](./doc/bookdown/testsites.RDS) : not used
     - [📄 tools.R](./doc/bookdown/tools.R) : series of functions, to be deleted as they should be all in `./R/`
 
-If you compile the bookdown yourself, some folders will be generated (`data_tmp` and `data_toshare`) that will be used to store files generated during the compilation (the new world, csv outputs, etc...). Here's a quick overview of what they will look like (⚠️ note that they are not tracked and store on the git repository)
+If you compile the bookdown yourself, some folders will be generated (`data_tmp` and `data_toshare`) that will be used to store files generated during the compilation (the new world, csv outputs, etc...). Here's a quick overview of what they will look like (⚠️ note that they are not tracked/stored on the git repository)
 
 - :file_folder: doc/bookdown/data_tmp/ : folder with data generated during compilation of the bookdown.
     - 🌐 allsites.shp : shapefilewith the positions of all sites
