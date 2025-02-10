@@ -19,6 +19,9 @@ jobs:
         with:
           name: _book
           path: doc/bookdown/_book/
+      - name: Install rsync 📚
+        run: |
+          apt-get update && apt-get install -y rsync
       - name: Configure folder to be used by git
         run:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
