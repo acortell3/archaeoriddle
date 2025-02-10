@@ -18,7 +18,7 @@ This repository compiles all the elements developed throughout this project. The
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different parts of the project. It also greatly simplifies the use of the different functions used throughout the bookdown for anyone who would like to play and recreate their own Archaeoriddle world.
 
 
-*Note:* The version v0.1.2  of this repository is the last version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge. Concept, project and motivations", by:
+*Note:* The versions v0.1.2 and v0.1.3 of this repository is the last version that has been shared with reviewers after the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge. Concept, project and motivations", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
 This version includes the modifications asked by the reviewers and is archived on zenodo as one of the version stored with this [ DOI: 10.5281/zenodo.14024547](https://doi.org/10.5281/zenodo.14024547), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/) that stores the scripts used to generate the figures found in the paper and the figures.
