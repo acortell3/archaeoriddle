@@ -6,7 +6,7 @@ output: html_document
 ---
 ## Brain map archaeoriddle
 
-<img src="doc/brain_map_colabm.png" alt="drawing" width="600"/>
+<img src="brain_map_colabm.png" alt="brain storming map drawing" width="600"/>
 
 # Comments
 
