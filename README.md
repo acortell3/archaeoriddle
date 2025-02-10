@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14024548.svg)](https://doi.org/10.5281/zenodo.14024548)
+[![DOI](https://doi.org/10.5281/zenodo.14024547)](https://doi.org/10.5281/zenodo.14024547)
 
 # The Archaeoriddle
 
@@ -21,7 +21,7 @@ This repository has the structure of an R package. This allows each sub-componen
 *Note:* The version v0.1.2  of this repository is the last version that has been shared with reviewers during the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge. Concept, project and motivations", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
-This version includes the modifications asked by the reviewers and is the one archived on zenodo with this [ DOI: 10.5281/zenodo.14024548](https://doi.org/10.5281/zenodo.14024547), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/) that stores the scripts used to generate the figures found in the paper and the figures.
+This version includes the modifications asked by the reviewers and is archived on zenodo as one of the version stored with this [ DOI: 10.5281/zenodo.14024547](https://doi.org/10.5281/zenodo.14024547), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/) that stores the scripts used to generate the figures found in the paper and the figures.
 
 ## The Bookdown
 
@@ -93,7 +93,7 @@ Via the website, everyone had access to 4 squares representing 4 zones of 'Rabbi
 
 ### Proposals
 
-The original challenge received 5 proposals, that can be explored via the links below. A snapshot of the proposals the way they were provided by the authors after the revision process is also provided on the [zenodo repository](https://doi.org/10.5281/zenodo.14024548). 
+The original challenge received 5 proposals, that can be explored via the links below. A snapshot of the proposals the way they were provided by the authors after the revision process is also provided on the [zenodo repository](https://doi.org/10.5281/zenodo.14024547). 
 
 #### P1 by Deborah Priß and Raphael Kahlenberg
 
