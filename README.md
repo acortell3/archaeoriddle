@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14024548.svg)](https://doi.org/10.5281/zenodo.14024547)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14024547.svg)](https://doi.org/10.5281/zenodo.14024547)
 
 # The Archaeoriddle
 
