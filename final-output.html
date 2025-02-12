@@ -371,9 +371,13 @@ Figure 8.2: The black dots represent the sites for which dates are available, th
 <span id="cb80-8"><a href="final-output.html#cb80-8" tabindex="-1"></a>    selection<span class="ot">=</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(squares),<span class="dv">4</span>)</span>
 <span id="cb80-9"><a href="final-output.html#cb80-9" tabindex="-1"></a>    inter <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(<span class="fu">st_as_sf</span>(foundsites),squares[selection,])</span>
 <span id="cb80-10"><a href="final-output.html#cb80-10" tabindex="-1"></a>}</span>
-<span id="cb80-11"><a href="final-output.html#cb80-11" tabindex="-1"></a><span class="fu">plot</span>(squares[selection,],<span class="at">add=</span>T,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;blue&quot;</span>,.<span class="dv">3</span>))</span>
-<span id="cb80-12"><a href="final-output.html#cb80-12" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
-<span id="cb80-13"><a href="final-output.html#cb80-13" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(inter<span class="sc">$</span>culture)],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">cex=</span><span class="dv">1</span><span class="sc">+</span>inter<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">10</span>)</span></code></pre></div>
+<span id="cb80-11"><a href="final-output.html#cb80-11" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-12"><a href="final-output.html#cb80-12" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-13"><a href="final-output.html#cb80-13" tabindex="-1"></a><span class="do">## Warning: attribute variables are assumed to be spatially constant throughout</span></span>
+<span id="cb80-14"><a href="final-output.html#cb80-14" tabindex="-1"></a><span class="do">## all geometries</span></span>
+<span id="cb80-15"><a href="final-output.html#cb80-15" tabindex="-1"></a><span class="fu">plot</span>(squares[selection,],<span class="at">add=</span>T,<span class="at">col=</span><span class="fu">adjustcolor</span>(<span class="st">&quot;blue&quot;</span>,.<span class="dv">3</span>))</span>
+<span id="cb80-16"><a href="final-output.html#cb80-16" tabindex="-1"></a><span class="fu">plotMap</span>(height.ras,height.wat)</span>
+<span id="cb80-17"><a href="final-output.html#cb80-17" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(inter),<span class="at">add=</span>T,<span class="at">bg=</span><span class="fu">rainbow</span>(<span class="dv">2</span>,<span class="at">alpha=</span>.<span class="dv">6</span>)[<span class="fu">as.factor</span>(inter<span class="sc">$</span>culture)],<span class="at">pch=</span><span class="dv">21</span>,<span class="at">cex=</span><span class="dv">1</span><span class="sc">+</span>inter<span class="sc">$</span>numdates<span class="sc">/</span><span class="dv">10</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:getpublicsele-ex"></span>
 <img src="_main_files/figure-html/getpublicsele-ex-1.png" alt="Left: square publicly available ; right: sites surveyed within these publicly available squares." width="45%" /><img src="_main_files/figure-html/getpublicsele-ex-2.png" alt="Left: square publicly available ; right: sites surveyed within these publicly available squares." width="45%" />
 <p class="caption">
@@ -412,10 +416,10 @@ Figure 8.3: Left: square publicly available ; right: sites surveyed within these
 <span id="cb82-6"><a href="final-output.html#cb82-6" tabindex="-1"></a>}</span></code></pre></div>
 <p>The csvs generated for this specific run of the bookdown can be downloaded for each square:</p>
 <ul>
-<li><a href="data_toshare/square_22.csv">square 22</a></li>
-<li><a href="data_toshare/square_56.csv">square 56</a></li>
-<li><a href="data_toshare/square_15.csv">square 15</a></li>
-<li><a href="data_toshare/square_57.csv">square 57</a></li>
+<li><a href="data_toshare/square_14.csv">square 14</a></li>
+<li><a href="data_toshare/square_20.csv">square 20</a></li>
+<li><a href="data_toshare/square_47.csv">square 47</a></li>
+<li><a href="data_toshare/square_19.csv">square 19</a></li>
 </ul>
 <p>Export CSV and data for every square</p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="final-output.html#cb83-1" tabindex="-1"></a></span>
