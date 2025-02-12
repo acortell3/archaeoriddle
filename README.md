@@ -18,7 +18,7 @@ This repository compiles all the elements developed throughout this project. The
 This repository has the structure of an R package. This allows each sub-component of the Archaeoriddle to easily use and call functions and data shared common to the different parts of the project. It also greatly simplifies the use of the different functions used throughout the bookdown for anyone who would like to play and recreate their own Archaeoriddle world.
 
 
-*Note:* The versions v0.1.2 and v0.1.3 of this repository is the last version that has been shared with reviewers after the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the archaeoriddle challenge. Concept, project and motivations", by:
+*Note:* The versions v0.1.2 and v0.1.3 of this repository is the last version that was shared with reviewers after the revision process of the paper "Assessing the inferential power of quantitative methods in archaeology via simulated datasets: the Archaeoriddle challenge. Concept, project and motivations", by:
 Cortell-Nicolau, A., Carrignon, S., Rodríguez-Palomo, I., Hromada, D., Kahlenberg, R., Mes, A., Priss, D., Yaworsky, P., Zhang, X., Brainerd, L., Lewis, J., Redhouse, D., Simmons, C., Coto-Sarmiento, M., Daems, D., Deb, A., Lawrence D., O’Brien, M., Riede, F., Rubio-Campillo, X., Crema, E.
 
 This version includes the modifications asked by the reviewers and is archived on zenodo as one of the version stored with this [ DOI: 10.5281/zenodo.14024547](https://doi.org/10.5281/zenodo.14024547), as well as a [:file_folder: doc/figures_paper/](./doc/figures_paper/) that stores the scripts used to generate the figures found in the paper and the figures.
@@ -48,9 +48,9 @@ If you want to compile the bookdown yourself, we invite you to read [this chapte
     - [💾 testsites.RDS](./doc/bookdown/testsites.RDS) : not used
     - [📄 tools.R](./doc/bookdown/tools.R) : series of functions, to be deleted as they should be all in `./R/`
 
-If you compile the bookdown yourself, some folders will be generated (`data_tmp` and `data_toshare`) that will be used to store files generated during the compilation (the new world, csv outputs, etc...). Here's a quick overview of what they will look like (⚠️ note that they are not tracked/stored on the git repository)
+If you compile the bookdown yourself, some folders will be generated (`data_tmp` and `data_toshare`) that will be used to store files generated during the compilation (the new world, csv outputs, etc...). Here's a quick overview of what they will look like (⚠️ note that they are not tracked/stored on the git repository).
 
-- :file_folder: doc/bookdown/data_tmp/ : folder with data generated during compilation of the bookdown.
+- :file_folder: doc/bookdown/data_tmp/ : folder with data generated during compilation of the bookdown
     - 🌐 allsites.shp : shapefilewith the positions of all sites
     - 📄 square_1.csv to square_65.csv: CSV listing the dates generated for all squares (exact number can change)
     - 💾 popSizeMatrix.RDS: `RDS` storing a matrix with population size for all sites for all time step for one simulation
@@ -58,9 +58,9 @@ If you compile the bookdown yourself, some folders will be generated (`data_tmp`
     - 💾 wardeath.RDS: `RDS` file with a vector storing the total deaths per time step in the example simulation
     - 💾 exn_dates.RDS: `RDS` file with dates generated in the exact simulations.
     - 💾 exp1_all.RDS to [exp8_all.RDS](./doc/bookdown/data_tmp/exp8_all.RDS)  : `RDS` file with results of 8 different runs in your new world
-    - 💾 exp1_sitesRast.RDS to exp8_sitesRast.RDS : `RDS` file sites position  of 8 different run in your new world
-- :file_folder: data_toshare : folder with data that will be shared with participant 
-    - 🌐 costline.shp: shapefile defining the coastline of the world
+    - 💾 exp1_sitesRast.RDS to exp8_sitesRast.RDS : `RDS` file sites position  of 8 different runs in your new world
+- :file_folder: data_toshare : folder with data that will be shared with participants 
+    - 🌐 coastline.shp: shapefile defining the coastline of the world
     - 🗺️ dem_raster.tiff: DEM raster with elevation of your new world
     - 🗺️ resources.tiff: raster with the ecological fitness of the environment
     - 📄 square_1.csv to square_5.csv: randomly selected squares shared publicly 
@@ -69,9 +69,9 @@ If you compile the bookdown yourself, some folders will be generated (`data_tmp`
 
 ## The Original Challenge 
 
-The Original Challenge corresponds to a specific instance of Archaeoriddle, called 'Rabbithole'. This includes a landscape, an 'ecological map' and a set of parameters that have been used to carry set of simulations, among which  _one_ has been chosen. From the outcome of the simulation, bone deposits have been generated and a csv with list of C14 dates created. The map of the landscape and the ecological raster, together with a selected set of csv files among the ones generated where shared publicly with archaeologists via an online website. 
+The Original Challenge corresponds to a specific instance of Archaeoriddle, called 'Rabbithole'. This includes a landscape, an 'ecological map' and a set of parameters that have been used to carry set of simulations, among which  _one_ has been chosen. From the outcome of the simulation, bone deposits have been generated and a csv with list of C14 dates created. The map of the landscape and the ecological raster, together with a selected set of csv files among the ones generated were shared publicly with archaeologists via a website. 
 
-The website is still available [here](https://theia.arch.cam.ac.uk/archaeoriddle/) on the 7th of February 2025, but will probably disappear anytime soon. In any case, the source to generate the website are provided in this repository [here](./doc/shinyapp/).
+The website is still available [here](https://theia.arch.cam.ac.uk/archaeoriddle/) on the 7th of February 2025 but will probably disappear soon. In any case, the source to generate the website is provided [here](./doc/shinyapp/).
 
 On the website, three research questions were asked:
 
@@ -79,7 +79,7 @@ On the website, three research questions were asked:
 - RQ2. What was the population trajectory of each group?
 - RQ3. What was the rate of dispersal of _Poppychewers_?
 
-Via the website, everyone had access to 4 squares representing 4 zones of 'Rabbithole' for which data about occupation were given. People who wanted to participate were then able to request 5 additional zones that would be 'excavated' for them and they then received datasets covering the zones they picked. 
+Via the website, everyone had access to 4 squares representing 4 zones of 'Rabbithole' for which data about occupation were given. People who wanted to participate were then able to request 5 additional zones that would be 'excavated' for them, and they then received datasets covering the zones they picked. 
 
 <div style="font-size: 8pt;text-align: center;">
   <figure>
@@ -93,7 +93,7 @@ Via the website, everyone had access to 4 squares representing 4 zones of 'Rabbi
 
 ### Proposals
 
-The original challenge received 5 proposals, that can be explored via the links below. A snapshot of the proposals the way they were provided by the authors after the revision process is also provided on the [zenodo repository](https://doi.org/10.5281/zenodo.14024547). 
+The original challenge received 5 proposals, which can be explored via the links below. A snapshot of the proposals the way they were provided by the authors after the revision process is also provided in the [zenodo repository](https://doi.org/10.5281/zenodo.14024547). 
 
 #### P1 by Deborah Priß and Raphael Kahlenberg
 
@@ -146,14 +146,14 @@ The original challenge is detailed in [this chapter](https://thearchaeoriddle.or
     - [📄 README.md](./doc/shinyapp/README.m) : README explaining how to recreate the shiny app and detailing the files available in the folder
 - [:file_folder: doc/fake_papers/](./doc/fake_papers/) :  LaTex code for several fake papers and posters presented at conferences where the Original Challenge was presented
 - [:file_folder: doc/survey_archaeoriddle/](./doc/survey_archaeoriddle/) : results and analysis of a survey made to know more about the people who were interested in the project. A quick analysis is available [here](file:///home/simon/projects/archaeoriddle/doc/survey_archaeoriddle/survey_analysis.html)
-- [:file_folder: doc/bookdown/data_original/](./doc/bookdown/data_original/) : folder will all original data
+- [:file_folder: doc/bookdown/data_original/](./doc/bookdown/data_original/) : folder with all original data
     - [:file_folder: all_squares/](./doc/bookdown/data_original/all_squares/): folder with all squares in the original challenge
-		- [📄 square_1.csv](./doc/bookdown/data_original/all_squares/square_1.csv) to [square_100.csv](./doc/bookdown/data_original/all_squares/square_100.csv) : `CSV` file storing all dates available for all the squares of the original challenge.
+		- [📄 square_1.csv](./doc/bookdown/data_original/all_squares/square_1.csv) to [square_100.csv](./doc/bookdown/data_original/all_squares/square_100.csv) : `CSV` file storing all dates available for all the squares of the original challenge
     - [:file_folder: general_results_selected_simu/](./doc/bookdown/data_original/general_results_selected_simu/) :
         - [💾 buffattack300_K110_PSU065_3_all.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_all.RDS) : RDS file storing most of the selected simulation
         - [💾 buffattack300_K110_PSU065_3_sitesRast.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_sitesRast.RDS) : RDS file storing a raster with the positions of the sites
         - [💾 buffattack300_K110_PSU065_3_dates.RDS](./doc/bookdown/data_original/general_results_selected_simu/buffattack300_K110_PSU065_3_dates.RDS) : RDS file storing all dates generated for all sites
-    - [:file_folder: sitesinitialposition/](./doc/bookdown/data_original/sitesinitialposition/) : Folder with file needed to read shapefile
+    - [:file_folder: sitesinitialposition/](./doc/bookdown/data_original/sitesinitialposition/) : folder with file needed to read shapefile
         - [🌐 sitesinitialposition.shp](./doc/bookdown/data_original/sitesinitialposition/sitesinitialposition.shp) : shapefile with the position of the initial sites
     - [🌐 costline.shp ](./doc/bookdown/data_original/coastline.shp) : shapefile defining the coastline of the world
     - [🗺️ east_narnia4x.tiff](./doc/bookdown/data_original/east_narnia4x.tif) : DEM raster with elevation of Rabbithole
@@ -166,7 +166,7 @@ This overal structure of this repository is a R package.
 To install it, the most simple way will be by using `devtools` function `github_install()` by doing: `devtools::install_github("acortell3/archaeoriddle")`.
 Most of the functions defined in the package are described in details in [the bookdown](https://www.thearchaeoriddle.org).
 
-The package will be used if you want to follow the bookdown or recompile it. It will also allow you to easily re-use the functions defined in the package to re-explore the proposal of the original challenge, create your own model of interaction and explore and modify the underlying model used throughout the Archaeoriddle project.
+The package will be used if you want to follow the bookdown or recompile it. It will also allow you to easily re-use the functions defined in the package to re-explore the proposal of the original challenge, create your own model of interaction, and explore and modify the underlying model used throughout the Archaeoriddle project.
 
 To install the package, the easiest way is probably to use `devtools` function `install_github`: `devtools::install_github("acortell3/archaeoriddle")` 
 
@@ -200,7 +200,7 @@ To install the package, the easiest way is probably to use `devtools` function `
 - [📄 pop_id.Rmd](./doc/pop_id.Rmd): R Markdown file about population ideas and environmental qualities for hunting/farming
 
 ### `man/`
-- [📄 A_rates.Rd](./man/A_rates.Rd),[📄 Gpd.Rd](./man/Gpd.Rd),... and all other `Rd` files: files automatically generated by `ROxygen` to generate `R` documentation (shown when using `?Gpd` when the package is loaded.
+- [📄 A_rates.Rd](./man/A_rates.Rd),[📄 Gpd.Rd](./man/Gpd.Rd),... and all other `Rd` files: files automatically generated by `ROxygen` to generate `R` documentation (shown when using `?Gpd` when the package is loaded
 
 ### `R/`
 
